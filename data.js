@@ -1,4 +1,1588 @@
 window.HSI_REPORTS = {
+  "2026-08-20": {
+    "date": "2026-08-20",
+    "prevDate": "2026-08-19",
+    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc260820.htm",
+    "summary": {
+      "frontMonth": "2026-08",
+      "callOI": 18732,
+      "putOI": 29856,
+      "callOIChange": 966,
+      "putOIChange": 572,
+      "callPct": 38.6,
+      "putPct": 61.4,
+      "totalOI": 48588,
+      "totalOIChange": 1538
+    },
+    "heavyZones": {
+      "callWalls": [
+        {
+          "strike": 26200,
+          "oi": 3038,
+          "oiChange": 1110
+        },
+        {
+          "strike": 27000,
+          "oi": 1195,
+          "oiChange": 28
+        },
+        {
+          "strike": 26000,
+          "oi": 1147,
+          "oiChange": -77
+        },
+        {
+          "strike": 25800,
+          "oi": 1127,
+          "oiChange": -8
+        },
+        {
+          "strike": 28000,
+          "oi": 959,
+          "oiChange": -5
+        },
+        {
+          "strike": 25400,
+          "oi": 877,
+          "oiChange": -64
+        }
+      ],
+      "putWalls": [
+        {
+          "strike": 23400,
+          "oi": 2688,
+          "oiChange": 14
+        },
+        {
+          "strike": 23600,
+          "oi": 1381,
+          "oiChange": -7
+        },
+        {
+          "strike": 25000,
+          "oi": 1258,
+          "oiChange": 40
+        },
+        {
+          "strike": 24600,
+          "oi": 1254,
+          "oiChange": 73
+        },
+        {
+          "strike": 25200,
+          "oi": 1117,
+          "oiChange": 2
+        },
+        {
+          "strike": 24800,
+          "oi": 1062,
+          "oiChange": 36
+        }
+      ],
+      "callVolWalls": [
+        {
+          "strike": 26200,
+          "volume": 1617
+        },
+        {
+          "strike": 25800,
+          "volume": 695
+        },
+        {
+          "strike": 26400,
+          "volume": 657
+        },
+        {
+          "strike": 26000,
+          "volume": 637
+        },
+        {
+          "strike": 26800,
+          "volume": 520
+        },
+        {
+          "strike": 26600,
+          "volume": 357
+        }
+      ],
+      "putVolWalls": [
+        {
+          "strike": 25400,
+          "volume": 562
+        },
+        {
+          "strike": 25600,
+          "volume": 538
+        },
+        {
+          "strike": 25200,
+          "volume": 523
+        },
+        {
+          "strike": 25000,
+          "volume": 515
+        },
+        {
+          "strike": 25800,
+          "volume": 435
+        },
+        {
+          "strike": 24800,
+          "volume": 366
+        }
+      ]
+    },
+    "strikes": [
+      {
+        "strike": 15000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10695,
+        "putOI": 23,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15100,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10595,
+        "putOI": 14,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10495,
+        "putOI": 28,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15300,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10395,
+        "putOI": 8,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15500,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10195,
+        "putOI": 39,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 10095,
+        "putOI": 80,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15700,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9995,
+        "putOI": 40,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15800,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9895,
+        "putOI": 29,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 15900,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9795,
+        "putOI": 37,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9695,
+        "putOI": 76,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16100,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9595,
+        "putOI": 60,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9495,
+        "putOI": 75,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16300,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9395,
+        "putOI": 37,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16400,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9295,
+        "putOI": 56,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16500,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9195,
+        "putOI": 91,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 9095,
+        "putOI": 56,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16700,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8995,
+        "putOI": 43,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16800,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8895,
+        "putOI": 88,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 16900,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8795,
+        "putOI": 82,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8695,
+        "putOI": 213,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17100,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8595,
+        "putOI": 47,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8495,
+        "putOI": 174,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17300,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8395,
+        "putOI": 191,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17400,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8295,
+        "putOI": 64,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17500,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8195,
+        "putOI": 98,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 8095,
+        "putOI": 57,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17700,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7995,
+        "putOI": 180,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17800,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7895,
+        "putOI": 20,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 17900,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7795,
+        "putOI": 126,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7695,
+        "putOI": 881,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18100,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7595,
+        "putOI": 313,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7495,
+        "putOI": 25,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18300,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7395,
+        "putOI": 113,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18400,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7295,
+        "putOI": 120,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18500,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7195,
+        "putOI": 124,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 7095,
+        "putOI": 70,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18700,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6995,
+        "putOI": 90,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18800,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6895,
+        "putOI": 105,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 18900,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6795,
+        "putOI": 120,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6695,
+        "putOI": 397,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19100,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6595,
+        "putOI": 200,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6495,
+        "putOI": 156,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19300,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6395,
+        "putOI": 173,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19400,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6295,
+        "putOI": 283,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19500,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6195,
+        "putOI": 467,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 6095,
+        "putOI": 333,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19700,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5995,
+        "putOI": 299,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19800,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5895,
+        "putOI": 494,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 19900,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5795,
+        "putOI": 403,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 20000,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5695,
+        "putOI": 481,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 20200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5495,
+        "putOI": 238,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 20400,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5295,
+        "putOI": 308,
+        "putChange": -2,
+        "putVol": 3,
+        "putSettle": 1
+      },
+      {
+        "strike": 20600,
+        "callOI": 2,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 5095,
+        "putOI": 402,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 20800,
+        "callOI": 7,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 4895,
+        "putOI": 539,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 21000,
+        "callOI": 2,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 4695,
+        "putOI": 741,
+        "putChange": 0,
+        "putVol": 1,
+        "putSettle": 1
+      },
+      {
+        "strike": 21200,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 4495,
+        "putOI": 261,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 21400,
+        "callOI": 2,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 4295,
+        "putOI": 482,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 21600,
+        "callOI": 0,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 4095,
+        "putOI": 359,
+        "putChange": 0,
+        "putVol": 2,
+        "putSettle": 1
+      },
+      {
+        "strike": 21800,
+        "callOI": 2,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 3895,
+        "putOI": 274,
+        "putChange": -4,
+        "putVol": 6,
+        "putSettle": 1
+      },
+      {
+        "strike": 22000,
+        "callOI": 4,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 3695,
+        "putOI": 867,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1
+      },
+      {
+        "strike": 22200,
+        "callOI": 5,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 3495,
+        "putOI": 337,
+        "putChange": 2,
+        "putVol": 2,
+        "putSettle": 1
+      },
+      {
+        "strike": 22400,
+        "callOI": 2,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 3295,
+        "putOI": 282,
+        "putChange": -2,
+        "putVol": 9,
+        "putSettle": 1
+      },
+      {
+        "strike": 22600,
+        "callOI": 5,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 3095,
+        "putOI": 733,
+        "putChange": -2,
+        "putVol": 4,
+        "putSettle": 1
+      },
+      {
+        "strike": 22800,
+        "callOI": 22,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 2895,
+        "putOI": 603,
+        "putChange": -5,
+        "putVol": 5,
+        "putSettle": 1
+      },
+      {
+        "strike": 23000,
+        "callOI": 133,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 2703,
+        "putOI": 916,
+        "putChange": 4,
+        "putVol": 12,
+        "putSettle": 1
+      },
+      {
+        "strike": 23200,
+        "callOI": 34,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 2514,
+        "putOI": 468,
+        "putChange": 4,
+        "putVol": 9,
+        "putSettle": 1
+      },
+      {
+        "strike": 23400,
+        "callOI": 51,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 2296,
+        "putOI": 2688,
+        "putChange": 14,
+        "putVol": 44,
+        "putSettle": 1
+      },
+      {
+        "strike": 23600,
+        "callOI": 208,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 2100,
+        "putOI": 1381,
+        "putChange": -7,
+        "putVol": 21,
+        "putSettle": 2
+      },
+      {
+        "strike": 23800,
+        "callOI": 33,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1910,
+        "putOI": 610,
+        "putChange": 13,
+        "putVol": 47,
+        "putSettle": 3
+      },
+      {
+        "strike": 24000,
+        "callOI": 440,
+        "callChange": -137,
+        "callVol": 201,
+        "callSettle": 1702,
+        "putOI": 923,
+        "putChange": 46,
+        "putVol": 91,
+        "putSettle": 5
+      },
+      {
+        "strike": 24200,
+        "callOI": 72,
+        "callChange": 1,
+        "callVol": 1,
+        "callSettle": 1505,
+        "putOI": 694,
+        "putChange": 32,
+        "putVol": 117,
+        "putSettle": 8
+      },
+      {
+        "strike": 24400,
+        "callOI": 213,
+        "callChange": -133,
+        "callVol": 203,
+        "callSettle": 1310,
+        "putOI": 538,
+        "putChange": 24,
+        "putVol": 255,
+        "putSettle": 13
+      },
+      {
+        "strike": 24600,
+        "callOI": 294,
+        "callChange": 1,
+        "callVol": 1,
+        "callSettle": 1117,
+        "putOI": 1254,
+        "putChange": 73,
+        "putVol": 354,
+        "putSettle": 21
+      },
+      {
+        "strike": 24800,
+        "callOI": 107,
+        "callChange": -2,
+        "callVol": 11,
+        "callSettle": 927,
+        "putOI": 1062,
+        "putChange": 36,
+        "putVol": 366,
+        "putSettle": 33
+      },
+      {
+        "strike": 25000,
+        "callOI": 368,
+        "callChange": -8,
+        "callVol": 16,
+        "callSettle": 750,
+        "putOI": 1258,
+        "putChange": 40,
+        "putVol": 515,
+        "putSettle": 53
+      },
+      {
+        "strike": 25200,
+        "callOI": 572,
+        "callChange": -210,
+        "callVol": 225,
+        "callSettle": 579,
+        "putOI": 1117,
+        "putChange": 2,
+        "putVol": 523,
+        "putSettle": 84
+      },
+      {
+        "strike": 25400,
+        "callOI": 877,
+        "callChange": -64,
+        "callVol": 194,
+        "callSettle": 434,
+        "putOI": 662,
+        "putChange": -22,
+        "putVol": 562,
+        "putSettle": 130
+      },
+      {
+        "strike": 25600,
+        "callOI": 493,
+        "callChange": -44,
+        "callVol": 284,
+        "callSettle": 296,
+        "putOI": 673,
+        "putChange": 114,
+        "putVol": 538,
+        "putSettle": 202
+      },
+      {
+        "strike": 25800,
+        "callOI": 1127,
+        "callChange": -8,
+        "callVol": 695,
+        "callSettle": 196,
+        "putOI": 756,
+        "putChange": 177,
+        "putVol": 435,
+        "putSettle": 301
+      },
+      {
+        "strike": 26000,
+        "callOI": 1147,
+        "callChange": -77,
+        "callVol": 637,
+        "callSettle": 127,
+        "putOI": 203,
+        "putChange": 26,
+        "putVol": 91,
+        "putSettle": 430
+      },
+      {
+        "strike": 26200,
+        "callOI": 3038,
+        "callChange": 1110,
+        "callVol": 1617,
+        "callSettle": 79,
+        "putOI": 269,
+        "putChange": 7,
+        "putVol": 29,
+        "putSettle": 583
+      },
+      {
+        "strike": 26400,
+        "callOI": 729,
+        "callChange": 308,
+        "callVol": 657,
+        "callSettle": 48,
+        "putOI": 102,
+        "putChange": 1,
+        "putVol": 2,
+        "putSettle": 753
+      },
+      {
+        "strike": 26600,
+        "callOI": 526,
+        "callChange": -10,
+        "callVol": 357,
+        "callSettle": 27,
+        "putOI": 19,
+        "putChange": 1,
+        "putVol": 2,
+        "putSettle": 932
+      },
+      {
+        "strike": 26800,
+        "callOI": 820,
+        "callChange": 213,
+        "callVol": 520,
+        "callSettle": 16,
+        "putOI": 18,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1122
+      },
+      {
+        "strike": 27000,
+        "callOI": 1195,
+        "callChange": 28,
+        "callVol": 254,
+        "callSettle": 9,
+        "putOI": 25,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1317
+      },
+      {
+        "strike": 27200,
+        "callOI": 471,
+        "callChange": -6,
+        "callVol": 112,
+        "callSettle": 5,
+        "putOI": 2,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1509
+      },
+      {
+        "strike": 27400,
+        "callOI": 315,
+        "callChange": 6,
+        "callVol": 46,
+        "callSettle": 3,
+        "putOI": 8,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1707
+      },
+      {
+        "strike": 27600,
+        "callOI": 699,
+        "callChange": -4,
+        "callVol": 12,
+        "callSettle": 2,
+        "putOI": 2,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 1906
+      },
+      {
+        "strike": 27800,
+        "callOI": 590,
+        "callChange": 5,
+        "callVol": 8,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 2106
+      },
+      {
+        "strike": 28000,
+        "callOI": 959,
+        "callChange": -5,
+        "callVol": 17,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 2305
+      },
+      {
+        "strike": 28200,
+        "callOI": 395,
+        "callChange": 1,
+        "callVol": 11,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 2505
+      },
+      {
+        "strike": 28400,
+        "callOI": 320,
+        "callChange": 0,
+        "callVol": 1,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 2705
+      },
+      {
+        "strike": 28600,
+        "callOI": 646,
+        "callChange": 2,
+        "callVol": 21,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 2905
+      },
+      {
+        "strike": 28800,
+        "callOI": 178,
+        "callChange": 0,
+        "callVol": 2,
+        "callSettle": 1,
+        "putOI": 2,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 3105
+      },
+      {
+        "strike": 29000,
+        "callOI": 371,
+        "callChange": -1,
+        "callVol": 1,
+        "callSettle": 1,
+        "putOI": 1,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 3305
+      },
+      {
+        "strike": 29200,
+        "callOI": 327,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 3505
+      },
+      {
+        "strike": 29400,
+        "callOI": 249,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 3705
+      },
+      {
+        "strike": 29600,
+        "callOI": 90,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 3905
+      },
+      {
+        "strike": 29800,
+        "callOI": 91,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 4105
+      },
+      {
+        "strike": 30000,
+        "callOI": 120,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 4305
+      },
+      {
+        "strike": 30200,
+        "callOI": 141,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 4505
+      },
+      {
+        "strike": 30400,
+        "callOI": 62,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 4705
+      },
+      {
+        "strike": 30600,
+        "callOI": 10,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 4905
+      },
+      {
+        "strike": 30800,
+        "callOI": 18,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 5105
+      },
+      {
+        "strike": 31000,
+        "callOI": 44,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 5305
+      },
+      {
+        "strike": 31200,
+        "callOI": 31,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 5505
+      },
+      {
+        "strike": 31400,
+        "callOI": 10,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 5705
+      },
+      {
+        "strike": 31600,
+        "callOI": 8,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 5905
+      },
+      {
+        "strike": 31800,
+        "callOI": 18,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 6105
+      },
+      {
+        "strike": 32000,
+        "callOI": 39,
+        "callChange": 0,
+        "callVol": 0,
+        "callSettle": 1,
+        "putOI": 0,
+        "putChange": 0,
+        "putVol": 0,
+        "putSettle": 6305
+      }
+    ],
+    "topVolume": [
+      {
+        "month": "2026-08",
+        "strike": 26200,
+        "type": "Call",
+        "volume": 1617,
+        "settle": 79,
+        "iv": 16,
+        "oi": 3038,
+        "oiChange": 36
+      },
+      {
+        "month": "2026-08",
+        "strike": 25800,
+        "type": "Call",
+        "volume": 695,
+        "settle": 196,
+        "iv": 16,
+        "oi": 1127,
+        "oiChange": 74
+      },
+      {
+        "month": "2026-08",
+        "strike": 26400,
+        "type": "Call",
+        "volume": 657,
+        "settle": 48,
+        "iv": 17,
+        "oi": 729,
+        "oiChange": 24
+      },
+      {
+        "month": "2026-08",
+        "strike": 26000,
+        "type": "Call",
+        "volume": 637,
+        "settle": 127,
+        "iv": 16,
+        "oi": 1147,
+        "oiChange": 52
+      },
+      {
+        "month": "2026-08",
+        "strike": 25400,
+        "type": "Put",
+        "volume": 562,
+        "settle": 130,
+        "iv": 16,
+        "oi": 662,
+        "oiChange": -101
+      },
+      {
+        "month": "2026-08",
+        "strike": 25600,
+        "type": "Put",
+        "volume": 538,
+        "settle": 202,
+        "iv": 16,
+        "oi": 673,
+        "oiChange": -130
+      },
+      {
+        "month": "2026-08",
+        "strike": 25200,
+        "type": "Put",
+        "volume": 523,
+        "settle": 84,
+        "iv": 17,
+        "oi": 1117,
+        "oiChange": -72
+      },
+      {
+        "month": "2026-08",
+        "strike": 26800,
+        "type": "Call",
+        "volume": 520,
+        "settle": 16,
+        "iv": 17,
+        "oi": 820,
+        "oiChange": 9
+      },
+      {
+        "month": "2026-08",
+        "strike": 25000,
+        "type": "Put",
+        "volume": 515,
+        "settle": 53,
+        "iv": 17,
+        "oi": 1258,
+        "oiChange": -52
+      },
+      {
+        "month": "2026-08",
+        "strike": 25800,
+        "type": "Put",
+        "volume": 435,
+        "settle": 301,
+        "iv": 16,
+        "oi": 756,
+        "oiChange": -158
+      }
+    ],
+    "futures": {
+      "hsif": {
+        "product": "HSIF",
+        "name": "HSI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25734,
+          "high": 25832,
+          "low": 25596,
+          "settle": 25695,
+          "settleChange": 236,
+          "volume": 91089,
+          "oi": 110032,
+          "oiChange": -2434
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25734,
+            "high": 25832,
+            "low": 25596,
+            "settle": 25695,
+            "settleChange": 236,
+            "volume": 91089,
+            "oi": 110032,
+            "oiChange": -2434
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25650,
+            "high": 25765,
+            "low": 25545,
+            "settle": 25632,
+            "settleChange": 236,
+            "volume": 2761,
+            "oi": 6384,
+            "oiChange": 138
+          },
+          {
+            "month": "OCT-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25669,
+            "settleChange": 236,
+            "volume": 0,
+            "oi": 3502,
+            "oiChange": 0
+          },
+          {
+            "month": "NOV-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25677,
+            "settleChange": 236,
+            "volume": 0,
+            "oi": 0,
+            "oiChange": 0
+          }
+        ],
+        "total": {
+          "volume": 94073,
+          "oi": 122559,
+          "oiChange": -2118
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/hsif260820.htm"
+      },
+      "mhif": {
+        "product": "MHIF",
+        "name": "MHI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25728,
+          "high": 25832,
+          "low": 25596,
+          "settle": 25695,
+          "settleChange": 236,
+          "volume": 77414,
+          "oi": 14334,
+          "oiChange": 446
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25728,
+            "high": 25832,
+            "low": 25596,
+            "settle": 25695,
+            "settleChange": 236,
+            "volume": 77414,
+            "oi": 14334,
+            "oiChange": 446
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25637,
+            "high": 25767,
+            "low": 25537,
+            "settle": 25632,
+            "settleChange": 236,
+            "volume": 2763,
+            "oi": 3388,
+            "oiChange": 9
+          },
+          {
+            "month": "DEC-2026",
+            "open": 25710,
+            "high": 25838,
+            "low": 25611,
+            "settle": 25699,
+            "settleChange": 239,
+            "volume": 265,
+            "oi": 636,
+            "oiChange": 3
+          },
+          {
+            "month": "MAR-2027",
+            "open": 25900,
+            "high": 25980,
+            "low": 25780,
+            "settle": 25854,
+            "settleChange": 233,
+            "volume": 53,
+            "oi": 66,
+            "oiChange": 13
+          }
+        ],
+        "total": {
+          "volume": 80495,
+          "oi": 18424,
+          "oiChange": 471
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260820.htm"
+      }
+    }
+  },
   "2026-08-19": {
     "date": "2026-08-19",
     "prevDate": "2026-08-18",
