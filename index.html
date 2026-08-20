@@ -119,6 +119,42 @@
       border-bottom: 1px solid var(--border);
     }
     .legend span { margin-right: 14px; white-space: nowrap; }
+
+    /* Settings modal */
+    .settings-btn {
+      background: #1c1c1f; border: 1px solid #333; color: var(--muted);
+      border-radius: 6px; padding: 5px 10px; font-size: 0.75rem;
+      cursor: pointer; margin-left: 8px;
+    }
+    .settings-btn:hover { color: var(--text); border-color: #555; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+      z-index: 100; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #18181b; border: 1px solid #333; border-radius: 12px;
+      width: min(420px, 92vw); max-height: 90vh; overflow: auto;
+      padding: 20px;
+    }
+    .modal h3 { font-size: 1rem; margin-bottom: 16px; }
+    .modal-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #27272a; font-size: 0.85rem;
+    }
+    .modal-row:last-child { border-bottom: none; }
+    .modal-row label { color: var(--muted); }
+    .modal-row input, .modal-row select {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 5px 8px; font-size: 0.8rem;
+    }
+    .modal-row input[type="number"] { width: 80px; }
+    .modal-actions { margin-top: 18px; display: flex; gap: 8px; justify-content: flex-end; }
+    .modal-actions button {
+      border: none; border-radius: 6px; padding: 7px 14px; font-size: 0.8rem; cursor: pointer;
+    }
+    .btn-primary { background: #059669; color: #fff; }
+    .btn-secondary { background: #27272a; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -128,9 +164,71 @@
         <h1>恒指期權未平倉 <span>HSI Options OI</span></h1>
         <div class="sub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易</div>
       </div>
-      <div class="date-btns" id="dateButtons"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="date-btns" id="dateButtons"></div>
+        <button class="settings-btn" onclick="openSettings()" title="設定">⚙️ 設定</button>
+      </div>
     </div>
   </header>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+    <div class="modal">
+      <h3>設定 Settings</h3>
+      <div class="modal-row">
+        <label>預設最低 OI</label>
+        <input type="number" id="setMinOI" min="0" step="50" />
+      </div>
+      <div class="modal-row">
+        <label>預設最低成交量</label>
+        <input type="number" id="setMinVol" min="0" step="10" />
+      </div>
+      <div class="modal-row">
+        <label>預設排序</label>
+        <select id="setSortKey">
+          <option value="strike">行使價</option>
+          <option value="totalOI">總 OI</option>
+          <option value="callOI">Call OI</option>
+          <option value="putOI">Put OI</option>
+          <option value="callVol">Call Vol</option>
+          <option value="putVol">Put Vol</option>
+          <option value="chg">最大變化</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label>排序方向</label>
+        <select id="setSortDir">
+          <option value="desc">高 → 低</option>
+          <option value="asc">低 → 高</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label>隱藏空白行使價</label>
+        <input type="checkbox" id="setOnlyActive" />
+      </div>
+      <div class="modal-row">
+        <label>高亮 Top N（OI / Vol / 變化）</label>
+        <input type="number" id="setTopN" min="1" max="20" step="1" />
+      </div>
+      <div class="modal-row">
+        <label>高亮高 OI</label>
+        <input type="checkbox" id="setHlOI" />
+      </div>
+      <div class="modal-row">
+        <label>高亮高成交量</label>
+        <input type="checkbox" id="setHlVol" />
+      </div>
+      <div class="modal-row">
+        <label>高亮大變化</label>
+        <input type="checkbox" id="setHlChg" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="resetSettings()">重設</button>
+        <button class="btn-secondary" onclick="closeSettings()">取消</button>
+        <button class="btn-primary" onclick="saveSettings()">儲存</button>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <div class="note" id="status">載入中…</div>
@@ -153,11 +251,86 @@
     let currentReport = null;
 
     // Filter / sort state
-    let sortKey = "strike";
-    let sortDir = "desc";
-    let minOI = 0;
-    let minVol = 0;
-    let onlyActive = true; // hide zero OI and zero vol
+    // Defaults (overridden by localStorage)
+    const DEFAULTS = {
+      sortKey: "strike",
+      sortDir: "desc",
+      minOI: 100,
+      minVol: 0,
+      onlyActive: true,
+      topN: 5,
+      hlOI: true,
+      hlVol: true,
+      hlChg: true,
+    };
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem("hsi_oi_settings");
+        if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+      } catch (e) {}
+      return { ...DEFAULTS };
+    }
+
+    let settings = loadSettings();
+    let sortKey = settings.sortKey;
+    let sortDir = settings.sortDir;
+    let minOI = settings.minOI;
+    let minVol = settings.minVol;
+    let onlyActive = settings.onlyActive;
+    let topN = settings.topN;
+    let hlOI = settings.hlOI;
+    let hlVol = settings.hlVol;
+    let hlChg = settings.hlChg;
+
+    function openSettings() {
+      document.getElementById("setMinOI").value = minOI;
+      document.getElementById("setMinVol").value = minVol;
+      document.getElementById("setSortKey").value = sortKey;
+      document.getElementById("setSortDir").value = sortDir;
+      document.getElementById("setOnlyActive").checked = onlyActive;
+      document.getElementById("setTopN").value = topN;
+      document.getElementById("setHlOI").checked = hlOI;
+      document.getElementById("setHlVol").checked = hlVol;
+      document.getElementById("setHlChg").checked = hlChg;
+      document.getElementById("settingsModal").classList.add("open");
+    }
+
+    function closeSettings() {
+      document.getElementById("settingsModal").classList.remove("open");
+    }
+
+    function saveSettings() {
+      minOI = parseInt(document.getElementById("setMinOI").value, 10) || 0;
+      minVol = parseInt(document.getElementById("setMinVol").value, 10) || 0;
+      sortKey = document.getElementById("setSortKey").value;
+      sortDir = document.getElementById("setSortDir").value;
+      onlyActive = document.getElementById("setOnlyActive").checked;
+      topN = parseInt(document.getElementById("setTopN").value, 10) || 5;
+      hlOI = document.getElementById("setHlOI").checked;
+      hlVol = document.getElementById("setHlVol").checked;
+      hlChg = document.getElementById("setHlChg").checked;
+
+      settings = { sortKey, sortDir, minOI, minVol, onlyActive, topN, hlOI, hlVol, hlChg };
+      localStorage.setItem("hsi_oi_settings", JSON.stringify(settings));
+      closeSettings();
+      renderStrikeTable();
+    }
+
+    function resetSettings() {
+      settings = { ...DEFAULTS };
+      localStorage.removeItem("hsi_oi_settings");
+      sortKey = settings.sortKey;
+      sortDir = settings.sortDir;
+      minOI = settings.minOI;
+      minVol = settings.minVol;
+      onlyActive = settings.onlyActive;
+      topN = settings.topN;
+      hlOI = settings.hlOI;
+      hlVol = settings.hlVol;
+      hlChg = settings.hlChg;
+      openSettings(); // refresh form values
+    }
 
     function fmt(n) { return (n || 0).toLocaleString("en-US"); }
     function fmtChg(n) {
@@ -171,19 +344,20 @@
     }
 
     function getImportantSets(strikes) {
-      const byCallOI = [...strikes].sort((a,b) => (b.callOI||0)-(a.callOI||0)).slice(0,5).map(s=>s.strike);
-      const byPutOI  = [...strikes].sort((a,b) => (b.putOI||0)-(a.putOI||0)).slice(0,5).map(s=>s.strike);
-      const byCallVol= [...strikes].sort((a,b) => (b.callVol||0)-(a.callVol||0)).slice(0,5).map(s=>s.strike);
-      const byPutVol = [...strikes].sort((a,b) => (b.putVol||0)-(a.putVol||0)).slice(0,5).map(s=>s.strike);
+      const n = topN || 5;
+      const byCallOI = [...strikes].sort((a,b) => (b.callOI||0)-(a.callOI||0)).slice(0,n).map(s=>s.strike);
+      const byPutOI  = [...strikes].sort((a,b) => (b.putOI||0)-(a.putOI||0)).slice(0,n).map(s=>s.strike);
+      const byCallVol= [...strikes].sort((a,b) => (b.callVol||0)-(a.callVol||0)).slice(0,n).map(s=>s.strike);
+      const byPutVol = [...strikes].sort((a,b) => (b.putVol||0)-(a.putVol||0)).slice(0,n).map(s=>s.strike);
       const byChg = [...strikes].sort((a,b) =>
         Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)) -
         Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0))
-      ).slice(0,5).map(s=>s.strike);
+      ).slice(0,n).map(s=>s.strike);
 
       return {
-        oi: new Set([...byCallOI, ...byPutOI]),
-        vol: new Set([...byCallVol, ...byPutVol]),
-        chg: new Set(byChg),
+        oi: hlOI ? new Set([...byCallOI, ...byPutOI]) : new Set(),
+        vol: hlVol ? new Set([...byCallVol, ...byPutVol]) : new Set(),
+        chg: hlChg ? new Set(byChg) : new Set(),
       };
     }
 
