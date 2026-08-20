@@ -259,11 +259,6 @@
               </label>
             </div>
           </div>
-          <div class="legend">
-            <span><span class="badge badge-oi">OI</span> 高未平倉</span>
-            <span><span class="badge badge-vol">Vol</span> 高成交量</span>
-            <span><span class="badge badge-chg">Δ</span> 大變化</span>
-          </div>
           <div class="table-wrap">
             <table>
               <thead>
@@ -284,18 +279,13 @@
                   else if (isVol) cls = "hl-vol";
                   else if (isChg) cls = "hl-chg";
 
-                  let badges = "";
-                  if (isOI) badges += '<span class="badge badge-oi">OI</span>';
-                  if (isVol) badges += '<span class="badge badge-vol">Vol</span>';
-                  if (isChg) badges += '<span class="badge badge-chg">Δ</span>';
-
                   const cw = Math.round(((row.callOI||0) / maxOI) * 88);
                   const pw = Math.round(((row.putOI||0) / maxOI) * 88);
                   return `<tr class="${cls}">
                     <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>
                     <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>
                     <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
-                    <td class="tc mono" style="font-weight:500">${row.strike}${badges}</td>
+                    <td class="tc mono" style="font-weight:500">${row.strike}</td>
                     <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
                     <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>
                     <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>
