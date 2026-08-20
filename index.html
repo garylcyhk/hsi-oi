@@ -319,7 +319,16 @@
       margin-left: 8px;
     }
     .fs-btn:hover { color: var(--text); border-color: #555; }
-    .section-header .header-right { display: flex; align-items: center; gap: 6px; }
+    .section-header .header-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    th.sortable { cursor: pointer; user-select: none; }
+    th.sortable:hover { color: var(--text); }
+    th.sortable .arrow { font-size: 0.65rem; margin-left: 2px; opacity: 0.5; }
+    th.sortable.active .arrow { opacity: 1; color: var(--emerald); }
+    .mini-sort {
+      background: #1c1c1f; border: 1px solid #333; color: var(--text);
+      border-radius: 5px; padding: 3px 6px; font-size: 0.72rem;
+    }
+
     .is-fullscreen {
       position: fixed !important; inset: 0 !important; z-index: 90 !important;
       margin: 0 !important; border-radius: 0 !important;
@@ -512,6 +521,14 @@
     let colPutSettle = settings.colPutSettle !== false;
     let colPutOI = settings.colPutOI !== false;
     let colPutVol = settings.colPutVol !== false;
+    // Section sort state
+    let wallSortKey = "oi";      // oi | strike | chg
+    let wallSortDir = "desc";
+    let volSortKey = "volume";   // volume | strike
+    let volSortDir = "desc";
+    let topSortKey = "volume";   // volume | strike | oi | chg | settle
+    let topSortDir = "desc";
+
 
 
     function switchTab(name) {
@@ -956,19 +973,84 @@
           .map(s => ({strike: s.strike, volume: s.putVol}));
       }
 
+      // keep heavy zone data on report for re-sort
+      r._hz = hz;
+      renderWalls();
+      renderStrikeTable();
+      renderTopVolume();
+      document.getElementById("sourceLink").href = r.sourceUrl || "#";
+    }
+
+    function sortRows(rows, key, dir, getters) {
+      const g = getters[key] || getters.default;
+      return [...rows].sort((a, b) => {
+        const va = g(a), vb = g(b);
+        return dir === "desc" ? vb - va : va - vb;
+      });
+    }
+
+    function arrow(activeKey, key, dir) {
+      if (activeKey !== key) return '<span class="arrow">↕</span>';
+      return dir === "desc" ? '<span class="arrow">↓</span>' : '<span class="arrow">↑</span>';
+    }
+
+    function setWallSort(key) {
+      if (wallSortKey === key) wallSortDir = wallSortDir === "desc" ? "asc" : "desc";
+      else { wallSortKey = key; wallSortDir = key === "strike" ? "desc" : "desc"; }
+      renderWalls();
+    }
+    function setVolSort(key) {
+      if (volSortKey === key) volSortDir = volSortDir === "desc" ? "asc" : "desc";
+      else { volSortKey = key; volSortDir = "desc"; }
+      renderWalls();
+    }
+    function setTopSort(key) {
+      if (topSortKey === key) topSortDir = topSortDir === "desc" ? "asc" : "desc";
+      else { topSortKey = key; topSortDir = "desc"; }
+      renderTopVolume();
+    }
+
+    function renderWalls() {
+      if (!currentReport) return;
+      const hz = currentReport._hz || currentReport.heavyZones || {};
+      const wallGet = {
+        oi: z => z.oi || 0,
+        strike: z => z.strike || 0,
+        chg: z => z.oiChange || 0,
+        default: z => z.oi || 0,
+      };
+      const volGet = {
+        volume: z => z.volume || 0,
+        strike: z => z.strike || 0,
+        default: z => z.volume || 0,
+      };
+      const callW = sortRows(hz.callWalls || [], wallSortKey, wallSortDir, wallGet);
+      const putW = sortRows(hz.putWalls || [], wallSortKey, wallSortDir, wallGet);
+      const callV = sortRows(hz.callVolWalls || [], volSortKey, volSortDir, volGet);
+      const putV = sortRows(hz.putVolWalls || [], volSortKey, volSortDir, volGet);
+      const wa = (k) => arrow(wallSortKey, k, wallSortDir);
+      const va = (k) => arrow(volSortKey, k, volSortDir);
+
       document.getElementById("zones").innerHTML = `
         <div class="section" style="grid-column:1/-1;margin-bottom:0;background:transparent;border:none;">
           <div class="section-header" style="background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">
             <h2>重貨區 / 成交量重區</h2>
-            <button class="fs-btn" onclick="toggleFullscreen('zones')">全螢幕</button>
+            <div class="header-right">
+              <span class="tag">點欄位標題排序</span>
+              <button class="fs-btn" onclick="toggleFullscreen('zones')">全螢幕</button>
+            </div>
           </div>
         </div>
         <div class="section">
           <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
           <table>
-            <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
             <tbody>
-              ${(hz.callWalls || []).map(z => `
+              ${callW.map(z => `
                 <tr>
                   <td class="mono em">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
@@ -980,9 +1062,13 @@
         <div class="section">
           <div class="section-header"><h2>Put 重貨區 (潛在支持)</h2><span class="tag ro">OI Walls</span></div>
           <table>
-            <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
             <tbody>
-              ${(hz.putWalls || []).map(z => `
+              ${putW.map(z => `
                 <tr>
                   <td class="mono ro">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
@@ -994,9 +1080,12 @@
         <div class="section">
           <div class="section-header"><h2>Call 成交量重區</h2><span class="tag em">Volume</span></div>
           <table>
-            <thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+            <thead><tr>
+              <th class="sortable ${volSortKey==="strike"?"active":""}" onclick="setVolSort('strike')">行使價 ${va("strike")}</th>
+              <th class="tr sortable ${volSortKey==="volume"?"active":""}" onclick="setVolSort('volume')">成交量 ${va("volume")}</th>
+            </tr></thead>
             <tbody>
-              ${(hz.callVolWalls || []).map(z => `
+              ${callV.map(z => `
                 <tr>
                   <td class="mono em">${z.strike}</td>
                   <td class="tr mono">${fmt(z.volume)}</td>
@@ -1007,9 +1096,12 @@
         <div class="section">
           <div class="section-header"><h2>Put 成交量重區</h2><span class="tag ro">Volume</span></div>
           <table>
-            <thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+            <thead><tr>
+              <th class="sortable ${volSortKey==="strike"?"active":""}" onclick="setVolSort('strike')">行使價 ${va("strike")}</th>
+              <th class="tr sortable ${volSortKey==="volume"?"active":""}" onclick="setVolSort('volume')">成交量 ${va("volume")}</th>
+            </tr></thead>
             <tbody>
-              ${(hz.putVolWalls || []).map(z => `
+              ${putV.map(z => `
                 <tr>
                   <td class="mono ro">${z.strike}</td>
                   <td class="tr mono">${fmt(z.volume)}</td>
@@ -1018,15 +1110,28 @@
           </table>
         </div>
       `;
+    }
 
-      renderStrikeTable();
+    function renderTopVolume() {
+      if (!currentReport) return;
+      const items = currentReport.topVolume || [];
+      const getters = {
+        volume: x => x.volume || 0,
+        strike: x => x.strike || 0,
+        oi: x => x.oi || 0,
+        chg: x => x.oiChange || 0,
+        settle: x => x.settle || 0,
+        default: x => x.volume || 0,
+      };
+      const sorted = sortRows(items, topSortKey, topSortDir, getters);
+      const a = (k) => arrow(topSortKey, k, topSortDir);
 
       document.getElementById("topVolume").innerHTML = `
         <div class="section">
           <div class="section-header">
-            <h2>十大成交 (按成交量)</h2>
+            <h2>十大成交</h2>
             <div class="header-right">
-              <span class="tag">Top 10 by Volume</span>
+              <span class="tag">點欄位標題排序</span>
               <button class="fs-btn" onclick="toggleFullscreen('topVolume')">全螢幕</button>
             </div>
           </div>
@@ -1034,13 +1139,18 @@
             <table>
               <thead>
                 <tr>
-                  <th>月份</th><th>行使價</th><th>類型</th>
-                  <th class="tr">成交量</th><th class="tr">結算價</th>
-                  <th class="tr">IV%</th><th class="tr">OI</th><th class="tr">OI變化</th>
+                  <th>月份</th>
+                  <th class="sortable ${topSortKey==="strike"?"active":""}" onclick="setTopSort('strike')">行使價 ${a("strike")}</th>
+                  <th>類型</th>
+                  <th class="tr sortable ${topSortKey==="volume"?"active":""}" onclick="setTopSort('volume')">成交量 ${a("volume")}</th>
+                  <th class="tr sortable ${topSortKey==="settle"?"active":""}" onclick="setTopSort('settle')">結算價 ${a("settle")}</th>
+                  <th class="tr">IV%</th>
+                  <th class="tr sortable ${topSortKey==="oi"?"active":""}" onclick="setTopSort('oi')">OI ${a("oi")}</th>
+                  <th class="tr sortable ${topSortKey==="chg"?"active":""}" onclick="setTopSort('chg')">OI變化 ${a("chg")}</th>
                 </tr>
               </thead>
               <tbody>
-                ${(r.topVolume || []).map(item => `
+                ${sorted.map(item => `
                   <tr>
                     <td class="mono mu" style="font-size:0.75rem">${item.month}</td>
                     <td class="mono">${item.strike}</td>
@@ -1056,8 +1166,6 @@
           </div>
         </div>
       `;
-
-      document.getElementById("sourceLink").href = r.sourceUrl || "#";
     }
 
     if (availableDates.length) {
