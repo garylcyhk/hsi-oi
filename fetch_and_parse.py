@@ -41,6 +41,69 @@ def fetch_report(date_str: str) -> str:
     return text
 
 
+
+
+
+def fetch_futures(date_str: str, product: str) -> str:
+    """product: hsif or mhif (English PRE report)"""
+    code = to_hkex_code(date_str)
+    url = f"https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/{product}{code}.htm"
+    print(f"Fetching {url} ...")
+    req = Request(url, headers=HEADERS)
+    with urlopen(req, timeout=30) as resp:
+        raw = resp.read()
+    text = raw.decode("latin-1", errors="replace")
+    print(f"  OK ({len(text)} chars)")
+    return text
+
+
+def _num(x: str) -> int:
+    return int(x.replace(",", "").replace("+", "") or "0")
+
+
+def parse_futures(text: str, product: str, date_str: str) -> dict:
+    """Parse front-month + totals from HSI/MHI futures daily report."""
+    line_re = re.compile(
+        r"([A-Z]{3})-(\d{2})\s+"
+        r"[\d,]+\s+[\d,]+\s+[\d,]+\s+[\d,]+\s+[\d,]+\s*\|\s*"
+        r"([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)\s*\|\s*"
+        r"[\d,]+\s+[\d,]+\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)"
+    )
+    months = []
+    for m in line_re.finditer(text):
+        mon, yy, d_open, d_high, d_low, d_vol, settle, set_chg, c_vol, oi, oi_chg = m.groups()
+        months.append({
+            "month": f"{mon}-20{yy}",
+            "open": _num(d_open),
+            "high": _num(d_high),
+            "low": _num(d_low),
+            "settle": _num(settle),
+            "settleChange": _num(set_chg),
+            "volume": _num(c_vol),
+            "oi": _num(oi),
+            "oiChange": _num(oi_chg),
+        })
+
+    tot = re.search(r"All Contracts Total\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)", text)
+    total = {}
+    if tot:
+        total = {
+            "volume": _num(tot.group(1)),
+            "oi": _num(tot.group(2)),
+            "oiChange": _num(tot.group(3)),
+        }
+
+    front = months[0] if months else {}
+    return {
+        "product": product.upper(),
+        "name": "HSI Futures" if product == "hsif" else "MHI Futures",
+        "front": front,
+        "months": months[:4],
+        "total": total,
+        "sourceUrl": f"https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/{product}{to_hkex_code(date_str)}.htm",
+    }
+
+
 def parse_top_volume(text: str) -> list:
     """Parse 十大成交 section"""
     items = []
@@ -248,6 +311,7 @@ def parse_report(text: str, date_str: str) -> dict:
         },
         "strikes": front.get("strikes", []),
         "topVolume": top,
+        "futures": {},  # filled by main()
     }
 
 
@@ -287,6 +351,17 @@ def main():
     try:
         text = fetch_report(date_str)
         report = parse_report(text, date_str)
+        # Futures: HSI + MHI
+        futures = {}
+        for product in ("hsif", "mhif"):
+            try:
+                ftext = fetch_futures(date_str, product)
+                futures[product] = parse_futures(ftext, product, date_str)
+                f = futures[product].get("front") or {}
+                print(f"  {product}: settle={f.get('settle')} vol={f.get('volume')} OI={f.get('oi')} chg={f.get('oiChange')}")
+            except Exception as fe:
+                print(f"  {product} skip: {fe}")
+        report["futures"] = futures
         reports[report["date"]] = report
         print(f"Parsed {report['date']}: Call OI={report['summary']['callOI']}, Put OI={report['summary']['putOI']}, strikes={len(report['strikes'])}")
         save_data(reports)

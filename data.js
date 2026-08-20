@@ -1445,7 +1445,143 @@ window.HSI_REPORTS = {
         "oi": 1181,
         "oiChange": -9
       }
-    ]
+    ],
+    "futures": {
+      "hsif": {
+        "product": "HSIF",
+        "name": "HSI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25334,
+          "high": 25517,
+          "low": 25252,
+          "settle": 25459,
+          "settleChange": 18,
+          "volume": 80267,
+          "oi": 112466,
+          "oiChange": 289
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25334,
+            "high": 25517,
+            "low": 25252,
+            "settle": 25459,
+            "settleChange": 18,
+            "volume": 80267,
+            "oi": 112466,
+            "oiChange": 289
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25261,
+            "high": 25444,
+            "low": 25190,
+            "settle": 25396,
+            "settleChange": 21,
+            "volume": 3379,
+            "oi": 6246,
+            "oiChange": 102
+          },
+          {
+            "month": "OCT-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25433,
+            "settleChange": 18,
+            "volume": 1500,
+            "oi": 3502,
+            "oiChange": 1500
+          },
+          {
+            "month": "NOV-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25441,
+            "settleChange": 18,
+            "volume": 0,
+            "oi": 0,
+            "oiChange": 0
+          }
+        ],
+        "total": {
+          "volume": 85295,
+          "oi": 124677,
+          "oiChange": 1933
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/hsif260819.htm"
+      },
+      "mhif": {
+        "product": "MHIF",
+        "name": "MHI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25340,
+          "high": 25517,
+          "low": 25252,
+          "settle": 25459,
+          "settleChange": 18,
+          "volume": 68792,
+          "oi": 13888,
+          "oiChange": -137
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25340,
+            "high": 25517,
+            "low": 25252,
+            "settle": 25459,
+            "settleChange": 18,
+            "volume": 68792,
+            "oi": 13888,
+            "oiChange": -137
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25280,
+            "high": 25446,
+            "low": 25188,
+            "settle": 25396,
+            "settleChange": 21,
+            "volume": 1653,
+            "oi": 3379,
+            "oiChange": 78
+          },
+          {
+            "month": "DEC-2026",
+            "open": 25301,
+            "high": 25515,
+            "low": 25268,
+            "settle": 25460,
+            "settleChange": 18,
+            "volume": 200,
+            "oi": 633,
+            "oiChange": -37
+          },
+          {
+            "month": "MAR-2027",
+            "open": 25475,
+            "high": 25658,
+            "low": 25446,
+            "settle": 25621,
+            "settleChange": 19,
+            "volume": 45,
+            "oi": 53,
+            "oiChange": -4
+          }
+        ],
+        "total": {
+          "volume": 70690,
+          "oi": 17953,
+          "oiChange": -100
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260819.htm"
+      }
+    }
   },
   "2026-08-18": {
     "date": "2026-08-18",
@@ -2893,6 +3029,142 @@ window.HSI_REPORTS = {
         "oi": 1141,
         "oiChange": -10
       }
-    ]
+    ],
+    "futures": {
+      "hsif": {
+        "product": "HSIF",
+        "name": "HSI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25355,
+          "high": 25484,
+          "low": 25205,
+          "settle": 25441,
+          "settleChange": 18,
+          "volume": 81006,
+          "oi": 112177,
+          "oiChange": 4093
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25355,
+            "high": 25484,
+            "low": 25205,
+            "settle": 25441,
+            "settleChange": 18,
+            "volume": 81006,
+            "oi": 112177,
+            "oiChange": 4093
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25320,
+            "high": 25412,
+            "low": 25140,
+            "settle": 25375,
+            "settleChange": 24,
+            "volume": 667,
+            "oi": 6144,
+            "oiChange": 88
+          },
+          {
+            "month": "OCT-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25415,
+            "settleChange": 18,
+            "volume": 0,
+            "oi": 2002,
+            "oiChange": 0
+          },
+          {
+            "month": "NOV-2026",
+            "open": 0,
+            "high": 0,
+            "low": 0,
+            "settle": 25423,
+            "settleChange": 18,
+            "volume": 0,
+            "oi": 0,
+            "oiChange": 0
+          }
+        ],
+        "total": {
+          "volume": 81721,
+          "oi": 122744,
+          "oiChange": 4207
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/hsif260818.htm"
+      },
+      "mhif": {
+        "product": "MHIF",
+        "name": "MHI Futures",
+        "front": {
+          "month": "AUG-2026",
+          "open": 25343,
+          "high": 25482,
+          "low": 25205,
+          "settle": 25441,
+          "settleChange": 18,
+          "volume": 71406,
+          "oi": 14025,
+          "oiChange": -33
+        },
+        "months": [
+          {
+            "month": "AUG-2026",
+            "open": 25343,
+            "high": 25482,
+            "low": 25205,
+            "settle": 25441,
+            "settleChange": 18,
+            "volume": 71406,
+            "oi": 14025,
+            "oiChange": -33
+          },
+          {
+            "month": "SEP-2026",
+            "open": 25308,
+            "high": 25413,
+            "low": 25140,
+            "settle": 25375,
+            "settleChange": 24,
+            "volume": 1597,
+            "oi": 3301,
+            "oiChange": -320
+          },
+          {
+            "month": "DEC-2026",
+            "open": 25369,
+            "high": 25479,
+            "low": 25213,
+            "settle": 25442,
+            "settleChange": 18,
+            "volume": 159,
+            "oi": 670,
+            "oiChange": 3
+          },
+          {
+            "month": "MAR-2027",
+            "open": 25512,
+            "high": 25633,
+            "low": 25400,
+            "settle": 25602,
+            "settleChange": 18,
+            "volume": 42,
+            "oi": 57,
+            "oiChange": 2
+          }
+        ],
+        "total": {
+          "volume": 73204,
+          "oi": 18053,
+          "oiChange": -348
+        },
+        "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260818.htm"
+      }
+    }
   }
 };
