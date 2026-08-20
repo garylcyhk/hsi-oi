@@ -67,8 +67,11 @@
     td { padding: 6px 12px; border-bottom: 1px solid rgba(39,39,42,0.55); }
     tr:hover td { background: rgba(39,39,42,0.35); }
     tr.row-selected td {
-      background: rgba(52, 211, 153, 0.18) !important;
-      box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.5);
+      background: rgba(16, 185, 129, 0.28) !important;
+      box-shadow: inset 3px 0 0 #34d399;
+    }
+    tr.row-selected td:hover {
+      background: rgba(16, 185, 129, 0.35) !important;
     }
     tbody tr { cursor: pointer; }
 
@@ -802,16 +805,30 @@
       if (typeof renderWalls === "function" && currentReport) renderWalls();
     }
 
-    function onRowClick(tr) {
-      if (!tr) return;
-      const multi = window.event && (window.event.ctrlKey || window.event.metaKey);
+    function onRowClick(tr, ev) {
+      if (!tr || tr.parentElement.tagName === 'THEAD') return;
+      const e = ev || window.event;
+      const multi = e && (e.ctrlKey || e.metaKey);
       if (!multi) {
         const table = tr.closest('table');
-        if (table) table.querySelectorAll('tr.row-selected').forEach(r => {
-          if (r !== tr) r.classList.remove('row-selected');
-        });
+        if (table) {
+          table.querySelectorAll('tbody tr.row-selected').forEach(r => {
+            if (r !== tr) r.classList.remove('row-selected');
+          });
+        }
       }
       tr.classList.toggle('row-selected');
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+    }
+
+    function bindRowClicks(rootId) {
+      const root = document.getElementById(rootId);
+      if (!root || root._rowClickBound) return;
+      root._rowClickBound = true;
+      root.addEventListener('click', function(e) {
+        const tr = e.target.closest('tbody tr');
+        if (tr) onRowClick(tr, e);
+      });
     }
 
     function renderFutures(r) {
@@ -1073,7 +1090,7 @@
 
                   const cw = Math.round(((row.callOI||0) / maxOI) * 88);
                   const pw = Math.round(((row.putOI||0) / maxOI) * 88);
-                  return `<tr class="${cls}" onclick="onRowClick(this)">
+                  return `<tr class="${cls}" onclick="onRowClick(this, event)">
                     ${colCallVol ? `<td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>` : ''}
                     ${colCallOI ? `<td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>` : ''}
                     ${colCallSettle ? `<td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>` : ''}
@@ -1174,6 +1191,9 @@
       renderTopVolume();
       document.getElementById("sourceLink").href = r.sourceUrl || "#";
       syncAtmUI();
+      bindRowClicks("strikes");
+      bindRowClicks("zones");
+      bindRowClicks("topVolume");
     }
 
     function sortRows(rows, key, dir, getters) {
@@ -1257,7 +1277,7 @@
             </tr></thead>
             <tbody>
               ${callW.map(z => `
-                <tr onclick="onRowClick(this)">
+                <tr onclick="onRowClick(this, event)">
                   <td class="mono em">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
                   <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
@@ -1275,7 +1295,7 @@
             </tr></thead>
             <tbody>
               ${putW.map(z => `
-                <tr onclick="onRowClick(this)">
+                <tr onclick="onRowClick(this, event)">
                   <td class="mono ro">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
                   <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
@@ -1292,7 +1312,7 @@
             </tr></thead>
             <tbody>
               ${callV.map(z => `
-                <tr onclick="onRowClick(this)">
+                <tr onclick="onRowClick(this, event)">
                   <td class="mono em">${z.strike}</td>
                   <td class="tr mono">${fmt(z.volume)}</td>
                 </tr>`).join("")}
@@ -1308,7 +1328,7 @@
             </tr></thead>
             <tbody>
               ${putV.map(z => `
-                <tr onclick="onRowClick(this)">
+                <tr onclick="onRowClick(this, event)">
                   <td class="mono ro">${z.strike}</td>
                   <td class="tr mono">${fmt(z.volume)}</td>
                 </tr>`).join("")}
@@ -1357,7 +1377,7 @@
               </thead>
               <tbody>
                 ${sorted.map(item => `
-                  <tr onclick="onRowClick(this)">
+                  <tr onclick="onRowClick(this, event)">
                     <td class="mono mu" style="font-size:0.75rem">${item.month}</td>
                     <td class="mono">${item.strike}</td>
                     <td class="${item.type === "Call" ? "em" : "ro"}">${item.type === "Call" ? "認購" : "認沽"}</td>
