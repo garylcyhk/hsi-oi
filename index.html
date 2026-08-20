@@ -14,19 +14,19 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
     }
-    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    .container { width: 100%; max-width: 100%; margin: 0 auto; padding: 12px 16px; }
     header {
       border-bottom: 1px solid var(--border); background: rgba(24,24,27,0.92);
       backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; padding: 12px 0;
     }
     header .inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 16px;
+      width: 100%; max-width: 100%; margin: 0 auto; padding: 0 16px;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
     }
     h1 { font-size: 1.15rem; font-weight: 600; }
     h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
     .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-    .date-btns { display: flex; gap: 6px; flex-wrap: wrap; max-width: 420px; justify-content: flex-end; }
+    .date-btns { display: flex; gap: 6px; flex-wrap: wrap; max-width: 100%; justify-content: flex-end; }
     .date-btn {
       font-size: 0.72rem; padding: 5px 9px; border-radius: 6px;
       background: var(--card); color: var(--muted); border: 1px solid var(--border);
@@ -35,8 +35,8 @@
     .date-btn.active { background: #059669; color: #fff; border-color: #059669; }
     .date-btn:hover:not(.active) { background: #27272a; }
     .grid-summary {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 10px; margin: 20px 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px; margin: 16px 0;
     }
     .card {
       background: var(--card); border: 1px solid var(--border);
@@ -56,8 +56,8 @@
     .section-header h2 { font-size: 0.9rem; font-weight: 500; }
     .section-header .tag { font-size: 0.7rem; color: var(--muted); }
     .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-    @media (max-width: 700px) { .zones { grid-template-columns: 1fr; } }
-    @media (min-width: 900px) { .zones { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 800px) { .zones { grid-template-columns: 1fr; } }
+    @media (min-width: 1200px) { .zones { grid-template-columns: 1fr 1fr 1fr 1fr; } }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     th {
       text-align: left; padding: 8px 12px; font-size: 0.7rem; color: var(--muted);
@@ -75,7 +75,8 @@
     .bar-c { right: 0; background: var(--emerald); }
     .bar-p { left: 0; background: var(--rose); }
     .bar-cell span { position: relative; z-index: 1; }
-    .table-wrap { max-height: 420px; overflow: auto; }
+    .table-wrap { max-height: min(420px, 60vh); overflow: auto; -webkit-overflow-scrolling: touch; }
+    .table-wrap table { min-width: 480px; width: 100%; }
     .table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
     .table-wrap::-webkit-scrollbar-track { background: #18181b; }
     .table-wrap::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
@@ -249,9 +250,9 @@
     /* Full-screen tabs */
     .tab-bar {
       display: flex; gap: 4px; padding: 8px 16px 0;
-      max-width: 1100px; margin: 0 auto;
+      width: 100%; max-width: 100%; margin: 0 auto;
       border-bottom: 1px solid var(--border);
-      overflow-x: auto;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .tab-btn {
       background: transparent; border: none; color: var(--muted);
@@ -263,7 +264,7 @@
       color: var(--emerald); border-bottom-color: var(--emerald); font-weight: 500;
     }
     .tab-panels {
-      max-width: 1100px; margin: 0 auto; padding: 12px 16px 24px;
+      width: 100%; max-width: 100%; margin: 0 auto; padding: 12px 16px 24px;
       min-height: calc(100vh - 140px);
     }
     .tab-panel { display: none; }
@@ -276,6 +277,40 @@
     }
     body { display: flex; flex-direction: column; min-height: 100vh; }
     .container { flex: 1; max-width: none; padding: 0; }
+
+
+    /* Responsive: fluid width + mobile */
+    @media (max-width: 768px) {
+      header { padding: 8px 0; }
+      header .inner { padding: 0 10px; gap: 8px; }
+      h1 { font-size: 1rem; }
+      h1 span { display: none; }
+      .sub { display: none; }
+      .container, .tab-panels { padding: 8px 10px 16px; }
+      .tab-bar { padding: 6px 10px 0; }
+      .tab-btn { padding: 8px 10px; font-size: 0.75rem; }
+      .grid-summary { grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+      .card { padding: 10px; }
+      .card .value { font-size: 1rem; }
+      .section-header { padding: 8px 10px; flex-wrap: wrap; gap: 6px; }
+      .controls { flex-direction: column; align-items: stretch; gap: 8px; }
+      .controls > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 5px 6px; }
+      .date-btns { justify-content: flex-start; }
+      .print-btn, .settings-btn { font-size: 0.7rem; padding: 4px 8px; }
+      .modal { width: 96vw; padding: 14px; }
+      .levels-card .section > div[style*="grid"] { grid-template-columns: 1fr !important; }
+      .day-change .dc-grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 769px) and (max-width: 1199px) {
+      .zones { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1400px) {
+      .container, .tab-panels, header .inner, .tab-bar {
+        padding-left: 24px; padding-right: 24px;
+      }
+    }
 
     /* Fullscreen section */
     .fs-btn {
@@ -387,7 +422,7 @@
 
   <div class="fs-backdrop" id="fsBackdrop" onclick="exitFullscreen()"></div>
   <div class="container">
-    <div class="note" id="status" style="max-width:1100px;margin:8px auto 0;padding:0 16px;">載入中…</div>
+    <div class="note" id="status" style="width:100%;margin:8px auto 0;padding:0 16px;">載入中…</div>
     <div class="print-only" id="printHeader" style="margin-bottom:12px;font-size:10pt;border-bottom:1px solid #ccc;padding-bottom:6px;"></div>
 
     <div class="tab-bar" id="tabBar">
