@@ -414,6 +414,14 @@
         <input type="checkbox" id="setOnlyActive" />
       </div>
       <div class="modal-row">
+        <label>只看近價 (Near Money)</label>
+        <input type="checkbox" id="setAtmEnabled" />
+      </div>
+      <div class="modal-row">
+        <label>近價範圍 ± 點數</label>
+        <input type="number" id="setAtmRange" min="200" max="3000" step="100" />
+      </div>
+      <div class="modal-row">
         <label>高亮 Top N（OI / Vol / 變化）</label>
         <input type="number" id="setTopN" min="1" max="20" step="1" />
       </div>
@@ -501,6 +509,8 @@
       minOI: 100,
       minVol: 0,
       onlyActive: true,
+      atmEnabled: false,
+      atmRange: 800,
       topN: 5,
       hlOI: true,
       hlVol: true,
@@ -530,6 +540,8 @@
     let minOI = settings.minOI;
     let minVol = settings.minVol;
     let onlyActive = settings.onlyActive;
+    let atmEnabled = settings.atmEnabled === true;
+    let atmRange = settings.atmRange || 800;
     let topN = settings.topN;
     let hlOI = settings.hlOI;
     let hlVol = settings.hlVol;
@@ -568,6 +580,8 @@
       document.getElementById("setSortKey").value = sortKey;
       document.getElementById("setSortDir").value = sortDir;
       document.getElementById("setOnlyActive").checked = onlyActive;
+      document.getElementById("setAtmEnabled").checked = atmEnabled;
+      document.getElementById("setAtmRange").value = atmRange;
       document.getElementById("setTopN").value = topN;
       document.getElementById("setHlOI").checked = hlOI;
       document.getElementById("setHlVol").checked = hlVol;
@@ -593,6 +607,8 @@
       sortKey = document.getElementById("setSortKey").value;
       sortDir = document.getElementById("setSortDir").value;
       onlyActive = document.getElementById("setOnlyActive").checked;
+      atmEnabled = document.getElementById("setAtmEnabled").checked;
+      atmRange = parseInt(document.getElementById("setAtmRange").value, 10) || 800;
       topN = parseInt(document.getElementById("setTopN").value, 10) || 5;
       hlOI = document.getElementById("setHlOI").checked;
       hlVol = document.getElementById("setHlVol").checked;
@@ -607,7 +623,7 @@
       colPutVol = document.getElementById("setColPutVol").checked;
 
       settings = {
-        sortKey, sortDir, minOI, minVol, onlyActive, topN, hlOI, hlVol, hlChg,
+        sortKey, sortDir, minOI, minVol, onlyActive, atmEnabled, atmRange, topN, hlOI, hlVol, hlChg,
         colCallVol, colCallOI, colCallSettle, colCallChg,
         colPutChg, colPutSettle, colPutOI, colPutVol
       };
@@ -843,6 +859,13 @@
       const r = currentReport;
       let rows = [...(r.strikes || [])];
 
+      // Center for near-money: prefer MHI settle, else HSI, else null
+      const fut = currentReport.futures || {};
+      const center =
+        (fut.mhif && fut.mhif.front && fut.mhif.front.settle) ||
+        (fut.hsif && fut.hsif.front && fut.hsif.front.settle) ||
+        null;
+
       // Filter
       rows = rows.filter(s => {
         const oi = (s.callOI||0) + (s.putOI||0);
@@ -850,6 +873,9 @@
         if (onlyActive && oi === 0 && vol === 0) return false;
         if (oi < minOI) return false;
         if (vol < minVol) return false;
+        if (atmEnabled && center) {
+          if (Math.abs(s.strike - center) > atmRange) return false;
+        }
         return true;
       });
 
@@ -912,6 +938,22 @@
                 隱藏空白
               </label>
             </div>
+            <div>
+              <label>
+                <input type="checkbox" id="atmEnabled" ${atmEnabled?"checked":""} onchange="onFilterChange()" />
+                近價
+              </label>
+              <select id="atmRange" onchange="onFilterChange()" title="近價範圍">
+                <option value="400" ${atmRange===400?"selected":""}>±400</option>
+                <option value="600" ${atmRange===600?"selected":""}>±600</option>
+                <option value="800" ${atmRange===800?"selected":""}>±800</option>
+                <option value="1000" ${atmRange===1000?"selected":""}>±1000</option>
+                <option value="1200" ${atmRange===1200?"selected":""}>±1200</option>
+                <option value="1600" ${atmRange===1600?"selected":""}>±1600</option>
+                <option value="2000" ${atmRange===2000?"selected":""}>±2000</option>
+              </select>
+              <span class="tag" style="margin-left:4px">${center ? "中心 " + center : "無期貨價"}</span>
+            </div>
           </div>
           <div class="table-wrap">
             <table>
@@ -968,11 +1010,22 @@
       const moi = document.getElementById("minOI");
       const mv = document.getElementById("minVol");
       const oa = document.getElementById("onlyActive");
+      const atm = document.getElementById("atmEnabled");
+      const ar = document.getElementById("atmRange");
       if (sk) sortKey = sk.value;
       if (sd) sortDir = sd.value;
       if (moi) minOI = parseInt(moi.value, 10) || 0;
       if (mv) minVol = parseInt(mv.value, 10) || 0;
       if (oa) onlyActive = oa.checked;
+      if (atm) atmEnabled = atm.checked;
+      if (ar) atmRange = parseInt(ar.value, 10) || 800;
+      // persist ATM preference lightly
+      try {
+        const s = JSON.parse(localStorage.getItem("hsi_oi_settings") || "{}");
+        s.atmEnabled = atmEnabled;
+        s.atmRange = atmRange;
+        localStorage.setItem("hsi_oi_settings", JSON.stringify(s));
+      } catch (e) {}
       renderStrikeTable();
     }
 
