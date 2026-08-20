@@ -158,8 +158,11 @@
 
     /* Levels card */
     .levels-card {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      display: grid; grid-template-columns: 1fr;
       margin-bottom: 16px;
+    }
+    .levels-card.is-fullscreen {
+      display: block;
     }
     @media (max-width: 700px) { .levels-card { grid-template-columns: 1fr; } }
     .levels-box {
@@ -206,8 +209,11 @@
         border-bottom: 1px solid #ccc !important; padding: 8px 0 !important;
       }
       header .inner { max-width: 100%; }
-      .settings-btn, .date-btns, .controls, .modal-overlay,
-      footer, #topVolume, .note { display: none !important; }
+      .settings-btn, .print-btn, .date-btns, .controls, .modal-overlay,
+      footer, .note, .tab-bar { display: none !important; }
+      .tab-panel { display: block !important; }
+      .tab-panels { min-height: auto !important; padding: 8px !important; }
+      .tab-panel .table-wrap { max-height: none !important; }
       .container { max-width: 100%; padding: 8px; }
       .card, .section, .levels-box, .day-change {
         background: #fff !important; border: 1px solid #ccc !important;
@@ -239,6 +245,58 @@
       cursor: pointer;
     }
     .print-btn:hover { color: var(--text); border-color: #555; }
+
+    /* Full-screen tabs */
+    .tab-bar {
+      display: flex; gap: 4px; padding: 8px 16px 0;
+      max-width: 1100px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent; border: none; color: var(--muted);
+      padding: 10px 14px; font-size: 0.82rem; cursor: pointer;
+      border-bottom: 2px solid transparent; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--emerald); border-bottom-color: var(--emerald); font-weight: 500;
+    }
+    .tab-panels {
+      max-width: 1100px; margin: 0 auto; padding: 12px 16px 24px;
+      min-height: calc(100vh - 140px);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .tab-panel .table-wrap {
+      max-height: calc(100vh - 220px);
+    }
+    .tab-panel#tab-strikes .table-wrap {
+      max-height: calc(100vh - 280px);
+    }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .container { flex: 1; max-width: none; padding: 0; }
+
+    /* Fullscreen section */
+    .fs-btn {
+      background: transparent; border: 1px solid #333; color: var(--muted);
+      border-radius: 4px; padding: 2px 7px; font-size: 0.7rem; cursor: pointer;
+      margin-left: 8px;
+    }
+    .fs-btn:hover { color: var(--text); border-color: #555; }
+    .section-header .header-right { display: flex; align-items: center; gap: 6px; }
+    .is-fullscreen {
+      position: fixed !important; inset: 0 !important; z-index: 90 !important;
+      margin: 0 !important; border-radius: 0 !important;
+      background: var(--bg) !important; overflow: auto !important;
+      padding: 12px !important; max-height: none !important;
+    }
+    .is-fullscreen .table-wrap { max-height: calc(100vh - 120px) !important; }
+    .fs-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 89;
+    }
+    .fs-backdrop.show { display: block; }
+    body.fs-open { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -327,15 +385,35 @@
     </div>
   </div>
 
+  <div class="fs-backdrop" id="fsBackdrop" onclick="exitFullscreen()"></div>
   <div class="container">
-    <div class="note" id="status">載入中…</div>
+    <div class="note" id="status" style="max-width:1100px;margin:8px auto 0;padding:0 16px;">載入中…</div>
     <div class="print-only" id="printHeader" style="margin-bottom:12px;font-size:10pt;border-bottom:1px solid #ccc;padding-bottom:6px;"></div>
-    <div id="summary" class="grid-summary"></div>
-    <div id="levelsCard" class="levels-card"></div>
-    <div id="dayChange"></div>
-    <div id="zones" class="zones"></div>
-    <div id="strikes"></div>
-    <div id="topVolume"></div>
+
+    <div class="tab-bar" id="tabBar">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">總覽</button>
+      <button class="tab-btn" data-tab="walls" onclick="switchTab('walls')">重貨區</button>
+      <button class="tab-btn" data-tab="strikes" onclick="switchTab('strikes')">行使價分佈</button>
+      <button class="tab-btn" data-tab="topvol" onclick="switchTab('topvol')">十大成交</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="tab-panel active" id="tab-overview">
+        <div id="summary" class="grid-summary"></div>
+        <div id="levelsCard" class="levels-card"></div>
+        <div id="dayChange"></div>
+      </div>
+      <div class="tab-panel" id="tab-walls">
+        <div id="zones" class="zones"></div>
+      </div>
+      <div class="tab-panel" id="tab-strikes">
+        <div id="strikes"></div>
+      </div>
+      <div class="tab-panel" id="tab-topvol">
+        <div id="topVolume"></div>
+      </div>
+    </div>
+
     <footer>
       <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
       <p style="margin-top:6px">Source: <a id="sourceLink" href="#" target="_blank" rel="noopener">HKEX Daily Market Report</a></p>
@@ -399,6 +477,17 @@
     let colPutSettle = settings.colPutSettle !== false;
     let colPutOI = settings.colPutOI !== false;
     let colPutVol = settings.colPutVol !== false;
+
+
+    function switchTab(name) {
+      document.querySelectorAll(".tab-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.tab === name);
+      });
+      document.querySelectorAll(".tab-panel").forEach(p => {
+        p.classList.toggle("active", p.id === "tab-" + name);
+      });
+      try { localStorage.setItem("hsi_oi_tab", name); } catch(e) {}
+    }
 
     function openSettings() {
       document.getElementById("setMinOI").value = minOI;
@@ -512,33 +601,79 @@
       };
     }
 
+
+    let fsCurrent = null;
+
+    function toggleFullscreen(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (fsCurrent === id) {
+        exitFullscreen();
+        return;
+      }
+      exitFullscreen();
+      el.classList.add("is-fullscreen");
+      document.getElementById("fsBackdrop").classList.add("show");
+      document.body.classList.add("fs-open");
+      fsCurrent = id;
+      // update button labels
+      document.querySelectorAll(".fs-btn").forEach(b => { b.textContent = "全螢幕"; });
+      const btn = el.querySelector(".fs-btn");
+      if (btn) btn.textContent = "關閉";
+    }
+
+    function exitFullscreen() {
+      if (!fsCurrent) return;
+      const el = document.getElementById(fsCurrent);
+      if (el) el.classList.remove("is-fullscreen");
+      document.getElementById("fsBackdrop").classList.remove("show");
+      document.body.classList.remove("fs-open");
+      document.querySelectorAll(".fs-btn").forEach(b => { b.textContent = "全螢幕"; });
+      fsCurrent = null;
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") exitFullscreen();
+    });
+
     function renderLevelsCard(r) {
       const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
       const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
       const smap = {};
       (r.strikes || []).forEach(s => { smap[s.strike] = s; });
       document.getElementById("levelsCard").innerHTML = `
-        <div class="levels-box">
-          <h3><span class="em">Call 關鍵阻力</span><span class="tag">Top 3</span></h3>
-          ${calls.length ? calls.map((z) => {
-            const s = smap[z.strike] || {};
-            const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
-            return `<div class="lvl-row">
-              <span class="lvl-strike em">${z.strike}</span>
-              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
-            </div>`;
-          }).join("") : '<div class="lvl-meta">無資料</div>'}
-        </div>
-        <div class="levels-box">
-          <h3><span class="ro">Put 關鍵支持</span><span class="tag">Top 3</span></h3>
-          ${puts.length ? puts.map((z) => {
-            const s = smap[z.strike] || {};
-            const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
-            return `<div class="lvl-row">
-              <span class="lvl-strike ro">${z.strike}</span>
-              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
-            </div>`;
-          }).join("") : '<div class="lvl-meta">無資料</div>'}
+        <div class="section" style="grid-column:1/-1;margin-bottom:0;">
+          <div class="section-header">
+            <h2>關鍵水平 Levels</h2>
+            <div class="header-right">
+              <span class="tag">Top 3 Call / Put</span>
+              <button class="fs-btn" onclick="toggleFullscreen('levelsCard')">全螢幕</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;">
+            <div>
+              <div style="font-size:0.8rem;margin-bottom:6px;" class="em">Call 關鍵阻力</div>
+              ${calls.length ? calls.map((z) => {
+                const s = smap[z.strike] || {};
+                const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
+                return `<div class="lvl-row">
+                  <span class="lvl-strike em">${z.strike}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+                </div>`;
+              }).join("") : '<div class="lvl-meta">無資料</div>'}
+            </div>
+            <div>
+              <div style="font-size:0.8rem;margin-bottom:6px;" class="ro">Put 關鍵支持</div>
+              ${puts.length ? puts.map((z) => {
+                const s = smap[z.strike] || {};
+                const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
+                return `<div class="lvl-row">
+                  <span class="lvl-strike ro">${z.strike}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+                </div>`;
+              }).join("") : '<div class="lvl-meta">無資料</div>'}
+            </div>
+          </div>
         </div>
       `;
     }
@@ -548,7 +683,13 @@
       const prev = reports[prevDate];
       const box = document.getElementById("dayChange");
       if (!prev) {
-        box.innerHTML = `<div class="day-change"><h3>今日 vs 昨日</h3><div class="dc-label">尚無昨日資料可比較（需至少 2 個交易日）</div></div>`;
+        box.innerHTML = `<div class="day-change">
+          <div class="section-header" style="border:none;padding:0 0 8px 0;">
+            <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日</h3>
+            <button class="fs-btn" onclick="toggleFullscreen('dayChange')">全螢幕</button>
+          </div>
+          <div class="dc-label">尚無昨日資料可比較（需至少 2 個交易日）</div>
+        </div>`;
         return;
       }
 
@@ -580,8 +721,11 @@
       }
 
       box.innerHTML = `
-        <div class="day-change">
-          <h3>今日 vs 昨日牆位變化 <span class="tag" style="font-weight:400;color:var(--muted)">${r.date} vs ${prevDate}</span></h3>
+        <div class="day-change" id="dayChangeInner">
+          <div class="section-header" style="border:none;padding:0 0 8px 0;">
+            <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日牆位變化 <span class="tag" style="font-weight:400;color:var(--muted)">${r.date} vs ${prevDate}</span></h3>
+            <button class="fs-btn" onclick="toggleFullscreen('dayChange')">全螢幕</button>
+          </div>
           <div class="dc-grid">
             ${diffSide(tCall, yCall, "Call 牆")}
             ${diffSide(tPut, yPut, "Put 牆")}
@@ -628,7 +772,10 @@
         <div class="section">
           <div class="section-header">
             <h2>即月行使價分佈</h2>
-            <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
+            <div class="header-right">
+              <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
+              <button class="fs-btn" onclick="toggleFullscreen('strikes')">全螢幕</button>
+            </div>
           </div>
           <div class="controls">
             <div>
@@ -775,6 +922,12 @@
       }
 
       document.getElementById("zones").innerHTML = `
+        <div class="section" style="grid-column:1/-1;margin-bottom:0;background:transparent;border:none;">
+          <div class="section-header" style="background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">
+            <h2>重貨區 / 成交量重區</h2>
+            <button class="fs-btn" onclick="toggleFullscreen('zones')">全螢幕</button>
+          </div>
+        </div>
         <div class="section">
           <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
           <table>
@@ -835,7 +988,13 @@
 
       document.getElementById("topVolume").innerHTML = `
         <div class="section">
-          <div class="section-header"><h2>十大成交 (按成交量)</h2><span class="tag">Top 10 by Volume</span></div>
+          <div class="section-header">
+            <h2>十大成交 (按成交量)</h2>
+            <div class="header-right">
+              <span class="tag">Top 10 by Volume</span>
+              <button class="fs-btn" onclick="toggleFullscreen('topVolume')">全螢幕</button>
+            </div>
+          </div>
           <div class="table-wrap">
             <table>
               <thead>
