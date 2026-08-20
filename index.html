@@ -333,6 +333,20 @@
     .fut-item .fv { font-size: 0.95rem; font-weight: 600; font-family: ui-monospace, monospace; }
     .fut-item .fs { font-size: 0.72rem; margin-top: 1px; }
     /* Fullscreen section */
+
+    .global-filters {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      padding: 8px 16px; border-bottom: 1px solid var(--border);
+      background: #121214; font-size: 0.8rem;
+    }
+    .global-filters .gf-item {
+      display: flex; align-items: center; gap: 6px; color: var(--text); cursor: pointer;
+    }
+    .global-filters select {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 4px 8px; font-size: 0.78rem;
+    }
+    .global-filters input[type="checkbox"] { accent-color: #34d399; width: 16px; height: 16px; }
     .fs-btn {
       background: transparent; border: 1px solid #333; color: var(--muted);
       border-radius: 4px; padding: 2px 7px; font-size: 0.7rem; cursor: pointer;
@@ -467,6 +481,23 @@
       <button class="tab-btn" data-tab="walls" onclick="switchTab('walls')">重貨區</button>
       <button class="tab-btn" data-tab="strikes" onclick="switchTab('strikes')">行使價分佈</button>
       <button class="tab-btn" data-tab="topvol" onclick="switchTab('topvol')">十大成交</button>
+    </div>
+    <div class="global-filters" id="globalFilters">
+      <label class="gf-item">
+        <input type="checkbox" id="atmEnabledGlobal" onchange="onAtmToggle()" />
+        <strong>近價</strong>
+      </label>
+      <select id="atmRangeGlobal" onchange="onAtmToggle()" title="近價範圍">
+        <option value="400">±400</option>
+        <option value="600">±600</option>
+        <option value="800" selected>±800</option>
+        <option value="1000">±1000</option>
+        <option value="1200">±1200</option>
+        <option value="1600">±1600</option>
+        <option value="2000">±2000</option>
+      </select>
+      <span class="tag" id="atmCenterLabel">中心: —</span>
+      <span class="tag" id="atmHint">關閉時顯示全部行使價</span>
     </div>
 
     <div class="tab-panels">
@@ -725,6 +756,45 @@
       if (e.key === "Escape") exitFullscreen();
     });
 
+
+
+    function getAtmCenter() {
+      if (!currentReport) return null;
+      const fut = currentReport.futures || {};
+      return (fut.mhif && fut.mhif.front && fut.mhif.front.settle)
+        || (fut.hsif && fut.hsif.front && fut.hsif.front.settle)
+        || null;
+    }
+
+    function syncAtmUI() {
+      const g = document.getElementById("atmEnabledGlobal");
+      const r = document.getElementById("atmRangeGlobal");
+      const lab = document.getElementById("atmCenterLabel");
+      const hint = document.getElementById("atmHint");
+      if (g) g.checked = !!atmEnabled;
+      if (r) r.value = String(atmRange || 800);
+      const c = getAtmCenter();
+      if (lab) lab.textContent = c ? ("中心: " + c) : "中心: 無期貨價";
+      if (hint) hint.textContent = atmEnabled
+        ? ("只顯示 " + (c || "?") + " ±" + atmRange)
+        : "關閉時顯示全部行使價";
+    }
+
+    function onAtmToggle() {
+      const g = document.getElementById("atmEnabledGlobal");
+      const r = document.getElementById("atmRangeGlobal");
+      if (g) atmEnabled = g.checked;
+      if (r) atmRange = parseInt(r.value, 10) || 800;
+      try {
+        const s = JSON.parse(localStorage.getItem("hsi_oi_settings") || "{}");
+        s.atmEnabled = atmEnabled;
+        s.atmRange = atmRange;
+        localStorage.setItem("hsi_oi_settings", JSON.stringify(s));
+      } catch (e) {}
+      syncAtmUI();
+      if (typeof renderStrikeTable === "function") renderStrikeTable();
+      if (typeof renderWalls === "function" && currentReport) renderWalls();
+    }
 
     function renderFutures(r) {
       const box = document.getElementById("futuresBar");
@@ -1085,6 +1155,7 @@
       renderStrikeTable();
       renderTopVolume();
       document.getElementById("sourceLink").href = r.sourceUrl || "#";
+      syncAtmUI();
     }
 
     function sortRows(rows, key, dir, getters) {
@@ -1118,7 +1189,18 @@
 
     function renderWalls() {
       if (!currentReport) return;
-      const hz = currentReport._hz || currentReport.heavyZones || {};
+      let hz = currentReport._hz || currentReport.heavyZones || {};
+      // Optional near-money filter on walls
+      const center = getAtmCenter();
+      if (atmEnabled && center) {
+        const keep = (z) => Math.abs((z.strike || 0) - center) <= atmRange;
+        hz = {
+          callWalls: (hz.callWalls || []).filter(keep),
+          putWalls: (hz.putWalls || []).filter(keep),
+          callVolWalls: (hz.callVolWalls || []).filter(keep),
+          putVolWalls: (hz.putVolWalls || []).filter(keep),
+        };
+      }
       const wallGet = {
         oi: z => z.oi || 0,
         strike: z => z.strike || 0,
