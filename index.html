@@ -264,6 +264,18 @@
         <label>高亮大變化</label>
         <input type="checkbox" id="setHlChg" />
       </div>
+      <div class="modal-row" style="border-bottom:none;padding-top:14px;">
+        <label style="color:var(--text);font-weight:500;">顯示欄位</label>
+        <span></span>
+      </div>
+      <div class="modal-row"><label>Call 成交量</label><input type="checkbox" id="setColCallVol" /></div>
+      <div class="modal-row"><label>Call OI</label><input type="checkbox" id="setColCallOI" /></div>
+      <div class="modal-row"><label>Call 結算價</label><input type="checkbox" id="setColCallSettle" /></div>
+      <div class="modal-row"><label>Call Δ</label><input type="checkbox" id="setColCallChg" /></div>
+      <div class="modal-row"><label>Put Δ</label><input type="checkbox" id="setColPutChg" /></div>
+      <div class="modal-row"><label>Put 結算價</label><input type="checkbox" id="setColPutSettle" /></div>
+      <div class="modal-row"><label>Put OI</label><input type="checkbox" id="setColPutOI" /></div>
+      <div class="modal-row"><label>Put 成交量</label><input type="checkbox" id="setColPutVol" /></div>
       <div class="modal-actions">
         <button class="btn-secondary" onclick="resetSettings()">重設</button>
         <button class="btn-secondary" onclick="closeSettings()">取消</button>
@@ -306,6 +318,15 @@
       hlOI: true,
       hlVol: true,
       hlChg: true,
+      // column visibility
+      colCallVol: true,
+      colCallOI: true,
+      colCallSettle: true,
+      colCallChg: true,
+      colPutChg: true,
+      colPutSettle: true,
+      colPutOI: true,
+      colPutVol: true,
     };
 
     function loadSettings() {
@@ -326,6 +347,14 @@
     let hlOI = settings.hlOI;
     let hlVol = settings.hlVol;
     let hlChg = settings.hlChg;
+    let colCallVol = settings.colCallVol !== false;
+    let colCallOI = settings.colCallOI !== false;
+    let colCallSettle = settings.colCallSettle !== false;
+    let colCallChg = settings.colCallChg !== false;
+    let colPutChg = settings.colPutChg !== false;
+    let colPutSettle = settings.colPutSettle !== false;
+    let colPutOI = settings.colPutOI !== false;
+    let colPutVol = settings.colPutVol !== false;
 
     function openSettings() {
       document.getElementById("setMinOI").value = minOI;
@@ -337,6 +366,14 @@
       document.getElementById("setHlOI").checked = hlOI;
       document.getElementById("setHlVol").checked = hlVol;
       document.getElementById("setHlChg").checked = hlChg;
+      document.getElementById("setColCallVol").checked = colCallVol;
+      document.getElementById("setColCallOI").checked = colCallOI;
+      document.getElementById("setColCallSettle").checked = colCallSettle;
+      document.getElementById("setColCallChg").checked = colCallChg;
+      document.getElementById("setColPutChg").checked = colPutChg;
+      document.getElementById("setColPutSettle").checked = colPutSettle;
+      document.getElementById("setColPutOI").checked = colPutOI;
+      document.getElementById("setColPutVol").checked = colPutVol;
       document.getElementById("settingsModal").classList.add("open");
     }
 
@@ -354,8 +391,20 @@
       hlOI = document.getElementById("setHlOI").checked;
       hlVol = document.getElementById("setHlVol").checked;
       hlChg = document.getElementById("setHlChg").checked;
+      colCallVol = document.getElementById("setColCallVol").checked;
+      colCallOI = document.getElementById("setColCallOI").checked;
+      colCallSettle = document.getElementById("setColCallSettle").checked;
+      colCallChg = document.getElementById("setColCallChg").checked;
+      colPutChg = document.getElementById("setColPutChg").checked;
+      colPutSettle = document.getElementById("setColPutSettle").checked;
+      colPutOI = document.getElementById("setColPutOI").checked;
+      colPutVol = document.getElementById("setColPutVol").checked;
 
-      settings = { sortKey, sortDir, minOI, minVol, onlyActive, topN, hlOI, hlVol, hlChg };
+      settings = {
+        sortKey, sortDir, minOI, minVol, onlyActive, topN, hlOI, hlVol, hlChg,
+        colCallVol, colCallOI, colCallSettle, colCallChg,
+        colPutChg, colPutSettle, colPutOI, colPutVol
+      };
       localStorage.setItem("hsi_oi_settings", JSON.stringify(settings));
       closeSettings();
       renderStrikeTable();
@@ -373,7 +422,15 @@
       hlOI = settings.hlOI;
       hlVol = settings.hlVol;
       hlChg = settings.hlChg;
-      openSettings(); // refresh form values
+      colCallVol = settings.colCallVol;
+      colCallOI = settings.colCallOI;
+      colCallSettle = settings.colCallSettle;
+      colCallChg = settings.colCallChg;
+      colPutChg = settings.colPutChg;
+      colPutSettle = settings.colPutSettle;
+      colPutOI = settings.colPutOI;
+      colPutVol = settings.colPutVol;
+      openSettings();
     }
 
     function fmt(n) { return (n || 0).toLocaleString("en-US"); }
@@ -565,9 +622,15 @@
             <table>
               <thead>
                 <tr>
-                  <th class="tr">C.Vol</th><th class="tr">C.OI</th><th class="tr">C.價</th><th class="tr">Δ</th>
+                  ${colCallVol ? '<th class="tr">Call成交</th>' : ''}
+                  ${colCallOI ? '<th class="tr">Call OI</th>' : ''}
+                  ${colCallSettle ? '<th class="tr">Call結算價</th>' : ''}
+                  ${colCallChg ? '<th class="tr">CallΔ</th>' : ''}
                   <th class="tc">行使價</th>
-                  <th class="tl">Δ</th><th class="tl">P.價</th><th class="tl">P.OI</th><th class="tl">P.Vol</th>
+                  ${colPutChg ? '<th class="tl">PutΔ</th>' : ''}
+                  ${colPutSettle ? '<th class="tl">Put結算價</th>' : ''}
+                  ${colPutOI ? '<th class="tl">Put OI</th>' : ''}
+                  ${colPutVol ? '<th class="tl">Put成交</th>' : ''}
                 </tr>
               </thead>
               <tbody>
@@ -577,7 +640,7 @@
                   const isChg = important.chg.has(row.strike);
                   const isAbs = important.abs.has(row.strike);
                   let cls = "";
-                  if (isAbs) cls = "hl-abs";           // absorption: high OI + high Vol
+                  if (isAbs) cls = "hl-abs";
                   else if (isOI && isVol) cls = "hl-both";
                   else if (isOI) cls = "hl-oi";
                   else if (isVol) cls = "hl-vol";
@@ -586,15 +649,15 @@
                   const cw = Math.round(((row.callOI||0) / maxOI) * 88);
                   const pw = Math.round(((row.putOI||0) / maxOI) * 88);
                   return `<tr class="${cls}">
-                    <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>
-                    <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>
-                    <td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>
-                    <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
+                    ${colCallVol ? `<td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>` : ''}
+                    ${colCallOI ? `<td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>` : ''}
+                    ${colCallSettle ? `<td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>` : ''}
+                    ${colCallChg ? `<td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>` : ''}
                     <td class="tc mono" style="font-weight:500">${row.strike}</td>
-                    <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
-                    <td class="tl mono mu" style="font-size:0.75rem">${row.putSettle ? fmt(row.putSettle) : "—"}</td>
-                    <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>
-                    <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>
+                    ${colPutChg ? `<td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>` : ''}
+                    ${colPutSettle ? `<td class="tl mono mu" style="font-size:0.75rem">${row.putSettle ? fmt(row.putSettle) : "—"}</td>` : ''}
+                    ${colPutOI ? `<td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>` : ''}
+                    ${colPutVol ? `<td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>` : ''}
                   </tr>`;
                 }).join("")}
               </tbody>
