@@ -82,6 +82,30 @@
     footer { text-align: center; padding: 24px 0 16px; font-size: 0.7rem; color: #52525b; }
     footer a { color: var(--muted); } footer a:hover { color: var(--emerald); }
     .note { font-size: 0.75rem; color: var(--muted); margin: 8px 0 16px; }
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      background: #121214; font-size: 0.8rem;
+    }
+    .controls label { color: var(--muted); margin-right: 4px; }
+    .controls select, .controls input {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 8px; font-size: 0.8rem;
+    }
+    .controls input[type="number"] { width: 72px; }
+    tr.hl-oi td { background: rgba(52, 211, 153, 0.12); }
+    tr.hl-vol td { background: rgba(251, 191, 36, 0.10); }
+    tr.hl-chg td { background: rgba(96, 165, 250, 0.10); }
+    tr.hl-both td { background: rgba(52, 211, 153, 0.18); }
+    .badge {
+      display: inline-block; font-size: 0.65rem; padding: 1px 5px;
+      border-radius: 4px; margin-left: 4px; vertical-align: middle;
+    }
+    .badge-oi { background: rgba(52,211,153,0.25); color: var(--emerald); }
+    .badge-vol { background: rgba(251,191,36,0.25); color: #fbbf24; }
+    .badge-chg { background: rgba(96,165,250,0.25); color: #60a5fa; }
+    .legend { font-size: 0.7rem; color: var(--muted); padding: 6px 14px; }
+    .legend span { margin-right: 12px; }
   </style>
 </head>
 <body>
@@ -112,6 +136,15 @@
   <script>
     const reports = window.HSI_REPORTS || {};
     const availableDates = Object.keys(reports).sort().reverse();
+    let currentDate = availableDates[0] || null;
+    let currentReport = null;
+
+    // Filter / sort state
+    let sortKey = "strike";
+    let sortDir = "desc";
+    let minOI = 0;
+    let minVol = 0;
+    let onlyActive = true; // hide zero OI and zero vol
 
     function fmt(n) { return (n || 0).toLocaleString("en-US"); }
     function fmtChg(n) {
@@ -124,14 +157,169 @@
       return "mu";
     }
 
+    function getImportantSets(strikes) {
+      const byCallOI = [...strikes].sort((a,b) => (b.callOI||0)-(a.callOI||0)).slice(0,5).map(s=>s.strike);
+      const byPutOI  = [...strikes].sort((a,b) => (b.putOI||0)-(a.putOI||0)).slice(0,5).map(s=>s.strike);
+      const byCallVol= [...strikes].sort((a,b) => (b.callVol||0)-(a.callVol||0)).slice(0,5).map(s=>s.strike);
+      const byPutVol = [...strikes].sort((a,b) => (b.putVol||0)-(a.putVol||0)).slice(0,5).map(s=>s.strike);
+      const byChg = [...strikes].sort((a,b) =>
+        Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)) -
+        Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0))
+      ).slice(0,5).map(s=>s.strike);
+
+      return {
+        oi: new Set([...byCallOI, ...byPutOI]),
+        vol: new Set([...byCallVol, ...byPutVol]),
+        chg: new Set(byChg),
+      };
+    }
+
+    function renderStrikeTable() {
+      if (!currentReport) return;
+      const r = currentReport;
+      let rows = [...(r.strikes || [])];
+
+      // Filter
+      rows = rows.filter(s => {
+        const oi = (s.callOI||0) + (s.putOI||0);
+        const vol = (s.callVol||0) + (s.putVol||0);
+        if (onlyActive && oi === 0 && vol === 0) return false;
+        if (oi < minOI) return false;
+        if (vol < minVol) return false;
+        return true;
+      });
+
+      // Sort
+      rows.sort((a, b) => {
+        let va, vb;
+        switch (sortKey) {
+          case "callOI": va = a.callOI||0; vb = b.callOI||0; break;
+          case "putOI":  va = a.putOI||0;  vb = b.putOI||0;  break;
+          case "callVol":va = a.callVol||0;vb = b.callVol||0;break;
+          case "putVol": va = a.putVol||0; vb = b.putVol||0; break;
+          case "totalOI":va = (a.callOI||0)+(a.putOI||0); vb = (b.callOI||0)+(b.putOI||0); break;
+          case "chg":    va = Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0));
+                         vb = Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)); break;
+          default:       va = a.strike; vb = b.strike;
+        }
+        return sortDir === "desc" ? vb - va : va - vb;
+      });
+
+      const important = getImportantSets(r.strikes || []);
+      const maxOI = Math.max(1, ...rows.map(x => Math.max(x.callOI||0, x.putOI||0)));
+
+      document.getElementById("strikes").innerHTML = `
+        <div class="section">
+          <div class="section-header">
+            <h2>即月行使價分佈</h2>
+            <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
+          </div>
+          <div class="controls">
+            <div>
+              <label>排序</label>
+              <select id="sortKey" onchange="onFilterChange()">
+                <option value="strike" ${sortKey==="strike"?"selected":""}>行使價</option>
+                <option value="totalOI" ${sortKey==="totalOI"?"selected":""}>總 OI</option>
+                <option value="callOI" ${sortKey==="callOI"?"selected":""}>Call OI</option>
+                <option value="putOI" ${sortKey==="putOI"?"selected":""}>Put OI</option>
+                <option value="callVol" ${sortKey==="callVol"?"selected":""}>Call Vol</option>
+                <option value="putVol" ${sortKey==="putVol"?"selected":""}>Put Vol</option>
+                <option value="chg" ${sortKey==="chg"?"selected":""}>最大變化</option>
+              </select>
+              <select id="sortDir" onchange="onFilterChange()">
+                <option value="desc" ${sortDir==="desc"?"selected":""}>高→低</option>
+                <option value="asc" ${sortDir==="asc"?"selected":""}>低→高</option>
+              </select>
+            </div>
+            <div>
+              <label>最低 OI</label>
+              <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" />
+            </div>
+            <div>
+              <label>最低成交量</label>
+              <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" />
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" id="onlyActive" ${onlyActive?"checked":""} onchange="onFilterChange()" />
+                隱藏空白
+              </label>
+            </div>
+          </div>
+          <div class="legend">
+            <span><span class="badge badge-oi">OI</span> 高未平倉</span>
+            <span><span class="badge badge-vol">Vol</span> 高成交量</span>
+            <span><span class="badge badge-chg">Δ</span> 大變化</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="tr">Call Vol</th><th class="tr">Call OI</th><th class="tr">Δ</th>
+                  <th class="tc">行使價</th>
+                  <th class="tl">Δ</th><th class="tl">Put OI</th><th class="tl">Put Vol</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.map(row => {
+                  const isOI = important.oi.has(row.strike);
+                  const isVol = important.vol.has(row.strike);
+                  const isChg = important.chg.has(row.strike);
+                  let cls = "";
+                  if (isOI && isVol) cls = "hl-both";
+                  else if (isOI) cls = "hl-oi";
+                  else if (isVol) cls = "hl-vol";
+                  else if (isChg) cls = "hl-chg";
+
+                  let badges = "";
+                  if (isOI) badges += '<span class="badge badge-oi">OI</span>';
+                  if (isVol) badges += '<span class="badge badge-vol">Vol</span>';
+                  if (isChg) badges += '<span class="badge badge-chg">Δ</span>';
+
+                  const cw = Math.round(((row.callOI||0) / maxOI) * 88);
+                  const pw = Math.round(((row.putOI||0) / maxOI) * 88);
+                  return `<tr class="${cls}">
+                    <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>
+                    <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>
+                    <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
+                    <td class="tc mono" style="font-weight:500">${row.strike}${badges}</td>
+                    <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
+                    <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>
+                    <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>
+                  </tr>`;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function onFilterChange() {
+      const sk = document.getElementById("sortKey");
+      const sd = document.getElementById("sortDir");
+      const moi = document.getElementById("minOI");
+      const mv = document.getElementById("minVol");
+      const oa = document.getElementById("onlyActive");
+      if (sk) sortKey = sk.value;
+      if (sd) sortDir = sd.value;
+      if (moi) minOI = parseInt(moi.value, 10) || 0;
+      if (mv) minVol = parseInt(mv.value, 10) || 0;
+      if (oa) onlyActive = oa.checked;
+      renderStrikeTable();
+    }
+
     function render(date) {
       const r = reports[date];
       if (!r) {
-        document.getElementById("status").textContent = "沒有資料。請先執行 python3 fetch_and_parse.py";
+        document.getElementById("status").textContent = "沒有資料。請先執行更新。";
         return;
       }
+      currentDate = date;
+      currentReport = r;
+
       document.getElementById("status").textContent =
-        `顯示 ${r.date} · 共 ${availableDates.length} 個交易日 · 即月行使價 ${r.strikes.length} 個`;
+        `顯示 ${r.date} · 共 ${availableDates.length} 個交易日 · 即月行使價 ${(r.strikes||[]).length} 個`;
 
       document.getElementById("dateButtons").innerHTML = availableDates.map(d =>
         `<button class="date-btn ${d === date ? "active" : ""}" onclick="render('${d}')">${d}</button>`
@@ -148,7 +336,6 @@
       `;
 
       const hz = r.heavyZones || {};
-      // Fallback: build volume walls from strikes if missing
       if (!(hz.callVolWalls && hz.callVolWalls.length) && r.strikes) {
         hz.callVolWalls = [...r.strikes]
           .filter(s => (s.callVol || 0) > 0)
@@ -163,6 +350,7 @@
           .slice(0,6)
           .map(s => ({strike: s.strike, volume: s.putVol}));
       }
+
       document.getElementById("zones").innerHTML = `
         <div class="section">
           <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
@@ -220,39 +408,7 @@
         </div>
       `;
 
-      const maxOI = Math.max(1, ...r.strikes.map(x => Math.max(x.callOI, x.putOI)));
-      const sorted = [...r.strikes].sort((a, b) => b.strike - a.strike);
-      document.getElementById("strikes").innerHTML = `
-        <div class="section">
-          <div class="section-header"><h2>即月行使價分佈 (Call | Strike | Put)</h2><span class="tag">Front Month · ${sorted.length} strikes</span></div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th class="tr">Call Vol</th><th class="tr">Call OI</th><th class="tr">Δ</th>
-                  <th class="tc">行使價</th>
-                  <th class="tl">Δ</th><th class="tl">Put OI</th><th class="tl">Put Vol</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${sorted.map(row => {
-                  const cw = Math.round((row.callOI / maxOI) * 88);
-                  const pw = Math.round((row.putOI / maxOI) * 88);
-                  return `<tr>
-                    <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol || 0)}</td>
-                    <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI)}</span></td>
-                    <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
-                    <td class="tc mono" style="font-weight:500">${row.strike}</td>
-                    <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
-                    <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI)}</span></td>
-                    <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol || 0)}</td>
-                  </tr>`;
-                }).join("")}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `;
+      renderStrikeTable();
 
       document.getElementById("topVolume").innerHTML = `
         <div class="section">
@@ -291,7 +447,7 @@
       render(availableDates[0]);
     } else {
       document.getElementById("status").textContent =
-        "尚未有數據。請在本資料夾執行：python3 fetch_and_parse.py 2026-08-18";
+        "尚未有數據。請執行 GitHub Actions 更新。";
     }
   </script>
 </body>
