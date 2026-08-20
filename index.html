@@ -57,6 +57,7 @@
     .section-header .tag { font-size: 0.7rem; color: var(--muted); }
     .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
     @media (max-width: 700px) { .zones { grid-template-columns: 1fr; } }
+    @media (min-width: 900px) { .zones { grid-template-columns: 1fr 1fr; } }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     th {
       text-align: left; padding: 8px 12px; font-size: 0.7rem; color: var(--muted);
@@ -146,13 +147,14 @@
         <div class="card"><div class="label">總 OI</div><div class="value">${fmt(s.totalOI)}</div><div class="subv ${chgClass(s.totalOIChange)}">${fmtChg(s.totalOIChange)}</div></div>
       `;
 
+      const hz = r.heavyZones || {};
       document.getElementById("zones").innerHTML = `
         <div class="section">
-          <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">Call Walls</span></div>
+          <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
           <table>
             <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
             <tbody>
-              ${(r.heavyZones.callWalls || []).map(z => `
+              ${(hz.callWalls || []).map(z => `
                 <tr>
                   <td class="mono em">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
@@ -162,15 +164,41 @@
           </table>
         </div>
         <div class="section">
-          <div class="section-header"><h2>Put 重貨區 (潛在支持)</h2><span class="tag ro">Put Walls</span></div>
+          <div class="section-header"><h2>Put 重貨區 (潛在支持)</h2><span class="tag ro">OI Walls</span></div>
           <table>
             <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
             <tbody>
-              ${(r.heavyZones.putWalls || []).map(z => `
+              ${(hz.putWalls || []).map(z => `
                 <tr>
                   <td class="mono ro">${z.strike}</td>
                   <td class="tr mono">${fmt(z.oi)}</td>
                   <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Call 成交量重區</h2><span class="tag em">Volume</span></div>
+          <table>
+            <thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+            <tbody>
+              ${(hz.callVolWalls || []).map(z => `
+                <tr>
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.volume)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Put 成交量重區</h2><span class="tag ro">Volume</span></div>
+          <table>
+            <thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+            <tbody>
+              ${(hz.putVolWalls || []).map(z => `
+                <tr>
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.volume)}</td>
                 </tr>`).join("")}
             </tbody>
           </table>
@@ -186,9 +214,9 @@
             <table>
               <thead>
                 <tr>
-                  <th class="tr">Call OI</th><th class="tr">變化</th>
+                  <th class="tr">Call Vol</th><th class="tr">Call OI</th><th class="tr">Δ</th>
                   <th class="tc">行使價</th>
-                  <th class="tl">變化</th><th class="tl">Put OI</th>
+                  <th class="tl">Δ</th><th class="tl">Put OI</th><th class="tl">Put Vol</th>
                 </tr>
               </thead>
               <tbody>
@@ -196,11 +224,13 @@
                   const cw = Math.round((row.callOI / maxOI) * 88);
                   const pw = Math.round((row.putOI / maxOI) * 88);
                   return `<tr>
+                    <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol || 0)}</td>
                     <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI)}</span></td>
                     <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
                     <td class="tc mono" style="font-weight:500">${row.strike}</td>
                     <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
                     <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI)}</span></td>
+                    <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol || 0)}</td>
                   </tr>`;
                 }).join("")}
               </tbody>

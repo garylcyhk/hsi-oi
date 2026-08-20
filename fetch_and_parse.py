@@ -107,12 +107,14 @@ def parse_front_month(text: str) -> dict:
             if len(nums) < 3:
                 continue
             # last three: volume, OI, change
+            vol = int(nums[-3]) if len(nums) >= 3 else 0
             oi = int(nums[-2])
             chg = int(nums[-1])
-            if oi == 0 and chg == 0:
-                continue  # skip empty strikes to keep list clean
+            if oi == 0 and chg == 0 and vol == 0:
+                continue  # skip empty strikes
             rows.append({
                 "strike": int(strike),
+                "volume": vol,
                 "oi": oi,
                 "oiChange": chg,
             })
@@ -133,21 +135,23 @@ def parse_front_month(text: str) -> dict:
     # Build strike map
     strike_map = {}
     for c in calls:
-        strike_map.setdefault(c["strike"], {"callOI": 0, "callChange": 0, "putOI": 0, "putChange": 0})
+        strike_map.setdefault(c["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "putOI": 0, "putChange": 0, "putVol": 0})
         strike_map[c["strike"]]["callOI"] = c["oi"]
         strike_map[c["strike"]]["callChange"] = c["oiChange"]
+        strike_map[c["strike"]]["callVol"] = c["volume"]
     for p in puts:
-        strike_map.setdefault(p["strike"], {"callOI": 0, "callChange": 0, "putOI": 0, "putChange": 0})
+        strike_map.setdefault(p["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "putOI": 0, "putChange": 0, "putVol": 0})
         strike_map[p["strike"]]["putOI"] = p["oi"]
         strike_map[p["strike"]]["putChange"] = p["oiChange"]
+        strike_map[p["strike"]]["putVol"] = p["volume"]
 
     strikes = [
         {"strike": k, **v}
         for k, v in sorted(strike_map.items())
-        if v["callOI"] > 0 or v["putOI"] > 0
+        if v["callOI"] > 0 or v["putOI"] > 0 or v["callVol"] > 0 or v["putVol"] > 0
     ]
 
-    # Heavy zones = top OI strikes
+    # Heavy OI zones
     call_walls = sorted(
         [{"strike": s["strike"], "oi": s["callOI"], "oiChange": s["callChange"]} for s in strikes if s["callOI"] > 0],
         key=lambda x: x["oi"], reverse=True
@@ -155,6 +159,16 @@ def parse_front_month(text: str) -> dict:
     put_walls = sorted(
         [{"strike": s["strike"], "oi": s["putOI"], "oiChange": s["putChange"]} for s in strikes if s["putOI"] > 0],
         key=lambda x: x["oi"], reverse=True
+    )[:6]
+
+    # Heavy Volume zones
+    call_vol_walls = sorted(
+        [{"strike": s["strike"], "volume": s["callVol"]} for s in strikes if s["callVol"] > 0],
+        key=lambda x: x["volume"], reverse=True
+    )[:6]
+    put_vol_walls = sorted(
+        [{"strike": s["strike"], "volume": s["putVol"]} for s in strikes if s["putVol"] > 0],
+        key=lambda x: x["volume"], reverse=True
     )[:6]
 
     total_oi = call_oi + put_oi
@@ -173,6 +187,8 @@ def parse_front_month(text: str) -> dict:
         "strikes": strikes,
         "callWalls": call_walls,
         "putWalls": put_walls,
+        "callVolWalls": call_vol_walls,
+        "putVolWalls": put_vol_walls,
     }
 
 
@@ -219,6 +235,8 @@ def parse_report(text: str, date_str: str) -> dict:
         "heavyZones": {
             "callWalls": front.get("callWalls", []),
             "putWalls": front.get("putWalls", []),
+            "callVolWalls": front.get("callVolWalls", []),
+            "putVolWalls": front.get("putVolWalls", []),
         },
         "strikes": front.get("strikes", []),
         "topVolume": top,
