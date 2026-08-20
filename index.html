@@ -155,6 +155,48 @@
     }
     .btn-primary { background: #059669; color: #fff; }
     .btn-secondary { background: #27272a; color: var(--muted); }
+
+    /* Levels card */
+    .levels-card {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 700px) { .levels-card { grid-template-columns: 1fr; } }
+    .levels-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .levels-box h3 {
+      font-size: 0.8rem; font-weight: 500; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .levels-box .lvl-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 4px 0; font-size: 0.85rem; font-family: ui-monospace, monospace;
+    }
+    .levels-box .lvl-strike { font-weight: 600; }
+    .levels-box .lvl-meta { font-size: 0.75rem; color: var(--muted); }
+
+    /* Day change card */
+    .day-change {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;
+      font-size: 0.82rem;
+    }
+    .day-change h3 { font-size: 0.8rem; font-weight: 500; margin-bottom: 8px; }
+    .day-change .dc-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px;
+    }
+    @media (max-width: 700px) { .day-change .dc-grid { grid-template-columns: 1fr; } }
+    .dc-item { padding: 3px 0; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    .dc-up { color: var(--emerald); }
+    .dc-down { color: var(--rose); }
+    .dc-new { color: #fbbf24; }
+    .dc-label { color: var(--muted); font-size: 0.72rem; margin-bottom: 2px; }
+
+    /* Absorption row highlight */
+    tr.hl-abs td { background: rgba(168, 85, 247, 0.08); }
+    tr.hl-abs td:first-child { box-shadow: inset 3px 0 0 #a855f7; }
   </style>
 </head>
 <body>
@@ -233,6 +275,8 @@
   <div class="container">
     <div class="note" id="status">載入中…</div>
     <div id="summary" class="grid-summary"></div>
+    <div id="levelsCard" class="levels-card"></div>
+    <div id="dayChange"></div>
     <div id="zones" class="zones"></div>
     <div id="strikes"></div>
     <div id="topVolume"></div>
@@ -354,11 +398,87 @@
         Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0))
       ).slice(0,n).map(s=>s.strike);
 
+      // Absorption: high OI AND high volume on same side
+      const oiSet = new Set([...byCallOI, ...byPutOI]);
+      const volSet = new Set([...byCallVol, ...byPutVol]);
+      const absStrikes = [...oiSet].filter(s => volSet.has(s));
+
       return {
-        oi: hlOI ? new Set([...byCallOI, ...byPutOI]) : new Set(),
-        vol: hlVol ? new Set([...byCallVol, ...byPutVol]) : new Set(),
+        oi: hlOI ? oiSet : new Set(),
+        vol: hlVol ? volSet : new Set(),
         chg: hlChg ? new Set(byChg) : new Set(),
+        abs: new Set(absStrikes),
       };
+    }
+
+    function renderLevelsCard(r) {
+      const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
+      const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
+      document.getElementById("levelsCard").innerHTML = `
+        <div class="levels-box">
+          <h3><span class="em">Call 關鍵阻力</span><span class="tag">Top 3</span></h3>
+          ${calls.length ? calls.map((z,i) => `
+            <div class="lvl-row">
+              <span class="lvl-strike em">${z.strike}</span>
+              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span></span>
+            </div>`).join("") : '<div class="lvl-meta">無資料</div>'}
+        </div>
+        <div class="levels-box">
+          <h3><span class="ro">Put 關鍵支持</span><span class="tag">Top 3</span></h3>
+          ${puts.length ? puts.map((z,i) => `
+            <div class="lvl-row">
+              <span class="lvl-strike ro">${z.strike}</span>
+              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span></span>
+            </div>`).join("") : '<div class="lvl-meta">無資料</div>'}
+        </div>
+      `;
+    }
+
+    function renderDayChange(r) {
+      const prevDate = r.prevDate;
+      const prev = reports[prevDate];
+      const box = document.getElementById("dayChange");
+      if (!prev) {
+        box.innerHTML = `<div class="day-change"><h3>今日 vs 昨日</h3><div class="dc-label">尚無昨日資料可比較（需至少 2 個交易日）</div></div>`;
+        return;
+      }
+
+      function wallMap(walls) {
+        const m = {};
+        (walls || []).forEach(w => { m[w.strike] = w.oi; });
+        return m;
+      }
+      const tCall = wallMap(r.heavyZones?.callWalls);
+      const yCall = wallMap(prev.heavyZones?.callWalls);
+      const tPut = wallMap(r.heavyZones?.putWalls);
+      const yPut = wallMap(prev.heavyZones?.putWalls);
+
+      function diffSide(today, yest, label) {
+        const items = [];
+        const all = new Set([...Object.keys(today), ...Object.keys(yest)].map(Number));
+        [...all].sort((a,b)=>b-a).forEach(strike => {
+          const t = today[strike] || 0;
+          const y = yest[strike] || 0;
+          if (t && !y) items.push(`<div class="dc-item dc-new">${strike} 新進榜 OI ${fmt(t)}</div>`);
+          else if (!t && y) items.push(`<div class="dc-item dc-down">${strike} 跌出榜 (昨 ${fmt(y)})</div>`);
+          else if (t && y && t !== y) {
+            const d = t - y;
+            items.push(`<div class="dc-item ${d>0?"dc-up":"dc-down"}">${strike} OI ${fmt(t)} (${fmtChg(d)})</div>`);
+          }
+        });
+        if (!items.length) items.push(`<div class="dc-item mu">變化不大</div>`);
+        return `<div><div class="dc-label">${label}</div>${items.slice(0,6).join("")}</div>`;
+      }
+
+      box.innerHTML = `
+        <div class="day-change">
+          <h3>今日 vs 昨日牆位變化 <span class="tag" style="font-weight:400;color:var(--muted)">${r.date} vs ${prevDate}</span></h3>
+          <div class="dc-grid">
+            ${diffSide(tCall, yCall, "Call 牆")}
+            ${diffSide(tPut, yPut, "Put 牆")}
+          </div>
+        </div>
+      `;
     }
 
     function renderStrikeTable() {
@@ -447,8 +567,10 @@
                   const isOI = important.oi.has(row.strike);
                   const isVol = important.vol.has(row.strike);
                   const isChg = important.chg.has(row.strike);
+                  const isAbs = important.abs.has(row.strike);
                   let cls = "";
-                  if (isOI && isVol) cls = "hl-both";
+                  if (isAbs) cls = "hl-abs";           // absorption: high OI + high Vol
+                  else if (isOI && isVol) cls = "hl-both";
                   else if (isOI) cls = "hl-oi";
                   else if (isVol) cls = "hl-vol";
                   else if (isChg) cls = "hl-chg";
@@ -511,6 +633,9 @@
         <div class="card"><div class="label">街貨比例</div><div class="value">${s.callPct}% / ${s.putPct}%</div><div class="subv">Call / Put</div></div>
         <div class="card"><div class="label">總 OI</div><div class="value">${fmt(s.totalOI)}</div><div class="subv ${chgClass(s.totalOIChange)}">${fmtChg(s.totalOIChange)}</div></div>
       `;
+
+      renderLevelsCard(r);
+      renderDayChange(r);
 
       const hz = r.heavyZones || {};
       if (!(hz.callVolWalls && hz.callVolWalls.length) && r.strikes) {
