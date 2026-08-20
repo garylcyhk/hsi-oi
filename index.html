@@ -83,29 +83,42 @@
     footer a { color: var(--muted); } footer a:hover { color: var(--emerald); }
     .note { font-size: 0.75rem; color: var(--muted); margin: 8px 0 16px; }
     .controls {
-      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
       padding: 10px 14px; border-bottom: 1px solid var(--border);
-      background: #121214; font-size: 0.8rem;
+      background: #111113; font-size: 0.78rem;
     }
     .controls label { color: var(--muted); margin-right: 4px; }
     .controls select, .controls input {
-      background: var(--card); color: var(--text); border: 1px solid var(--border);
-      border-radius: 6px; padding: 4px 8px; font-size: 0.8rem;
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 5px 8px; font-size: 0.78rem;
     }
-    .controls input[type="number"] { width: 72px; }
-    tr.hl-oi td { background: rgba(52, 211, 153, 0.12); }
-    tr.hl-vol td { background: rgba(251, 191, 36, 0.10); }
-    tr.hl-chg td { background: rgba(96, 165, 250, 0.10); }
-    tr.hl-both td { background: rgba(52, 211, 153, 0.18); }
+    .controls input[type="number"] { width: 70px; }
+    .controls input[type="checkbox"] { accent-color: #34d399; }
+
+    /* Clean highlights: left accent bar + very light bg */
+    tr.hl-oi td { background: rgba(52, 211, 153, 0.05); }
+    tr.hl-oi td:first-child { box-shadow: inset 3px 0 0 #34d399; }
+    tr.hl-vol td { background: rgba(251, 191, 36, 0.04); }
+    tr.hl-vol td:first-child { box-shadow: inset 3px 0 0 #fbbf24; }
+    tr.hl-chg td { background: rgba(96, 165, 250, 0.04); }
+    tr.hl-chg td:first-child { box-shadow: inset 3px 0 0 #60a5fa; }
+    tr.hl-both td { background: rgba(52, 211, 153, 0.08); }
+    tr.hl-both td:first-child { box-shadow: inset 3px 0 0 #34d399; }
+
     .badge {
-      display: inline-block; font-size: 0.65rem; padding: 1px 5px;
-      border-radius: 4px; margin-left: 4px; vertical-align: middle;
+      display: inline-block; font-size: 0.6rem; padding: 0 4px;
+      border-radius: 3px; margin-left: 3px; vertical-align: middle;
+      font-weight: 600; line-height: 1.35;
     }
-    .badge-oi { background: rgba(52,211,153,0.25); color: var(--emerald); }
-    .badge-vol { background: rgba(251,191,36,0.25); color: #fbbf24; }
-    .badge-chg { background: rgba(96,165,250,0.25); color: #60a5fa; }
-    .legend { font-size: 0.7rem; color: var(--muted); padding: 6px 14px; }
-    .legend span { margin-right: 12px; }
+    .badge-oi { background: transparent; color: #34d399; border: 1px solid rgba(52,211,153,0.5); }
+    .badge-vol { background: transparent; color: #fbbf24; border: 1px solid rgba(251,191,36,0.5); }
+    .badge-chg { background: transparent; color: #60a5fa; border: 1px solid rgba(96,165,250,0.5); }
+
+    .legend {
+      font-size: 0.7rem; color: var(--muted); padding: 6px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .legend span { margin-right: 14px; white-space: nowrap; }
   </style>
 </head>
 <body>
