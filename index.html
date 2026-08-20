@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>恒指期權未平倉 | HSI Options OI</title>
+  <style>
+    :root {
+      --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa;
+      --muted: #a1a1aa; --emerald: #34d399; --rose: #fb7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    header {
+      border-bottom: 1px solid var(--border); background: rgba(24,24,27,0.92);
+      backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; padding: 12px 0;
+    }
+    header .inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 16px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    h1 { font-size: 1.15rem; font-weight: 600; }
+    h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+    .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .date-btns { display: flex; gap: 6px; flex-wrap: wrap; max-width: 420px; justify-content: flex-end; }
+    .date-btn {
+      font-size: 0.72rem; padding: 5px 9px; border-radius: 6px;
+      background: var(--card); color: var(--muted); border: 1px solid var(--border);
+      cursor: pointer; font-family: ui-monospace, monospace;
+    }
+    .date-btn.active { background: #059669; color: #fff; border-color: #059669; }
+    .date-btn:hover:not(.active) { background: #27272a; }
+    .grid-summary {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px; margin: 20px 0;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .card .label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; }
+    .card .value { font-size: 1.15rem; font-weight: 600; }
+    .card .subv { font-size: 0.75rem; margin-top: 2px; }
+    .section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 16px; overflow: hidden;
+    }
+    .section-header {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .section-header h2 { font-size: 0.9rem; font-weight: 500; }
+    .section-header .tag { font-size: 0.7rem; color: var(--muted); }
+    .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    @media (max-width: 700px) { .zones { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      text-align: left; padding: 8px 12px; font-size: 0.7rem; color: var(--muted);
+      font-weight: 500; border-bottom: 1px solid var(--border); background: var(--card);
+      position: sticky; top: 0;
+    }
+    td { padding: 6px 12px; border-bottom: 1px solid rgba(39,39,42,0.55); }
+    tr:hover td { background: rgba(39,39,42,0.35); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tr { text-align: right; } .tc { text-align: center; } .tl { text-align: left; }
+    .em { color: var(--emerald); } .ro { color: var(--rose); }
+    .pos { color: var(--emerald); } .neg { color: var(--rose); } .mu { color: var(--muted); }
+    .bar-cell { position: relative; }
+    .bar { position: absolute; top: 3px; bottom: 3px; border-radius: 3px; opacity: 0.22; }
+    .bar-c { right: 0; background: var(--emerald); }
+    .bar-p { left: 0; background: var(--rose); }
+    .bar-cell span { position: relative; z-index: 1; }
+    .table-wrap { max-height: 420px; overflow: auto; }
+    .table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+    .table-wrap::-webkit-scrollbar-track { background: #18181b; }
+    .table-wrap::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    footer { text-align: center; padding: 24px 0 16px; font-size: 0.7rem; color: #52525b; }
+    footer a { color: var(--muted); } footer a:hover { color: var(--emerald); }
+    .note { font-size: 0.75rem; color: var(--muted); margin: 8px 0 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <div>
+        <h1>恒指期權未平倉 <span>HSI Options OI</span></h1>
+        <div class="sub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易</div>
+      </div>
+      <div class="date-btns" id="dateButtons"></div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="note" id="status">載入中…</div>
+    <div id="summary" class="grid-summary"></div>
+    <div id="zones" class="zones"></div>
+    <div id="strikes"></div>
+    <div id="topVolume"></div>
+    <footer>
+      <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
+      <p style="margin-top:6px">Source: <a id="sourceLink" href="#" target="_blank" rel="noopener">HKEX Daily Market Report</a></p>
+      <p style="margin-top:4px">每日 22:50 HKT 自動更新（GitHub Actions）</p>
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const reports = window.HSI_REPORTS || {};
+    const availableDates = Object.keys(reports).sort().reverse();
+
+    function fmt(n) { return (n || 0).toLocaleString("en-US"); }
+    function fmtChg(n) {
+      if (n > 0) return "+" + n.toLocaleString("en-US");
+      return (n || 0).toLocaleString("en-US");
+    }
+    function chgClass(n) {
+      if (n > 0) return "pos";
+      if (n < 0) return "neg";
+      return "mu";
+    }
+
+    function render(date) {
+      const r = reports[date];
+      if (!r) {
+        document.getElementById("status").textContent = "沒有資料。請先執行 python3 fetch_and_parse.py";
+        return;
+      }
+      document.getElementById("status").textContent =
+        `顯示 ${r.date} · 共 ${availableDates.length} 個交易日 · 即月行使價 ${r.strikes.length} 個`;
+
+      document.getElementById("dateButtons").innerHTML = availableDates.map(d =>
+        `<button class="date-btn ${d === date ? "active" : ""}" onclick="render('${d}')">${d}</button>`
+      ).join("");
+
+      const s = r.summary;
+      document.getElementById("summary").innerHTML = `
+        <div class="card"><div class="label">交易日</div><div class="value">${r.date}</div><div class="subv">前一日 ${r.prevDate}</div></div>
+        <div class="card"><div class="label">即月</div><div class="value">${s.frontMonth}</div></div>
+        <div class="card"><div class="label">Call OI</div><div class="value">${fmt(s.callOI)}</div><div class="subv ${chgClass(s.callOIChange)}">${fmtChg(s.callOIChange)}</div></div>
+        <div class="card"><div class="label">Put OI</div><div class="value">${fmt(s.putOI)}</div><div class="subv ${chgClass(s.putOIChange)}">${fmtChg(s.putOIChange)}</div></div>
+        <div class="card"><div class="label">街貨比例</div><div class="value">${s.callPct}% / ${s.putPct}%</div><div class="subv">Call / Put</div></div>
+        <div class="card"><div class="label">總 OI</div><div class="value">${fmt(s.totalOI)}</div><div class="subv ${chgClass(s.totalOIChange)}">${fmtChg(s.totalOIChange)}</div></div>
+      `;
+
+      document.getElementById("zones").innerHTML = `
+        <div class="section">
+          <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">Call Walls</span></div>
+          <table>
+            <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
+            <tbody>
+              ${(r.heavyZones.callWalls || []).map(z => `
+                <tr>
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Put 重貨區 (潛在支持)</h2><span class="tag ro">Put Walls</span></div>
+          <table>
+            <thead><tr><th>行使價</th><th class="tr">未平倉</th><th class="tr">變化</th></tr></thead>
+            <tbody>
+              ${(r.heavyZones.putWalls || []).map(z => `
+                <tr>
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      const maxOI = Math.max(1, ...r.strikes.map(x => Math.max(x.callOI, x.putOI)));
+      const sorted = [...r.strikes].sort((a, b) => b.strike - a.strike);
+      document.getElementById("strikes").innerHTML = `
+        <div class="section">
+          <div class="section-header"><h2>即月行使價分佈 (Call | Strike | Put)</h2><span class="tag">Front Month · ${sorted.length} strikes</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="tr">Call OI</th><th class="tr">變化</th>
+                  <th class="tc">行使價</th>
+                  <th class="tl">變化</th><th class="tl">Put OI</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sorted.map(row => {
+                  const cw = Math.round((row.callOI / maxOI) * 88);
+                  const pw = Math.round((row.putOI / maxOI) * 88);
+                  return `<tr>
+                    <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI)}</span></td>
+                    <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
+                    <td class="tc mono" style="font-weight:500">${row.strike}</td>
+                    <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
+                    <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI)}</span></td>
+                  </tr>`;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("topVolume").innerHTML = `
+        <div class="section">
+          <div class="section-header"><h2>十大成交 (按成交量)</h2><span class="tag">Top 10 by Volume</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>月份</th><th>行使價</th><th>類型</th>
+                  <th class="tr">成交量</th><th class="tr">結算價</th>
+                  <th class="tr">IV%</th><th class="tr">OI</th><th class="tr">OI變化</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(r.topVolume || []).map(item => `
+                  <tr>
+                    <td class="mono mu" style="font-size:0.75rem">${item.month}</td>
+                    <td class="mono">${item.strike}</td>
+                    <td class="${item.type === "Call" ? "em" : "ro"}">${item.type === "Call" ? "認購" : "認沽"}</td>
+                    <td class="tr mono">${fmt(item.volume)}</td>
+                    <td class="tr mono">${item.settle}</td>
+                    <td class="tr mono mu">${item.iv}</td>
+                    <td class="tr mono">${fmt(item.oi)}</td>
+                    <td class="tr mono ${chgClass(item.oiChange)}">${fmtChg(item.oiChange)}</td>
+                  </tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("sourceLink").href = r.sourceUrl || "#";
+    }
+
+    if (availableDates.length) {
+      render(availableDates[0]);
+    } else {
+      document.getElementById("status").textContent =
+        "尚未有數據。請在本資料夾執行：python3 fetch_and_parse.py 2026-08-18";
+    }
+  </script>
+</body>
+</html>
