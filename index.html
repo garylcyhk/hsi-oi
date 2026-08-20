@@ -148,6 +148,21 @@
       `;
 
       const hz = r.heavyZones || {};
+      // Fallback: build volume walls from strikes if missing
+      if (!(hz.callVolWalls && hz.callVolWalls.length) && r.strikes) {
+        hz.callVolWalls = [...r.strikes]
+          .filter(s => (s.callVol || 0) > 0)
+          .sort((a,b) => (b.callVol||0) - (a.callVol||0))
+          .slice(0,6)
+          .map(s => ({strike: s.strike, volume: s.callVol}));
+      }
+      if (!(hz.putVolWalls && hz.putVolWalls.length) && r.strikes) {
+        hz.putVolWalls = [...r.strikes]
+          .filter(s => (s.putVol || 0) > 0)
+          .sort((a,b) => (b.putVol||0) - (a.putVol||0))
+          .slice(0,6)
+          .map(s => ({strike: s.strike, volume: s.putVol}));
+      }
       document.getElementById("zones").innerHTML = `
         <div class="section">
           <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
