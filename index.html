@@ -414,22 +414,30 @@
     function renderLevelsCard(r) {
       const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
       const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
+      const smap = {};
+      (r.strikes || []).forEach(s => { smap[s.strike] = s; });
       document.getElementById("levelsCard").innerHTML = `
         <div class="levels-box">
           <h3><span class="em">Call 關鍵阻力</span><span class="tag">Top 3</span></h3>
-          ${calls.length ? calls.map((z,i) => `
-            <div class="lvl-row">
+          ${calls.length ? calls.map((z) => {
+            const s = smap[z.strike] || {};
+            const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
+            return `<div class="lvl-row">
               <span class="lvl-strike em">${z.strike}</span>
-              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span></span>
-            </div>`).join("") : '<div class="lvl-meta">無資料</div>'}
+              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+            </div>`;
+          }).join("") : '<div class="lvl-meta">無資料</div>'}
         </div>
         <div class="levels-box">
           <h3><span class="ro">Put 關鍵支持</span><span class="tag">Top 3</span></h3>
-          ${puts.length ? puts.map((z,i) => `
-            <div class="lvl-row">
+          ${puts.length ? puts.map((z) => {
+            const s = smap[z.strike] || {};
+            const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
+            return `<div class="lvl-row">
               <span class="lvl-strike ro">${z.strike}</span>
-              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span></span>
-            </div>`).join("") : '<div class="lvl-meta">無資料</div>'}
+              <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+            </div>`;
+          }).join("") : '<div class="lvl-meta">無資料</div>'}
         </div>
       `;
     }
@@ -557,9 +565,9 @@
             <table>
               <thead>
                 <tr>
-                  <th class="tr">Call Vol</th><th class="tr">Call OI</th><th class="tr">Δ</th>
+                  <th class="tr">C.Vol</th><th class="tr">C.OI</th><th class="tr">C.價</th><th class="tr">Δ</th>
                   <th class="tc">行使價</th>
-                  <th class="tl">Δ</th><th class="tl">Put OI</th><th class="tl">Put Vol</th>
+                  <th class="tl">Δ</th><th class="tl">P.價</th><th class="tl">P.OI</th><th class="tl">P.Vol</th>
                 </tr>
               </thead>
               <tbody>
@@ -580,9 +588,11 @@
                   return `<tr class="${cls}">
                     <td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>
                     <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>
+                    <td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>
                     <td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>
                     <td class="tc mono" style="font-weight:500">${row.strike}</td>
                     <td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>
+                    <td class="tl mono mu" style="font-size:0.75rem">${row.putSettle ? fmt(row.putSettle) : "—"}</td>
                     <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>
                     <td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>
                   </tr>`;
