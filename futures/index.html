@@ -78,7 +78,8 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
 </div>
 <script src="../stock-oi/data.js"></script>
 <script>
-const reports = window.STOCK_OI || {};
+// Prefer stock-oi data (has futures). Fallback: empty.
+const reports = (typeof window.STOCK_OI === "object" && window.STOCK_OI) ? window.STOCK_OI : {};
 const dates = Object.keys(reports).sort().reverse();
 let curDate = dates[0] || null;
 let sortKey = "month", sortDir = "asc";
@@ -171,7 +172,14 @@ function monthTable(prod, title, months){
 }
 function render(date){
   const r=reports[date];
-  if(!r||!r.futures){ document.getElementById("status").textContent="無期貨資料（請更新 stock-oi/data.js）"; return; }
+  if(!r){ document.getElementById("status").textContent="無此日期資料"; return; }
+  if(!r.futures || (!r.futures.hsif && !r.futures.mhif)){
+    document.getElementById("status").textContent="此日期無期貨欄位 — 請用新版 fetch_stock_oi.py 更新 data.js";
+    document.getElementById("compare").innerHTML="";
+    document.getElementById("frontCards").innerHTML="";
+    document.getElementById("tables").innerHTML="";
+    return;
+  }
   curDate=date;
   document.getElementById("status").textContent=`顯示 ${date} · ${dates.length} 個交易日`;
   document.getElementById("dateSelect").innerHTML=dates.map(d=>`<option value="${d}" ${d===date?"selected":""}>${d}</option>`).join("");
@@ -196,8 +204,18 @@ function render(date){
   document.getElementById("tables").innerHTML =
     monthTable("hsif", "HSI 各月份", h.months) + monthTable("mhif", "MHI 各月份", m.months);
 }
-if(dates.length) render(dates[0]);
-else document.getElementById("status").textContent="無資料。請先更新 stock-oi 數據。";
+if(dates.length) {
+  // pick first date that has futures
+  const withFut = dates.find(d => reports[d] && reports[d].futures && (reports[d].futures.hsif || reports[d].futures.mhif));
+  if (withFut) render(withFut);
+  else {
+    document.getElementById("status").textContent =
+      "已載入 " + dates.length + " 日股票數據，但沒有期貨欄位。請上傳含 futures 的 stock-oi/data.js，並重新跑 Update Stock OI。";
+  }
+} else {
+  document.getElementById("status").textContent =
+    "讀不到 stock-oi/data.js。請確認 GitHub 上有 stock-oi/data.js，路徑為 /hsi-oi/stock-oi/data.js";
+}
 </script>
 </body>
 </html>
