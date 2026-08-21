@@ -268,14 +268,17 @@ def save(reports):
     DATA_JS.write_text(js, encoding="utf-8")
     print(f"Saved {len(trimmed)} day(s) → {DATA_JS}")
 
-def main():
-    if len(sys.argv) > 1:
-        date_str = sys.argv[1]
-    else:
-        now = datetime.utcnow() + timedelta(hours=8)
-        date_str = now.strftime("%Y-%m-%d")
-    reports = load_existing()
-    text = fetch(date_str)
+def try_fetch_day(date_str: str):
+    """Fetch options + futures for one day. Returns report or None on 404."""
+    from urllib.error import HTTPError
+    try:
+        text = fetch(date_str)
+    except HTTPError as e:
+        print(f"  options {date_str}: HTTP {e.code}")
+        return None
+    except Exception as e:
+        print(f"  options {date_str}: {e}")
+        return None
     report = parse_report(text, date_str)
     futures = {}
     for product in ("hsif", "mhif"):
@@ -287,6 +290,27 @@ def main():
         except Exception as e:
             print(f"  {product} skip: {e}")
     report["futures"] = futures
+    return report
+
+
+def main():
+    if len(sys.argv) > 1:
+        candidates = [sys.argv[1]]
+    else:
+        now = datetime.utcnow() + timedelta(hours=8)
+        # try today then previous calendar days (covers weekends / late report)
+        candidates = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(0, 8)]
+
+    reports = load_existing()
+    report = None
+    for date_str in candidates:
+        print(f"Trying {date_str} ...")
+        report = try_fetch_day(date_str)
+        if report:
+            break
+    if not report:
+        print("No report found in candidates:", candidates)
+        sys.exit(0)  # do not fail the workflow when report not published yet
     reports[report["date"]] = report
     save(reports)
 
