@@ -941,6 +941,11 @@
       `;
     }
 
+    function arrow(activeKey, key, dir) {
+      if (activeKey !== key) return '<span class="arrow">↕</span>';
+      return dir === "desc" ? '<span class="arrow">↓</span>' : '<span class="arrow">↑</span>';
+    }
+
     function setStrikeSort(key) {
       if (sortKey === key) sortDir = sortDir === "desc" ? "asc" : "desc";
       else { sortKey = key; sortDir = key === "strike" ? "desc" : "desc"; }
@@ -1006,11 +1011,11 @@
           <div class="controls">
             <div>
               <label>最低 OI</label>
-              <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" />
+              <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" oninput="onFilterChange()" />
             </div>
             <div>
               <label>最低成交量</label>
-              <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" />
+              <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" oninput="onFilterChange()" />
             </div>
             
           </div>
@@ -1030,7 +1035,7 @@
                 </tr>
               </thead>
               <tbody>
-                ${rows.map(row => {
+                ${rows.length === 0 ? `<tr><td colspan="9" class="mu" style="text-align:center;padding:20px;">沒有符合條件的行使價（試試降低最低 OI 或關閉近價）</td></tr>` : rows.map(row => {
                   const isOI = important.oi.has(row.strike);
                   const isVol = important.vol.has(row.strike);
                   const isChg = important.chg.has(row.strike);
@@ -1064,21 +1069,14 @@
     }
 
     function onFilterChange() {
-      const sk = document.getElementById("sortKey");
-      const sd = document.getElementById("sortDir");
       const moi = document.getElementById("minOI");
       const mv = document.getElementById("minVol");
-      if (sk) sortKey = sk.value;
-      if (sd) sortDir = sd.value;
       if (moi) minOI = parseInt(moi.value, 10) || 0;
       if (mv) minVol = parseInt(mv.value, 10) || 0;
-      if (atm) atmEnabled = atm.checked;
-      if (ar) atmRange = parseInt(ar.value, 10) || 800;
-      // persist ATM preference lightly
       try {
         const s = JSON.parse(localStorage.getItem("hsi_oi_settings") || "{}");
-        s.atmEnabled = atmEnabled;
-        s.atmRange = atmRange;
+        s.minOI = minOI;
+        s.minVol = minVol;
         localStorage.setItem("hsi_oi_settings", JSON.stringify(s));
       } catch (e) {}
       renderStrikeTable();
@@ -1185,10 +1183,6 @@
       });
     }
 
-    function arrow(activeKey, key, dir) {
-      if (activeKey !== key) return '<span class="arrow">↕</span>';
-      return dir === "desc" ? '<span class="arrow">↓</span>' : '<span class="arrow">↑</span>';
-    }
 
     function setWallSort(key) {
       if (wallSortKey === key) wallSortDir = wallSortDir === "desc" ? "asc" : "desc";
