@@ -1,0 +1,23 @@
+name: Update Stock OI
+on:
+  schedule:
+    - cron: "55 14 * * 1-5"
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fetch stock options
+        run: python3 stock-oi/fetch_stock_oi.py
+        working-directory: .
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add stock-oi/data.js
+          git diff --staged --quiet || git commit -m "update Stock OI $(date -u +%Y-%m-%d)"
+          git push
