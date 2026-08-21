@@ -145,6 +145,7 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
   </div>
 
   <div class="analysis" id="analysis"></div>
+  <div id="levelsBias" style="margin-bottom:16px;"></div>
   <div class="compare" id="compare"></div>
   <div class="fut-grid" id="frontCards"></div>
   <div id="tables"></div>
@@ -158,6 +159,7 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
   </footer>
 </div>
 <script src="../stock-oi/data.js"></script>
+<script src="../data.js"></script>
 <script>
 const reports = (typeof window.STOCK_OI === "object" && window.STOCK_OI) ? window.STOCK_OI : {};
 const dates = Object.keys(reports).sort().reverse();
@@ -207,6 +209,7 @@ function saveSettings(){
   localStorage.setItem("futures_settings", JSON.stringify(settings));
   closeSettings();
   renderAnalysis();
+  renderLevelsBias();
   applyFilters();
 }
 function resetSettings(){
@@ -356,6 +359,65 @@ function buildSeries(){
     });
   }
   return rows;
+}
+
+
+function renderLevelsBias(){
+  const box = document.getElementById("levelsBias");
+  if(!box) return;
+  const hsiReports = (typeof window.HSI_REPORTS === "object" && window.HSI_REPORTS) ? window.HSI_REPORTS : {};
+  // Match current futures date if possible
+  const hsiDates = Object.keys(hsiReports).sort().reverse();
+  const hDate = hsiDates.find(d => d === curDate) || hsiDates[0];
+  const hr = hDate ? hsiReports[hDate] : null;
+  if(!hr || !hr.heavyZones){
+    box.innerHTML = `<div class="an-card" style="grid-column:1/-1"><div class="mu" style="font-size:0.8rem">期權牆位：請確認根目錄 data.js（HSI OI）已上傳，以便顯示 Settle vs 重貨區</div></div>`;
+    return;
+  }
+  const settle = (reports[curDate]?.futures?.hsif?.front?.settle)
+    || hr.futures?.hsif?.front?.settle
+    || null;
+  const allCalls = hr.heavyZones.callWalls || [];
+  const allPuts = hr.heavyZones.putWalls || [];
+  let nearCall = null, nearPut = null;
+  if(settle != null){
+    const above = allCalls.filter(z => z.strike >= settle).sort((a,b)=>a.strike-b.strike);
+    const below = allPuts.filter(z => z.strike <= settle).sort((a,b)=>b.strike-a.strike);
+    nearCall = above[0] || null;
+    nearPut = below[0] || null;
+  }
+  let biasTitle = "水平待定", biasNote = "";
+  if(settle != null && (nearCall || nearPut)){
+    const callAbove = nearCall && nearCall.strike > settle;
+    const putBelow = nearPut && nearPut.strike < settle;
+    if(callAbove && putBelow){
+      biasTitle = "夾在牆中";
+      biasNote = `上 Call ${nearCall.strike}（+${Math.round(nearCall.strike-settle)}）· 下 Put ${nearPut.strike}（${Math.round(nearPut.strike-settle)}）`;
+    } else if(callAbove){
+      biasTitle = "潛在阻力在上";
+      biasNote = `最近 Call ${nearCall.strike} · +${Math.round(nearCall.strike-settle)} pts`;
+    } else if(putBelow){
+      biasTitle = "潛在支持在下";
+      biasNote = `最近 Put ${nearPut.strike} · ${Math.round(nearPut.strike-settle)} pts`;
+    } else {
+      biasTitle = "牆位偏離 Settle";
+      biasNote = "見恒指期權頁完整 Levels";
+    }
+  }
+  box.innerHTML = `
+    <div class="an-card" style="grid-column:1/-1">
+      <h3><span>Settle vs 期權牆</span><span class="tag">HSI OI · ${hDate||"—"}</span></h3>
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">${biasTitle}</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;">${biasNote || (settle!=null?"Settle "+fmt(settle):"無 Settle")}</div>
+      <div class="an-grid">
+        <div class="an-item"><div class="l">期貨結算</div><div class="v">${settle!=null?fmt(settle):"—"}</div></div>
+        <div class="an-item"><div class="l">Call 牆</div><div class="v pos">${nearCall?nearCall.strike:"—"}</div>
+          <div class="s">${nearCall&&settle!=null?((nearCall.strike-settle>=0?"+":"")+Math.round(nearCall.strike-settle)+" pts"):""}</div></div>
+        <div class="an-item"><div class="l">Put 牆</div><div class="v neg">${nearPut?nearPut.strike:"—"}</div>
+          <div class="s">${nearPut&&settle!=null?((nearPut.strike-settle>=0?"+":"")+Math.round(nearPut.strike-settle)+" pts"):""}</div></div>
+      </div>
+      <div class="bias mu"><a href="../" style="color:var(--muted)">→ 恒指期權頁看完整 Levels</a></div>
+    </div>`;
 }
 
 function renderAnalysis(){
@@ -554,6 +616,7 @@ function render(date){
   document.getElementById("frontCards").innerHTML =
     frontCard("恒生指數期貨 HSI", hf, h.total) + frontCard("小型恒指期貨 MHI", mf, m.total);
   renderAnalysis();
+  renderLevelsBias();
   applyFilters();
 }
 
