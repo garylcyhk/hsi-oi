@@ -878,25 +878,108 @@
     function renderLevelsCard(r) {
       const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
       const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
+      const allCalls = r.heavyZones?.callWalls || [];
+      const allPuts = r.heavyZones?.putWalls || [];
       const smap = {};
       (r.strikes || []).forEach(s => { smap[s.strike] = s; });
+
+      // Settle from HSI futures front month
+      const settle = r.futures?.hsif?.front?.settle
+        || r.futures?.mhif?.front?.settle
+        || null;
+
+      // Nearest Call wall ABOVE settle (resistance), Put wall BELOW (support)
+      let nearCall = null, nearPut = null;
+      if (settle != null) {
+        const above = allCalls.filter(z => z.strike >= settle).sort((a,b) => a.strike - b.strike);
+        const below = allPuts.filter(z => z.strike <= settle).sort((a,b) => b.strike - a.strike);
+        nearCall = above[0] || allCalls.slice().sort((a,b) => Math.abs(a.strike - settle) - Math.abs(b.strike - settle))[0] || null;
+        nearPut = below[0] || allPuts.slice().sort((a,b) => Math.abs(a.strike - settle) - Math.abs(b.strike - settle))[0] || null;
+      }
+
+      function distLine(wall, side) {
+        if (!wall || settle == null) return "";
+        const d = wall.strike - settle;
+        const pts = (d >= 0 ? "+" : "") + Math.round(d);
+        const pct = settle ? ((d / settle) * 100).toFixed(2) : "—";
+        const pctStr = (d >= 0 ? "+" : "") + pct + "%";
+        if (side === "call") {
+          if (d > 0) return `Settle 上方 <strong>${pts}</strong> pts (${pctStr}) · 潛在阻力`;
+          if (d < 0) return `Settle 已升穿 · 在牆下方 ${Math.abs(Math.round(d))} pts`;
+          return `Settle 正坐在 Call 牆`;
+        } else {
+          if (d < 0) return `Settle 下方 <strong>${pts}</strong> pts (${pctStr}) · 潛在支持`;
+          if (d > 0) return `Settle 已跌破 · 在牆上方 ${Math.abs(Math.round(d))} pts`;
+          return `Settle 正坐在 Put 牆`;
+        }
+      }
+
+      // Bias in trader language
+      let biasTitle = "水平待定";
+      let biasNote = "需結算價與重貨區資料";
+      if (settle != null && (nearCall || nearPut)) {
+        const callAbove = nearCall && nearCall.strike > settle;
+        const putBelow = nearPut && nearPut.strike < settle;
+        const callDist = nearCall ? Math.abs(nearCall.strike - settle) : Infinity;
+        const putDist = nearPut ? Math.abs(nearPut.strike - settle) : Infinity;
+        if (callAbove && putBelow) {
+          biasTitle = "夾在牆中";
+          biasNote = `上有 Call ${nearCall.strike}（+${Math.round(callDist)}）· 下有 Put ${nearPut.strike}（-${Math.round(putDist)}）`;
+        } else if (callAbove && !putBelow) {
+          biasTitle = "潛在阻力在上";
+          biasNote = `最近 Call 牆 ${nearCall.strike}，上方約 ${Math.round(callDist)} pts`;
+        } else if (putBelow && !callAbove) {
+          biasTitle = "潛在支持在下";
+          biasNote = `最近 Put 牆 ${nearPut.strike}，下方約 ${Math.round(putDist)} pts`;
+        } else if (nearCall && nearCall.strike === settle) {
+          biasTitle = "坐在 Call 牆";
+          biasNote = `結算價 = Call 重貨 ${nearCall.strike}`;
+        } else if (nearPut && nearPut.strike === settle) {
+          biasTitle = "坐在 Put 牆";
+          biasNote = `結算價 = Put 重貨 ${nearPut.strike}`;
+        } else {
+          biasTitle = "牆位偏離 Settle";
+          biasNote = "最近重貨區不在典型阻力/支持位置，留意次月或次重牆";
+        }
+      }
+
       document.getElementById("levelsCard").innerHTML = `
         <div class="section" style="grid-column:1/-1;margin-bottom:0;">
           <div class="section-header">
             <h2>關鍵水平 Levels</h2>
             <div class="header-right">
-              <span class="tag">Top 3 Call / Put</span>
+              <span class="tag">${settle != null ? "Settle " + fmt(settle) : "無 Settle"} · Top 3 Call / Put</span>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;">
+          <div style="padding:10px 12px 0 12px;">
+            <div style="background:rgba(39,39,42,.55);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px;">
+              <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">${biasTitle}</div>
+              <div style="font-size:0.78rem;color:var(--muted);">${biasNote}</div>
+              ${settle != null ? `
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:0.78rem;">
+                <div>
+                  <div class="em" style="margin-bottom:2px;">最近 Call 牆 ${nearCall ? nearCall.strike : "—"}</div>
+                  <div class="mu">${distLine(nearCall, "call")}</div>
+                  ${nearCall ? `<div class="mu">OI ${fmt(nearCall.oi)} <span class="${chgClass(nearCall.oiChange)}">${fmtChg(nearCall.oiChange)}</span></div>` : ""}
+                </div>
+                <div>
+                  <div class="ro" style="margin-bottom:2px;">最近 Put 牆 ${nearPut ? nearPut.strike : "—"}</div>
+                  <div class="mu">${distLine(nearPut, "put")}</div>
+                  ${nearPut ? `<div class="mu">OI ${fmt(nearPut.oi)} <span class="${chgClass(nearPut.oiChange)}">${fmtChg(nearPut.oiChange)}</span></div>` : ""}
+                </div>
+              </div>` : `<div class="mu" style="margin-top:6px;font-size:0.78rem;">無期貨結算價，無法計算距離</div>`}
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 12px;">
             <div>
               <div style="font-size:0.8rem;margin-bottom:6px;" class="em">Call 關鍵阻力</div>
               ${calls.length ? calls.map((z) => {
                 const s = smap[z.strike] || {};
                 const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
+                const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
                 return `<div class="lvl-row">
                   <span class="lvl-strike em">${z.strike}</span>
-                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
                 </div>`;
               }).join("") : '<div class="lvl-meta">無資料</div>'}
             </div>
@@ -905,9 +988,10 @@
               ${puts.length ? puts.map((z) => {
                 const s = smap[z.strike] || {};
                 const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
+                const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
                 return `<div class="lvl-row">
                   <span class="lvl-strike ro">${z.strike}</span>
-                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
                 </div>`;
               }).join("") : '<div class="lvl-meta">無資料</div>'}
             </div>
