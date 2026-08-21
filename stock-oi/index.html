@@ -347,7 +347,8 @@
       document.getElementById("stockTabs").innerHTML = order.map(h=>{
         const u = r.underlyings[h];
         if (!u) return "";
-        return `<button class="stock-tab" data-hkats="${h}" onclick="selectStock('${h}')">${u.code.replace(/^0+/,"")} ${u.name.split(" ")[0]}</button>`;
+        const codeLabel = String(u.code||"").replace(/^0+/, "") || u.code;
+        return `<button class="stock-tab" data-hkats="${h}" onclick="selectStock('${h}')">${codeLabel} ${u.name.split(" ")[0]}</button>`;
       }).join("");
 
       if (!curHkats || !r.underlyings[curHkats]) curHkats = order.find(h=>r.underlyings[h]) || null;
