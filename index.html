@@ -590,6 +590,39 @@
         <div id="topVolume"></div>
       </div>
       <div class="tab-panel" id="tab-compare">
+        <div class="filters" id="compareFilters" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem;">
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">最低 OI
+            <input type="number" id="cmpMinOI" value="100" min="0" step="50" style="width:90px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" />
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">Top N
+            <select id="cmpTopN" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;">
+              <option value="3">3</option>
+              <option value="5" selected>5</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">
+            <input type="checkbox" id="cmpNearOnly" onchange="renderCompare(currentDate)" style="accent-color:#34d399;" />
+            只看近價 (±)
+            <input type="number" id="cmpNearPts" value="800" min="100" step="100" style="width:80px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" />
+            pts
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">
+            <input type="checkbox" id="cmpHideEmpty" checked onchange="renderCompare(currentDate)" style="accent-color:#34d399;" />
+            隱藏一邊為空
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">對齊方式
+            <select id="cmpAlign" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;">
+              <option value="union" selected>聯集（兩邊牆）</option>
+              <option value="hsi">只 HSI 牆</option>
+              <option value="mini">只 Mini 牆</option>
+              <option value="both">兩邊都有</option>
+            </select>
+          </label>
+          <span class="tag" id="cmpFilterHint"></span>
+        </div>
         <div id="compareBox"></div>
       </div>
     </div>
@@ -765,17 +798,37 @@
       const fmtC = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
       const cls = n => n>0?"pos":n<0?"neg":"mu";
 
+      // Filters
+      const minOI = parseInt(document.getElementById("cmpMinOI")?.value, 10) || 0;
+      const topN = parseInt(document.getElementById("cmpTopN")?.value, 10) || 5;
+      const nearOnly = !!document.getElementById("cmpNearOnly")?.checked;
+      const nearPts = parseInt(document.getElementById("cmpNearPts")?.value, 10) || 800;
+      const hideEmpty = !!document.getElementById("cmpHideEmpty")?.checked;
+      const alignMode = document.getElementById("cmpAlign")?.value || "union";
+
+      function filterWalls(list) {
+        let w = (list || []).filter(z => (z.oi || 0) >= minOI);
+        if (nearOnly && settle != null) {
+          w = w.filter(z => Math.abs(z.strike - settle) <= nearPts);
+        }
+        return w.slice(0, topN);
+      }
+
+      function wallsListFiltered(r, side) {
+        if (!r || !r.heavyZones) return [];
+        const key = side === "call" ? "callWalls" : "putWalls";
+        // heavyZones already sorted by OI desc; apply filters
+        return filterWalls(r.heavyZones[key] || []);
+      }
+
       function sideCard(title, r, bias, multiplier) {
         if (!r) {
           return `<div class="cmp-card"><h3>${title}</h3><div class="mu">此日期無資料</div></div>`;
         }
-        const s = r.summary || {};
-        const callOI = s.callOI ?? r.heavyZones?.callWalls?.reduce((a,z)=>a+(z.oi||0),0);
-        // prefer front month totals from structure if present
         const frontCall = (r.strikes||[]).reduce((a,x)=>a+(x.callOI||0),0);
         const frontPut = (r.strikes||[]).reduce((a,x)=>a+(x.putOI||0),0);
-        const cWalls = wallsList(r, "call", 5);
-        const pWalls = wallsList(r, "put", 5);
+        const cWalls = wallsListFiltered(r, "call");
+        const pWalls = wallsListFiltered(r, "put");
         return `<div class="cmp-card">
           <h3><span>${title}</span><span class="tag">${r.date||""} · ${multiplier}</span></h3>
           <div class="cmp-label">偏向</div>
@@ -784,29 +837,70 @@
           <div class="cmp-row"><span>即月 Call OI</span><span class="cmp-metric">${fmtN(frontCall)}</span></div>
           <div class="cmp-row"><span>即月 Put OI</span><span class="cmp-metric">${fmtN(frontPut)}</span></div>
           <div class="cmp-row"><span>Put/Call</span><span class="cmp-metric">${frontCall? (frontPut/frontCall).toFixed(2) : "—"}</span></div>
-          <div class="cmp-label" style="margin-top:10px;">Call 重貨 Top 5</div>
-          ${cWalls.map(z=>`<div class="cmp-row"><span class="em">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">—</div>'}
-          <div class="cmp-label" style="margin-top:10px;">Put 重貨 Top 5</div>
-          ${pWalls.map(z=>`<div class="cmp-row"><span class="ro">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">—</div>'}
+          <div class="cmp-label" style="margin-top:10px;">Call 重貨 (篩選後 ${cWalls.length})</div>
+          ${cWalls.map(z=>`<div class="cmp-row"><span class="em">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">無符合</div>'}
+          <div class="cmp-label" style="margin-top:10px;">Put 重貨 (篩選後 ${pWalls.length})</div>
+          ${pWalls.map(z=>`<div class="cmp-row"><span class="ro">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">無符合</div>'}
         </div>`;
       }
 
-      // Align strikes table: union of top walls
-      const hCalls = wallsList(hsi, "call", 8);
-      const mCalls = wallsList(mini, "call", 8);
-      const hPuts = wallsList(hsi, "put", 8);
-      const mPuts = wallsList(mini, "put", 8);
-      const callStrikes = [...new Set([...hCalls.map(z=>z.strike), ...mCalls.map(z=>z.strike)])].sort((a,b)=>b-a);
-      const putStrikes = [...new Set([...hPuts.map(z=>z.strike), ...mPuts.map(z=>z.strike)])].sort((a,b)=>b-a);
+      // Full wall maps for alignment (filter by minOI / near, not topN slice yet for union)
+      function allFiltered(r, side) {
+        if (!r || !r.heavyZones) return [];
+        const key = side === "call" ? "callWalls" : "putWalls";
+        let w = (r.heavyZones[key] || []).filter(z => (z.oi || 0) >= minOI);
+        if (nearOnly && settle != null) w = w.filter(z => Math.abs(z.strike - settle) <= nearPts);
+        return w;
+      }
+      const hCalls = allFiltered(hsi, "call");
+      const mCalls = allFiltered(mini, "call");
+      const hPuts = allFiltered(hsi, "put");
+      const mPuts = allFiltered(mini, "put");
       const hMap = o => Object.fromEntries((o||[]).map(z=>[z.strike,z]));
       const hc = hMap(hCalls), mc = hMap(mCalls), hp = hMap(hPuts), mp = hMap(mPuts);
 
+      function pickStrikes(hList, mList) {
+        const hs = new Set(hList.map(z=>z.strike));
+        const ms = new Set(mList.map(z=>z.strike));
+        let set;
+        if (alignMode === "hsi") set = hs;
+        else if (alignMode === "mini") set = ms;
+        else if (alignMode === "both") set = new Set([...hs].filter(s => ms.has(s)));
+        else set = new Set([...hs, ...ms]);
+        let arr = [...set].sort((a,b)=>b-a);
+        // limit display rows by topN * 2 roughly or keep all filtered
+        if (alignMode === "union" || alignMode === "both") {
+          // rank by max OI across products
+          arr.sort((a,b) => {
+            const oa = Math.max(hc[a]?.oi||0, mc[a]?.oi||0, hp[a]?.oi||0, mp[a]?.oi||0);
+            const ob = Math.max(hc[b]?.oi||0, mc[b]?.oi||0, hp[b]?.oi||0, mp[b]?.oi||0);
+            return ob - oa;
+          });
+        }
+        return arr.slice(0, Math.max(topN, topN));
+      }
+
+      // For call table use call lists; put table use put lists
+      let callStrikes = pickStrikes(hCalls, mCalls);
+      let putStrikes = pickStrikes(hPuts, mPuts);
+
+      if (hideEmpty) {
+        callStrikes = callStrikes.filter(s => hc[s] && mc[s]);
+        putStrikes = putStrikes.filter(s => hp[s] && mp[s]);
+      }
+
+      const hint = document.getElementById("cmpFilterHint");
+      if (hint) {
+        hint.textContent = `Call 列 ${callStrikes.length} · Put 列 ${putStrikes.length} · minOI ${minOI}` +
+          (nearOnly ? ` · 近價±${nearPts}` : "");
+      }
+
       function alignTable(title, strikes, aMap, bMap, colorClass) {
         return `<div class="cmp-card cmp-full">
-          <h3>${title}</h3>
+          <h3>${title} <span class="tag">${strikes.length} 檔</span></h3>
           <table class="cmp-table">
             <thead><tr>
-              <th>行使價</th>
+              <th class="sortable" style="cursor:pointer" onclick="cmpSortStrike(this)">行使價</th>
               <th class="tr">HSI OI</th>
               <th class="tr">HSI Δ</th>
               <th class="tr">Mini OI</th>
@@ -814,10 +908,10 @@
               <th class="tr">距 Settle</th>
             </tr></thead>
             <tbody>
-              ${strikes.map(s=>{
+              ${strikes.length ? strikes.map(s=>{
                 const a=aMap[s], b=bMap[s];
                 const dist = settle!=null ? ((s>=settle?"+":"")+Math.round(s-settle)) : "—";
-                return `<tr>
+                return `<tr onclick="onRowClick && onRowClick(this)">
                   <td class="${colorClass}">${s}</td>
                   <td class="tr">${a?fmtN(a.oi):"—"}</td>
                   <td class="tr ${a?cls(a.oiChange):""}">${a?fmtC(a.oiChange):"—"}</td>
@@ -825,7 +919,7 @@
                   <td class="tr ${b?cls(b.oiChange):""}">${b?fmtC(b.oiChange):"—"}</td>
                   <td class="tr mu">${dist}</td>
                 </tr>`;
-              }).join("")||'<tr><td colspan="6" class="mu">無資料</td></tr>'}
+              }).join("") : '<tr><td colspan="6" class="mu" style="text-align:center;padding:12px">無符合條件的行使價</td></tr>'}
             </tbody>
           </table>
         </div>`;
@@ -835,8 +929,8 @@
         <div class="note" style="margin-bottom:10px;">
           對比日期 <strong>${d||"—"}</strong>
           · Settle <strong>${settle!=null?fmtN(settle):"—"}</strong>
-          · HSI 資料日 ${hsi?.date||"缺"} · Mini 資料日 ${mini?.date||"缺"}
-          · OI 規模不同（合約乘數不同），重點看<strong>牆位是否一致</strong>與 ΔOI 方向
+          · HSI ${hsi?.date||"缺"} · Mini ${mini?.date||"缺"}
+          · OI 規模不同（$50 vs $10），重點看<strong>牆位</strong>與 <strong>ΔOI 方向</strong>
         </div>
         <div class="cmp-grid">
           ${sideCard("恒指期權 HSI", hsi, bh, "$50/點")}
@@ -849,8 +943,7 @@
       `;
     }
 
-
-    function switchTab(name) {
+function switchTab(name) {
       document.querySelectorAll(".tab-btn").forEach(b => {
         b.classList.toggle("active", b.dataset.tab === name);
       });
