@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>股票期權未平倉 | Stock Options OI</title>
+  <style>
+    :root { --bg:#09090b; --card:#18181b; --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --emerald:#34d399; --rose:#fb7185; }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "PingFang TC", sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    header { border-bottom:1px solid var(--border); background:rgba(24,24,27,.92); position:sticky; top:0; z-index:20; padding:12px 16px; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; }
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { font-size:1.1rem; font-weight:600; }
+    h1 span { color:var(--muted); font-weight:400; font-size:.85rem; }
+    .sub { font-size:.72rem; color:var(--muted); }
+    select, input[type=date] { background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:6px 10px; font-size:.8rem; }
+    .container { padding:12px 16px 32px; max-width:1200px; margin:0 auto; }
+    .stock-tabs { display:flex; gap:6px; flex-wrap:wrap; margin:12px 0; }
+    .stock-tab { background:var(--card); border:1px solid var(--border); color:var(--muted); border-radius:6px; padding:8px 12px; cursor:pointer; font-size:.8rem; }
+    .stock-tab.active { background:#059669; color:#fff; border-color:#059669; }
+    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin:12px 0; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px; }
+    .card .label { font-size:.7rem; color:var(--muted); }
+    .card .value { font-size:1.1rem; font-weight:600; font-family:ui-monospace,monospace; }
+    .card .subv { font-size:.75rem; }
+    .zones { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+    @media (max-width:700px){ .zones{ grid-template-columns:1fr; } }
+    .section { background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .section-header { padding:10px 14px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .section-header h2 { font-size:.85rem; font-weight:500; }
+    .tag { font-size:.7rem; color:var(--muted); }
+    table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    th { text-align:left; padding:8px 12px; font-size:.7rem; color:var(--muted); border-bottom:1px solid var(--border); }
+    td { padding:7px 12px; border-bottom:1px solid #1f1f23; }
+    .tr { text-align:right; } .tc { text-align:center; }
+    .mono { font-family:ui-monospace,monospace; }
+    .em { color:var(--emerald); } .ro { color:var(--rose); }
+    .pos { color:var(--emerald); } .neg { color:var(--rose); }
+    .mu { color:var(--muted); }
+    tbody tr { cursor:pointer; }
+    tbody tr:hover td { background:rgba(39,39,42,.35); }
+    tr.row-selected td { background:rgba(16,185,129,.28)!important; box-shadow:inset 3px 0 0 #34d399; }
+    th.sortable { cursor:pointer; user-select:none; }
+    th.sortable:hover { color:var(--text); }
+    footer { text-align:center; padding:20px; font-size:.7rem; color:#52525b; }
+    footer a { color:var(--muted); }
+    .note { font-size:.75rem; color:var(--muted); margin-bottom:8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>股票期權未平倉 <span>Stock Options OI</span></h1>
+      <div class="site-nav">
+        <a href="../">恒指 HSI</a>
+        <a class="active" href="./">股票期權 Stocks</a>
+      </div>
+      <div class="sub">港交所每日市場報告 · 700 / 9988 / 1810 / 3690 / 3888</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <label class="mu" style="font-size:.75rem;">日期</label>
+      <select id="dateSelect" onchange="render(this.value)"></select>
+      <input type="date" id="dateCal" onchange="onCal()" />
+    </div>
+  </header>
+  <div class="container">
+    <div class="note" id="status">載入中…</div>
+    <div class="stock-tabs" id="stockTabs"></div>
+    <div id="summary" class="summary"></div>
+    <div id="zones" class="zones"></div>
+    <div id="strikes"></div>
+    <footer>
+      <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
+      <p style="margin-top:6px"><a id="src" href="#" target="_blank" rel="noopener">HKEX Stock Options Daily Report</a></p>
+    </footer>
+  </div>
+  <script src="data.js"></script>
+  <script>
+    const reports = window.STOCK_OI || {};
+    const dates = Object.keys(reports).sort().reverse();
+    let curDate = dates[0] || null;
+    let curHkats = null;
+    let wallSortKey = "oi", wallSortDir = "desc";
+
+    const fmt = n => (n==null||isNaN(n)) ? "—" : Number(n).toLocaleString("en-US");
+    const fmtChg = n => { if(n==null||n===0) return "0"; return (n>0?"+":"") + Number(n).toLocaleString("en-US"); };
+    const chgClass = n => n>0 ? "pos" : n<0 ? "neg" : "mu";
+
+    function onRowClick(tr) {
+      const table = tr.closest("table");
+      if (table) table.querySelectorAll("tr.row-selected").forEach(r => { if(r!==tr) r.classList.remove("row-selected"); });
+      tr.classList.toggle("row-selected");
+    }
+
+    function setWallSort(k) {
+      if (wallSortKey===k) wallSortDir = wallSortDir==="desc"?"asc":"desc";
+      else { wallSortKey=k; wallSortDir="desc"; }
+      renderZones();
+    }
+    function arrow(k) {
+      if (wallSortKey!==k) return "↕";
+      return wallSortDir==="desc"?"↓":"↑";
+    }
+    function sortWalls(rows) {
+      return [...rows].sort((a,b)=>{
+        let va, vb;
+        if (wallSortKey==="strike") { va=a.strike; vb=b.strike; }
+        else if (wallSortKey==="chg") { va=a.oiChange||0; vb=b.oiChange||0; }
+        else if (wallSortKey==="volume") { va=a.volume||0; vb=b.volume||0; }
+        else { va=a.oi||0; vb=b.oi||0; }
+        return wallSortDir==="desc"? vb-va : va-vb;
+      });
+    }
+
+    function onCal() {
+      const v = document.getElementById("dateCal").value;
+      if (!v) return;
+      if (reports[v]) render(v);
+      else {
+        const c = dates.filter(d=>d<=v);
+        if (c.length) render(c[0]);
+        else if (dates.length) render(dates[dates.length-1]);
+      }
+    }
+
+    function currentU() {
+      const r = reports[curDate];
+      if (!r) return null;
+      return r.underlyings[curHkats];
+    }
+
+    function renderZones() {
+      const u = currentU();
+      const box = document.getElementById("zones");
+      if (!u) { box.innerHTML=""; return; }
+      const calls = sortWalls(u.callWalls||[]);
+      const puts = sortWalls(u.putWalls||[]);
+      const cv = sortWalls((u.callVolWalls||[]).map(x=>({...x, oi:x.volume, oiChange:0})));
+      const pv = sortWalls((u.putVolWalls||[]).map(x=>({...x, oi:x.volume, oiChange:0})));
+      box.innerHTML = `
+        <div class="section">
+          <div class="section-header"><h2 class="em">Call 重貨區</h2><span class="tag">${u.frontExpiry||""}</span></div>
+          <table><thead><tr>
+            <th class="sortable" onclick="setWallSort('strike')">行使價 ${arrow('strike')}</th>
+            <th class="tr sortable" onclick="setWallSort('oi')">OI ${arrow('oi')}</th>
+            <th class="tr sortable" onclick="setWallSort('chg')">Δ ${arrow('chg')}</th>
+          </tr></thead>
+          <tbody>${calls.map(z=>`<tr onclick="onRowClick(this)"><td class="mono em">${z.strike}</td><td class="tr mono">${fmt(z.oi)}</td><td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td></tr>`).join("")||'<tr><td colspan="3" class="mu tc">無</td></tr>'}</tbody></table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2 class="ro">Put 重貨區</h2><span class="tag">${u.frontExpiry||""}</span></div>
+          <table><thead><tr>
+            <th class="sortable" onclick="setWallSort('strike')">行使價 ${arrow('strike')}</th>
+            <th class="tr sortable" onclick="setWallSort('oi')">OI ${arrow('oi')}</th>
+            <th class="tr sortable" onclick="setWallSort('chg')">Δ ${arrow('chg')}</th>
+          </tr></thead>
+          <tbody>${puts.map(z=>`<tr onclick="onRowClick(this)"><td class="mono ro">${z.strike}</td><td class="tr mono">${fmt(z.oi)}</td><td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td></tr>`).join("")||'<tr><td colspan="3" class="mu tc">無</td></tr>'}</tbody></table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2 class="em">Call 成交量重區</h2><span class="tag">Volume</span></div>
+          <table><thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+          <tbody>${(u.callVolWalls||[]).map(z=>`<tr onclick="onRowClick(this)"><td class="mono em">${z.strike}</td><td class="tr mono">${fmt(z.volume)}</td></tr>`).join("")||'<tr><td colspan="2" class="mu tc">無</td></tr>'}</tbody></table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2 class="ro">Put 成交量重區</h2><span class="tag">Volume</span></div>
+          <table><thead><tr><th>行使價</th><th class="tr">成交量</th></tr></thead>
+          <tbody>${(u.putVolWalls||[]).map(z=>`<tr onclick="onRowClick(this)"><td class="mono ro">${z.strike}</td><td class="tr mono">${fmt(z.volume)}</td></tr>`).join("")||'<tr><td colspan="2" class="mu tc">無</td></tr>'}</tbody></table>
+        </div>`;
+    }
+
+    function renderStrikes() {
+      const u = currentU();
+      const box = document.getElementById("strikes");
+      if (!u) { box.innerHTML=""; return; }
+      const rows = (u.strikes||[]).filter(s => (s.callOI||0)+(s.putOI||0) >= 50);
+      rows.sort((a,b)=> ((b.callOI||0)+(b.putOI||0)) - ((a.callOI||0)+(a.putOI||0)));
+      box.innerHTML = `
+        <div class="section">
+          <div class="section-header"><h2>行使價分佈（OI≥50）</h2><span class="tag">${rows.length} strikes · ${u.frontExpiry||""}</span></div>
+          <table>
+            <thead><tr>
+              <th class="tr">Call Vol</th><th class="tr">Call OI</th><th class="tr">Δ</th>
+              <th class="tc">行使價</th>
+              <th class="tr">Δ</th><th class="tr">Put OI</th><th class="tr">Put Vol</th>
+            </tr></thead>
+            <tbody>
+              ${rows.slice(0,40).map(s=>`<tr onclick="onRowClick(this)">
+                <td class="tr mono mu">${fmt(s.callVol||0)}</td>
+                <td class="tr mono em">${fmt(s.callOI||0)}</td>
+                <td class="tr mono ${chgClass(s.callChange)}">${fmtChg(s.callChange)}</td>
+                <td class="tc mono" style="font-weight:600">${s.strike}</td>
+                <td class="tr mono ${chgClass(s.putChange)}">${fmtChg(s.putChange)}</td>
+                <td class="tr mono ro">${fmt(s.putOI||0)}</td>
+                <td class="tr mono mu">${fmt(s.putVol||0)}</td>
+              </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    function selectStock(hkats) {
+      curHkats = hkats;
+      document.querySelectorAll(".stock-tab").forEach(b=>{
+        b.classList.toggle("active", b.dataset.hkats===hkats);
+      });
+      const u = currentU();
+      if (!u) return;
+      document.getElementById("summary").innerHTML = `
+        <div class="card"><div class="label">正股收市</div><div class="value">${u.close?u.close.toFixed(2):"—"}</div><div class="subv">${u.name||""}</div></div>
+        <div class="card"><div class="label">即月</div><div class="value" style="font-size:.95rem">${u.frontExpiry||"—"}</div></div>
+        <div class="card"><div class="label">Call OI</div><div class="value">${fmt(u.callOI)}</div></div>
+        <div class="card"><div class="label">Put OI</div><div class="value">${fmt(u.putOI)}</div></div>
+        <div class="card"><div class="label">總 OI</div><div class="value">${fmt(u.oi)}</div></div>
+        <div class="card"><div class="label">成交量</div><div class="value">${fmt(u.volume)}</div></div>
+      `;
+      renderZones();
+      renderStrikes();
+    }
+
+    function render(date) {
+      const r = reports[date];
+      if (!r) { document.getElementById("status").textContent="無資料"; return; }
+      curDate = date;
+      document.getElementById("status").textContent = `顯示 ${date} · ${dates.length} 個交易日 · 5 隻股票期權`;
+      document.getElementById("dateSelect").innerHTML = dates.map(d=>`<option value="${d}" ${d===date?"selected":""}>${d}</option>`).join("");
+      const cal = document.getElementById("dateCal");
+      if (cal) { cal.value=date; if(dates.length){ cal.min=dates[dates.length-1]; cal.max=dates[0]; } }
+      document.getElementById("src").href = r.sourceUrl || "#";
+
+      const order = ["TCH","ALB","MIU","MET","KSO"];
+      document.getElementById("stockTabs").innerHTML = order.map(h=>{
+        const u = r.underlyings[h];
+        if (!u) return "";
+        return `<button class="stock-tab" data-hkats="${h}" onclick="selectStock('${h}')">${u.code.replace(/^0+/,"")} ${u.name.split(" ")[0]}</button>`;
+      }).join("");
+
+      if (!curHkats || !r.underlyings[curHkats]) curHkats = order.find(h=>r.underlyings[h]) || null;
+      if (curHkats) selectStock(curHkats);
+    }
+
+    if (dates.length) render(dates[0]);
+    else document.getElementById("status").textContent = "尚未有數據。請執行 python3 fetch_stock_oi.py";
+  </script>
+</body>
+</html>

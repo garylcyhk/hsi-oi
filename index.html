@@ -25,6 +25,14 @@
       width: 100%; max-width: 100%; margin: 0 auto; padding: 0 16px;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
     }
+
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
     h1 { font-size: 1.15rem; font-weight: 600; }
     h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
     .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
@@ -268,7 +276,15 @@
       th { background: #f5f5f5 !important; color: #333 !important; }
       .zones { grid-template-columns: 1fr 1fr !important; }
       .levels-card { grid-template-columns: 1fr 1fr !important; }
-      h1 { color: #111 !important; font-size: 14pt; }
+  
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { color: #111 !important; font-size: 14pt; }
       .print-only { display: block !important; }
     }
     .print-only { display: none; }
@@ -311,7 +327,15 @@
     @media (max-width: 768px) {
       header { padding: 8px 0; }
       header .inner { padding: 0 10px; gap: 8px; }
-      h1 { font-size: 1rem; }
+  
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { font-size: 1rem; }
       h1 span { display: none; }
       .sub { display: none; }
       .container, .tab-panels { padding: 8px 10px 16px; }
@@ -392,6 +416,10 @@
     <div class="inner">
       <div>
         <h1>恒指期權未平倉 <span>HSI Options OI</span></h1>
+        <div class="site-nav">
+          <a class="active" href="./">恒指 HSI</a>
+          <a href="./stock-oi/">股票期權 Stocks</a>
+        </div>
         <div class="sub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
