@@ -6,10 +6,12 @@
   <title>恒指期權未平倉 | HSI Options OI</title>
   <style>
     :root {
+      --font-scale: 100%;
       --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa;
       --muted: #a1a1aa; --emerald: #34d399; --rose: #fb7185;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: var(--font-scale); }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
@@ -26,6 +28,15 @@
     h1 { font-size: 1.15rem; font-weight: 600; }
     h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
     .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .date-picker {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .date-picker label { font-size: 0.75rem; color: var(--muted); }
+    .date-picker input[type="date"], .date-picker select {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;
+      font-family: ui-monospace, monospace;
+    }
     .date-btns { display: flex; gap: 6px; flex-wrap: wrap; max-width: 100%; justify-content: flex-end; }
     .date-btn {
       font-size: 0.72rem; padding: 5px 9px; border-radius: 6px;
@@ -171,9 +182,6 @@
       display: grid; grid-template-columns: 1fr;
       margin-bottom: 16px;
     }
-    .levels-card.is-fullscreen {
-      display: block;
-    }
     @media (max-width: 700px) { .levels-card { grid-template-columns: 1fr; } }
     .levels-box {
       background: var(--card); border: 1px solid var(--border);
@@ -306,7 +314,16 @@
       .controls > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
       table { font-size: 0.75rem; }
       th, td { padding: 5px 6px; }
-      .date-btns { justify-content: flex-start; }
+      .date-picker {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .date-picker label { font-size: 0.75rem; color: var(--muted); }
+    .date-picker input[type="date"], .date-picker select {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;
+      font-family: ui-monospace, monospace;
+    }
+    .date-btns { justify-content: flex-start; }
       .print-btn, .settings-btn { font-size: 0.7rem; padding: 4px 8px; }
       .modal { width: 96vw; padding: 14px; }
       .levels-card .section > div[style*="grid"] { grid-template-columns: 1fr !important; }
@@ -341,49 +358,7 @@
     .fut-item .fl { font-size: 0.68rem; color: var(--muted); }
     .fut-item .fv { font-size: 0.95rem; font-weight: 600; font-family: ui-monospace, monospace; }
     .fut-item .fs { font-size: 0.72rem; margin-top: 1px; }
-    /* Fullscreen section */
 
-    .global-filters {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-      padding: 8px 16px; border-bottom: 1px solid var(--border);
-      background: #121214; font-size: 0.8rem;
-    }
-    .global-filters .gf-item {
-      display: flex; align-items: center; gap: 6px; color: var(--text); cursor: pointer;
-    }
-    .global-filters select {
-      background: #1c1c1f; color: var(--text); border: 1px solid #333;
-      border-radius: 5px; padding: 4px 8px; font-size: 0.78rem;
-    }
-    .global-filters input[type="checkbox"] { accent-color: #34d399; width: 16px; height: 16px; }
-    .fs-btn {
-      background: transparent; border: 1px solid #333; color: var(--muted);
-      border-radius: 4px; padding: 2px 7px; font-size: 0.7rem; cursor: pointer;
-      margin-left: 8px;
-    }
-    .fs-btn:hover { color: var(--text); border-color: #555; }
-    .section-header .header-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    th.sortable { cursor: pointer; user-select: none; }
-    th.sortable:hover { color: var(--text); }
-    th.sortable .arrow { font-size: 0.65rem; margin-left: 2px; opacity: 0.5; }
-    th.sortable.active .arrow { opacity: 1; color: var(--emerald); }
-    .mini-sort {
-      background: #1c1c1f; border: 1px solid #333; color: var(--text);
-      border-radius: 5px; padding: 3px 6px; font-size: 0.72rem;
-    }
-
-    .is-fullscreen {
-      position: fixed !important; inset: 0 !important; z-index: 90 !important;
-      margin: 0 !important; border-radius: 0 !important;
-      background: var(--bg) !important; overflow: auto !important;
-      padding: 12px !important; max-height: none !important;
-    }
-    .is-fullscreen .table-wrap { max-height: calc(100vh - 120px) !important; }
-    .fs-backdrop {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 89;
-    }
-    .fs-backdrop.show { display: block; }
-    body.fs-open { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -393,8 +368,12 @@
         <h1>恒指期權未平倉 <span>HSI Options OI</span></h1>
         <div class="sub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="date-btns" id="dateButtons"></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div class="date-picker">
+          <label for="dateSelect">日期</label>
+          <select id="dateSelect" onchange="onDateSelectChange()"></select>
+          <input type="date" id="dateCalendar" onchange="onDateCalendarChange()" title="日曆選擇" />
+        </div>
         <button class="print-btn" onclick="window.print()" title="列印">🖨 列印</button>
         <button class="settings-btn" onclick="openSettings()" title="設定">⚙️ 設定</button>
       </div>
@@ -435,6 +414,16 @@
       <div class="modal-row">
         <label>隱藏空白行使價</label>
         <input type="checkbox" id="setOnlyActive" />
+      </div>
+      <div class="modal-row">
+        <label>字體大小</label>
+        <select id="setFontScale">
+          <option value="85">小 (85%)</option>
+          <option value="100">標準 (100%)</option>
+          <option value="115">中 (115%)</option>
+          <option value="130">大 (130%)</option>
+          <option value="150">更大 (150%)</option>
+        </select>
       </div>
       <div class="modal-row">
         <label>只看近價 (Near Money)</label>
@@ -480,8 +469,7 @@
     </div>
   </div>
 
-  <div class="fs-backdrop" id="fsBackdrop" onclick="exitFullscreen()"></div>
-  <div class="container">
+    <div class="container">
     <div class="note" id="status" style="width:100%;margin:8px auto 0;padding:0 16px;">載入中…</div>
     <div class="print-only" id="printHeader" style="margin-bottom:12px;font-size:10pt;border-bottom:1px solid #ccc;padding-bottom:6px;"></div>
 
@@ -551,6 +539,7 @@
       onlyActive: true,
       atmEnabled: false,
       atmRange: 800,
+      fontScale: 100,
       topN: 5,
       hlOI: true,
       hlVol: true,
@@ -582,6 +571,8 @@
     let onlyActive = settings.onlyActive;
     let atmEnabled = settings.atmEnabled === true;
     let atmRange = settings.atmRange || 800;
+    let fontScale = settings.fontScale || 100;
+    document.documentElement.style.setProperty('--font-scale', fontScale + '%');
     let topN = settings.topN;
     let hlOI = settings.hlOI;
     let hlVol = settings.hlVol;
@@ -620,6 +611,7 @@
       document.getElementById("setSortKey").value = sortKey;
       document.getElementById("setSortDir").value = sortDir;
       document.getElementById("setOnlyActive").checked = onlyActive;
+      document.getElementById("setFontScale").value = String(fontScale);
       document.getElementById("setAtmEnabled").checked = atmEnabled;
       document.getElementById("setAtmRange").value = atmRange;
       document.getElementById("setTopN").value = topN;
@@ -647,6 +639,8 @@
       sortKey = document.getElementById("setSortKey").value;
       sortDir = document.getElementById("setSortDir").value;
       onlyActive = document.getElementById("setOnlyActive").checked;
+      fontScale = parseInt(document.getElementById("setFontScale").value, 10) || 100;
+      document.documentElement.style.setProperty("--font-scale", fontScale + "%");
       atmEnabled = document.getElementById("setAtmEnabled").checked;
       atmRange = parseInt(document.getElementById("setAtmRange").value, 10) || 800;
       topN = parseInt(document.getElementById("setTopN").value, 10) || 5;
@@ -663,7 +657,7 @@
       colPutVol = document.getElementById("setColPutVol").checked;
 
       settings = {
-        sortKey, sortDir, minOI, minVol, onlyActive, atmEnabled, atmRange, topN, hlOI, hlVol, hlChg,
+        sortKey, sortDir, minOI, minVol, onlyActive, atmEnabled, atmRange, fontScale, topN, hlOI, hlVol, hlChg,
         colCallVol, colCallOI, colCallSettle, colCallChg,
         colPutChg, colPutSettle, colPutOI, colPutVol
       };
@@ -730,40 +724,6 @@
       };
     }
 
-
-    let fsCurrent = null;
-
-    function toggleFullscreen(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (fsCurrent === id) {
-        exitFullscreen();
-        return;
-      }
-      exitFullscreen();
-      el.classList.add("is-fullscreen");
-      document.getElementById("fsBackdrop").classList.add("show");
-      document.body.classList.add("fs-open");
-      fsCurrent = id;
-      // update button labels
-      document.querySelectorAll(".fs-btn").forEach(b => { b.textContent = "全螢幕"; });
-      const btn = el.querySelector(".fs-btn");
-      if (btn) btn.textContent = "關閉";
-    }
-
-    function exitFullscreen() {
-      if (!fsCurrent) return;
-      const el = document.getElementById(fsCurrent);
-      if (el) el.classList.remove("is-fullscreen");
-      document.getElementById("fsBackdrop").classList.remove("show");
-      document.body.classList.remove("fs-open");
-      document.querySelectorAll(".fs-btn").forEach(b => { b.textContent = "全螢幕"; });
-      fsCurrent = null;
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") exitFullscreen();
-    });
 
 
 
@@ -872,7 +832,6 @@
             <h2>關鍵水平 Levels</h2>
             <div class="header-right">
               <span class="tag">Top 3 Call / Put</span>
-              <button class="fs-btn" onclick="toggleFullscreen('levelsCard')">全螢幕</button>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;">
@@ -911,7 +870,6 @@
         box.innerHTML = `<div class="day-change">
           <div class="section-header" style="border:none;padding:0 0 8px 0;">
             <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日</h3>
-            <button class="fs-btn" onclick="toggleFullscreen('dayChange')">全螢幕</button>
           </div>
           <div class="dc-label">尚無昨日資料可比較（需至少 2 個交易日）</div>
         </div>`;
@@ -949,7 +907,6 @@
         <div class="day-change" id="dayChangeInner">
           <div class="section-header" style="border:none;padding:0 0 8px 0;">
             <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日牆位變化 <span class="tag" style="font-weight:400;color:var(--muted)">${r.date} vs ${prevDate}</span></h3>
-            <button class="fs-btn" onclick="toggleFullscreen('dayChange')">全螢幕</button>
           </div>
           <div class="dc-grid">
             ${diffSide(tCall, yCall, "Call 牆")}
@@ -1009,7 +966,6 @@
             <h2>即月行使價分佈</h2>
             <div class="header-right">
               <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
-              <button class="fs-btn" onclick="toggleFullscreen('strikes')">全螢幕</button>
             </div>
           </div>
           <div class="controls">
@@ -1134,6 +1090,26 @@
       renderStrikeTable();
     }
 
+
+    function onDateSelectChange() {
+      const sel = document.getElementById("dateSelect");
+      if (sel && sel.value) render(sel.value);
+    }
+
+    function onDateCalendarChange() {
+      const cal = document.getElementById("dateCalendar");
+      if (!cal || !cal.value) return;
+      const picked = cal.value;
+      if (reports[picked]) {
+        render(picked);
+        return;
+      }
+      // snap to nearest available trading day on or before picked
+      const candidates = availableDates.filter(d => d <= picked);
+      if (candidates.length) render(candidates[0]);
+      else if (availableDates.length) render(availableDates[availableDates.length - 1]);
+    }
+
     function render(date) {
       const r = reports[date];
       if (!r) {
@@ -1150,9 +1126,20 @@
         ph.textContent = `恒指期權未平倉 · ${r.date} · 即月 ${r.summary.frontMonth} · Call OI ${fmt(r.summary.callOI)} / Put OI ${fmt(r.summary.putOI)} · 街貨 ${r.summary.callPct}% / ${r.summary.putPct}%`;
       }
 
-      document.getElementById("dateButtons").innerHTML = availableDates.map(d =>
-        `<button class="date-btn ${d === date ? "active" : ""}" onclick="render('${d}')">${d}</button>`
-      ).join("");
+      const sel = document.getElementById("dateSelect");
+      const cal = document.getElementById("dateCalendar");
+      if (sel) {
+        sel.innerHTML = availableDates.map(d =>
+          `<option value="${d}" ${d === date ? "selected" : ""}>${d}</option>`
+        ).join("");
+      }
+      if (cal) {
+        cal.value = date;
+        if (availableDates.length) {
+          cal.min = availableDates[availableDates.length - 1];
+          cal.max = availableDates[0];
+        }
+      }
 
       const s = r.summary;
       document.getElementById("summary").innerHTML = `
@@ -1263,7 +1250,6 @@
             <h2>重貨區 / 成交量重區</h2>
             <div class="header-right">
               <span class="tag">點欄位標題排序</span>
-              <button class="fs-btn" onclick="toggleFullscreen('zones')">全螢幕</button>
             </div>
           </div>
         </div>
@@ -1358,7 +1344,6 @@
             <h2>十大成交</h2>
             <div class="header-right">
               <span class="tag">點欄位標題排序</span>
-              <button class="fs-btn" onclick="toggleFullscreen('topVolume')">全螢幕</button>
             </div>
           </div>
           <div class="table-wrap">
