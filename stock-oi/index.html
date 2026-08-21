@@ -77,6 +77,39 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
   .print-only{display:block} .tab-panel{display:block!important} .card,.section,.levels-card,.day-change{border:1px solid #ccc;break-inside:avoid}
   a{color:#111} table{font-size:9pt}
 }
+
+/* —— Responsive —— */
+.container{width:100%;max-width:1100px;margin:0 auto;padding:12px 16px 32px;box-sizing:border-box}
+header{width:100%;box-sizing:border-box}
+.filters{flex-wrap:wrap}
+.tab-bar{display:flex;flex-wrap:wrap;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap, .section > div[style*="overflow"], .section{max-width:100%}
+table{width:100%;max-width:100%}
+.section{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:900px){
+  .container{padding:10px 12px 28px}
+  header{padding:10px 12px}
+  h1{font-size:1rem}
+  .grid-summary, .summary-grid{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:700px){
+  header{flex-direction:column;align-items:flex-start!important}
+  header > div:last-child{width:100%;justify-content:flex-start}
+  .site-nav{width:100%}
+  .filters{padding:8px 10px}
+  .filters label{font-size:.72rem}
+  .grid-summary, .summary-grid, .lvl-grid, .dc-grid, .zones, .futures-bar{grid-template-columns:1fr!important}
+  .stock-tabs{flex-wrap:wrap}
+  table{font-size:.75rem}
+  th,td{padding:6px 8px!important}
+  .btn{padding:6px 10px}
+  select,input[type=date],input[type=number]{font-size:16px} /* avoid iOS zoom */
+}
+@media(max-width:480px){
+  h1 span{display:block;font-size:.75rem;margin-top:2px}
+  .tab-btn{font-size:.7rem;padding:5px 8px}
+}
+
 </style>
 </head>
 <body>
