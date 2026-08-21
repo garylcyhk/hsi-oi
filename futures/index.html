@@ -16,18 +16,23 @@ h1{font-size:1.1rem;font-weight:600} h1 span{color:var(--muted);font-weight:400;
 .site-nav a{font-size:.72rem;padding:3px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none}
 .site-nav a.active{background:#059669;color:#fff;border-color:#059669}
 .site-nav a:hover:not(.active){border-color:#555;color:var(--text)}
-select,input[type=date]{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.8rem}
+select,input[type=date],input[type=number]{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.8rem}
+input[type=number]{width:90px}
 .btn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:.75rem;cursor:pointer}
+.btn:hover{border-color:#555}
 .container{padding:12px 16px 32px;max-width:1100px;margin:0 auto}
 .note{font-size:.75rem;color:var(--muted);margin-bottom:12px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem}
+.filters label{color:var(--muted);display:flex;align-items:center;gap:6px}
+.filters input[type=checkbox]{accent-color:#34d399;width:14px;height:14px}
 .fut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-@media(max-width:700px){.fut-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.fut-grid,.compare{grid-template-columns:1fr!important}}
 .fut-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
 .fut-card h2{font-size:.9rem;font-weight:500;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:8px}
 .m .l{font-size:.68rem;color:var(--muted)}.m .v{font-size:1.15rem;font-weight:600;font-family:ui-monospace,monospace}.m .s{font-size:.75rem}
 .section{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
-.section-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.section-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .section-header h3{font-size:.85rem;font-weight:500}
 .tag{font-size:.7rem;color:var(--muted)}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
@@ -39,10 +44,21 @@ th.sortable{cursor:pointer;user-select:none} th.sortable:hover{color:var(--text)
 tbody tr{cursor:pointer} tbody tr:hover td{background:rgba(39,39,42,.35)}
 tr.row-selected td{background:rgba(16,185,129,.28)!important;box-shadow:inset 3px 0 0 #34d399}
 .compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
-@media(max-width:700px){.compare{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px}
 .card .label{font-size:.7rem;color:var(--muted)}.card .value{font-size:1.1rem;font-weight:600;font-family:ui-monospace,monospace}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#121214;border:1px solid var(--border);border-radius:10px;padding:18px;width:min(420px,92vw);max-height:85vh;overflow:auto}
+.modal h3{font-size:1rem;margin-bottom:14px}
+.modal-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #27272a;font-size:.85rem}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.btn-primary{background:#059669;border:none;color:#fff;border-radius:6px;padding:7px 14px;cursor:pointer}
+.btn-secondary{background:#27272a;border:none;color:var(--text);border-radius:6px;padding:7px 14px;cursor:pointer}
 footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{color:var(--muted)}
+@media print{
+  .site-nav,.filters,.btn,.modal-overlay{display:none!important}
+  body{background:#fff;color:#111} .card,.section,.fut-card{border:1px solid #ccc}
+}
 </style>
 </head>
 <body>
@@ -61,14 +77,50 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
     <select id="dateSelect" onchange="render(this.value)"></select>
     <input type="date" id="dateCal" onchange="onCal()" />
     <button class="btn" onclick="window.print()">🖨 列印</button>
+    <button class="btn" onclick="openSettings()">⚙️ 設定</button>
   </div>
 </header>
+
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h3>設定 Settings</h3>
+    <div class="modal-row"><label>字體大小</label>
+      <select id="setFontScale">
+        <option value="85">小 85%</option>
+        <option value="100">標準 100%</option>
+        <option value="115">中 115%</option>
+        <option value="130">大 130%</option>
+        <option value="150">更大 150%</option>
+      </select>
+    </div>
+    <div class="modal-row"><label>預設最低成交量</label><input type="number" id="setMinVol" min="0" step="100" /></div>
+    <div class="modal-row"><label>預設最低 OI</label><input type="number" id="setMinOI" min="0" step="100" /></div>
+    <div class="modal-row"><label>隱藏無成交日</label><input type="checkbox" id="setHideZeroVol" /></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="resetSettings()">重設</button>
+      <button class="btn-secondary" onclick="closeSettings()">取消</button>
+      <button class="btn-primary" onclick="saveSettings()">儲存</button>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <div class="note" id="status">載入中…</div>
+  <div class="filters" id="filters">
+    <label>最低成交量 <input type="number" id="minVol" value="0" min="0" step="100" oninput="applyFilters()" /></label>
+    <label>最低 OI <input type="number" id="minOI" value="0" min="0" step="100" oninput="applyFilters()" /></label>
+    <label><input type="checkbox" id="hideZeroVol" onchange="applyFilters()" /> 隱藏無成交</label>
+    <label>只看 <select id="productFilter" onchange="applyFilters()">
+      <option value="both">HSI + MHI</option>
+      <option value="hsif">只 HSI</option>
+      <option value="mhif">只 MHI</option>
+    </select></label>
+    <span class="tag" id="filterHint"></span>
+  </div>
   <div class="compare" id="compare"></div>
   <div class="fut-grid" id="frontCards"></div>
-  <div id="history"></div>
   <div id="tables"></div>
+  <div id="history"></div>
   <footer>
     <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
     <p style="margin-top:6px">
@@ -79,16 +131,59 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
 </div>
 <script src="../stock-oi/data.js"></script>
 <script>
-// Prefer stock-oi data (has futures). Fallback: empty.
 const reports = (typeof window.STOCK_OI === "object" && window.STOCK_OI) ? window.STOCK_OI : {};
 const dates = Object.keys(reports).sort().reverse();
 let curDate = dates[0] || null;
-let sortKey = "month", sortDir = "asc";
-let sortProduct = "hsif";
+let sortKey = "month", sortDir = "asc", sortProduct = "hsif";
+let histSortKey = "date", histSortDir = "desc";
+
+const DEFAULTS = { fontScale:100, minVol:0, minOI:0, hideZeroVol:false };
+function loadSettings(){
+  try { return {...DEFAULTS, ...JSON.parse(localStorage.getItem("futures_settings")||"{}")}; }
+  catch(e){ return {...DEFAULTS}; }
+}
+let settings = loadSettings();
+let fontScale = settings.fontScale || 100;
+let minVol = settings.minVol || 0;
+let minOI = settings.minOI || 0;
+let hideZeroVol = !!settings.hideZeroVol;
+document.documentElement.style.setProperty("--font-scale", fontScale + "%");
 
 const fmt = n => (n==null||isNaN(n))?"—":Number(n).toLocaleString("en-US");
 const fmtChg = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
 const chgClass = n => n>0?"pos":n<0?"neg":"mu";
+
+function openSettings(){
+  document.getElementById("setFontScale").value = String(fontScale);
+  document.getElementById("setMinVol").value = minVol;
+  document.getElementById("setMinOI").value = minOI;
+  document.getElementById("setHideZeroVol").checked = hideZeroVol;
+  document.getElementById("settingsModal").classList.add("open");
+}
+function closeSettings(){ document.getElementById("settingsModal").classList.remove("open"); }
+function saveSettings(){
+  fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
+  minVol = parseInt(document.getElementById("setMinVol").value,10)||0;
+  minOI = parseInt(document.getElementById("setMinOI").value,10)||0;
+  hideZeroVol = document.getElementById("setHideZeroVol").checked;
+  document.documentElement.style.setProperty("--font-scale", fontScale+"%");
+  document.getElementById("minVol").value = minVol;
+  document.getElementById("minOI").value = minOI;
+  document.getElementById("hideZeroVol").checked = hideZeroVol;
+  settings = {fontScale, minVol, minOI, hideZeroVol};
+  localStorage.setItem("futures_settings", JSON.stringify(settings));
+  closeSettings();
+  applyFilters();
+}
+function resetSettings(){
+  settings = {...DEFAULTS}; fontScale=100; minVol=0; minOI=0; hideZeroVol=false;
+  document.documentElement.style.setProperty("--font-scale","100%");
+  document.getElementById("minVol").value=0;
+  document.getElementById("minOI").value=0;
+  document.getElementById("hideZeroVol").checked=false;
+  localStorage.setItem("futures_settings", JSON.stringify(settings));
+  closeSettings(); applyFilters();
+}
 
 function onRowClick(tr){
   const table=tr.closest("table");
@@ -100,16 +195,24 @@ function setSort(prod, key){
   else { sortProduct=prod; sortKey=key; sortDir = key==="month"?"asc":"desc"; }
   render(curDate);
 }
+function setHistSort(key){
+  if(histSortKey===key) histSortDir = histSortDir==="desc"?"asc":"desc";
+  else { histSortKey=key; histSortDir="desc"; }
+  renderHistory();
+}
 function arrow(prod, key){
   if(sortProduct!==prod || sortKey!==key) return '<span style="opacity:.4">↕</span>';
   return sortDir==="desc"?"↓":"↑";
 }
+function histArrow(key){
+  if(histSortKey!==key) return '<span style="opacity:.4">↕</span>';
+  return histSortDir==="desc"?"↓":"↑";
+}
 function sortMonths(months){
   const list=[...(months||[])];
   list.sort((a,b)=>{
-    let va, vb;
-    if(sortKey==="month"){ va=a.month||""; vb=b.month||""; return sortDir==="desc"?vb.localeCompare(va):va.localeCompare(vb); }
-    va=+(a[sortKey]||0); vb=+(b[sortKey]||0);
+    if(sortKey==="month"){ const va=a.month||"", vb=b.month||""; return sortDir==="desc"?vb.localeCompare(va):va.localeCompare(vb); }
+    const va=+(a[sortKey]||0), vb=+(b[sortKey]||0);
     return sortDir==="desc"?vb-va:va-vb;
   });
   return list;
@@ -141,11 +244,33 @@ function frontCard(title, f, t){
     </div>
   </div>`;
 }
+function getLiveFilters(){
+  return {
+    minVol: parseInt(document.getElementById("minVol").value,10)||0,
+    minOI: parseInt(document.getElementById("minOI").value,10)||0,
+    hideZero: document.getElementById("hideZeroVol").checked,
+    product: document.getElementById("productFilter").value || "both",
+  };
+}
+function filterMonths(months, f){
+  return (months||[]).filter(m=>{
+    const vol = +(m.volume||0), oi = +(m.oi||0);
+    if(f.hideZero && vol===0) return false;
+    if(vol < f.minVol) return false;
+    if(oi < f.minOI) return false;
+    return true;
+  });
+}
 function monthTable(prod, title, months){
-  const rows = sortProduct===prod ? sortMonths(months) : [...(months||[])];
+  const f = getLiveFilters();
+  if(f.product==="hsif" && prod!=="hsif") return "";
+  if(f.product==="mhif" && prod!=="mhif") return "";
+  let rows = filterMonths(months, f);
+  if(sortProduct===prod) rows = sortMonths(rows);
+  else rows = [...rows];
   const th=(k,label,cls="")=>`<th class="${cls} sortable ${sortProduct===prod&&sortKey===k?"active":""}" onclick="setSort('${prod}','${k}')">${label} ${arrow(prod,k)}</th>`;
   return `<div class="section">
-    <div class="section-header"><h3>${title}</h3><span class="tag">${rows.length} 月份</span></div>
+    <div class="section-header"><h3>${title}</h3><span class="tag">顯示 ${rows.length} / ${(months||[]).length} 月份</span></div>
     <table><thead><tr>
       ${th("month","月份")}
       ${th("settle","結算價","tr")}
@@ -167,72 +292,84 @@ function monthTable(prod, title, months){
       <td class="tr mono mu">${fmt(m.open)}</td>
       <td class="tr mono mu">${fmt(m.high)}</td>
       <td class="tr mono mu">${fmt(m.low)}</td>
-    </tr>`).join(""):'<tr><td colspan="9" class="mu" style="text-align:center;padding:14px">無資料</td></tr>'}
+    </tr>`).join(""):'<tr><td colspan="9" class="mu" style="text-align:center;padding:14px">無符合條件</td></tr>'}
     </tbody></table>
   </div>`;
 }
-
 function renderHistory(){
-  const box=document.getElementById("history");
+  const box = document.getElementById("history");
   if(!box) return;
-  // Build daily series from all reports with futures
-  const rows=[];
-  for(const d of dates){
-    const r=reports[d];
-    if(!r||!r.futures) continue;
-    const hf=(r.futures.hsif||{}).front||{};
-    const mf=(r.futures.mhif||{}).front||{};
-    const ht=(r.futures.hsif||{}).total||{};
-    const mt=(r.futures.mhif||{}).total||{};
-    if(!hf.settle && !mf.settle) continue;
-    rows.push({
+  const f = getLiveFilters();
+  let rows = dates.map(d=>{
+    const r = reports[d];
+    if(!r||!r.futures) return null;
+    const hf = (r.futures.hsif||{}).front||{};
+    const mf = (r.futures.mhif||{}).front||{};
+    return {
       date:d,
-      hSettle:hf.settle, hChg:hf.settleChange, hVol:hf.volume, hOI:hf.oi, hOIChg:hf.oiChange, hTotOI:ht.oi,
-      mSettle:mf.settle, mChg:mf.settleChange, mVol:mf.volume, mOI:mf.oi, mOIChg:mf.oiChange, mTotOI:mt.oi,
-    });
-  }
-  // newest first already via dates
-  box.innerHTML = `
-    <div class="section">
-      <div class="section-header">
-        <h3>每日期貨紀錄 Daily Futures History</h3>
-        <span class="tag">${rows.length} 個交易日</span>
-      </div>
-      <div style="overflow-x:auto">
-      <table>
-        <thead><tr>
-          <th>日期</th>
-          <th class="tr">HSI結算</th>
-          <th class="tr">Δ</th>
-          <th class="tr">HSI成交</th>
-          <th class="tr">HSI OI</th>
-          <th class="tr">ΔOI</th>
-          <th class="tr">MHI結算</th>
-          <th class="tr">Δ</th>
-          <th class="tr">MHI成交</th>
-          <th class="tr">MHI OI</th>
-          <th class="tr">ΔOI</th>
-        </tr></thead>
-        <tbody>
-          ${rows.map(r=>`<tr onclick="onRowClick(this);render('${r.date}')" title="點擊載入此日詳情">
-            <td class="mono">${r.date}</td>
-            <td class="tr mono">${fmt(r.hSettle)}</td>
-            <td class="tr mono ${chgClass(r.hChg)}">${fmtChg(r.hChg)}</td>
-            <td class="tr mono">${fmt(r.hVol)}</td>
-            <td class="tr mono">${fmt(r.hOI)}</td>
-            <td class="tr mono ${chgClass(r.hOIChg)}">${fmtChg(r.hOIChg)}</td>
-            <td class="tr mono">${fmt(r.mSettle)}</td>
-            <td class="tr mono ${chgClass(r.mChg)}">${fmtChg(r.mChg)}</td>
-            <td class="tr mono">${fmt(r.mVol)}</td>
-            <td class="tr mono">${fmt(r.mOI)}</td>
-            <td class="tr mono ${chgClass(r.mOIChg)}">${fmtChg(r.mOIChg)}</td>
-          </tr>`).join("")}
-        </tbody>
-      </table>
-      </div>
-    </div>`;
-}
+      hSettle:hf.settle, hChg:hf.settleChange, hVol:hf.volume, hOI:hf.oi, hOIChg:hf.oiChange,
+      mSettle:mf.settle, mChg:mf.settleChange, mVol:mf.volume, mOI:mf.oi, mOIChg:mf.oiChange,
+    };
+  }).filter(Boolean);
 
+  rows = rows.filter(r=>{
+    const vol = Math.max(+(r.hVol||0), +(r.mVol||0));
+    const oi = Math.max(+(r.hOI||0), +(r.mOI||0));
+    if(f.hideZero && vol===0) return false;
+    if(vol < f.minVol) return false;
+    if(oi < f.minOI) return false;
+    return true;
+  });
+
+  rows.sort((a,b)=>{
+    let va, vb;
+    if(histSortKey==="date"){ va=a.date; vb=b.date; return histSortDir==="desc"?vb.localeCompare(va):va.localeCompare(vb); }
+    va=+(a[histSortKey]||0); vb=+(b[histSortKey]||0);
+    return histSortDir==="desc"?vb-va:va-vb;
+  });
+
+  document.getElementById("filterHint").textContent = `歷史 ${rows.length} / ${dates.length} 日`;
+
+  const th=(k,label,cls="")=>`<th class="${cls} sortable ${histSortKey===k?"active":""}" onclick="setHistSort('${k}')">${label} ${histArrow(k)}</th>`;
+  const showH = f.product!=="mhif";
+  const showM = f.product!=="hsif";
+
+  box.innerHTML = `<div class="section">
+    <div class="section-header"><h3>每日期貨紀錄</h3><span class="tag">點列載入當日詳情 · ${rows.length} 日</span></div>
+    <table><thead><tr>
+      ${th("date","日期")}
+      ${showH?th("hSettle","HSI結算","tr"):""}
+      ${showH?th("hChg","Δ","tr"):""}
+      ${showH?th("hVol","HSI量","tr"):""}
+      ${showH?th("hOI","HSI OI","tr"):""}
+      ${showM?th("mSettle","MHI結算","tr"):""}
+      ${showM?th("mChg","Δ","tr"):""}
+      ${showM?th("mVol","MHI量","tr"):""}
+      ${showM?th("mOI","MHI OI","tr"):""}
+    </tr></thead>
+    <tbody>${rows.length?rows.map(r=>`<tr onclick="render('${r.date}');onRowClick(this)">
+      <td class="mono">${r.date}</td>
+      ${showH?`<td class="tr mono">${fmt(r.hSettle)}</td>`:""}
+      ${showH?`<td class="tr mono ${chgClass(r.hChg)}">${fmtChg(r.hChg)}</td>`:""}
+      ${showH?`<td class="tr mono">${fmt(r.hVol)}</td>`:""}
+      ${showH?`<td class="tr mono">${fmt(r.hOI)}</td>`:""}
+      ${showM?`<td class="tr mono">${fmt(r.mSettle)}</td>`:""}
+      ${showM?`<td class="tr mono ${chgClass(r.mChg)}">${fmtChg(r.mChg)}</td>`:""}
+      ${showM?`<td class="tr mono">${fmt(r.mVol)}</td>`:""}
+      ${showM?`<td class="tr mono">${fmt(r.mOI)}</td>`:""}
+    </tr>`).join(""):'<tr><td colspan="9" class="mu" style="text-align:center;padding:14px">無符合條件</td></tr>'}
+    </tbody></table>
+  </div>`;
+}
+function applyFilters(){
+  if(!curDate) return;
+  const r = reports[curDate];
+  if(!r||!r.futures) return;
+  const h=r.futures.hsif||{}, m=r.futures.mhif||{};
+  document.getElementById("tables").innerHTML =
+    monthTable("hsif", "HSI 各月份", h.months) + monthTable("mhif", "MHI 各月份", m.months);
+  renderHistory();
+}
 function render(date){
   const r=reports[date];
   if(!r){ document.getElementById("status").textContent="無此日期資料"; return; }
@@ -253,7 +390,6 @@ function render(date){
   document.getElementById("srcH").href=h.sourceUrl||"#";
   document.getElementById("srcM").href=m.sourceUrl||"#";
 
-  // compare HSI vs MHI
   const basis = (hf.settle&&mf.settle)? (hf.settle-mf.settle) : null;
   const oiRatio = (hf.oi&&mf.oi)? (hf.oi/mf.oi) : null;
   document.getElementById("compare").innerHTML = `
@@ -264,21 +400,24 @@ function render(date){
 
   document.getElementById("frontCards").innerHTML =
     frontCard("恒生指數期貨 HSI", hf, h.total) + frontCard("小型恒指期貨 MHI", mf, m.total);
-  document.getElementById("tables").innerHTML =
-    monthTable("hsif", "HSI 各月份", h.months) + monthTable("mhif", "MHI 各月份", m.months);
-  renderHistory();
+  applyFilters();
 }
+
+// init filter inputs from settings
+document.getElementById("minVol").value = minVol;
+document.getElementById("minOI").value = minOI;
+document.getElementById("hideZeroVol").checked = hideZeroVol;
+
 if(dates.length) {
-  // pick first date that has futures
   const withFut = dates.find(d => reports[d] && reports[d].futures && (reports[d].futures.hsif || reports[d].futures.mhif));
   if (withFut) render(withFut);
   else {
     document.getElementById("status").textContent =
-      "已載入 " + dates.length + " 日股票數據，但沒有期貨欄位。請上傳含 futures 的 stock-oi/data.js，並重新跑 Update Stock OI。";
+      "已載入 " + dates.length + " 日股票數據，但沒有期貨欄位。請上傳含 futures 的 stock-oi/data.js。";
   }
 } else {
   document.getElementById("status").textContent =
-    "讀不到 stock-oi/data.js。請確認 GitHub 上有 stock-oi/data.js，路徑為 /hsi-oi/stock-oi/data.js";
+    "讀不到 stock-oi/data.js。請確認路徑 /hsi-oi/stock-oi/data.js";
 }
 </script>
 </body>
