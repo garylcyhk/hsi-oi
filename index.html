@@ -1203,6 +1203,7 @@
     function renderWalls() {
       if (!currentReport) return;
       let hz = currentReport._hz || currentReport.heavyZones || {};
+      const nm = currentReport.nextMonthZones || {};
       // Optional near-money filter on walls
       const center = getAtmCenter();
       if (atmEnabled && center) {
@@ -1231,6 +1232,61 @@
       const putV = sortRows(hz.putVolWalls || [], volSortKey, volSortDir, volGet);
       const wa = (k) => arrow(wallSortKey, k, wallSortDir);
       const va = (k) => arrow(volSortKey, k, volSortDir);
+
+      let nmCall = nm.callWalls || [];
+      let nmPut = nm.putWalls || [];
+      if (atmEnabled && center) {
+        const keep = (z) => Math.abs((z.strike || 0) - center) <= atmRange;
+        nmCall = nmCall.filter(keep);
+        nmPut = nmPut.filter(keep);
+      }
+      nmCall = sortRows(nmCall, wallSortKey, wallSortDir, wallGet);
+      nmPut = sortRows(nmPut, wallSortKey, wallSortDir, wallGet);
+      const nmLabel = nm.month || currentReport.summary?.nextMonth || "下月";
+      const nextHtml = `
+        <div class="section" style="grid-column:1/-1;margin-top:8px;">
+          <div class="section-header">
+            <h2>下月重貨區 Next Month</h2>
+            <span class="tag">${nmLabel} · Call OI ${fmt(nm.callOI||0)} / Put OI ${fmt(nm.putOI||0)}</span>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>下月 Call 重貨區</h2><span class="tag em">${nmLabel}</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${nmCall.length ? nmCall.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("") : '<tr><td colspan="3" class="mu" style="text-align:center;padding:12px;">無資料</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>下月 Put 重貨區</h2><span class="tag ro">${nmLabel}</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${nmPut.length ? nmPut.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("") : '<tr><td colspan="3" class="mu" style="text-align:center;padding:12px;">無資料</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
 
       document.getElementById("zones").innerHTML = `
         <div class="section" style="grid-column:1/-1;margin-bottom:0;background:transparent;border:none;">
@@ -1309,6 +1365,7 @@
             </tbody>
           </table>
         </div>
+        ${nextHtml}
       `;
     }
 

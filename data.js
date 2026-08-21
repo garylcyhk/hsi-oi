@@ -5,6 +5,7 @@ window.HSI_REPORTS = {
     "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc260820.htm",
     "summary": {
       "frontMonth": "2026-08",
+      "nextMonth": "2026-09",
       "callOI": 18732,
       "putOI": 29856,
       "callOIChange": 966,
@@ -129,6 +130,127 @@ window.HSI_REPORTS = {
         {
           "strike": 24800,
           "volume": 366
+        }
+      ]
+    },
+    "nextMonthZones": {
+      "month": "2026-09",
+      "callOI": 14097,
+      "putOI": 17938,
+      "callWalls": [
+        {
+          "strike": 28000,
+          "oi": 1817,
+          "oiChange": 7
+        },
+        {
+          "strike": 25000,
+          "oi": 1139,
+          "oiChange": 0
+        },
+        {
+          "strike": 27000,
+          "oi": 1032,
+          "oiChange": -1
+        },
+        {
+          "strike": 26600,
+          "oi": 833,
+          "oiChange": 36
+        },
+        {
+          "strike": 28800,
+          "oi": 813,
+          "oiChange": 0
+        },
+        {
+          "strike": 29000,
+          "oi": 788,
+          "oiChange": 233
+        }
+      ],
+      "putWalls": [
+        {
+          "strike": 17600,
+          "oi": 2959,
+          "oiChange": 0
+        },
+        {
+          "strike": 22000,
+          "oi": 1600,
+          "oiChange": 12
+        },
+        {
+          "strike": 25000,
+          "oi": 1130,
+          "oiChange": -2
+        },
+        {
+          "strike": 19800,
+          "oi": 694,
+          "oiChange": 0
+        },
+        {
+          "strike": 23800,
+          "oi": 676,
+          "oiChange": 24
+        },
+        {
+          "strike": 21800,
+          "oi": 602,
+          "oiChange": 0
+        }
+      ],
+      "callVolWalls": [
+        {
+          "strike": 29200,
+          "volume": 334
+        },
+        {
+          "strike": 29000,
+          "volume": 238
+        },
+        {
+          "strike": 26400,
+          "volume": 172
+        },
+        {
+          "strike": 26600,
+          "volume": 160
+        },
+        {
+          "strike": 26000,
+          "volume": 98
+        },
+        {
+          "strike": 28000,
+          "volume": 93
+        }
+      ],
+      "putVolWalls": [
+        {
+          "strike": 23600,
+          "volume": 158
+        },
+        {
+          "strike": 25800,
+          "volume": 126
+        },
+        {
+          "strike": 25400,
+          "volume": 82
+        },
+        {
+          "strike": 24400,
+          "volume": 73
+        },
+        {
+          "strike": 25000,
+          "volume": 67
+        },
+        {
+          "strike": 23800,
+          "volume": 66
         }
       ]
     },
@@ -1589,6 +1711,7 @@ window.HSI_REPORTS = {
     "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc260819.htm",
     "summary": {
       "frontMonth": "2026-08",
+      "nextMonth": "2026-09",
       "callOI": 17766,
       "putOI": 29284,
       "callOIChange": 467,
@@ -1713,6 +1836,127 @@ window.HSI_REPORTS = {
         {
           "strike": 23600,
           "volume": 248
+        }
+      ]
+    },
+    "nextMonthZones": {
+      "month": "2026-09",
+      "callOI": 13350,
+      "putOI": 17402,
+      "callWalls": [
+        {
+          "strike": 28000,
+          "oi": 1810,
+          "oiChange": 95
+        },
+        {
+          "strike": 25000,
+          "oi": 1139,
+          "oiChange": 0
+        },
+        {
+          "strike": 27000,
+          "oi": 1033,
+          "oiChange": -30
+        },
+        {
+          "strike": 28800,
+          "oi": 813,
+          "oiChange": 0
+        },
+        {
+          "strike": 26600,
+          "oi": 797,
+          "oiChange": 460
+        },
+        {
+          "strike": 27200,
+          "oi": 575,
+          "oiChange": 2
+        }
+      ],
+      "putWalls": [
+        {
+          "strike": 17600,
+          "oi": 2959,
+          "oiChange": 0
+        },
+        {
+          "strike": 22000,
+          "oi": 1588,
+          "oiChange": 5
+        },
+        {
+          "strike": 25000,
+          "oi": 1132,
+          "oiChange": 20
+        },
+        {
+          "strike": 19800,
+          "oi": 694,
+          "oiChange": 0
+        },
+        {
+          "strike": 23800,
+          "oi": 652,
+          "oiChange": 14
+        },
+        {
+          "strike": 21800,
+          "oi": 602,
+          "oiChange": 8
+        }
+      ],
+      "callVolWalls": [
+        {
+          "strike": 26600,
+          "volume": 526
+        },
+        {
+          "strike": 28000,
+          "volume": 115
+        },
+        {
+          "strike": 27000,
+          "volume": 65
+        },
+        {
+          "strike": 28800,
+          "volume": 34
+        },
+        {
+          "strike": 26000,
+          "volume": 24
+        },
+        {
+          "strike": 25400,
+          "volume": 23
+        }
+      ],
+      "putVolWalls": [
+        {
+          "strike": 25000,
+          "volume": 101
+        },
+        {
+          "strike": 24600,
+          "volume": 60
+        },
+        {
+          "strike": 23600,
+          "volume": 53
+        },
+        {
+          "strike": 23000,
+          "volume": 50
+        },
+        {
+          "strike": 23800,
+          "volume": 44
+        },
+        {
+          "strike": 25200,
+          "volume": 43
         }
       ]
     },

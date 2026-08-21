@@ -127,17 +127,23 @@ def parse_top_volume(text: str) -> list:
     return items[:10]
 
 
-def parse_front_month(text: str) -> dict:
+def parse_month(text: str, month_n: int = 1) -> dict:
     """
-    Parse month1 (front month) Call + Put tables.
-    Returns strikes list, callOI, putOI, changes, heavy zones.
+    Parse monthN Call + Put tables (month1 = front, month2 = next, ...).
+    Returns strikes list, callOI, putOI, changes, heavy zones, monthLabel.
     """
-    # Isolate month1 section (from <A NAME="month1"> to <A NAME="month2"> or end of first totals)
-    m1 = re.search(r'<A NAME="month1"></A>(.*?)(?:<A NAME="month2">|$)', text, re.S)
+    nxt = month_n + 1
+    m1 = re.search(
+        rf'<A NAME="month{month_n}"></A>(.*?)(?:<A NAME="month{nxt}">|$)',
+        text, re.S
+    )
     if not m1:
         return {}
 
     section = m1.group(1)
+    # Month label e.g. 26 年 09 月
+    lab = re.search(r"(\d{2})\s*年\s*(\d{2})\s*月", section)
+    month_label = f"20{lab.group(1)}-{lab.group(2)}" if lab else f"M{month_n}"
 
     # Split Call and Put parts (Call comes first, then 認購總計, then Put header, then 認沽總計)
     call_part = section
@@ -247,6 +253,7 @@ def parse_front_month(text: str) -> dict:
     put_pct = round(100 - call_pct, 1)
 
     return {
+        "monthLabel": month_label,
         "callOI": call_oi,
         "putOI": put_oi,
         "callOIChange": call_chg,
@@ -283,10 +290,11 @@ def parse_report(text: str, date_str: str) -> dict:
         prev = (datetime.strptime(date_str, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
 
     top = parse_top_volume(text)
-    front = parse_front_month(text)
+    front = parse_month(text, 1)
+    next_m = parse_month(text, 2)
 
-    # Front month string from first top item or default
-    front_month = top[0]["month"] if top else curr[:7]
+    front_month = front.get("monthLabel") or (top[0]["month"] if top else curr[:7])
+    next_month = next_m.get("monthLabel") or ""
 
     return {
         "date": curr,
@@ -294,6 +302,7 @@ def parse_report(text: str, date_str: str) -> dict:
         "sourceUrl": f"https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc{to_hkex_code(curr)}.htm",
         "summary": {
             "frontMonth": front_month,
+            "nextMonth": next_month,
             "callOI": front.get("callOI", 0),
             "putOI": front.get("putOI", 0),
             "callOIChange": front.get("callOIChange", 0),
@@ -308,6 +317,15 @@ def parse_report(text: str, date_str: str) -> dict:
             "putWalls": front.get("putWalls", []),
             "callVolWalls": front.get("callVolWalls", []),
             "putVolWalls": front.get("putVolWalls", []),
+        },
+        "nextMonthZones": {
+            "month": next_month,
+            "callOI": next_m.get("callOI", 0),
+            "putOI": next_m.get("putOI", 0),
+            "callWalls": next_m.get("callWalls", []),
+            "putWalls": next_m.get("putWalls", []),
+            "callVolWalls": next_m.get("callVolWalls", []),
+            "putVolWalls": next_m.get("putVolWalls", []),
         },
         "strikes": front.get("strikes", []),
         "topVolume": top,
