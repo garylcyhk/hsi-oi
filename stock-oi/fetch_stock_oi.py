@@ -123,23 +123,30 @@ def parse_class(text: str, hkats: str) -> dict:
     front_exp, front_data = ordered[0]
     calls = front_data["calls"]
     puts = front_data["puts"]
+    next_exp = ordered[1][0] if len(ordered) > 1 else None
+    next_data = ordered[1][1] if len(ordered) > 1 else {"calls": [], "puts": []}
 
-    call_walls = sorted(
-        [{"strike": c["strike"], "oi": c["oi"], "oiChange": c["oiChange"], "volume": c["volume"]} for c in calls if c["oi"] > 0],
-        key=lambda x: x["oi"], reverse=True
-    )[:8]
-    put_walls = sorted(
-        [{"strike": p["strike"], "oi": p["oi"], "oiChange": p["oiChange"], "volume": p["volume"]} for p in puts if p["oi"] > 0],
-        key=lambda x: x["oi"], reverse=True
-    )[:8]
-    call_vol = sorted(
-        [{"strike": c["strike"], "volume": c["volume"]} for c in calls if c["volume"] > 0],
-        key=lambda x: x["volume"], reverse=True
-    )[:6]
-    put_vol = sorted(
-        [{"strike": p["strike"], "volume": p["volume"]} for p in puts if p["volume"] > 0],
-        key=lambda x: x["volume"], reverse=True
-    )[:6]
+    def make_walls(c_list, p_list):
+        cw = sorted(
+            [{"strike": c["strike"], "oi": c["oi"], "oiChange": c["oiChange"], "volume": c["volume"]} for c in c_list if c["oi"] > 0],
+            key=lambda x: x["oi"], reverse=True
+        )[:8]
+        pw = sorted(
+            [{"strike": p["strike"], "oi": p["oi"], "oiChange": p["oiChange"], "volume": p["volume"]} for p in p_list if p["oi"] > 0],
+            key=lambda x: x["oi"], reverse=True
+        )[:8]
+        cv = sorted(
+            [{"strike": c["strike"], "volume": c["volume"]} for c in c_list if c["volume"] > 0],
+            key=lambda x: x["volume"], reverse=True
+        )[:6]
+        pv = sorted(
+            [{"strike": p["strike"], "volume": p["volume"]} for p in p_list if p["volume"] > 0],
+            key=lambda x: x["volume"], reverse=True
+        )[:6]
+        return cw, pw, cv, pv
+
+    call_walls, put_walls, call_vol, put_vol = make_walls(calls, puts)
+    n_call_walls, n_put_walls, n_call_vol, n_put_vol = make_walls(next_data.get("calls") or [], next_data.get("puts") or [])
 
     strikes = {}
     for c in calls:
@@ -160,10 +167,18 @@ def parse_class(text: str, hkats: str) -> dict:
     return {
         "close": close,
         "frontExpiry": front_exp,
+        "nextExpiry": next_exp,
         "callWalls": call_walls,
         "putWalls": put_walls,
         "callVolWalls": call_vol,
         "putVolWalls": put_vol,
+        "nextMonthZones": {
+            "expiry": next_exp,
+            "callWalls": n_call_walls,
+            "putWalls": n_put_walls,
+            "callVolWalls": n_call_vol,
+            "putVolWalls": n_put_vol,
+        },
         "strikes": strike_list,
         "expiries": [e for e, _ in ordered[:4]],
     }
