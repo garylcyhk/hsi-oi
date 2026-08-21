@@ -260,13 +260,15 @@ def load_existing():
         return {}
     return json.loads(m.group(1))
 
+
 def save(reports):
-    # keep last 10 dates
-    keys = sorted(reports.keys())[-10:]
+    # keep last 60 dates with data (~2–3 months trading)
+    keys = sorted(reports.keys())[-60:]
     trimmed = {k: reports[k] for k in keys}
     js = "window.STOCK_OI = " + json.dumps(trimmed, ensure_ascii=False, separators=(",", ":")) + ";\n"
     DATA_JS.write_text(js, encoding="utf-8")
     print(f"Saved {len(trimmed)} day(s) → {DATA_JS}")
+
 
 def try_fetch_day(date_str: str):
     """Fetch options + futures for one day. Returns report or None on 404."""
@@ -294,14 +296,38 @@ def try_fetch_day(date_str: str):
 
 
 def main():
-    if len(sys.argv) > 1:
-        candidates = [sys.argv[1]]
+    args = sys.argv[1:]
+    backfill = 0
+    if args and args[0] == "--backfill":
+        backfill = int(args[1]) if len(args) > 1 else 30
+        args = args[2:]
+
+    now = datetime.utcnow() + timedelta(hours=8)
+    reports = load_existing()
+
+    if backfill > 0:
+        candidates = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(0, backfill)]
+        print(f"Backfill last {backfill} calendar days ...")
+        ok = 0
+        for date_str in candidates:
+            existing = reports.get(date_str)
+            if existing and existing.get("futures") and existing["futures"].get("hsif"):
+                print(f"  {date_str}: already have futures, skip")
+                continue
+            print(f"Trying {date_str} ...")
+            report = try_fetch_day(date_str)
+            if report:
+                reports[report["date"]] = report
+                ok += 1
+                save(reports)
+        print(f"Backfill done: {ok} new day(s), total stored {len(load_existing())} day(s)")
+        return
+
+    if args:
+        candidates = [args[0]]
     else:
-        now = datetime.utcnow() + timedelta(hours=8)
-        # try today then previous calendar days (covers weekends / late report)
         candidates = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(0, 8)]
 
-    reports = load_existing()
     report = None
     for date_str in candidates:
         print(f"Trying {date_str} ...")
@@ -310,9 +336,10 @@ def main():
             break
     if not report:
         print("No report found in candidates:", candidates)
-        sys.exit(0)  # do not fail the workflow when report not published yet
+        sys.exit(0)
     reports[report["date"]] = report
     save(reports)
+
 
 if __name__ == "__main__":
     main()
