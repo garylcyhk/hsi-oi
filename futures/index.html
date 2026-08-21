@@ -67,6 +67,7 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
   <div class="note" id="status">載入中…</div>
   <div class="compare" id="compare"></div>
   <div class="fut-grid" id="frontCards"></div>
+  <div id="history"></div>
   <div id="tables"></div>
   <footer>
     <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
@@ -170,6 +171,68 @@ function monthTable(prod, title, months){
     </tbody></table>
   </div>`;
 }
+
+function renderHistory(){
+  const box=document.getElementById("history");
+  if(!box) return;
+  // Build daily series from all reports with futures
+  const rows=[];
+  for(const d of dates){
+    const r=reports[d];
+    if(!r||!r.futures) continue;
+    const hf=(r.futures.hsif||{}).front||{};
+    const mf=(r.futures.mhif||{}).front||{};
+    const ht=(r.futures.hsif||{}).total||{};
+    const mt=(r.futures.mhif||{}).total||{};
+    if(!hf.settle && !mf.settle) continue;
+    rows.push({
+      date:d,
+      hSettle:hf.settle, hChg:hf.settleChange, hVol:hf.volume, hOI:hf.oi, hOIChg:hf.oiChange, hTotOI:ht.oi,
+      mSettle:mf.settle, mChg:mf.settleChange, mVol:mf.volume, mOI:mf.oi, mOIChg:mf.oiChange, mTotOI:mt.oi,
+    });
+  }
+  // newest first already via dates
+  box.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <h3>每日期貨紀錄 Daily Futures History</h3>
+        <span class="tag">${rows.length} 個交易日</span>
+      </div>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>日期</th>
+          <th class="tr">HSI結算</th>
+          <th class="tr">Δ</th>
+          <th class="tr">HSI成交</th>
+          <th class="tr">HSI OI</th>
+          <th class="tr">ΔOI</th>
+          <th class="tr">MHI結算</th>
+          <th class="tr">Δ</th>
+          <th class="tr">MHI成交</th>
+          <th class="tr">MHI OI</th>
+          <th class="tr">ΔOI</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r=>`<tr onclick="onRowClick(this);render('${r.date}')" title="點擊載入此日詳情">
+            <td class="mono">${r.date}</td>
+            <td class="tr mono">${fmt(r.hSettle)}</td>
+            <td class="tr mono ${chgClass(r.hChg)}">${fmtChg(r.hChg)}</td>
+            <td class="tr mono">${fmt(r.hVol)}</td>
+            <td class="tr mono">${fmt(r.hOI)}</td>
+            <td class="tr mono ${chgClass(r.hOIChg)}">${fmtChg(r.hOIChg)}</td>
+            <td class="tr mono">${fmt(r.mSettle)}</td>
+            <td class="tr mono ${chgClass(r.mChg)}">${fmtChg(r.mChg)}</td>
+            <td class="tr mono">${fmt(r.mVol)}</td>
+            <td class="tr mono">${fmt(r.mOI)}</td>
+            <td class="tr mono ${chgClass(r.mOIChg)}">${fmtChg(r.mOIChg)}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      </div>
+    </div>`;
+}
+
 function render(date){
   const r=reports[date];
   if(!r){ document.getElementById("status").textContent="無此日期資料"; return; }
@@ -203,6 +266,7 @@ function render(date){
     frontCard("恒生指數期貨 HSI", hf, h.total) + frontCard("小型恒指期貨 MHI", mf, m.total);
   document.getElementById("tables").innerHTML =
     monthTable("hsif", "HSI 各月份", h.months) + monthTable("mhif", "MHI 各月份", m.months);
+  renderHistory();
 }
 if(dates.length) {
   // pick first date that has futures
