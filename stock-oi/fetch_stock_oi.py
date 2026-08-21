@@ -46,6 +46,56 @@ def _i(x: str) -> int:
     except Exception:
         return 0
 
+
+def fetch_futures(date_str: str, product: str) -> str:
+    code = to_code(date_str)
+    url = f"https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/{product}{code}.htm"
+    print(f"Fetching {url} ...")
+    req = Request(url, headers=HEADERS)
+    with urlopen(req, timeout=30) as resp:
+        raw = resp.read()
+    text = raw.decode("latin-1", errors="replace")
+    print(f"  OK ({len(text)} chars)")
+    return text
+
+
+def parse_futures(text: str, product: str, date_str: str) -> dict:
+    line_re = re.compile(
+        r"([A-Z]{3})-(\d{2})\s+"
+        r"[\d,]+\s+[\d,]+\s+[\d,]+\s+[\d,]+\s+[\d,]+\s*\|\s*"
+        r"([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)\s*\|\s*"
+        r"[\d,]+\s+[\d,]+\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)"
+    )
+    months = []
+    for m in line_re.finditer(text):
+        mon, yy, d_open, d_high, d_low, d_vol, settle, set_chg, c_vol, oi, oi_chg = m.groups()
+        months.append({
+            "month": f"{mon}-20{yy}",
+            "open": _i(d_open),
+            "high": _i(d_high),
+            "low": _i(d_low),
+            "settle": _i(settle),
+            "settleChange": _i(set_chg),
+            "volume": _i(c_vol),
+            "oi": _i(oi),
+            "oiChange": _i(oi_chg),
+        })
+    tot = re.search(r"All Contracts Total\s+([\d,]+)\s+([\d,]+)\s+([+\-]?[\d,]+)", text)
+    total = {}
+    if tot:
+        total = {"volume": _i(tot.group(1)), "oi": _i(tot.group(2)), "oiChange": _i(tot.group(3))}
+    front = months[0] if months else {}
+    return {
+        "product": product.upper(),
+        "name": "HSI Futures" if product == "hsif" else "MHI Futures",
+        "front": front,
+        "months": months[:4],
+        "total": total,
+        "sourceUrl": f"https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/{product}{to_code(date_str)}.htm",
+    }
+
+
+
 def parse_summary(text: str) -> dict:
     """SUMMARY lines for our watchlist"""
     out = {}
@@ -199,6 +249,7 @@ def parse_report(text: str, date_str: str) -> dict:
         "date": date_str,
         "sourceUrl": f"https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/dqe{to_code(date_str)}.htm",
         "underlyings": underlyings,
+        "futures": {},  # filled in main()
     }
 
 def load_existing():
@@ -226,7 +277,16 @@ def main():
     reports = load_existing()
     text = fetch(date_str)
     report = parse_report(text, date_str)
-    # use report date from content if possible
+    futures = {}
+    for product in ("hsif", "mhif"):
+        try:
+            ftext = fetch_futures(date_str, product)
+            futures[product] = parse_futures(ftext, product, date_str)
+            f = futures[product].get("front") or {}
+            print(f"  {product}: settle={f.get('settle')} vol={f.get('volume')} OI={f.get('oi')}")
+        except Exception as e:
+            print(f"  {product} skip: {e}")
+    report["futures"] = futures
     reports[report["date"]] = report
     save(reports)
 

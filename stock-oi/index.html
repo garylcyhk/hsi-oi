@@ -31,6 +31,13 @@ input[type=number]{width:78px}
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin:12px 0;font-size:.78rem}
 .filters label{color:var(--muted);display:flex;align-items:center;gap:6px}
 .filters input[type=checkbox]{accent-color:#34d399;width:14px;height:14px}
+.futures-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media(max-width:700px){.futures-bar{grid-template-columns:1fr}}
+.fut-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.fut-card h3{font-size:.8rem;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between}
+.fut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
+.fut-item .fl{font-size:.68rem;color:var(--muted)}.fut-item .fv{font-size:.95rem;font-weight:600;font-family:ui-monospace,monospace}
+.fut-item .fs{font-size:.72rem;margin-top:1px}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
 .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px}
 .card .label{font-size:.7rem;color:var(--muted)}.card .value{font-size:1.1rem;font-weight:600;font-family:ui-monospace,monospace}.card .subv{font-size:.75rem}
@@ -77,8 +84,9 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
   <div>
     <h1>股票期權未平倉 <span>Stock Options OI</span></h1>
     <div class="site-nav">
-      <a href="../">恒指 HSI</a>
+      <a href="../">恒指期權 HSI OI</a>
       <a class="active" href="./">股票期權 Stocks</a>
+        <a href="../futures/">期貨 Futures</a>
     </div>
     <div class="sub">港交所每日市場報告 · 700 / 9988 / 1810 / 3690 / 388</div>
   </div>
@@ -181,6 +189,31 @@ const sortState = {
 const fmt = n => (n==null||isNaN(n))?"—":Number(n).toLocaleString("en-US");
 const fmtChg = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
 const chgClass = n => n>0?"pos":n<0?"neg":"mu";
+
+
+function renderFutures(r){
+  const box=document.getElementById("futuresBar");
+  if(!box) return;
+  const fut=(r&&r.futures)||{};
+  const hsi=fut.hsif||{}, mhi=fut.mhif||{};
+  const hf=hsi.front||{}, mf=mhi.front||{};
+  const ht=hsi.total||{}, mt=mhi.total||{};
+  if(!hf.settle && !mf.settle){ box.innerHTML=""; return; }
+  function card(title,f,t){
+    if(!f.settle) return `<div class="fut-card"><h3>${title}</h3><div class="mu">無資料</div></div>`;
+    return `<div class="fut-card">
+      <h3><span>${title}</span><span class="tag">${f.month||""}</span></h3>
+      <div class="fut-grid">
+        <div class="fut-item"><div class="fl">結算價</div><div class="fv">${fmt(f.settle)}</div><div class="fs ${chgClass(f.settleChange)}">${fmtChg(f.settleChange)}</div></div>
+        <div class="fut-item"><div class="fl">成交量</div><div class="fv">${fmt(f.volume)}</div></div>
+        <div class="fut-item"><div class="fl">未平倉</div><div class="fv">${fmt(f.oi)}</div><div class="fs ${chgClass(f.oiChange)}">${fmtChg(f.oiChange)}</div></div>
+        <div class="fut-item"><div class="fl">開 / 高 / 低</div><div class="fv" style="font-size:.8rem">${fmt(f.open)} / ${fmt(f.high)} / ${fmt(f.low)}</div></div>
+        <div class="fut-item"><div class="fl">全月份 OI</div><div class="fv">${fmt(t.oi||f.oi)}</div><div class="fs ${chgClass(t.oiChange)}">${t.oiChange!=null?fmtChg(t.oiChange):""}</div></div>
+      </div>
+    </div>`;
+  }
+  box.innerHTML = `<div class="futures-bar">${card("恒生指數期貨 HSI",hf,ht)}${card("小型恒指期貨 MHI",mf,mt)}</div>`;
+}
 
 function switchTab(name){
   document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));

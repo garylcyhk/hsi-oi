@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>恒指期貨 HSI / MHI Futures</title>
+<style>
+:root{--font-scale:100%;--bg:#09090b;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185}
+html{font-size:var(--font-scale)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:ui-sans-serif,system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+h1{font-size:1.1rem;font-weight:600} h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
+.sub{font-size:.72rem;color:var(--muted)}
+.site-nav{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.site-nav a{font-size:.72rem;padding:3px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none}
+.site-nav a.active{background:#059669;color:#fff;border-color:#059669}
+.site-nav a:hover:not(.active){border-color:#555;color:var(--text)}
+select,input[type=date]{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.8rem}
+.btn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:.75rem;cursor:pointer}
+.container{padding:12px 16px 32px;max-width:1100px;margin:0 auto}
+.note{font-size:.75rem;color:var(--muted);margin-bottom:12px}
+.fut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:700px){.fut-grid{grid-template-columns:1fr}}
+.fut-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.fut-card h2{font-size:.9rem;font-weight:500;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:8px}
+.m .l{font-size:.68rem;color:var(--muted)}.m .v{font-size:1.15rem;font-weight:600;font-family:ui-monospace,monospace}.m .s{font-size:.75rem}
+.section{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.section-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.section-header h3{font-size:.85rem;font-weight:500}
+.tag{font-size:.7rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;padding:8px 12px;font-size:.7rem;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:7px 12px;border-bottom:1px solid #1f1f23}
+.tr{text-align:right}.mono{font-family:ui-monospace,monospace}
+.pos{color:var(--emerald)}.neg{color:var(--rose)}.mu{color:var(--muted)}
+th.sortable{cursor:pointer;user-select:none} th.sortable:hover{color:var(--text)} th.sortable.active{color:var(--emerald)}
+tbody tr{cursor:pointer} tbody tr:hover td{background:rgba(39,39,42,.35)}
+tr.row-selected td{background:rgba(16,185,129,.28)!important;box-shadow:inset 3px 0 0 #34d399}
+.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:700px){.compare{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px}
+.card .label{font-size:.7rem;color:var(--muted)}.card .value{font-size:1.1rem;font-weight:600;font-family:ui-monospace,monospace}
+footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>恒指期貨 <span>HSI / MHI Futures</span></h1>
+    <div class="site-nav">
+      <a href="../">恒指期權 HSI OI</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a class="active" href="./">期貨 Futures</a>
+    </div>
+    <div class="sub">港交所每日期貨報告 · 結算價 / 成交量 / 未平倉</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <label class="mu" style="font-size:.75rem">日期</label>
+    <select id="dateSelect" onchange="render(this.value)"></select>
+    <input type="date" id="dateCal" onchange="onCal()" />
+    <button class="btn" onclick="window.print()">🖨 列印</button>
+  </div>
+</header>
+<div class="container">
+  <div class="note" id="status">載入中…</div>
+  <div class="compare" id="compare"></div>
+  <div class="fut-grid" id="frontCards"></div>
+  <div id="tables"></div>
+  <footer>
+    <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
+    <p style="margin-top:6px">
+      <a id="srcH" href="#" target="_blank" rel="noopener">HSI Futures Report</a> ·
+      <a id="srcM" href="#" target="_blank" rel="noopener">MHI Futures Report</a>
+    </p>
+  </footer>
+</div>
+<script src="../stock-oi/data.js"></script>
+<script>
+const reports = window.STOCK_OI || {};
+const dates = Object.keys(reports).sort().reverse();
+let curDate = dates[0] || null;
+let sortKey = "month", sortDir = "asc";
+let sortProduct = "hsif";
+
+const fmt = n => (n==null||isNaN(n))?"—":Number(n).toLocaleString("en-US");
+const fmtChg = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
+const chgClass = n => n>0?"pos":n<0?"neg":"mu";
+
+function onRowClick(tr){
+  const table=tr.closest("table");
+  if(table) table.querySelectorAll("tr.row-selected").forEach(r=>{ if(r!==tr) r.classList.remove("row-selected"); });
+  tr.classList.toggle("row-selected");
+}
+function setSort(prod, key){
+  if(sortProduct===prod && sortKey===key) sortDir = sortDir==="desc"?"asc":"desc";
+  else { sortProduct=prod; sortKey=key; sortDir = key==="month"?"asc":"desc"; }
+  render(curDate);
+}
+function arrow(prod, key){
+  if(sortProduct!==prod || sortKey!==key) return '<span style="opacity:.4">↕</span>';
+  return sortDir==="desc"?"↓":"↑";
+}
+function sortMonths(months){
+  const list=[...(months||[])];
+  list.sort((a,b)=>{
+    let va, vb;
+    if(sortKey==="month"){ va=a.month||""; vb=b.month||""; return sortDir==="desc"?vb.localeCompare(va):va.localeCompare(vb); }
+    va=+(a[sortKey]||0); vb=+(b[sortKey]||0);
+    return sortDir==="desc"?vb-va:va-vb;
+  });
+  return list;
+}
+function onCal(){
+  const v=document.getElementById("dateCal").value; if(!v) return;
+  if(reports[v]) render(v);
+  else {
+    const c=dates.filter(d=>d<=v);
+    if(c.length) render(c[0]); else if(dates.length) render(dates[dates.length-1]);
+  }
+}
+function metricCard(label, value, sub, cls){
+  return `<div class="m"><div class="l">${label}</div><div class="v">${value}</div>${sub!=null?`<div class="s ${cls||""}">${sub}</div>`:""}</div>`;
+}
+function frontCard(title, f, t){
+  if(!f||!f.settle) return `<div class="fut-card"><h2>${title}</h2><div class="mu">無資料</div></div>`;
+  return `<div class="fut-card">
+    <h2><span>${title}</span><span class="tag">${f.month||""}</span></h2>
+    <div class="metrics">
+      ${metricCard("結算價", fmt(f.settle), fmtChg(f.settleChange), chgClass(f.settleChange))}
+      ${metricCard("成交量", fmt(f.volume))}
+      ${metricCard("未平倉", fmt(f.oi), fmtChg(f.oiChange), chgClass(f.oiChange))}
+      ${metricCard("開市", fmt(f.open))}
+      ${metricCard("最高", fmt(f.high))}
+      ${metricCard("最低", fmt(f.low))}
+      ${metricCard("全月份 OI", fmt((t&&t.oi)!=null?t.oi:f.oi), t&&t.oiChange!=null?fmtChg(t.oiChange):"", t?chgClass(t.oiChange):"")}
+      ${metricCard("全月份成交", fmt((t&&t.volume)!=null?t.volume:f.volume))}
+    </div>
+  </div>`;
+}
+function monthTable(prod, title, months){
+  const rows = sortProduct===prod ? sortMonths(months) : [...(months||[])];
+  const th=(k,label,cls="")=>`<th class="${cls} sortable ${sortProduct===prod&&sortKey===k?"active":""}" onclick="setSort('${prod}','${k}')">${label} ${arrow(prod,k)}</th>`;
+  return `<div class="section">
+    <div class="section-header"><h3>${title}</h3><span class="tag">${rows.length} 月份</span></div>
+    <table><thead><tr>
+      ${th("month","月份")}
+      ${th("settle","結算價","tr")}
+      ${th("settleChange","Δ結算","tr")}
+      ${th("volume","成交量","tr")}
+      ${th("oi","未平倉","tr")}
+      ${th("oiChange","ΔOI","tr")}
+      ${th("open","開","tr")}
+      ${th("high","高","tr")}
+      ${th("low","低","tr")}
+    </tr></thead>
+    <tbody>${rows.length?rows.map(m=>`<tr onclick="onRowClick(this)">
+      <td class="mono">${m.month}</td>
+      <td class="tr mono">${fmt(m.settle)}</td>
+      <td class="tr mono ${chgClass(m.settleChange)}">${fmtChg(m.settleChange)}</td>
+      <td class="tr mono">${fmt(m.volume)}</td>
+      <td class="tr mono">${fmt(m.oi)}</td>
+      <td class="tr mono ${chgClass(m.oiChange)}">${fmtChg(m.oiChange)}</td>
+      <td class="tr mono mu">${fmt(m.open)}</td>
+      <td class="tr mono mu">${fmt(m.high)}</td>
+      <td class="tr mono mu">${fmt(m.low)}</td>
+    </tr>`).join(""):'<tr><td colspan="9" class="mu" style="text-align:center;padding:14px">無資料</td></tr>'}
+    </tbody></table>
+  </div>`;
+}
+function render(date){
+  const r=reports[date];
+  if(!r||!r.futures){ document.getElementById("status").textContent="無期貨資料（請更新 stock-oi/data.js）"; return; }
+  curDate=date;
+  document.getElementById("status").textContent=`顯示 ${date} · ${dates.length} 個交易日`;
+  document.getElementById("dateSelect").innerHTML=dates.map(d=>`<option value="${d}" ${d===date?"selected":""}>${d}</option>`).join("");
+  const cal=document.getElementById("dateCal");
+  if(cal){ cal.value=date; if(dates.length){ cal.min=dates[dates.length-1]; cal.max=dates[0]; } }
+  const h=r.futures.hsif||{}, m=r.futures.mhif||{};
+  const hf=h.front||{}, mf=m.front||{};
+  document.getElementById("srcH").href=h.sourceUrl||"#";
+  document.getElementById("srcM").href=m.sourceUrl||"#";
+
+  // compare HSI vs MHI
+  const basis = (hf.settle&&mf.settle)? (hf.settle-mf.settle) : null;
+  const oiRatio = (hf.oi&&mf.oi)? (hf.oi/mf.oi) : null;
+  document.getElementById("compare").innerHTML = `
+    <div class="card"><div class="label">HSI 結算</div><div class="value">${fmt(hf.settle)}</div><div class="${chgClass(hf.settleChange)}">${fmtChg(hf.settleChange)}</div></div>
+    <div class="card"><div class="label">MHI 結算</div><div class="value">${fmt(mf.settle)}</div><div class="${chgClass(mf.settleChange)}">${fmtChg(mf.settleChange)}</div></div>
+    <div class="card"><div class="label">HSI−MHI / OI比</div><div class="value" style="font-size:.95rem">${basis!=null?basis:"—"} / ${oiRatio!=null?oiRatio.toFixed(1)+"x":"—"}</div>
+      <div class="mu" style="font-size:.72rem">價差 · HSI OI ÷ MHI OI</div></div>`;
+
+  document.getElementById("frontCards").innerHTML =
+    frontCard("恒生指數期貨 HSI", hf, h.total) + frontCard("小型恒指期貨 MHI", mf, m.total);
+  document.getElementById("tables").innerHTML =
+    monthTable("hsif", "HSI 各月份", h.months) + monthTable("mhif", "MHI 各月份", m.months);
+}
+if(dates.length) render(dates[0]);
+else document.getElementById("status").textContent="無資料。請先更新 stock-oi 數據。";
+</script>
+</body>
+</html>
