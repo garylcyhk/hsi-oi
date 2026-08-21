@@ -110,7 +110,7 @@
     .bar-c { right: 0; background: var(--emerald); }
     .bar-p { left: 0; background: var(--rose); }
     .bar-cell span { position: relative; z-index: 1; }
-    .table-wrap { max-height: min(420px, 60vh); overflow: auto; -webkit-overflow-scrolling: touch; }
+    .table-wrap { overflow: visible; max-height: none; }
     .table-wrap table { min-width: 480px; width: 100%; }
     .table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
     .table-wrap::-webkit-scrollbar-track { background: #18181b; }
@@ -246,7 +246,7 @@
       footer, .note, .tab-bar, .atm-header { display: none !important; }
       .tab-panel { display: block !important; }
       .tab-panels { min-height: auto !important; padding: 8px !important; }
-      .tab-panel .table-wrap { max-height: none !important; }
+      .tab-panel .table-wrap { max-height: none; overflow: visible; }
       .container { max-width: 100%; padding: 8px; }
       .card, .section, .levels-box, .day-change {
         background: #fff !important; border: 1px solid #ccc !important;
@@ -301,12 +301,8 @@
     }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-    .tab-panel .table-wrap {
-      max-height: calc(100vh - 220px);
-    }
-    .tab-panel#tab-strikes .table-wrap {
-      max-height: calc(100vh - 280px);
-    }
+    .tab-panel .table-wrap { max-height: none; overflow: visible; }
+    .tab-panel#tab-strikes .table-wrap { max-height: none; overflow: visible; }
     body { display: flex; flex-direction: column; min-height: 100vh; }
     .container { flex: 1; max-width: none; padding: 0; }
 
@@ -1016,7 +1012,7 @@
               <label>最低成交量</label>
               <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" />
             </div>
-            <span class="tag">點欄位標題排序 · 隱藏空白在設定</span>
+            
           </div>
           <div class="table-wrap">
             <table>
@@ -1247,7 +1243,7 @@
           <div class="section-header" style="background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">
             <h2>重貨區 / 成交量重區</h2>
             <div class="header-right">
-              <span class="tag">點欄位標題排序</span>
+              
             </div>
           </div>
         </div>
@@ -1341,7 +1337,7 @@
           <div class="section-header">
             <h2>十大成交</h2>
             <div class="header-right">
-              <span class="tag">點欄位標題排序</span>
+              
             </div>
           </div>
           <div class="table-wrap">
