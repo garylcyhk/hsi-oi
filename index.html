@@ -1016,13 +1016,7 @@
               <label>最低成交量</label>
               <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" />
             </div>
-            <div>
-              <label>
-                <input type="checkbox" id="onlyActive" ${onlyActive?"checked":""} onchange="onFilterChange()" />
-                隱藏空白
-              </label>
-            </div>
-            <span class="tag">點欄位標題排序</span>
+            <span class="tag">點欄位標題排序 · 隱藏空白在設定</span>
           </div>
           <div class="table-wrap">
             <table>
@@ -1078,14 +1072,10 @@
       const sd = document.getElementById("sortDir");
       const moi = document.getElementById("minOI");
       const mv = document.getElementById("minVol");
-      const oa = document.getElementById("onlyActive");
-      const atm = document.getElementById("atmEnabled");
-      const ar = document.getElementById("atmRange");
       if (sk) sortKey = sk.value;
       if (sd) sortDir = sd.value;
       if (moi) minOI = parseInt(moi.value, 10) || 0;
       if (mv) minVol = parseInt(mv.value, 10) || 0;
-      if (oa) onlyActive = oa.checked;
       if (atm) atmEnabled = atm.checked;
       if (ar) atmRange = parseInt(ar.value, 10) || 800;
       // persist ATM preference lightly
