@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 HKEX Stock Options Daily Report — watchlist OI walls
-Watchlist: 700 Tencent, 9988 Alibaba, 1810 Xiaomi, 3690 Meituan, 3888 Kingsoft
+Watchlist: 700 Tencent, 9988 Alibaba, 1810 Xiaomi, 3690 Meituan, 388 HKEX
 """
 import re, json, sys
 from datetime import datetime, timedelta
@@ -17,7 +17,7 @@ WATCHLIST = [
     {"code": "09988", "hkats": "ALB", "name": "阿里巴巴 Alibaba"},
     {"code": "01810", "hkats": "MIU", "name": "小米 Xiaomi"},
     {"code": "03690", "hkats": "MET", "name": "美團 Meituan"},
-    {"code": "03888", "hkats": "KSO", "name": "金山 Kingsoft"},
+    {"code": "00388", "hkats": "HEX", "name": "港交所 HKEX"},
 ]
 
 def to_code(date_str: str) -> str:
@@ -51,8 +51,10 @@ def parse_summary(text: str) -> dict:
     out = {}
     for w in WATCHLIST:
         # e.g. TCH TENCENT ... (00700)  vol call put  oi call put iv
+        # Match (00388) or (388) etc.
+        code_num = w["code"].lstrip("0") or "0"
         pat = re.compile(
-            rf"{w['hkats']}\s+[A-Z0-9 \.\-]+?\s*\(0*{w['code'].lstrip('0')}\)\s+"
+            rf"{w['hkats']}\s+[A-Z0-9 &.\-]+?\s*\(0*{code_num}\)\s+"
             rf"([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)\s+([\d,]+)",
             re.I,
         )
