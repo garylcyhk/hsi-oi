@@ -18,6 +18,8 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 
 DATA_JS = Path(__file__).parent / "data.js"
+MINI_DATA_JS = Path(__file__).parent / "data-mini.js"
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 }
@@ -42,6 +44,24 @@ def fetch_report(date_str: str) -> str:
 
 
 
+
+
+def fetch_mini_report(date_str: str) -> str:
+    """Fetch Mini-HSI options daily report (Chinese mhioc)."""
+    code = to_hkex_code(date_str)
+    url = f"https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/mhioc{code}.htm"
+    print(f"Fetching Mini-HSI options {url} ...")
+    req = Request(url, headers=HEADERS)
+    with urlopen(req, timeout=60) as resp:
+        raw = resp.read()
+    for enc in ("big5", "utf-8", "gbk", "cp950"):
+        try:
+            text = raw.decode(enc)
+            print(f"  OK Mini ({enc}, {len(text)} chars)")
+            return text
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("big5", errors="replace")
 
 
 def fetch_futures(date_str: str, product: str) -> str:
@@ -356,39 +376,94 @@ def save_data(reports: dict):
     print(f"Saved {len(trimmed)} report(s) → {DATA_JS}")
 
 
-def main():
-    if len(sys.argv) > 1:
-        date_str = sys.argv[1]
-    else:
-        # Default: try today, then yesterday (HK time approx)
-        now = datetime.utcnow() + timedelta(hours=8)
-        date_str = now.strftime("%Y-%m-%d")
+def load_existing(path=None):
+    path = path or DATA_JS
+    if not path.exists():
+        return {}
+    m = re.search(r"window\.(?:HSI_REPORTS|MINI_HSI_REPORTS)\s*=\s*(\{.*\});?", path.read_text(encoding="utf-8"), re.S)
+    if not m:
+        return {}
+    return json.loads(m.group(1))
 
-    reports = load_existing()
 
+def save_reports(reports, path, var_name):
+    keys = sorted(reports.keys())[-30:]
+    trimmed = {k: reports[k] for k in keys}
+    js = f"window.{var_name} = " + json.dumps(trimmed, ensure_ascii=False, indent=2) + ";\n"
+    path.write_text(js, encoding="utf-8")
+    print(f"Saved {len(trimmed)} day(s) → {path} ({var_name})")
+
+
+def fetch_one(date_str: str, product: str = "hsi"):
+    """product: hsi | mini"""
+    from urllib.error import HTTPError
     try:
-        text = fetch_report(date_str)
-        report = parse_report(text, date_str)
-        # Futures: HSI + MHI
-        futures = {}
-        for product in ("hsif", "mhif"):
-            try:
-                ftext = fetch_futures(date_str, product)
-                futures[product] = parse_futures(ftext, product, date_str)
-                f = futures[product].get("front") or {}
-                print(f"  {product}: settle={f.get('settle')} vol={f.get('volume')} OI={f.get('oi')} chg={f.get('oiChange')}")
-            except Exception as fe:
-                print(f"  {product} skip: {fe}")
-        report["futures"] = futures
-        reports[report["date"]] = report
-        print(f"Parsed {report['date']}: Call OI={report['summary']['callOI']}, Put OI={report['summary']['putOI']}, strikes={len(report['strikes'])}")
-        save_data(reports)
+        if product == "mini":
+            text = fetch_mini_report(date_str)
+            source_note = "mhioc"
+        else:
+            text = fetch_report(date_str)
+            source_note = "hsioc"
     except HTTPError as e:
-        print(f"HTTP Error {e.code}: Report for {date_str} not available yet (or wrong date).")
-        print("Try a previous trading day, e.g. python3 fetch_and_parse.py 2026-08-18")
+        print(f"  {product} {date_str}: HTTP {e.code}")
+        return None
     except Exception as e:
-        print(f"Error: {e}")
-        raise
+        print(f"  {product} {date_str}: {e}")
+        return None
+    report = parse_report(text, date_str)
+    # fix source URL for mini
+    if product == "mini":
+        code = to_hkex_code(report.get("date") or date_str)
+        report["sourceUrl"] = f"https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/mhioc{code}.htm"
+        report["product"] = "mini-hsi-options"
+    else:
+        report["product"] = "hsi-options"
+    # attach futures (shared index context)
+    futures = {}
+    for prod in ("hsif", "mhif"):
+        try:
+            ftext = fetch_futures(date_str if report.get("date") is None else report["date"], prod)
+            # prefer report date
+            d = report.get("date") or date_str
+            futures[prod] = parse_futures(ftext, prod, d)
+        except Exception as e:
+            print(f"  {prod} skip: {e}")
+    report["futures"] = futures
+    return report
+
+
+def main():
+    args = sys.argv[1:]
+    products = ["hsi", "mini"]
+    if args and args[0] in ("hsi", "mini", "both"):
+        if args[0] == "both":
+            products = ["hsi", "mini"]
+        else:
+            products = [args[0]]
+        args = args[1:]
+
+    if args:
+        candidates = [args[0]]
+    else:
+        now = datetime.utcnow() + timedelta(hours=8)
+        candidates = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(0, 8)]
+
+    for product in products:
+        path = MINI_DATA_JS if product == "mini" else DATA_JS
+        var = "MINI_HSI_REPORTS" if product == "mini" else "HSI_REPORTS"
+        reports = load_existing(path)
+        # also try load HSI_REPORTS style from same file
+        report = None
+        for date_str in candidates:
+            print(f"Trying {product} {date_str} ...")
+            report = fetch_one(date_str, product)
+            if report:
+                break
+        if not report:
+            print(f"No {product} report in", candidates)
+            continue
+        reports[report["date"]] = report
+        save_reports(reports, path, var)
 
 
 if __name__ == "__main__":

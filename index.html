@@ -409,7 +409,10 @@
     .fut-item .fv { font-size: 0.95rem; font-weight: 600; font-family: ui-monospace, monospace; }
     .fut-item .fs { font-size: 0.72rem; margin-top: 1px; }
 
-  </style>
+  .prod-btn{font-size:.72rem;padding:4px 12px;border-radius:999px}
+.prod-btn.active{background:#059669;color:#fff;border-color:#059669}
+.prod-btn:not(.active){color:var(--muted)}
+</style>
 </head>
 <body>
   <header>
@@ -421,7 +424,11 @@
           <a href="./stock-oi/">股票期權 Stocks</a>
           <a href="./futures/">期貨 Futures</a>
         </div>
-        <div class="sub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易</div>
+        <div class="product-toggle" id="productToggle" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+          <button type="button" class="btn prod-btn active" id="btnHsi" onclick="switchProduct('hsi')">恒指期權 HSI</button>
+          <button type="button" class="btn prod-btn" id="btnMini" onclick="switchProduct('mini')">小型恒指期權 Mini-HSI</button>
+        </div>
+        <div class="sub" id="productSub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易 · 合約乘數 HSI $50</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <div class="date-picker">
@@ -577,11 +584,45 @@
   </div>
 
   <script src="data.js"></script>
+  <script src="data-mini.js"></script>
   <script>
-    const reports = window.HSI_REPORTS || {};
-    const availableDates = Object.keys(reports).sort().reverse();
+    let productMode = localStorage.getItem("hsi_product_mode") || "hsi"; // hsi | mini
+    let reports = (productMode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {}));
+    let availableDates = Object.keys(reports).sort().reverse();
     let currentDate = availableDates[0] || null;
+    
     let currentReport = null;
+
+    function switchProduct(mode){
+      if(mode !== "hsi" && mode !== "mini") return;
+      productMode = mode;
+      localStorage.setItem("hsi_product_mode", mode);
+      reports = (mode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {}));
+      availableDates = Object.keys(reports).sort().reverse();
+      currentDate = availableDates[0] || null;
+      document.getElementById("btnHsi").classList.toggle("active", mode === "hsi");
+      document.getElementById("btnMini").classList.toggle("active", mode === "mini");
+      const sub = document.getElementById("productSub");
+      if(sub){
+        sub.textContent = mode === "mini"
+          ? "小型恒指期權 · 港交所每日報告 · 重貨區 / 未平倉 · 合約乘數 Mini $10"
+          : "港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易 · 合約乘數 HSI $50";
+      }
+      const h1 = document.querySelector("header h1");
+      if(h1){
+        h1.innerHTML = mode === "mini"
+          ? '小型恒指期權未平倉 <span>Mini-HSI Options OI</span>'
+          : '恒指期權未平倉 <span>HSI Options OI</span>';
+      }
+      if(!availableDates.length){
+        document.getElementById("status") && (document.getElementById("status").textContent =
+          mode === "mini" ? "無 Mini-HSI 資料 — 請上傳 data-mini.js 並跑 fetch mini" : "無 HSI 資料");
+        return;
+      }
+      if(typeof render === "function") render(currentDate);
+      else if(typeof init === "function") init();
+    }
+
 
     // Filter / sort state
     // Defaults (overridden by localStorage)
@@ -1543,6 +1584,21 @@
       document.getElementById("status").textContent =
         "尚未有數據。請執行 GitHub Actions 更新。";
     }
-  </script>
+  
+    // product init
+    (function(){
+      const mode = productMode;
+      const bH = document.getElementById("btnHsi");
+      const bM = document.getElementById("btnMini");
+      if(bH) bH.classList.toggle("active", mode === "hsi");
+      if(bM) bM.classList.toggle("active", mode === "mini");
+      if(mode === "mini"){
+        const h1 = document.querySelector("header h1");
+        if(h1) h1.innerHTML = '小型恒指期權未平倉 <span>Mini-HSI Options OI</span>';
+        const sub = document.getElementById("productSub");
+        if(sub) sub.textContent = "小型恒指期權 · 港交所每日報告 · 重貨區 / 未平倉 · 合約乘數 Mini $10";
+      }
+    })();
+</script>
 </body>
 </html>
