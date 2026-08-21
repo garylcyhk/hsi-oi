@@ -945,6 +945,12 @@
       `;
     }
 
+    function setStrikeSort(key) {
+      if (sortKey === key) sortDir = sortDir === "desc" ? "asc" : "desc";
+      else { sortKey = key; sortDir = key === "strike" ? "desc" : "desc"; }
+      renderStrikeTable();
+    }
+
     function renderStrikeTable() {
       if (!currentReport) return;
       const r = currentReport;
@@ -978,6 +984,10 @@
           case "putOI":  va = a.putOI||0;  vb = b.putOI||0;  break;
           case "callVol":va = a.callVol||0;vb = b.callVol||0;break;
           case "putVol": va = a.putVol||0; vb = b.putVol||0; break;
+          case "callSettle": va = a.callSettle||0; vb = b.callSettle||0; break;
+          case "putSettle": va = a.putSettle||0; vb = b.putSettle||0; break;
+          case "callChg": va = a.callChange||0; vb = b.callChange||0; break;
+          case "putChg": va = a.putChange||0; vb = b.putChange||0; break;
           case "totalOI":va = (a.callOI||0)+(a.putOI||0); vb = (b.callOI||0)+(b.putOI||0); break;
           case "chg":    va = Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0));
                          vb = Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)); break;
@@ -999,22 +1009,6 @@
           </div>
           <div class="controls">
             <div>
-              <label>排序</label>
-              <select id="sortKey" onchange="onFilterChange()">
-                <option value="strike" ${sortKey==="strike"?"selected":""}>行使價</option>
-                <option value="totalOI" ${sortKey==="totalOI"?"selected":""}>總 OI</option>
-                <option value="callOI" ${sortKey==="callOI"?"selected":""}>Call OI</option>
-                <option value="putOI" ${sortKey==="putOI"?"selected":""}>Put OI</option>
-                <option value="callVol" ${sortKey==="callVol"?"selected":""}>Call Vol</option>
-                <option value="putVol" ${sortKey==="putVol"?"selected":""}>Put Vol</option>
-                <option value="chg" ${sortKey==="chg"?"selected":""}>最大變化</option>
-              </select>
-              <select id="sortDir" onchange="onFilterChange()">
-                <option value="desc" ${sortDir==="desc"?"selected":""}>高→低</option>
-                <option value="asc" ${sortDir==="asc"?"selected":""}>低→高</option>
-              </select>
-            </div>
-            <div>
               <label>最低 OI</label>
               <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" />
             </div>
@@ -1028,20 +1022,21 @@
                 隱藏空白
               </label>
             </div>
+            <span class="tag">點欄位標題排序</span>
           </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  ${colCallVol ? '<th class="tr">Call成交</th>' : ''}
-                  ${colCallOI ? '<th class="tr">Call OI</th>' : ''}
-                  ${colCallSettle ? '<th class="tr">Call結算價</th>' : ''}
-                  ${colCallChg ? '<th class="tr">CallΔ</th>' : ''}
-                  <th class="tc">行使價</th>
-                  ${colPutChg ? '<th class="tl">PutΔ</th>' : ''}
-                  ${colPutSettle ? '<th class="tl">Put結算價</th>' : ''}
-                  ${colPutOI ? '<th class="tl">Put OI</th>' : ''}
-                  ${colPutVol ? '<th class="tl">Put成交</th>' : ''}
+                  ${colCallVol ? `<th class="tr sortable ${sortKey==="callVol"?"active":""}" onclick="setStrikeSort('callVol')">Call成交 ${arrow(sortKey,"callVol",sortDir)}</th>` : ''}
+                  ${colCallOI ? `<th class="tr sortable ${sortKey==="callOI"?"active":""}" onclick="setStrikeSort('callOI')">Call OI ${arrow(sortKey,"callOI",sortDir)}</th>` : ''}
+                  ${colCallSettle ? `<th class="tr sortable ${sortKey==="callSettle"?"active":""}" onclick="setStrikeSort('callSettle')">Call結算價 ${arrow(sortKey,"callSettle",sortDir)}</th>` : ''}
+                  ${colCallChg ? `<th class="tr sortable ${sortKey==="callChg"?"active":""}" onclick="setStrikeSort('callChg')">CallΔ ${arrow(sortKey,"callChg",sortDir)}</th>` : ''}
+                  <th class="tc sortable ${sortKey==="strike"?"active":""}" onclick="setStrikeSort('strike')">行使價 ${arrow(sortKey,"strike",sortDir)}</th>
+                  ${colPutChg ? `<th class="tl sortable ${sortKey==="putChg"?"active":""}" onclick="setStrikeSort('putChg')">PutΔ ${arrow(sortKey,"putChg",sortDir)}</th>` : ''}
+                  ${colPutSettle ? `<th class="tl sortable ${sortKey==="putSettle"?"active":""}" onclick="setStrikeSort('putSettle')">Put結算價 ${arrow(sortKey,"putSettle",sortDir)}</th>` : ''}
+                  ${colPutOI ? `<th class="tl sortable ${sortKey==="putOI"?"active":""}" onclick="setStrikeSort('putOI')">Put OI ${arrow(sortKey,"putOI",sortDir)}</th>` : ''}
+                  ${colPutVol ? `<th class="tl sortable ${sortKey==="putVol"?"active":""}" onclick="setStrikeSort('putVol')">Put成交 ${arrow(sortKey,"putVol",sortDir)}</th>` : ''}
                 </tr>
               </thead>
               <tbody>
