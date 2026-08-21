@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>恒指期貨 HSI / MHI Futures</title>
 <style>
-:root{--font-scale:100%;--bg:#09090b;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185}
+:root{--font-scale:100%;--bg:#09090b;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24;--sky:#38bdf8}
 html{font-size:var(--font-scale)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:ui-sans-serif,system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
@@ -25,8 +25,19 @@ input[type=number]{width:90px}
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem}
 .filters label{color:var(--muted);display:flex;align-items:center;gap:6px}
 .filters input[type=checkbox]{accent-color:#34d399;width:14px;height:14px}
+.analysis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:800px){.analysis,.fut-grid,.compare{grid-template-columns:1fr!important}}
+.an-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
+.an-card h3{font-size:.82rem;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.an-item .l{font-size:.68rem;color:var(--muted)}.an-item .v{font-size:1.05rem;font-weight:600;font-family:ui-monospace,monospace}.an-item .s{font-size:.72rem;color:var(--muted);margin-top:2px}
+.regime{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.reg{border:1px solid var(--border);border-radius:6px;padding:8px 10px}
+.reg .t{font-size:.72rem;color:var(--muted);margin-bottom:2px}.reg .n{font-size:1.2rem;font-weight:600;font-family:ui-monospace,monospace}
+.reg.acc{border-color:rgba(52,211,153,.35)}.reg.dist{border-color:rgba(251,113,133,.35)}
+.reg.sc{border-color:rgba(56,189,248,.35)}.reg.ll{border-color:rgba(251,191,36,.35)}
+.bias{margin-top:10px;padding:8px 10px;border-radius:6px;font-size:.8rem;background:rgba(39,39,42,.6)}
 .fut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-@media(max-width:700px){.fut-grid,.compare{grid-template-columns:1fr!important}}
 .fut-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
 .fut-card h2{font-size:.9rem;font-weight:500;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:8px}
@@ -55,10 +66,7 @@ tr.row-selected td{background:rgba(16,185,129,.28)!important;box-shadow:inset 3p
 .btn-primary{background:#059669;border:none;color:#fff;border-radius:6px;padding:7px 14px;cursor:pointer}
 .btn-secondary{background:#27272a;border:none;color:var(--text);border-radius:6px;padding:7px 14px;cursor:pointer}
 footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{color:var(--muted)}
-@media print{
-  .site-nav,.filters,.btn,.modal-overlay{display:none!important}
-  body{background:#fff;color:#111} .card,.section,.fut-card{border:1px solid #ccc}
-}
+@media print{.site-nav,.filters,.btn,.modal-overlay{display:none!important} body{background:#fff;color:#111}}
 </style>
 </head>
 <body>
@@ -70,7 +78,7 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
       <a href="../stock-oi/">股票期權 Stocks</a>
       <a class="active" href="./">期貨 Futures</a>
     </div>
-    <div class="sub">港交所每日期貨報告 · 結算價 / 成交量 / 未平倉</div>
+    <div class="sub">港交所每日期貨報告 · 結算價 / 成交量 / 未平倉 · 趨勢分析</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <label class="mu" style="font-size:.75rem">日期</label>
@@ -93,6 +101,15 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
         <option value="150">更大 150%</option>
       </select>
     </div>
+    <div class="modal-row"><label>分析視窗（日）</label>
+      <select id="setWindow">
+        <option value="10">近 10 日</option>
+        <option value="15">近 15 日</option>
+        <option value="20" selected>近 20 日</option>
+        <option value="30">近 30 日</option>
+        <option value="0">全部</option>
+      </select>
+    </div>
     <div class="modal-row"><label>預設最低成交量</label><input type="number" id="setMinVol" min="0" step="100" /></div>
     <div class="modal-row"><label>預設最低 OI</label><input type="number" id="setMinOI" min="0" step="100" /></div>
     <div class="modal-row"><label>隱藏無成交日</label><input type="checkbox" id="setHideZeroVol" /></div>
@@ -107,6 +124,15 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
 <div class="container">
   <div class="note" id="status">載入中…</div>
   <div class="filters" id="filters">
+    <label>分析視窗
+      <select id="winSelect" onchange="onWindowChange()">
+        <option value="10">近 10 日</option>
+        <option value="15">近 15 日</option>
+        <option value="20" selected>近 20 日</option>
+        <option value="30">近 30 日</option>
+        <option value="0">全部</option>
+      </select>
+    </label>
     <label>最低成交量 <input type="number" id="minVol" value="0" min="0" step="100" oninput="applyFilters()" /></label>
     <label>最低 OI <input type="number" id="minOI" value="0" min="0" step="100" oninput="applyFilters()" /></label>
     <label><input type="checkbox" id="hideZeroVol" onchange="applyFilters()" /> 隱藏無成交</label>
@@ -117,6 +143,8 @@ footer{text-align:center;padding:20px;font-size:.7rem;color:#52525b} footer a{co
     </select></label>
     <span class="tag" id="filterHint"></span>
   </div>
+
+  <div class="analysis" id="analysis"></div>
   <div class="compare" id="compare"></div>
   <div class="fut-grid" id="frontCards"></div>
   <div id="tables"></div>
@@ -137,7 +165,7 @@ let curDate = dates[0] || null;
 let sortKey = "month", sortDir = "asc", sortProduct = "hsif";
 let histSortKey = "date", histSortDir = "desc";
 
-const DEFAULTS = { fontScale:100, minVol:0, minOI:0, hideZeroVol:false };
+const DEFAULTS = { fontScale:100, minVol:0, minOI:0, hideZeroVol:false, window:20 };
 function loadSettings(){
   try { return {...DEFAULTS, ...JSON.parse(localStorage.getItem("futures_settings")||"{}")}; }
   catch(e){ return {...DEFAULTS}; }
@@ -147,6 +175,7 @@ let fontScale = settings.fontScale || 100;
 let minVol = settings.minVol || 0;
 let minOI = settings.minOI || 0;
 let hideZeroVol = !!settings.hideZeroVol;
+let analysisWindow = settings.window != null ? settings.window : 20;
 document.documentElement.style.setProperty("--font-scale", fontScale + "%");
 
 const fmt = n => (n==null||isNaN(n))?"—":Number(n).toLocaleString("en-US");
@@ -155,6 +184,7 @@ const chgClass = n => n>0?"pos":n<0?"neg":"mu";
 
 function openSettings(){
   document.getElementById("setFontScale").value = String(fontScale);
+  document.getElementById("setWindow").value = String(analysisWindow);
   document.getElementById("setMinVol").value = minVol;
   document.getElementById("setMinOI").value = minOI;
   document.getElementById("setHideZeroVol").checked = hideZeroVol;
@@ -163,6 +193,8 @@ function openSettings(){
 function closeSettings(){ document.getElementById("settingsModal").classList.remove("open"); }
 function saveSettings(){
   fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
+  analysisWindow = parseInt(document.getElementById("setWindow").value,10);
+  if(isNaN(analysisWindow)) analysisWindow = 20;
   minVol = parseInt(document.getElementById("setMinVol").value,10)||0;
   minOI = parseInt(document.getElementById("setMinOI").value,10)||0;
   hideZeroVol = document.getElementById("setHideZeroVol").checked;
@@ -170,19 +202,29 @@ function saveSettings(){
   document.getElementById("minVol").value = minVol;
   document.getElementById("minOI").value = minOI;
   document.getElementById("hideZeroVol").checked = hideZeroVol;
-  settings = {fontScale, minVol, minOI, hideZeroVol};
+  document.getElementById("winSelect").value = String(analysisWindow);
+  settings = {fontScale, minVol, minOI, hideZeroVol, window:analysisWindow};
   localStorage.setItem("futures_settings", JSON.stringify(settings));
   closeSettings();
+  renderAnalysis();
   applyFilters();
 }
 function resetSettings(){
-  settings = {...DEFAULTS}; fontScale=100; minVol=0; minOI=0; hideZeroVol=false;
+  settings = {...DEFAULTS}; fontScale=100; minVol=0; minOI=0; hideZeroVol=false; analysisWindow=20;
   document.documentElement.style.setProperty("--font-scale","100%");
   document.getElementById("minVol").value=0;
   document.getElementById("minOI").value=0;
   document.getElementById("hideZeroVol").checked=false;
+  document.getElementById("winSelect").value="20";
   localStorage.setItem("futures_settings", JSON.stringify(settings));
-  closeSettings(); applyFilters();
+  closeSettings(); renderAnalysis(); applyFilters();
+}
+function onWindowChange(){
+  analysisWindow = parseInt(document.getElementById("winSelect").value,10);
+  if(isNaN(analysisWindow)) analysisWindow = 20;
+  settings.window = analysisWindow;
+  localStorage.setItem("futures_settings", JSON.stringify(settings));
+  renderAnalysis();
 }
 
 function onRowClick(tr){
@@ -296,6 +338,116 @@ function monthTable(prod, title, months){
     </tbody></table>
   </div>`;
 }
+
+/** Build chronological daily series (oldest → newest) from all reports with HSI front */
+function buildSeries(){
+  const chrono = [...dates].sort(); // ascending
+  const rows = [];
+  for(const d of chrono){
+    const r = reports[d];
+    if(!r||!r.futures) continue;
+    const hf = (r.futures.hsif||{}).front||{};
+    const mf = (r.futures.mhif||{}).front||{};
+    if(hf.settle==null && mf.settle==null) continue;
+    rows.push({
+      date: d,
+      hSettle: hf.settle, hChg: hf.settleChange||0, hVol: hf.volume||0, hOI: hf.oi||0, hOIChg: hf.oiChange||0,
+      mSettle: mf.settle, mChg: mf.settleChange||0, mVol: mf.volume||0, mOI: mf.oi||0, mOIChg: mf.oiChange||0,
+    });
+  }
+  return rows;
+}
+
+function renderAnalysis(){
+  const box = document.getElementById("analysis");
+  if(!box) return;
+  const series = buildSeries();
+  if(!series.length){ box.innerHTML = ""; return; }
+
+  let win = analysisWindow;
+  const slice = (win > 0 && win < series.length) ? series.slice(-win) : series;
+  const n = slice.length;
+  const label = win > 0 ? `近 ${n} 日` : `全部 ${n} 日`;
+
+  // Trend counts
+  let up=0, down=0, flat=0;
+  let sumUp=0, sumDn=0, volUp=0, volDn=0, nUp=0, nDn=0;
+  let acc=0, dist=0, sc=0, ll=0;
+  for(const x of slice){
+    const c = x.hChg, oc = x.hOIChg;
+    if(c > 0){ up++; sumUp += c; volUp += x.hVol; nUp++; }
+    else if(c < 0){ down++; sumDn += c; volDn += x.hVol; nDn++; }
+    else flat++;
+    if(c > 0 && oc > 0) acc++;
+    else if(c < 0 && oc > 0) dist++;
+    else if(c > 0 && oc < 0) sc++;
+    else if(c < 0 && oc < 0) ll++;
+  }
+
+  // Current streak (from newest backwards)
+  let streak = 0, streakDir = 0;
+  for(let i = series.length-1; i >= 0; i--){
+    const c = series[i].hChg;
+    if(c === 0) break;
+    const dir = c > 0 ? 1 : -1;
+    if(streakDir === 0){ streakDir = dir; streak = 1; }
+    else if(dir === streakDir) streak++;
+    else break;
+  }
+  const streakText = streakDir > 0 ? `連升 ${streak} 日` : streakDir < 0 ? `連跌 ${streak} 日` : "持平";
+  const streakCls = streakDir > 0 ? "pos" : streakDir < 0 ? "neg" : "mu";
+
+  // Net settle move in window
+  const net = slice.reduce((s,x)=>s+(x.hChg||0), 0);
+  const avgVolUp = nUp ? Math.round(volUp/nUp) : 0;
+  const avgVolDn = nDn ? Math.round(volDn/nDn) : 0;
+
+  // Bias hint
+  let bias = "中性";
+  let biasNote = "升跌日數接近，或需配合期權牆位";
+  if(up > down + 2 && acc >= dist){
+    bias = "偏多結構";
+    biasNote = "升日較多，且 Price↑OI↑（新多）不少於 Price↓OI↑";
+  } else if(down > up + 2 && dist >= acc){
+    bias = "偏空結構";
+    biasNote = "跌日較多，且 Price↓OI↑（新空）不少於 Price↑OI↑";
+  } else if(sc > acc && sc > dist){
+    bias = "回補主導";
+    biasNote = "升日多伴隨 OI↓，偏向短線回補而非新多";
+  } else if(ll > dist && ll > acc){
+    bias = "長倉平倉主導";
+    biasNote = "跌日多伴隨 OI↓，偏向長倉離場";
+  }
+
+  box.innerHTML = `
+    <div class="an-card">
+      <h3><span>趨勢摘要 Trend</span><span class="tag">${label}</span></h3>
+      <div class="an-grid">
+        <div class="an-item"><div class="l">升日</div><div class="v pos">${up}</div></div>
+        <div class="an-item"><div class="l">跌日</div><div class="v neg">${down}</div></div>
+        <div class="an-item"><div class="l">平日</div><div class="v mu">${flat}</div></div>
+        <div class="an-item"><div class="l">目前</div><div class="v ${streakCls}">${streakText}</div></div>
+        <div class="an-item"><div class="l">區間淨升跌</div><div class="v ${chgClass(net)}">${fmtChg(net)}</div></div>
+        <div class="an-item"><div class="l">升日均量</div><div class="v">${fmt(avgVolUp)}</div></div>
+        <div class="an-item"><div class="l">跌日均量</div><div class="v">${fmt(avgVolDn)}</div></div>
+      </div>
+      <div class="bias"><strong>${bias}</strong> · ${biasNote}</div>
+    </div>
+    <div class="an-card">
+      <h3><span>Price × OI 結構</span><span class="tag">HSI 即月</span></h3>
+      <div class="regime">
+        <div class="reg acc"><div class="t">P↑ OI↑ 新多</div><div class="n pos">${acc}</div></div>
+        <div class="reg dist"><div class="t">P↓ OI↑ 新空</div><div class="n neg">${dist}</div></div>
+        <div class="reg sc"><div class="t">P↑ OI↓ 回補</div><div class="n" style="color:var(--sky)">${sc}</div></div>
+        <div class="reg ll"><div class="t">P↓ OI↓ 平多</div><div class="n" style="color:var(--amber)">${ll}</div></div>
+      </div>
+      <div class="bias mu" style="margin-top:10px">
+        新多 ${acc} · 新空 ${dist} · 回補 ${sc} · 平多 ${ll}
+        ${acc+dist+sc+ll < n ? ` · 其餘 ${n-(acc+dist+sc+ll)} 日 OI 不變` : ""}
+      </div>
+    </div>`;
+}
+
 function renderHistory(){
   const box = document.getElementById("history");
   if(!box) return;
@@ -329,7 +481,6 @@ function renderHistory(){
   });
 
   document.getElementById("filterHint").textContent = `歷史 ${rows.length} / ${dates.length} 日`;
-
   const th=(k,label,cls="")=>`<th class="${cls} sortable ${histSortKey===k?"active":""}" onclick="setHistSort('${k}')">${label} ${histArrow(k)}</th>`;
   const showH = f.product!=="mhif";
   const showM = f.product!=="hsif";
@@ -342,6 +493,7 @@ function renderHistory(){
       ${showH?th("hChg","Δ","tr"):""}
       ${showH?th("hVol","HSI量","tr"):""}
       ${showH?th("hOI","HSI OI","tr"):""}
+      ${showH?th("hOIChg","ΔOI","tr"):""}
       ${showM?th("mSettle","MHI結算","tr"):""}
       ${showM?th("mChg","Δ","tr"):""}
       ${showM?th("mVol","MHI量","tr"):""}
@@ -353,6 +505,7 @@ function renderHistory(){
       ${showH?`<td class="tr mono ${chgClass(r.hChg)}">${fmtChg(r.hChg)}</td>`:""}
       ${showH?`<td class="tr mono">${fmt(r.hVol)}</td>`:""}
       ${showH?`<td class="tr mono">${fmt(r.hOI)}</td>`:""}
+      ${showH?`<td class="tr mono ${chgClass(r.hOIChg)}">${fmtChg(r.hOIChg)}</td>`:""}
       ${showM?`<td class="tr mono">${fmt(r.mSettle)}</td>`:""}
       ${showM?`<td class="tr mono ${chgClass(r.mChg)}">${fmtChg(r.mChg)}</td>`:""}
       ${showM?`<td class="tr mono">${fmt(r.mVol)}</td>`:""}
@@ -400,13 +553,14 @@ function render(date){
 
   document.getElementById("frontCards").innerHTML =
     frontCard("恒生指數期貨 HSI", hf, h.total) + frontCard("小型恒指期貨 MHI", mf, m.total);
+  renderAnalysis();
   applyFilters();
 }
 
-// init filter inputs from settings
 document.getElementById("minVol").value = minVol;
 document.getElementById("minOI").value = minOI;
 document.getElementById("hideZeroVol").checked = hideZeroVol;
+document.getElementById("winSelect").value = String(analysisWindow);
 
 if(dates.length) {
   const withFut = dates.find(d => reports[d] && reports[d].futures && (reports[d].futures.hsif || reports[d].futures.mhif));
