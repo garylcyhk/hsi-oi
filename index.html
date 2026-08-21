@@ -412,6 +412,20 @@
   .prod-btn{font-size:.72rem;padding:4px 12px;border-radius:999px}
 .prod-btn.active{background:#059669;color:#fff;border-color:#059669}
 .prod-btn:not(.active){color:var(--muted)}
+
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:800px){.cmp-grid{grid-template-columns:1fr}}
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.cmp-card h3{font-size:.85rem;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.cmp-row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #1f1f23;font-size:.8rem}
+.cmp-row:last-child{border-bottom:none}
+.cmp-label{color:var(--muted);font-size:.72rem;margin-bottom:4px}
+.cmp-metric{font-family:ui-monospace,monospace;font-weight:600}
+.cmp-full{grid-column:1/-1}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.cmp-table th{text-align:left;padding:6px 8px;color:var(--muted);font-size:.7rem;border-bottom:1px solid var(--border)}
+.cmp-table td{padding:6px 8px;border-bottom:1px solid #1f1f23;font-family:ui-monospace,monospace}
+.cmp-table .tr{text-align:right}
 </style>
 </head>
 <body>
@@ -556,6 +570,7 @@
       <button class="tab-btn" data-tab="walls" onclick="switchTab('walls')">重貨區</button>
       <button class="tab-btn" data-tab="strikes" onclick="switchTab('strikes')">行使價分佈</button>
       <button class="tab-btn" data-tab="topvol" onclick="switchTab('topvol')">十大成交</button>
+      <button class="tab-btn" data-tab="compare" onclick="switchTab('compare')">對比 HSI vs Mini</button>
     </div>
 
     <div class="tab-panels">
@@ -573,6 +588,9 @@
       </div>
       <div class="tab-panel" id="tab-topvol">
         <div id="topVolume"></div>
+      </div>
+      <div class="tab-panel" id="tab-compare">
+        <div id="compareBox"></div>
       </div>
     </div>
 
@@ -690,6 +708,148 @@
 
 
 
+    
+    function getReportSet(mode, date) {
+      const bag = mode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {});
+      if (bag[date]) return bag[date];
+      // nearest earlier date
+      const keys = Object.keys(bag).sort().reverse();
+      const hit = keys.find(d => d <= date);
+      return hit ? bag[hit] : null;
+    }
+
+    function wallsList(r, side, n) {
+      if (!r || !r.heavyZones) return [];
+      const key = side === "call" ? "callWalls" : "putWalls";
+      return (r.heavyZones[key] || []).slice(0, n);
+    }
+
+    function settleOf(r) {
+      return r?.futures?.hsif?.front?.settle || r?.futures?.mhif?.front?.settle || null;
+    }
+
+    function biasLine(r) {
+      if (!r) return { title: "無資料", note: "" };
+      const settle = settleOf(r);
+      const calls = r.heavyZones?.callWalls || [];
+      const puts = r.heavyZones?.putWalls || [];
+      if (settle == null) return { title: "無 Settle", note: "缺期貨結算價" };
+      const nearCall = calls.filter(z => z.strike >= settle).sort((a,b)=>a.strike-b.strike)[0]
+        || calls.slice().sort((a,b)=>Math.abs(a.strike-settle)-Math.abs(b.strike-settle))[0];
+      const nearPut = puts.filter(z => z.strike <= settle).sort((a,b)=>b.strike-a.strike)[0]
+        || puts.slice().sort((a,b)=>Math.abs(a.strike-settle)-Math.abs(b.strike-settle))[0];
+      const callAbove = nearCall && nearCall.strike > settle;
+      const putBelow = nearPut && nearPut.strike < settle;
+      if (callAbove && putBelow) {
+        return {
+          title: "夾在牆中",
+          note: `Call ${nearCall.strike} (+${Math.round(nearCall.strike-settle)}) · Put ${nearPut.strike} (${Math.round(nearPut.strike-settle)})`
+        };
+      }
+      if (callAbove) return { title: "潛在阻力在上", note: `Call ${nearCall.strike} · +${Math.round(nearCall.strike-settle)} pts` };
+      if (putBelow) return { title: "潛在支持在下", note: `Put ${nearPut.strike} · ${Math.round(nearPut.strike-settle)} pts` };
+      return { title: "牆位偏離", note: "見重貨區" };
+    }
+
+    function renderCompare(date) {
+      const box = document.getElementById("compareBox");
+      if (!box) return;
+      const d = date || currentDate;
+      const hsi = getReportSet("hsi", d);
+      const mini = getReportSet("mini", d);
+      const settle = settleOf(hsi) || settleOf(mini);
+      const bh = biasLine(hsi);
+      const bm = biasLine(mini);
+
+      const fmtN = n => (n==null||isNaN(n)) ? "—" : Number(n).toLocaleString("en-US");
+      const fmtC = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
+      const cls = n => n>0?"pos":n<0?"neg":"mu";
+
+      function sideCard(title, r, bias, multiplier) {
+        if (!r) {
+          return `<div class="cmp-card"><h3>${title}</h3><div class="mu">此日期無資料</div></div>`;
+        }
+        const s = r.summary || {};
+        const callOI = s.callOI ?? r.heavyZones?.callWalls?.reduce((a,z)=>a+(z.oi||0),0);
+        // prefer front month totals from structure if present
+        const frontCall = (r.strikes||[]).reduce((a,x)=>a+(x.callOI||0),0);
+        const frontPut = (r.strikes||[]).reduce((a,x)=>a+(x.putOI||0),0);
+        const cWalls = wallsList(r, "call", 5);
+        const pWalls = wallsList(r, "put", 5);
+        return `<div class="cmp-card">
+          <h3><span>${title}</span><span class="tag">${r.date||""} · ${multiplier}</span></h3>
+          <div class="cmp-label">偏向</div>
+          <div style="font-weight:600;margin-bottom:2px;">${bias.title}</div>
+          <div class="mu" style="font-size:.75rem;margin-bottom:10px;">${bias.note}</div>
+          <div class="cmp-row"><span>即月 Call OI</span><span class="cmp-metric">${fmtN(frontCall)}</span></div>
+          <div class="cmp-row"><span>即月 Put OI</span><span class="cmp-metric">${fmtN(frontPut)}</span></div>
+          <div class="cmp-row"><span>Put/Call</span><span class="cmp-metric">${frontCall? (frontPut/frontCall).toFixed(2) : "—"}</span></div>
+          <div class="cmp-label" style="margin-top:10px;">Call 重貨 Top 5</div>
+          ${cWalls.map(z=>`<div class="cmp-row"><span class="em">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">—</div>'}
+          <div class="cmp-label" style="margin-top:10px;">Put 重貨 Top 5</div>
+          ${pWalls.map(z=>`<div class="cmp-row"><span class="ro">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">—</div>'}
+        </div>`;
+      }
+
+      // Align strikes table: union of top walls
+      const hCalls = wallsList(hsi, "call", 8);
+      const mCalls = wallsList(mini, "call", 8);
+      const hPuts = wallsList(hsi, "put", 8);
+      const mPuts = wallsList(mini, "put", 8);
+      const callStrikes = [...new Set([...hCalls.map(z=>z.strike), ...mCalls.map(z=>z.strike)])].sort((a,b)=>b-a);
+      const putStrikes = [...new Set([...hPuts.map(z=>z.strike), ...mPuts.map(z=>z.strike)])].sort((a,b)=>b-a);
+      const hMap = o => Object.fromEntries((o||[]).map(z=>[z.strike,z]));
+      const hc = hMap(hCalls), mc = hMap(mCalls), hp = hMap(hPuts), mp = hMap(mPuts);
+
+      function alignTable(title, strikes, aMap, bMap, colorClass) {
+        return `<div class="cmp-card cmp-full">
+          <h3>${title}</h3>
+          <table class="cmp-table">
+            <thead><tr>
+              <th>行使價</th>
+              <th class="tr">HSI OI</th>
+              <th class="tr">HSI Δ</th>
+              <th class="tr">Mini OI</th>
+              <th class="tr">Mini Δ</th>
+              <th class="tr">距 Settle</th>
+            </tr></thead>
+            <tbody>
+              ${strikes.map(s=>{
+                const a=aMap[s], b=bMap[s];
+                const dist = settle!=null ? ((s>=settle?"+":"")+Math.round(s-settle)) : "—";
+                return `<tr>
+                  <td class="${colorClass}">${s}</td>
+                  <td class="tr">${a?fmtN(a.oi):"—"}</td>
+                  <td class="tr ${a?cls(a.oiChange):""}">${a?fmtC(a.oiChange):"—"}</td>
+                  <td class="tr">${b?fmtN(b.oi):"—"}</td>
+                  <td class="tr ${b?cls(b.oiChange):""}">${b?fmtC(b.oiChange):"—"}</td>
+                  <td class="tr mu">${dist}</td>
+                </tr>`;
+              }).join("")||'<tr><td colspan="6" class="mu">無資料</td></tr>'}
+            </tbody>
+          </table>
+        </div>`;
+      }
+
+      box.innerHTML = `
+        <div class="note" style="margin-bottom:10px;">
+          對比日期 <strong>${d||"—"}</strong>
+          · Settle <strong>${settle!=null?fmtN(settle):"—"}</strong>
+          · HSI 資料日 ${hsi?.date||"缺"} · Mini 資料日 ${mini?.date||"缺"}
+          · OI 規模不同（合約乘數不同），重點看<strong>牆位是否一致</strong>與 ΔOI 方向
+        </div>
+        <div class="cmp-grid">
+          ${sideCard("恒指期權 HSI", hsi, bh, "$50/點")}
+          ${sideCard("小型恒指期權 Mini", mini, bm, "$10/點")}
+        </div>
+        <div class="cmp-grid">
+          ${alignTable("Call 重貨對齊", callStrikes, hc, mc, "em")}
+          ${alignTable("Put 重貨對齊", putStrikes, hp, mp, "ro")}
+        </div>
+      `;
+    }
+
+
     function switchTab(name) {
       document.querySelectorAll(".tab-btn").forEach(b => {
         b.classList.toggle("active", b.dataset.tab === name);
@@ -698,6 +858,7 @@
         p.classList.toggle("active", p.id === "tab-" + name);
       });
       try { localStorage.setItem("hsi_oi_tab", name); } catch(e) {}
+      if (name === "compare") renderCompare(currentDate);
     }
 
     function openSettings() {
@@ -1300,6 +1461,7 @@
       renderFutures(r);
       renderLevelsCard(r);
       renderDayChange(r);
+      renderCompare(r.date || date);
 
       const hz = r.heavyZones || {};
       if (!(hz.callVolWalls && hz.callVolWalls.length) && r.strikes) {
