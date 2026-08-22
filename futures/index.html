@@ -236,7 +236,6 @@ footer p:first-child{font-size:.8rem}
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <label class="mu" style="font-size:.75rem">日期</label>
     <select id="dateSelect" onchange="render(this.value)"></select>
-    <input type="date" id="dateCal" onchange="onCal()" />
     <div class="header-menu" id="headerMenu">
           <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" title="選單" aria-label="選單">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -302,7 +301,6 @@ footer p:first-child{font-size:.8rem}
     </label>
     <label>最低成交量 <input type="number" id="minVol" value="0" min="0" step="100" oninput="applyFilters()" /></label>
     <label>最低 OI <input type="number" id="minOI" value="0" min="0" step="100" oninput="applyFilters()" /></label>
-    <label><input type="checkbox" id="hideZeroVol" onchange="applyFilters()" /> 隱藏無成交</label>
     <label>只看 <select id="productFilter" onchange="applyFilters()">
       <option value="both">HSI + MHI</option>
       <option value="hsif">只 HSI</option>
@@ -370,7 +368,7 @@ function saveSettings(){
   document.documentElement.style.setProperty("--font-scale", fontScale+"%");
   document.getElementById("minVol").value = minVol;
   document.getElementById("minOI").value = minOI;
-  document.getElementById("hideZeroVol").checked = hideZeroVol;
+  document.getElementById("setHideZeroVol").checked = hideZeroVol;
   document.getElementById("winSelect").value = String(analysisWindow);
   settings = {fontScale, minVol, minOI, hideZeroVol, window:analysisWindow};
   localStorage.setItem("futures_settings", JSON.stringify(settings));
@@ -384,7 +382,7 @@ function resetSettings(){
   document.documentElement.style.setProperty("--font-scale","100%");
   document.getElementById("minVol").value=0;
   document.getElementById("minOI").value=0;
-  document.getElementById("hideZeroVol").checked=false;
+  document.getElementById("setHideZeroVol").checked=false;
   document.getElementById("winSelect").value="20";
   localStorage.setItem("futures_settings", JSON.stringify(settings));
   closeSettings(); renderAnalysis(); applyFilters();
@@ -460,7 +458,7 @@ function getLiveFilters(){
   return {
     minVol: parseInt(document.getElementById("minVol").value,10)||0,
     minOI: parseInt(document.getElementById("minOI").value,10)||0,
-    hideZero: document.getElementById("hideZeroVol").checked,
+    hideZero: document.getElementById("setHideZeroVol").checked,
     product: document.getElementById("productFilter").value || "both",
   };
 }
@@ -789,7 +787,7 @@ function render(date){
 
 document.getElementById("minVol").value = minVol;
 document.getElementById("minOI").value = minOI;
-document.getElementById("hideZeroVol").checked = hideZeroVol;
+document.getElementById("setHideZeroVol").checked = hideZeroVol;
 document.getElementById("winSelect").value = String(analysisWindow);
 
 if(dates.length) {
