@@ -180,6 +180,32 @@ img, svg { max-width: 100%; height: auto; }
   .grid-summary, .summary-grid { grid-template-columns: 1fr !important; }
 }
 
+
+/* Basket heat + wall migration */
+.basket-wrap{margin:12px 0}
+.basket-wrap h3{font-size:.85rem;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.basket-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.basket-table th{text-align:left;padding:8px 10px;color:var(--muted);font-size:.7rem;border-bottom:1px solid var(--border);font-weight:500;white-space:nowrap}
+.basket-table td{padding:8px 10px;border-bottom:1px solid #1f1f23;font-family:ui-monospace,monospace;white-space:nowrap}
+.basket-table tr:hover{background:rgba(255,255,255,.03)}
+.basket-table .tr{text-align:right}
+.bias-tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;font-weight:500}
+.bias-res{background:rgba(244,63,94,.15);color:var(--rose)}
+.bias-sup{background:rgba(52,211,153,.15);color:var(--emerald)}
+.bias-mid{background:rgba(251,191,36,.12);color:#fbbf24}
+.bias-far{background:rgba(161,161,170,.12);color:var(--muted)}
+.mig-wrap{margin:12px 0}
+.mig-wrap h3{font-size:.85rem;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.mig-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:800px){.mig-grid{grid-template-columns:1fr}.basket-table{font-size:.72rem}}
+.mig-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;overflow-x:auto}
+.mig-card h4{font-size:.75rem;margin-bottom:8px;font-weight:500}
+.mig-table{width:100%;border-collapse:collapse;font-size:.75rem}
+.mig-table th,.mig-table td{padding:5px 8px;border-bottom:1px solid #1f1f23;font-family:ui-monospace,monospace}
+.mig-table th{color:var(--muted);font-size:.68rem;font-weight:500;text-align:right}
+.mig-table th:first-child,.mig-table td:first-child{text-align:left}
+.mig-table td{text-align:right}
+
 </style>
 </head>
 <body>
@@ -252,8 +278,10 @@ img, svg { max-width: 100%; height: auto; }
   </div>
 
   <div class="tab-panel active" id="tab-overview">
+    <div id="basketHeat" class="basket-wrap section"></div>
     <div id="summary" class="summary"></div>
     <div id="levelsCard" class="levels-card"></div>
+    <div id="wallMigration" class="mig-wrap"></div>
     <div id="dayChange" class="day-change"></div>
   </div>
   <div class="tab-panel" id="tab-walls">
@@ -513,6 +541,165 @@ function onCal(){
   if(reports[v]) render(v);
   else { const c=dates.filter(d=>d<=v); if(c.length) render(c[0]); else if(dates.length) render(dates[dates.length-1]); }
 }
+
+const STOCK_ORDER = ["TCH","ALB","MIU","MET","HEX"];
+
+function nearestWalls(u){
+  const close = u.close || 0;
+  const calls = (u.callWalls || []).slice().sort((a,b)=>a.strike-b.strike);
+  const puts = (u.putWalls || []).slice().sort((a,b)=>a.strike-b.strike);
+  // Call wall above or at close (resistance); else nearest call
+  let nearCall = calls.filter(z => z.strike >= close).sort((a,b)=>a.strike-b.strike)[0]
+    || calls.slice().sort((a,b)=>Math.abs(a.strike-close)-Math.abs(b.strike-close))[0] || null;
+  // Put wall below or at close (support); else nearest put
+  let nearPut = puts.filter(z => z.strike <= close).sort((a,b)=>b.strike-a.strike)[0]
+    || puts.slice().sort((a,b)=>Math.abs(a.strike-close)-Math.abs(b.strike-close))[0] || null;
+  return { nearCall, nearPut, close };
+}
+
+function stockBias(u){
+  const { nearCall, nearPut, close } = nearestWalls(u);
+  if (!close) return { label: "—", cls: "bias-far", distCall: null, distPut: null, nearCall, nearPut };
+  const distCall = nearCall ? +(nearCall.strike - close).toFixed(2) : null;
+  const distPut = nearPut ? +(close - nearPut.strike).toFixed(2) : null;
+  // thresholds relative to price ~1.5% of close as "near"
+  const band = Math.max(close * 0.015, close * 0.01);
+  const callNear = distCall != null && distCall >= 0 && distCall <= band * 1.2;
+  const putNear = distPut != null && distPut >= 0 && distPut <= band * 1.2;
+  const callAbove = nearCall && nearCall.strike >= close;
+  const putBelow = nearPut && nearPut.strike <= close;
+  if (callNear && putNear && callAbove && putBelow) {
+    return { label: "夾在牆中", cls: "bias-mid", distCall, distPut, nearCall, nearPut };
+  }
+  if (callNear && callAbove) {
+    return { label: "潛在阻力", cls: "bias-res", distCall, distPut, nearCall, nearPut };
+  }
+  if (putNear && putBelow) {
+    return { label: "潛在支持", cls: "bias-sup", distCall, distPut, nearCall, nearPut };
+  }
+  // closer side
+  if (distCall != null && distPut != null) {
+    if (Math.abs(distCall) < Math.abs(distPut) && callAbove)
+      return { label: "偏近阻力", cls: "bias-res", distCall, distPut, nearCall, nearPut };
+    if (Math.abs(distPut) < Math.abs(distCall) && putBelow)
+      return { label: "偏近支持", cls: "bias-sup", distCall, distPut, nearCall, nearPut };
+  }
+  return { label: "牆遠", cls: "bias-far", distCall, distPut, nearCall, nearPut };
+}
+
+function renderBasketHeat(date){
+  const box = document.getElementById("basketHeat");
+  if (!box) return;
+  const r = reports[date || curDate];
+  if (!r) { box.innerHTML = ""; return; }
+  const rows = STOCK_ORDER.map(h => {
+    const u = r.underlyings[h];
+    if (!u) return null;
+    const b = stockBias(u);
+    const code = String(u.code||"").replace(/^0+/,"") || u.code;
+    const pc = u.callOI ? (u.putOI / u.callOI) : null;
+    const dC = b.distCall == null ? "—" : ((b.distCall >= 0 ? "+" : "") + b.distCall);
+    const dP = b.distPut == null ? "—" : ((b.distPut >= 0 ? "+" : "") + b.distPut);
+    return `<tr onclick="selectStock('${h}')" style="cursor:pointer" title="點擊切換">
+      <td><strong>${code}</strong> <span class="mu">${(u.name||"").split(" ")[0]}</span></td>
+      <td class="tr">${u.close != null ? u.close.toFixed(2) : "—"}</td>
+      <td class="tr em">${b.nearCall ? b.nearCall.strike : "—"}</td>
+      <td class="tr">${dC}</td>
+      <td class="tr ro">${b.nearPut ? b.nearPut.strike : "—"}</td>
+      <td class="tr">${dP}</td>
+      <td class="tr">${pc != null ? pc.toFixed(2) : "—"}</td>
+      <td><span class="bias-tag ${b.cls}">${b.label}</span></td>
+    </tr>`;
+  }).filter(Boolean).join("");
+  box.innerHTML = `
+    <h3><span>籃子熱力 · 距牆偏向</span><span class="tag">${date || curDate} · 點列切換標的</span></h3>
+    <div style="overflow-x:auto">
+      <table class="basket-table">
+        <thead><tr>
+          <th>股票</th><th class="tr">收市</th>
+          <th class="tr">Call牆</th><th class="tr">距Call</th>
+          <th class="tr">Put牆</th><th class="tr">距Put</th>
+          <th class="tr">P/C</th><th>偏向</th>
+        </tr></thead>
+        <tbody>${rows || '<tr><td colspan="8" class="mu">無資料</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="mu" style="font-size:.72rem;margin-top:6px">距Call = 牆 − 收市（正=阻力在上）· 距Put = 收市 − 牆（正=支持在下）· 「近」約 ±1–1.5%</div>
+  `;
+}
+
+function renderWallMigration(hkats, date){
+  const box = document.getElementById("wallMigration");
+  if (!box) return;
+  const h = hkats || curHkats;
+  const d0 = date || curDate;
+  if (!h || !d0) { box.innerHTML = ""; return; }
+  const histDates = dates.filter(d => d <= d0).slice(0, 10).reverse(); // oldest → newest, up to 10
+  const u0 = reports[d0]?.underlyings?.[h];
+  if (!u0) { box.innerHTML = `<div class="mu">無遷移資料</div>`; return; }
+
+  // Track top 4 call/put strikes from latest day
+  const trackC = (u0.callWalls || []).slice(0, 4).map(z => z.strike);
+  const trackP = (u0.putWalls || []).slice(0, 4).map(z => z.strike);
+
+  function series(strikes, side){
+    // side: call | put → look up oi from callWalls/putWalls or strikes
+    return strikes.map(strike => {
+      const cells = histDates.map(d => {
+        const u = reports[d]?.underlyings?.[h];
+        if (!u) return null;
+        const list = side === "call" ? (u.callWalls || []) : (u.putWalls || []);
+        let hit = list.find(z => Number(z.strike) === Number(strike));
+        if (!hit && u.strikes) {
+          const s = u.strikes.find(x => Number(x.strike) === Number(strike));
+          if (s) hit = { oi: side === "call" ? s.callOI : s.putOI, oiChange: side === "call" ? s.callChange : s.putChange };
+        }
+        return hit ? (hit.oi || 0) : null;
+      });
+      return { strike, cells };
+    });
+  }
+
+  const callSeries = series(trackC, "call");
+  const putSeries = series(trackP, "put");
+  const code = String(u0.code||"").replace(/^0+/,"") || u0.code;
+
+  function migTable(title, colorCls, seriesData){
+    const head = histDates.map(d => `<th>${d.slice(5)}</th>`).join(""); // MM-DD
+    const body = seriesData.map(row => {
+      const tds = row.cells.map((oi, i) => {
+        if (oi == null) return `<td class="mu">—</td>`;
+        const prev = i > 0 ? row.cells[i-1] : null;
+        let chgCls = "";
+        if (prev != null) {
+          if (oi > prev) chgCls = "pos";
+          else if (oi < prev) chgCls = "neg";
+        }
+        return `<td class="${chgCls}">${fmt(oi)}</td>`;
+      }).join("");
+      return `<tr><td class="${colorCls}">${row.strike}</td>${tds}</tr>`;
+    }).join("");
+    return `<div class="mig-card">
+      <h4 class="${colorCls}">${title}</h4>
+      <table class="mig-table">
+        <thead><tr><th>行使價</th>${head}</tr></thead>
+        <tbody>${body || '<tr><td colspan="99" class="mu">—</td></tr>'}</tbody>
+      </table>
+    </div>`;
+  }
+
+  box.innerHTML = `
+    <h3><span>牆位遷移 · ${code} ${(u0.name||"").split(" ")[0]}</span>
+      <span class="tag">近 ${histDates.length} 日 · 即月重貨 Top 4</span></h3>
+    <div class="mig-grid">
+      ${migTable("Call 牆 OI", "em", callSeries)}
+      ${migTable("Put 牆 OI", "ro", putSeries)}
+    </div>
+    <div class="mu" style="font-size:.72rem;margin-top:6px">綠=較前一日增 · 紅=減 · 追蹤當日 Top 4 重貨行使價在歷史中的 OI</div>
+  `;
+}
+
+
 function selectStock(hkats){
   curHkats=hkats;
   document.querySelectorAll(".stock-tab").forEach(b=>b.classList.toggle("active", b.dataset.hkats===hkats));
@@ -526,6 +713,7 @@ function selectStock(hkats){
     <div class="card"><div class="label">成交量</div><div class="value">${fmt(u.volume)}</div></div>`;
   document.getElementById("printHeader").textContent = `股票期權 OI · ${u.code} ${u.name} · ${curDate} · 收市 ${u.close}`;
   applyFilters();
+  renderWallMigration(hkats, curDate);
 }
 function render(date){
   const r=reports[date]; if(!r){ document.getElementById("status").textContent="無資料"; return; }
@@ -541,6 +729,7 @@ function render(date){
     return `<button class="stock-tab" data-hkats="${h}" onclick="selectStock('${h}')">${codeLabel} ${u.name.split(" ")[0]}</button>`;
   }).join("");
   if(!curHkats||!r.underlyings[curHkats]) curHkats=order.find(h=>r.underlyings[h])||null;
+  renderBasketHeat(date);
   if(curHkats) selectStock(curHkats);
 }
 if(dates.length) render(dates[0]);
