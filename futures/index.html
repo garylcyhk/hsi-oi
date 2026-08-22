@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>恒指期貨 HSI / MHI Futures</title>
+<title>恒指期貨 · Exodus Trading Group</title>
 <style>
 :root{--font-scale:100%;--bg:#09090b;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24;--sky:#38bdf8}
 html{font-size:var(--font-scale)}
@@ -170,18 +170,33 @@ img, svg { max-width: 100%; height: auto; }
   .grid-summary, .summary-grid { grid-template-columns: 1fr !important; }
 }
 
+.brand-name{color:var(--emerald);font-weight:500;letter-spacing:.02em}
+footer p:first-child{font-size:.8rem}
+
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-lockup img{height:40px;width:auto;border-radius:6px;object-fit:cover;flex-shrink:0}
+.brand-lockup .brand-text{display:flex;flex-direction:column;gap:2px}
+.brand-lockup .brand-text .brand-title{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+@media(max-width:768px){.brand-lockup img{height:32px}}
+
 </style>
 </head>
 <body>
 <header>
   <div>
-    <h1>恒指期貨 <span>HSI / MHI Futures</span></h1>
+    <div class="brand-lockup">
+          <img src="exodus-logo.jpg" alt="Exodus Trading Group" />
+          <div class="brand-text">
+            <span class="brand-title">Exodus Trading Group</span>
+            <h1>恒指期貨 <span>HSI / MHI Futures</span></h1>
+          </div>
+        </div>
     <div class="site-nav">
       <a href="../">恒指期權 HSI OI</a>
       <a href="../stock-oi/">股票期權 Stocks</a>
       <a class="active" href="./">期貨 Futures</a>
     </div>
-    <div class="sub">港交所每日期貨報告 · 結算價 / 成交量 / 未平倉 · 趨勢分析</div>
+    <div class="sub"><span class="brand-name">Exodus Trading Group</span> · <span class="brand-name">Exodus Trading Group</span> · 港交所每日期貨報告 · 結算價 / 成交量 / 未平倉 · 趨勢分析</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <label class="mu" style="font-size:.75rem">日期</label>
@@ -254,7 +269,7 @@ img, svg { max-width: 100%; height: auto; }
   <div id="tables"></div>
   <div id="history"></div>
   <footer>
-    <p>個人交易工具 · 數據僅供參考 · 不構成投資建議</p>
+    <p>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</p>
     <p style="margin-top:6px">
       <a id="srcH" href="#" target="_blank" rel="noopener">HSI Futures Report</a> ·
       <a id="srcM" href="#" target="_blank" rel="noopener">MHI Futures Report</a>
