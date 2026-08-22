@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<link rel="apple-touch-icon" href="../favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>恒指期權未平倉 · Exodus Trading Group</title>
+  <style>
+    :root {
+      --font-scale: 100%;
+      --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa;
+      --muted: #a1a1aa; --emerald: #34d399; --rose: #fb7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: var(--font-scale); }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
+    }
+    .container { width: 100%; max-width: 100%; margin: 0 auto; padding: 12px 16px; }
+    header {
+      border-bottom: 1px solid var(--border); background: rgba(24,24,27,0.92);
+      backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; padding: 12px 0;
+    }
+    header .inner {
+      width: 100%; max-width: 100%; margin: 0 auto; padding: 0 16px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+    }
+
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { font-size: 1.15rem; font-weight: 600; }
+    h1 span { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+    .sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .atm-header {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 8px; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--card); font-size: 0.75rem;
+    }
+    .atm-header .gf-item {
+      display: flex; align-items: center; gap: 4px; color: var(--text); cursor: pointer;
+      white-space: nowrap;
+    }
+    .atm-header select {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 3px 6px; font-size: 0.72rem;
+    }
+    .atm-header input[type="checkbox"] { accent-color: #34d399; width: 14px; height: 14px; }
+    .atm-header .tag { font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+    .date-picker {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .date-picker label { font-size: 0.75rem; color: var(--muted); }
+    .date-picker input[type="date"], .date-picker select {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;
+      font-family: ui-monospace, monospace;
+    }
+    .date-btns { display: flex; gap: 6px; flex-wrap: wrap; max-width: 100%; justify-content: flex-end; }
+    .date-btn {
+      font-size: 0.72rem; padding: 5px 9px; border-radius: 6px;
+      background: var(--card); color: var(--muted); border: 1px solid var(--border);
+      cursor: pointer; font-family: ui-monospace, monospace;
+    }
+    .date-btn.active { background: #059669; color: #fff; border-color: #059669; }
+    .date-btn:hover:not(.active) { background: #27272a; }
+    .grid-summary {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px; margin: 16px 0;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .card .label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; }
+    .card .value { font-size: 1.15rem; font-weight: 600; }
+    .card .subv { font-size: 0.75rem; margin-top: 2px; }
+    .section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 16px; overflow: hidden;
+    }
+    .section-header {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .section-header h2 { font-size: 0.9rem; font-weight: 500; }
+    .section-header .tag { font-size: 0.7rem; color: var(--muted); }
+    .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    @media (max-width: 800px) { .zones { grid-template-columns: 1fr; } }
+    @media (min-width: 1200px) { .zones { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      text-align: left; padding: 8px 12px; font-size: 0.7rem; color: var(--muted);
+      font-weight: 500; border-bottom: 1px solid var(--border); background: var(--card);
+      position: sticky; top: 0;
+    }
+    td { padding: 6px 12px; border-bottom: 1px solid rgba(39,39,42,0.55); }
+    tr:hover td { background: rgba(39,39,42,0.35); }
+    tr.row-selected td {
+      background: rgba(16, 185, 129, 0.28) !important;
+      box-shadow: inset 3px 0 0 #34d399;
+    }
+    tr.row-selected td:hover {
+      background: rgba(16, 185, 129, 0.35) !important;
+    }
+    tbody tr { cursor: pointer; }
+
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tr { text-align: right; } .tc { text-align: center; } .tl { text-align: left; }
+    .em { color: var(--emerald); } .ro { color: var(--rose); }
+    .pos { color: var(--emerald); } .neg { color: var(--rose); } .mu { color: var(--muted); }
+    .bar-cell { position: relative; }
+    .bar { position: absolute; top: 3px; bottom: 3px; border-radius: 3px; opacity: 0.22; }
+    .bar-c { right: 0; background: var(--emerald); }
+    .bar-p { left: 0; background: var(--rose); }
+    .bar-cell span { position: relative; z-index: 1; }
+    .table-wrap { overflow: visible; max-height: none; }
+    .table-wrap table { min-width: 480px; width: 100%; }
+    .table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+    .table-wrap::-webkit-scrollbar-track { background: #18181b; }
+    .table-wrap::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    footer { text-align: center; padding: 24px 0 16px; font-size: 0.7rem; color: #52525b; }
+    footer a { color: var(--muted); } footer a:hover { color: var(--emerald); }
+    .note { font-size: 0.75rem; color: var(--muted); margin: 8px 0 16px; }
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      background: #111113; font-size: 0.78rem;
+    }
+    .controls label { color: var(--muted); margin-right: 4px; }
+    .controls select, .controls input {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 5px 8px; font-size: 0.78rem;
+    }
+    .controls input[type="number"] { width: 70px; }
+    .controls input[type="checkbox"] { accent-color: #34d399; }
+
+    /* Clean highlights: left accent bar + very light bg */
+    tr.hl-oi td { background: rgba(52, 211, 153, 0.05); }
+    tr.hl-oi td:first-child { box-shadow: inset 3px 0 0 #34d399; }
+    tr.hl-vol td { background: rgba(251, 191, 36, 0.04); }
+    tr.hl-vol td:first-child { box-shadow: inset 3px 0 0 #fbbf24; }
+    tr.hl-chg td { background: rgba(96, 165, 250, 0.04); }
+    tr.hl-chg td:first-child { box-shadow: inset 3px 0 0 #60a5fa; }
+    tr.hl-both td { background: rgba(52, 211, 153, 0.08); }
+    tr.hl-both td:first-child { box-shadow: inset 3px 0 0 #34d399; }
+
+    .badge {
+      display: inline-block; font-size: 0.6rem; padding: 0 4px;
+      border-radius: 3px; margin-left: 3px; vertical-align: middle;
+      font-weight: 600; line-height: 1.35;
+    }
+    .badge-oi { background: transparent; color: #34d399; border: 1px solid rgba(52,211,153,0.5); }
+    .badge-vol { background: transparent; color: #fbbf24; border: 1px solid rgba(251,191,36,0.5); }
+    .badge-chg { background: transparent; color: #60a5fa; border: 1px solid rgba(96,165,250,0.5); }
+
+    .legend {
+      font-size: 0.7rem; color: var(--muted); padding: 6px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .legend span { margin-right: 14px; white-space: nowrap; }
+
+    /* Settings modal */
+    .settings-btn {
+      background: #1c1c1f; border: 1px solid #333; color: var(--muted);
+      border-radius: 6px; padding: 5px 10px; font-size: 0.75rem;
+      cursor: pointer; margin-left: 8px;
+    }
+    .settings-btn:hover { color: var(--text); border-color: #555; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+      z-index: 100; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #18181b; border: 1px solid #333; border-radius: 12px;
+      width: min(420px, 92vw); max-height: 90vh; overflow: auto;
+      padding: 20px;
+    }
+    .modal h3 { font-size: 1rem; margin-bottom: 16px; }
+    .modal-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #27272a; font-size: 0.85rem;
+    }
+    .modal-row:last-child { border-bottom: none; }
+    .modal-row label { color: var(--muted); }
+    .modal-row input, .modal-row select {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 5px 8px; font-size: 0.8rem;
+    }
+    .modal-row input[type="number"] { width: 80px; }
+    .modal-actions { margin-top: 18px; display: flex; gap: 8px; justify-content: flex-end; }
+    .modal-actions button {
+      border: none; border-radius: 6px; padding: 7px 14px; font-size: 0.8rem; cursor: pointer;
+    }
+    .btn-primary { background: #059669; color: #fff; }
+    .btn-secondary { background: #27272a; color: var(--muted); }
+
+    /* Levels card */
+    .levels-card {
+      display: grid; grid-template-columns: 1fr;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 700px) { .levels-card { grid-template-columns: 1fr; } }
+    .levels-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .levels-box h3 {
+      font-size: 0.8rem; font-weight: 500; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .levels-box .lvl-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 4px 0; font-size: 0.85rem; font-family: ui-monospace, monospace;
+    }
+    .levels-box .lvl-strike { font-weight: 600; }
+    .levels-box .lvl-meta { font-size: 0.75rem; color: var(--muted); }
+
+    /* Day change card */
+    .day-change {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;
+      font-size: 0.82rem;
+    }
+    .day-change h3 { font-size: 0.8rem; font-weight: 500; margin-bottom: 8px; }
+    .day-change .dc-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px;
+    }
+    @media (max-width: 700px) { .day-change .dc-grid { grid-template-columns: 1fr; } }
+    .dc-item { padding: 3px 0; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    .dc-up { color: var(--emerald); }
+    .dc-down { color: var(--rose); }
+    .dc-new { color: #fbbf24; }
+    .dc-label { color: var(--muted); font-size: 0.72rem; margin-bottom: 2px; }
+
+    /* Absorption row highlight */
+    tr.hl-abs td { background: rgba(168, 85, 247, 0.08); }
+    tr.hl-abs td:first-child { box-shadow: inset 3px 0 0 #a855f7; }
+
+    /* Print version */
+    @media print {
+      body { background: #fff !important; color: #111 !important; font-size: 11pt; }
+      header {
+        position: static !important; background: #fff !important;
+        border-bottom: 1px solid #ccc !important; padding: 8px 0 !important;
+      }
+      header .inner { max-width: 100%; }
+      .settings-btn, .print-btn, .date-btns, .controls, .modal-overlay,
+      footer, .note, .tab-bar, .atm-header { display: none !important; }
+      .tab-panel { display: block !important; }
+      .tab-panels { min-height: auto !important; padding: 8px !important; }
+      .tab-panel .table-wrap { max-height: none; overflow: visible; }
+      .container { max-width: 100%; padding: 8px; }
+      .card, .section, .levels-box, .day-change {
+        background: #fff !important; border: 1px solid #ccc !important;
+        break-inside: avoid;
+      }
+      .card .label, .sub, .tag, .lvl-meta, .dc-label, .mu { color: #555 !important; }
+      .em, .pos { color: #0a7a4a !important; }
+      .ro, .neg { color: #b91c1c !important; }
+      tr.hl-oi td, tr.hl-vol td, tr.hl-chg td, tr.hl-both td, tr.hl-abs td {
+        background: #f3f4f6 !important;
+      }
+      tr.hl-oi td:first-child, tr.hl-vol td:first-child, tr.hl-chg td:first-child,
+      tr.hl-both td:first-child, tr.hl-abs td:first-child {
+        box-shadow: none !important; border-left: 3px solid #666 !important;
+      }
+      .bar { display: none !important; }
+      .table-wrap { max-height: none !important; overflow: visible !important; }
+      table { font-size: 9pt; }
+      th { background: #f5f5f5 !important; color: #333 !important; }
+      .zones { grid-template-columns: 1fr 1fr !important; }
+      .levels-card { grid-template-columns: 1fr 1fr !important; }
+  
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { color: #111 !important; font-size: 14pt; }
+      .print-only { display: block !important; }
+    }
+    .print-only { display: none; }
+    .print-btn {
+      background: #1c1c1f; border: 1px solid #333; color: var(--muted);
+      border-radius: 6px; padding: 5px 10px; font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .print-btn:hover { color: var(--text); border-color: #555; }
+
+    /* Full-screen tabs */
+    .tab-bar {
+      display: flex; gap: 4px; padding: 8px 16px 0;
+      width: 100%; max-width: 100%; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .tab-btn {
+      background: transparent; border: none; color: var(--muted);
+      padding: 10px 14px; font-size: 0.82rem; cursor: pointer;
+      border-bottom: 2px solid transparent; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--emerald); border-bottom-color: var(--emerald); font-weight: 500;
+    }
+    .tab-panels {
+      width: 100%; max-width: 100%; margin: 0 auto; padding: 12px 16px 24px;
+      min-height: calc(100vh - 140px);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .tab-panel .table-wrap { max-height: none; overflow: visible; }
+    .tab-panel#tab-strikes .table-wrap { max-height: none; overflow: visible; }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .container { flex: 1; max-width: none; padding: 0; }
+
+
+    /* Responsive: fluid width + mobile */
+    @media (max-width: 768px) {
+      header { padding: 8px 0; }
+      header .inner { padding: 0 10px; gap: 8px; }
+  
+    .site-nav { display:flex; gap:6px; margin-top:6px; }
+    .site-nav a {
+      font-size:0.72rem; padding:3px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); text-decoration:none;
+    }
+    .site-nav a.active { background:#059669; color:#fff; border-color:#059669; }
+    .site-nav a:hover:not(.active) { border-color:#555; color:var(--text); }
+    h1 { font-size: 1rem; }
+      h1 span { display: none; }
+      .sub { display: none; }
+      .container, .tab-panels { padding: 8px 10px 16px; }
+      .tab-bar { padding: 6px 10px 0; }
+      .tab-btn { padding: 8px 10px; font-size: 0.75rem; }
+      .grid-summary { grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+      .card { padding: 10px; }
+      .card .value { font-size: 1rem; }
+      .section-header { padding: 8px 10px; flex-wrap: wrap; gap: 6px; }
+      .controls { flex-direction: column; align-items: stretch; gap: 8px; }
+      .controls > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 5px 6px; }
+      .atm-header {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 8px; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--card); font-size: 0.75rem;
+    }
+    .atm-header .gf-item {
+      display: flex; align-items: center; gap: 4px; color: var(--text); cursor: pointer;
+      white-space: nowrap;
+    }
+    .atm-header select {
+      background: #1c1c1f; color: var(--text); border: 1px solid #333;
+      border-radius: 5px; padding: 3px 6px; font-size: 0.72rem;
+    }
+    .atm-header input[type="checkbox"] { accent-color: #34d399; width: 14px; height: 14px; }
+    .atm-header .tag { font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+    .date-picker {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .date-picker label { font-size: 0.75rem; color: var(--muted); }
+    .date-picker input[type="date"], .date-picker select {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;
+      font-family: ui-monospace, monospace;
+    }
+    .date-btns { justify-content: flex-start; }
+      .print-btn, .settings-btn { font-size: 0.7rem; padding: 4px 8px; }
+      .modal { width: 96vw; padding: 14px; }
+      .levels-card .section > div[style*="grid"] { grid-template-columns: 1fr !important; }
+      .day-change .dc-grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 769px) and (max-width: 1199px) {
+      .zones { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1400px) {
+      .container, .tab-panels, header .inner, .tab-bar {
+        padding-left: 24px; padding-right: 24px;
+      }
+    }
+
+
+    .futures-bar {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 4px;
+    }
+    @media (max-width: 800px) { .futures-bar { grid-template-columns: 1fr; } }
+    .fut-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .fut-card h3 {
+      font-size: 0.8rem; font-weight: 500; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .fut-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 8px;
+    }
+    .fut-item .fl { font-size: 0.68rem; color: var(--muted); }
+    .fut-item .fv { font-size: 0.95rem; font-weight: 600; font-family: ui-monospace, monospace; }
+    .fut-item .fs { font-size: 0.72rem; margin-top: 1px; }
+
+  .prod-btn{font-size:.72rem;padding:4px 12px;border-radius:999px}
+.prod-btn.active{background:#059669;color:#fff;border-color:#059669}
+.prod-btn:not(.active){color:var(--muted)}
+
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:800px){.cmp-grid{grid-template-columns:1fr}}
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.cmp-card h3{font-size:.85rem;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.cmp-row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #1f1f23;font-size:.8rem}
+.cmp-row:last-child{border-bottom:none}
+.cmp-label{color:var(--muted);font-size:.72rem;margin-bottom:4px}
+.cmp-metric{font-family:ui-monospace,monospace;font-weight:600}
+.cmp-full{grid-column:1/-1}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.cmp-table th{text-align:left;padding:6px 8px;color:var(--muted);font-size:.7rem;border-bottom:1px solid var(--border)}
+.cmp-table td{padding:6px 8px;border-bottom:1px solid #1f1f23;font-family:ui-monospace,monospace}
+.cmp-table .tr{text-align:right}
+
+/* ========== Unified responsive (match HSI main) ========== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { overflow-x: hidden; max-width: 100vw; }
+.container, .tab-panels, header .inner {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+header { width: 100%; box-sizing: border-box; }
+.filters { flex-wrap: wrap; max-width: 100%; }
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+.section, .card, .cmp-card, .an-card, .fut-card {
+  max-width: 100%;
+}
+.section { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; max-width: 100%; }
+img, svg { max-width: 100%; height: auto; }
+
+@media (max-width: 1199px) {
+  .zones { grid-template-columns: 1fr 1fr !important; }
+}
+@media (min-width: 1200px) {
+  .zones { grid-template-columns: 1fr 1fr 1fr 1fr !important; }
+}
+@media (min-width: 1400px) {
+  .container, .tab-panels, header .inner, .tab-bar {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .container, .tab-panels { padding-left: 12px; padding-right: 12px; }
+  header { padding-left: 12px; padding-right: 12px; }
+  h1 { font-size: 1rem; }
+  .grid-summary, .summary-grid { grid-template-columns: 1fr 1fr !important; }
+  .cmp-grid, .analysis { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 800px) {
+  .zones, .futures-bar, .fut-grid, .compare, .lvl-grid, .dc-grid { grid-template-columns: 1fr !important; }
+  .cmp-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 10px 12px !important;
+  }
+  header .inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 0 10px !important;
+    width: 100%;
+  }
+  header > div:last-child {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start !important;
+  }
+  .site-nav { width: 100%; flex-wrap: wrap; }
+  .product-toggle { width: 100%; }
+  .filters { padding: 8px 10px; width: 100%; }
+  .filters label { font-size: 0.72rem; }
+  .levels-card, .day-change .dc-grid { grid-template-columns: 1fr !important; }
+  .stock-tabs { flex-wrap: wrap; width: 100%; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 6px 8px !important; }
+  .btn { padding: 6px 10px; }
+  select, input[type="date"], input[type="number"], input[type="text"] {
+    font-size: 16px !important;
+  }
+  .metrics { grid-template-columns: 1fr 1fr !important; }
+  .an-grid, .regime { grid-template-columns: 1fr 1fr !important; }
+  .modal { width: min(420px, 94vw) !important; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 0.95rem; }
+  h1 span { display: block; font-size: 0.72rem; margin-top: 2px; }
+  .tab-btn, .prod-btn { font-size: 0.7rem; padding: 5px 8px; }
+  .sub { font-size: 0.68rem; }
+  .grid-summary, .summary-grid { grid-template-columns: 1fr !important; }
+}
+
+.brand-name{color:var(--emerald);font-weight:500;letter-spacing:.02em}
+footer p:first-child{font-size:.8rem}
+
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-lockup img{height:40px;width:auto;border-radius:6px;object-fit:cover;flex-shrink:0}
+.brand-lockup .brand-text{display:flex;flex-direction:column;gap:2px}
+.brand-lockup .brand-text .brand-title{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+@media(max-width:768px){.brand-lockup img{height:32px}}
+
+.brand-logo-link{display:block;line-height:0;border-radius:6px;overflow:hidden}
+.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block;transition:opacity .15s}
+.brand-logo-link:hover img{opacity:.85}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+@media(max-width:768px){.brand-logo-link img{height:32px}}
+
+/* Header menu (hamburger) */
+.header-menu{position:relative;display:inline-flex;align-items:center}
+.menu-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;padding:0;border-radius:8px;
+  background:var(--card,#18181b);border:1px solid var(--border,#27272a);
+  color:var(--text,#e4e4e7);cursor:pointer;
+}
+.menu-toggle:hover{border-color:#3f3f46;background:#1f1f23}
+.menu-toggle svg{width:18px;height:18px;display:block}
+.menu-dropdown{
+  display:none;position:absolute;right:0;top:calc(100% + 6px);
+  min-width:140px;padding:6px;border-radius:10px;
+  background:#18181b;border:1px solid #27272a;
+  box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:50;
+}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown button{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:9px 12px;border:none;border-radius:7px;
+  background:transparent;color:var(--text,#e4e4e7);
+  font-size:.82rem;cursor:pointer;text-align:left;
+}
+.menu-dropdown button:hover{background:#27272a}
+
+
+.menu-dropdown a{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:9px 12px;border-radius:7px;
+  color:var(--text,#e4e4e7);font-size:.82rem;text-decoration:none;
+  box-sizing:border-box;
+}
+.menu-dropdown a:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px;letter-spacing:.04em}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-dropdown{min-width:168px}
+
+.site-nav{display:none!important}
+.menu-dropdown button.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
+.product-toggle{display:none!important}
+</style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <div>
+        <div class="brand-lockup"><a href="../" class="brand-logo-link" title="回到首頁"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a><div class="brand-text"><h1>恒指期權未平倉 <span>HSI Options OI</span></h1></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div class="date-picker">
+          <label for="dateSelect">日期</label>
+          <select id="dateSelect" onchange="onDateSelectChange()"></select>
+        </div>
+        <div class="atm-header" id="globalFilters" title="近價過濾">
+          <label class="gf-item">
+            <input type="checkbox" id="atmEnabledGlobal" onchange="onAtmToggle()" />
+            近價
+          </label>
+          <select id="atmRangeGlobal" onchange="onAtmToggle()">
+            <option value="400">±400</option>
+            <option value="600">±600</option>
+            <option value="800" selected>±800</option>
+            <option value="1000">±1000</option>
+            <option value="1200">±1200</option>
+            <option value="1600">±1600</option>
+            <option value="2000">±2000</option>
+          </select>
+          <span class="tag" id="atmCenterLabel">—</span>
+        </div>
+<div class="header-menu" id="headerMenu">
+          <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" title="選單" aria-label="選單">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </button>
+          <div class="menu-dropdown">
+            <div class="menu-section">產品</div>
+            <button type="button" id="menuProdHsi" onclick="closeHeaderMenu();switchProduct('hsi')">恒指期權 HSI</button>
+            <button type="button" id="menuProdMini" onclick="closeHeaderMenu();switchProduct('mini')">小型恒指期權 Mini-HSI</button>
+            <div class="menu-divider"></div>
+            <div class="menu-section">頁面</div>
+            <a href="../">總覽 Home</a>
+            <a href="./" class="menu-active">恒指期權 HSI OI</a>
+            <a href="../stock-oi/">股票期權 Stocks</a>
+            <a href="../futures/">期貨 Futures</a>
+            <div class="menu-divider"></div>
+            <button type="button" onclick="closeHeaderMenu();window.print()">列印</button>
+            <button type="button" onclick="closeHeaderMenu();openSettings()">設定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+    <div class="modal">
+      <h3>設定 Settings</h3>
+      <div class="modal-row">
+        <label>預設最低 OI</label>
+        <input type="number" id="setMinOI" min="0" step="50" />
+      </div>
+      <div class="modal-row">
+        <label>預設最低成交量</label>
+        <input type="number" id="setMinVol" min="0" step="10" />
+      </div>
+      <div class="modal-row">
+        <label>預設排序</label>
+        <select id="setSortKey">
+          <option value="strike">行使價</option>
+          <option value="totalOI">總 OI</option>
+          <option value="callOI">Call OI</option>
+          <option value="putOI">Put OI</option>
+          <option value="callVol">Call Vol</option>
+          <option value="putVol">Put Vol</option>
+          <option value="chg">最大變化</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label>排序方向</label>
+        <select id="setSortDir">
+          <option value="desc">高 → 低</option>
+          <option value="asc">低 → 高</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label>隱藏空白行使價</label>
+        <input type="checkbox" id="setOnlyActive" />
+      </div>
+      <div class="modal-row">
+        <label>字體大小</label>
+        <select id="setFontScale">
+          <option value="85">小 (85%)</option>
+          <option value="100">標準 (100%)</option>
+          <option value="115">中 (115%)</option>
+          <option value="130">大 (130%)</option>
+          <option value="150">更大 (150%)</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label>只看近價 (Near Money)</label>
+        <input type="checkbox" id="setAtmEnabled" />
+      </div>
+      <div class="modal-row">
+        <label>近價範圍 ± 點數</label>
+        <input type="number" id="setAtmRange" min="200" max="3000" step="100" />
+      </div>
+      <div class="modal-row">
+        <label>高亮 Top N（OI / Vol / 變化）</label>
+        <input type="number" id="setTopN" min="1" max="20" step="1" />
+      </div>
+      <div class="modal-row">
+        <label>高亮高 OI</label>
+        <input type="checkbox" id="setHlOI" />
+      </div>
+      <div class="modal-row">
+        <label>高亮高成交量</label>
+        <input type="checkbox" id="setHlVol" />
+      </div>
+      <div class="modal-row">
+        <label>高亮大變化</label>
+        <input type="checkbox" id="setHlChg" />
+      </div>
+      <div class="modal-row" style="border-bottom:none;padding-top:14px;">
+        <label style="color:var(--text);font-weight:500;">顯示欄位</label>
+        <span></span>
+      </div>
+      <div class="modal-row"><label>Call 成交量</label><input type="checkbox" id="setColCallVol" /></div>
+      <div class="modal-row"><label>Call OI</label><input type="checkbox" id="setColCallOI" /></div>
+      <div class="modal-row"><label>Call 結算價</label><input type="checkbox" id="setColCallSettle" /></div>
+      <div class="modal-row"><label>Call Δ</label><input type="checkbox" id="setColCallChg" /></div>
+      <div class="modal-row"><label>Put Δ</label><input type="checkbox" id="setColPutChg" /></div>
+      <div class="modal-row"><label>Put 結算價</label><input type="checkbox" id="setColPutSettle" /></div>
+      <div class="modal-row"><label>Put OI</label><input type="checkbox" id="setColPutOI" /></div>
+      <div class="modal-row"><label>Put 成交量</label><input type="checkbox" id="setColPutVol" /></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="resetSettings()">重設</button>
+        <button class="btn-secondary" onclick="closeSettings()">取消</button>
+        <button class="btn-primary" onclick="saveSettings()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+    <div class="container">
+    <div class="note" id="status" style="width:100%;margin:8px auto 0;padding:0 16px;">載入中…</div>
+    <div class="print-only" id="printHeader" style="margin-bottom:12px;font-size:10pt;border-bottom:1px solid #ccc;padding-bottom:6px;"></div>
+
+    <div class="tab-bar" id="tabBar">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">總覽</button>
+      <button class="tab-btn" data-tab="walls" onclick="switchTab('walls')">重貨區</button>
+      <button class="tab-btn" data-tab="strikes" onclick="switchTab('strikes')">行使價分佈</button>
+      <button class="tab-btn" data-tab="topvol" onclick="switchTab('topvol')">十大成交</button>
+      <button class="tab-btn" data-tab="compare" onclick="switchTab('compare')">對比 HSI vs Mini</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="tab-panel active" id="tab-overview">
+        <div id="futuresBar"></div>
+    <div id="summary" class="grid-summary"></div>
+        <div id="levelsCard" class="levels-card"></div>
+        <div id="dayChange"></div>
+      </div>
+      <div class="tab-panel" id="tab-walls">
+        <div id="zones" class="zones"></div>
+      </div>
+      <div class="tab-panel" id="tab-strikes">
+        <div id="strikes"></div>
+      </div>
+      <div class="tab-panel" id="tab-topvol">
+        <div id="topVolume"></div>
+      </div>
+      <div class="tab-panel" id="tab-compare">
+        <div class="filters" id="compareFilters" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem;">
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">最低 OI
+            <input type="number" id="cmpMinOI" value="100" min="0" step="50" style="width:90px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" />
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">Top N
+            <select id="cmpTopN" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;">
+              <option value="3">3</option>
+              <option value="5" selected>5</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">
+            <input type="checkbox" id="cmpNearOnly" onchange="renderCompare(currentDate)" style="accent-color:#34d399;" />
+            只看近價 (±)
+            <input type="number" id="cmpNearPts" value="800" min="100" step="100" style="width:80px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" />
+            pts
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">
+            <input type="checkbox" id="cmpHideEmpty" checked onchange="renderCompare(currentDate)" style="accent-color:#34d399;" />
+            隱藏一邊為空
+          </label>
+          <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">對齊方式
+            <select id="cmpAlign" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;">
+              <option value="union" selected>聯集（兩邊牆）</option>
+              <option value="hsi">只 HSI 牆</option>
+              <option value="mini">只 Mini 牆</option>
+              <option value="both">兩邊都有</option>
+            </select>
+          </label>
+          <span class="tag" id="cmpFilterHint"></span>
+        </div>
+        <div id="compareBox"></div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</p>
+    <p style="margin-top:6px">Source: <a id="sourceLink" href="#" target="_blank" rel="noopener">HKEX Daily Market Report</a></p>
+      <p style="margin-top:4px">每日 22:50 HKT 自動更新（GitHub Actions）</p>
+    </footer>
+  </div>
+
+  <script src="../data.js"></script>
+  <script src="../data-mini.js"></script>
+  <script>
+    let productMode = localStorage.getItem("hsi_product_mode") || "hsi"; // hsi | mini
+    let reports = (productMode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {}));
+    let availableDates = Object.keys(reports).sort().reverse();
+    let currentDate = availableDates[0] || null;
+    
+    let currentReport = null;
+
+    function switchProduct(mode){
+      if(mode !== "hsi" && mode !== "mini") return;
+      productMode = mode;
+      localStorage.setItem("hsi_product_mode", mode);
+      reports = (mode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {}));
+      availableDates = Object.keys(reports).sort().reverse();
+      currentDate = availableDates[0] || null;
+      const bH = document.getElementById("btnHsi");
+      const bM = document.getElementById("btnMini");
+      if (bH) bH.classList.toggle("active", mode === "hsi");
+      if (bM) bM.classList.toggle("active", mode === "mini");
+      const mH = document.getElementById("menuProdHsi");
+      const mM = document.getElementById("menuProdMini");
+      if (mH) mH.classList.toggle("menu-active", mode === "hsi");
+      if (mM) mM.classList.toggle("menu-active", mode === "mini");
+      const sub = document.getElementById("productSub");
+      if(sub){
+        sub.textContent = mode === "mini"
+          ? "小型恒指期權 · 港交所每日報告 · 重貨區 / 未平倉 · 合約乘數 Mini $10"
+          : "港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易 · 合約乘數 HSI $50";
+      }
+      const h1 = document.querySelector("header h1");
+      if(h1){
+        h1.innerHTML = mode === "mini"
+          ? '小型恒指期權未平倉 <span>Mini-HSI Options OI</span>'
+          : '恒指期權未平倉 <span>HSI Options OI</span>';
+      }
+      if(!availableDates.length){
+        document.getElementById("status") && (document.getElementById("status").textContent =
+          mode === "mini" ? "無 Mini-HSI 資料 — 請上傳 data-mini.js 並跑 fetch mini" : "無 HSI 資料");
+        return;
+      }
+      if(typeof render === "function") render(currentDate);
+      else if(typeof init === "function") init();
+    }
+
+
+    // Filter / sort state
+    // Defaults (overridden by localStorage)
+    const DEFAULTS = {
+      sortKey: "strike",
+      sortDir: "desc",
+      minOI: 100,
+      minVol: 0,
+      onlyActive: true,
+      atmEnabled: false,
+      atmRange: 800,
+      fontScale: 100,
+      topN: 5,
+      hlOI: true,
+      hlVol: true,
+      hlChg: true,
+      // column visibility
+      colCallVol: true,
+      colCallOI: true,
+      colCallSettle: true,
+      colCallChg: true,
+      colPutChg: true,
+      colPutSettle: true,
+      colPutOI: true,
+      colPutVol: true,
+    };
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem("hsi_oi_settings");
+        if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+      } catch (e) {}
+      return { ...DEFAULTS };
+    }
+
+    let settings = loadSettings();
+    let sortKey = settings.sortKey;
+    let sortDir = settings.sortDir;
+    let minOI = settings.minOI;
+    let minVol = settings.minVol;
+    let onlyActive = settings.onlyActive;
+    let atmEnabled = settings.atmEnabled === true;
+    let atmRange = settings.atmRange || 800;
+    let fontScale = settings.fontScale || 100;
+    document.documentElement.style.setProperty('--font-scale', fontScale + '%');
+    let topN = settings.topN;
+    let hlOI = settings.hlOI;
+    let hlVol = settings.hlVol;
+    let hlChg = settings.hlChg;
+    let colCallVol = settings.colCallVol !== false;
+    let colCallOI = settings.colCallOI !== false;
+    let colCallSettle = settings.colCallSettle !== false;
+    let colCallChg = settings.colCallChg !== false;
+    let colPutChg = settings.colPutChg !== false;
+    let colPutSettle = settings.colPutSettle !== false;
+    let colPutOI = settings.colPutOI !== false;
+    let colPutVol = settings.colPutVol !== false;
+    // Section sort state
+    let wallSortKey = "oi";      // oi | strike | chg
+    let wallSortDir = "desc";
+    let volSortKey = "volume";   // volume | strike
+    let volSortDir = "desc";
+    let topSortKey = "volume";   // volume | strike | oi | chg | settle
+    let topSortDir = "desc";
+
+
+
+    
+    function getReportSet(mode, date) {
+      const bag = mode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {});
+      if (bag[date]) return bag[date];
+      // nearest earlier date
+      const keys = Object.keys(bag).sort().reverse();
+      const hit = keys.find(d => d <= date);
+      return hit ? bag[hit] : null;
+    }
+
+    function wallsList(r, side, n) {
+      if (!r || !r.heavyZones) return [];
+      const key = side === "call" ? "callWalls" : "putWalls";
+      return (r.heavyZones[key] || []).slice(0, n);
+    }
+
+    function settleOf(r) {
+      return r?.futures?.hsif?.front?.settle || r?.futures?.mhif?.front?.settle || null;
+    }
+
+    function biasLine(r) {
+      if (!r) return { title: "無資料", note: "" };
+      const settle = settleOf(r);
+      const calls = r.heavyZones?.callWalls || [];
+      const puts = r.heavyZones?.putWalls || [];
+      if (settle == null) return { title: "無 Settle", note: "缺期貨結算價" };
+      const nearCall = calls.filter(z => z.strike >= settle).sort((a,b)=>a.strike-b.strike)[0]
+        || calls.slice().sort((a,b)=>Math.abs(a.strike-settle)-Math.abs(b.strike-settle))[0];
+      const nearPut = puts.filter(z => z.strike <= settle).sort((a,b)=>b.strike-a.strike)[0]
+        || puts.slice().sort((a,b)=>Math.abs(a.strike-settle)-Math.abs(b.strike-settle))[0];
+      const callAbove = nearCall && nearCall.strike > settle;
+      const putBelow = nearPut && nearPut.strike < settle;
+      if (callAbove && putBelow) {
+        return {
+          title: "夾在牆中",
+          note: `Call ${nearCall.strike} (+${Math.round(nearCall.strike-settle)}) · Put ${nearPut.strike} (${Math.round(nearPut.strike-settle)})`
+        };
+      }
+      if (callAbove) return { title: "潛在阻力在上", note: `Call ${nearCall.strike} · +${Math.round(nearCall.strike-settle)} pts` };
+      if (putBelow) return { title: "潛在支持在下", note: `Put ${nearPut.strike} · ${Math.round(nearPut.strike-settle)} pts` };
+      return { title: "牆位偏離", note: "見重貨區" };
+    }
+
+    function renderCompare(date) {
+      const box = document.getElementById("compareBox");
+      if (!box) return;
+      const d = date || currentDate;
+      const hsi = getReportSet("hsi", d);
+      const mini = getReportSet("mini", d);
+      const settle = settleOf(hsi) || settleOf(mini);
+      const bh = biasLine(hsi);
+      const bm = biasLine(mini);
+
+      const fmtN = n => (n==null||isNaN(n)) ? "—" : Number(n).toLocaleString("en-US");
+      const fmtC = n => { if(n==null||n===0) return "0"; return (n>0?"+":"")+Number(n).toLocaleString("en-US"); };
+      const cls = n => n>0?"pos":n<0?"neg":"mu";
+
+      // Filters
+      const minOI = parseInt(document.getElementById("cmpMinOI")?.value, 10) || 0;
+      const topN = parseInt(document.getElementById("cmpTopN")?.value, 10) || 5;
+      const nearOnly = !!document.getElementById("cmpNearOnly")?.checked;
+      const nearPts = parseInt(document.getElementById("cmpNearPts")?.value, 10) || 800;
+      const hideEmpty = !!document.getElementById("cmpHideEmpty")?.checked;
+      const alignMode = document.getElementById("cmpAlign")?.value || "union";
+
+      function filterWalls(list) {
+        let w = (list || []).filter(z => (z.oi || 0) >= minOI);
+        if (nearOnly && settle != null) {
+          w = w.filter(z => Math.abs(z.strike - settle) <= nearPts);
+        }
+        return w.slice(0, topN);
+      }
+
+      function wallsListFiltered(r, side) {
+        if (!r || !r.heavyZones) return [];
+        const key = side === "call" ? "callWalls" : "putWalls";
+        // heavyZones already sorted by OI desc; apply filters
+        return filterWalls(r.heavyZones[key] || []);
+      }
+
+      function sideCard(title, r, bias, multiplier) {
+        if (!r) {
+          return `<div class="cmp-card"><h3>${title}</h3><div class="mu">此日期無資料</div></div>`;
+        }
+        const frontCall = (r.strikes||[]).reduce((a,x)=>a+(x.callOI||0),0);
+        const frontPut = (r.strikes||[]).reduce((a,x)=>a+(x.putOI||0),0);
+        const cWalls = wallsListFiltered(r, "call");
+        const pWalls = wallsListFiltered(r, "put");
+        return `<div class="cmp-card">
+          <h3><span>${title}</span><span class="tag">${r.date||""} · ${multiplier}</span></h3>
+          <div class="cmp-label">偏向</div>
+          <div style="font-weight:600;margin-bottom:2px;">${bias.title}</div>
+          <div class="mu" style="font-size:.75rem;margin-bottom:10px;">${bias.note}</div>
+          <div class="cmp-row"><span>即月 Call OI</span><span class="cmp-metric">${fmtN(frontCall)}</span></div>
+          <div class="cmp-row"><span>即月 Put OI</span><span class="cmp-metric">${fmtN(frontPut)}</span></div>
+          <div class="cmp-row"><span>Put/Call</span><span class="cmp-metric">${frontCall? (frontPut/frontCall).toFixed(2) : "—"}</span></div>
+          <div class="cmp-label" style="margin-top:10px;">Call 重貨 (篩選後 ${cWalls.length})</div>
+          ${cWalls.map(z=>`<div class="cmp-row"><span class="em">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">無符合</div>'}
+          <div class="cmp-label" style="margin-top:10px;">Put 重貨 (篩選後 ${pWalls.length})</div>
+          ${pWalls.map(z=>`<div class="cmp-row"><span class="ro">${z.strike}</span><span>OI ${fmtN(z.oi)} <span class="${cls(z.oiChange)}">${fmtC(z.oiChange)}</span>${settle!=null?` · ${z.strike>=settle?"+":""}${Math.round(z.strike-settle)}`:""}</span></div>`).join("")||'<div class="mu">無符合</div>'}
+        </div>`;
+      }
+
+      // Full wall maps for alignment (filter by minOI / near, not topN slice yet for union)
+      function allFiltered(r, side) {
+        if (!r || !r.heavyZones) return [];
+        const key = side === "call" ? "callWalls" : "putWalls";
+        let w = (r.heavyZones[key] || []).filter(z => (z.oi || 0) >= minOI);
+        if (nearOnly && settle != null) w = w.filter(z => Math.abs(z.strike - settle) <= nearPts);
+        return w;
+      }
+      const hCalls = allFiltered(hsi, "call");
+      const mCalls = allFiltered(mini, "call");
+      const hPuts = allFiltered(hsi, "put");
+      const mPuts = allFiltered(mini, "put");
+      const hMap = o => Object.fromEntries((o||[]).map(z=>[z.strike,z]));
+      const hc = hMap(hCalls), mc = hMap(mCalls), hp = hMap(hPuts), mp = hMap(mPuts);
+
+      function pickStrikes(hList, mList) {
+        const hs = new Set(hList.map(z=>z.strike));
+        const ms = new Set(mList.map(z=>z.strike));
+        let set;
+        if (alignMode === "hsi") set = hs;
+        else if (alignMode === "mini") set = ms;
+        else if (alignMode === "both") set = new Set([...hs].filter(s => ms.has(s)));
+        else set = new Set([...hs, ...ms]);
+        let arr = [...set].sort((a,b)=>b-a);
+        // limit display rows by topN * 2 roughly or keep all filtered
+        if (alignMode === "union" || alignMode === "both") {
+          // rank by max OI across products
+          arr.sort((a,b) => {
+            const oa = Math.max(hc[a]?.oi||0, mc[a]?.oi||0, hp[a]?.oi||0, mp[a]?.oi||0);
+            const ob = Math.max(hc[b]?.oi||0, mc[b]?.oi||0, hp[b]?.oi||0, mp[b]?.oi||0);
+            return ob - oa;
+          });
+        }
+        return arr.slice(0, Math.max(topN, topN));
+      }
+
+      // For call table use call lists; put table use put lists
+      let callStrikes = pickStrikes(hCalls, mCalls);
+      let putStrikes = pickStrikes(hPuts, mPuts);
+
+      if (hideEmpty) {
+        callStrikes = callStrikes.filter(s => hc[s] && mc[s]);
+        putStrikes = putStrikes.filter(s => hp[s] && mp[s]);
+      }
+
+      const hint = document.getElementById("cmpFilterHint");
+      if (hint) {
+        hint.textContent = `Call 列 ${callStrikes.length} · Put 列 ${putStrikes.length} · minOI ${minOI}` +
+          (nearOnly ? ` · 近價±${nearPts}` : "");
+      }
+
+      function alignTable(title, strikes, aMap, bMap, colorClass) {
+        return `<div class="cmp-card cmp-full">
+          <h3>${title} <span class="tag">${strikes.length} 檔</span></h3>
+          <table class="cmp-table">
+            <thead><tr>
+              <th class="sortable" style="cursor:pointer" onclick="cmpSortStrike(this)">行使價</th>
+              <th class="tr">HSI OI</th>
+              <th class="tr">HSI Δ</th>
+              <th class="tr">Mini OI</th>
+              <th class="tr">Mini Δ</th>
+              <th class="tr">距 Settle</th>
+            </tr></thead>
+            <tbody>
+              ${strikes.length ? strikes.map(s=>{
+                const a=aMap[s], b=bMap[s];
+                const dist = settle!=null ? ((s>=settle?"+":"")+Math.round(s-settle)) : "—";
+                return `<tr onclick="onRowClick && onRowClick(this)">
+                  <td class="${colorClass}">${s}</td>
+                  <td class="tr">${a?fmtN(a.oi):"—"}</td>
+                  <td class="tr ${a?cls(a.oiChange):""}">${a?fmtC(a.oiChange):"—"}</td>
+                  <td class="tr">${b?fmtN(b.oi):"—"}</td>
+                  <td class="tr ${b?cls(b.oiChange):""}">${b?fmtC(b.oiChange):"—"}</td>
+                  <td class="tr mu">${dist}</td>
+                </tr>`;
+              }).join("") : '<tr><td colspan="6" class="mu" style="text-align:center;padding:12px">無符合條件的行使價</td></tr>'}
+            </tbody>
+          </table>
+        </div>`;
+      }
+
+      box.innerHTML = `
+        <div class="note" style="margin-bottom:10px;">
+          對比日期 <strong>${d||"—"}</strong>
+          · Settle <strong>${settle!=null?fmtN(settle):"—"}</strong>
+          · HSI ${hsi?.date||"缺"} · Mini ${mini?.date||"缺"}
+          · OI 規模不同（$50 vs $10），重點看<strong>牆位</strong>與 <strong>ΔOI 方向</strong>
+        </div>
+        <div class="cmp-grid">
+          ${sideCard("恒指期權 HSI", hsi, bh, "$50/點")}
+          ${sideCard("小型恒指期權 Mini", mini, bm, "$10/點")}
+        </div>
+        <div class="cmp-grid">
+          ${alignTable("Call 重貨對齊", callStrikes, hc, mc, "em")}
+          ${alignTable("Put 重貨對齊", putStrikes, hp, mp, "ro")}
+        </div>
+      `;
+    }
+
+function switchTab(name) {
+      document.querySelectorAll(".tab-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.tab === name);
+      });
+      document.querySelectorAll(".tab-panel").forEach(p => {
+        p.classList.toggle("active", p.id === "tab-" + name);
+      });
+      try { localStorage.setItem("hsi_oi_tab", name); } catch(e) {}
+      if (name === "compare") renderCompare(currentDate);
+    }
+
+    function openSettings() {
+      document.getElementById("setMinOI").value = minOI;
+      document.getElementById("setMinVol").value = minVol;
+      document.getElementById("setSortKey").value = sortKey;
+      document.getElementById("setSortDir").value = sortDir;
+      document.getElementById("setOnlyActive").checked = onlyActive;
+      document.getElementById("setFontScale").value = String(fontScale);
+      document.getElementById("setAtmEnabled").checked = atmEnabled;
+      document.getElementById("setAtmRange").value = atmRange;
+      document.getElementById("setTopN").value = topN;
+      document.getElementById("setHlOI").checked = hlOI;
+      document.getElementById("setHlVol").checked = hlVol;
+      document.getElementById("setHlChg").checked = hlChg;
+      document.getElementById("setColCallVol").checked = colCallVol;
+      document.getElementById("setColCallOI").checked = colCallOI;
+      document.getElementById("setColCallSettle").checked = colCallSettle;
+      document.getElementById("setColCallChg").checked = colCallChg;
+      document.getElementById("setColPutChg").checked = colPutChg;
+      document.getElementById("setColPutSettle").checked = colPutSettle;
+      document.getElementById("setColPutOI").checked = colPutOI;
+      document.getElementById("setColPutVol").checked = colPutVol;
+      document.getElementById("settingsModal").classList.add("open");
+    }
+
+    function closeSettings() {
+      document.getElementById("settingsModal").classList.remove("open");
+    }
+
+    function saveSettings() {
+      minOI = parseInt(document.getElementById("setMinOI").value, 10) || 0;
+      minVol = parseInt(document.getElementById("setMinVol").value, 10) || 0;
+      sortKey = document.getElementById("setSortKey").value;
+      sortDir = document.getElementById("setSortDir").value;
+      onlyActive = document.getElementById("setOnlyActive").checked;
+      fontScale = parseInt(document.getElementById("setFontScale").value, 10) || 100;
+      document.documentElement.style.setProperty("--font-scale", fontScale + "%");
+      atmEnabled = document.getElementById("setAtmEnabled").checked;
+      atmRange = parseInt(document.getElementById("setAtmRange").value, 10) || 800;
+      topN = parseInt(document.getElementById("setTopN").value, 10) || 5;
+      hlOI = document.getElementById("setHlOI").checked;
+      hlVol = document.getElementById("setHlVol").checked;
+      hlChg = document.getElementById("setHlChg").checked;
+      colCallVol = document.getElementById("setColCallVol").checked;
+      colCallOI = document.getElementById("setColCallOI").checked;
+      colCallSettle = document.getElementById("setColCallSettle").checked;
+      colCallChg = document.getElementById("setColCallChg").checked;
+      colPutChg = document.getElementById("setColPutChg").checked;
+      colPutSettle = document.getElementById("setColPutSettle").checked;
+      colPutOI = document.getElementById("setColPutOI").checked;
+      colPutVol = document.getElementById("setColPutVol").checked;
+
+      settings = {
+        sortKey, sortDir, minOI, minVol, onlyActive, atmEnabled, atmRange, fontScale, topN, hlOI, hlVol, hlChg,
+        colCallVol, colCallOI, colCallSettle, colCallChg,
+        colPutChg, colPutSettle, colPutOI, colPutVol
+      };
+      localStorage.setItem("hsi_oi_settings", JSON.stringify(settings));
+      closeSettings();
+      renderStrikeTable();
+    }
+
+    function resetSettings() {
+      settings = { ...DEFAULTS };
+      localStorage.removeItem("hsi_oi_settings");
+      sortKey = settings.sortKey;
+      sortDir = settings.sortDir;
+      minOI = settings.minOI;
+      minVol = settings.minVol;
+      onlyActive = settings.onlyActive;
+      topN = settings.topN;
+      hlOI = settings.hlOI;
+      hlVol = settings.hlVol;
+      hlChg = settings.hlChg;
+      colCallVol = settings.colCallVol;
+      colCallOI = settings.colCallOI;
+      colCallSettle = settings.colCallSettle;
+      colCallChg = settings.colCallChg;
+      colPutChg = settings.colPutChg;
+      colPutSettle = settings.colPutSettle;
+      colPutOI = settings.colPutOI;
+      colPutVol = settings.colPutVol;
+      openSettings();
+    }
+
+    function fmt(n) { return (n || 0).toLocaleString("en-US"); }
+    function fmtChg(n) {
+      if (n > 0) return "+" + n.toLocaleString("en-US");
+      return (n || 0).toLocaleString("en-US");
+    }
+    function chgClass(n) {
+      if (n > 0) return "pos";
+      if (n < 0) return "neg";
+      return "mu";
+    }
+
+    function getImportantSets(strikes) {
+      const n = topN || 5;
+      const byCallOI = [...strikes].sort((a,b) => (b.callOI||0)-(a.callOI||0)).slice(0,n).map(s=>s.strike);
+      const byPutOI  = [...strikes].sort((a,b) => (b.putOI||0)-(a.putOI||0)).slice(0,n).map(s=>s.strike);
+      const byCallVol= [...strikes].sort((a,b) => (b.callVol||0)-(a.callVol||0)).slice(0,n).map(s=>s.strike);
+      const byPutVol = [...strikes].sort((a,b) => (b.putVol||0)-(a.putVol||0)).slice(0,n).map(s=>s.strike);
+      const byChg = [...strikes].sort((a,b) =>
+        Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)) -
+        Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0))
+      ).slice(0,n).map(s=>s.strike);
+
+      // Absorption: high OI AND high volume on same side
+      const oiSet = new Set([...byCallOI, ...byPutOI]);
+      const volSet = new Set([...byCallVol, ...byPutVol]);
+      const absStrikes = [...oiSet].filter(s => volSet.has(s));
+
+      return {
+        oi: hlOI ? oiSet : new Set(),
+        vol: hlVol ? volSet : new Set(),
+        chg: hlChg ? new Set(byChg) : new Set(),
+        abs: new Set(absStrikes),
+      };
+    }
+
+
+
+
+    function getAtmCenter() {
+      if (!currentReport) return null;
+      const fut = currentReport.futures || {};
+      return (fut.mhif && fut.mhif.front && fut.mhif.front.settle)
+        || (fut.hsif && fut.hsif.front && fut.hsif.front.settle)
+        || null;
+    }
+
+    function syncAtmUI() {
+      const g = document.getElementById("atmEnabledGlobal");
+      const r = document.getElementById("atmRangeGlobal");
+      const lab = document.getElementById("atmCenterLabel");
+      if (g) g.checked = !!atmEnabled;
+      if (r) r.value = String(atmRange || 800);
+      const c = getAtmCenter();
+      if (lab) {
+        if (!c) lab.textContent = "無期貨價";
+        else if (atmEnabled) lab.textContent = c + " ±" + atmRange;
+        else lab.textContent = "中心 " + c;
+      }
+    }
+
+    function onAtmToggle() {
+      const g = document.getElementById("atmEnabledGlobal");
+      const r = document.getElementById("atmRangeGlobal");
+      if (g) atmEnabled = g.checked;
+      if (r) atmRange = parseInt(r.value, 10) || 800;
+      try {
+        const s = JSON.parse(localStorage.getItem("hsi_oi_settings") || "{}");
+        s.atmEnabled = atmEnabled;
+        s.atmRange = atmRange;
+        localStorage.setItem("hsi_oi_settings", JSON.stringify(s));
+      } catch (e) {}
+      syncAtmUI();
+      if (typeof renderStrikeTable === "function") renderStrikeTable();
+      if (typeof renderWalls === "function" && currentReport) renderWalls();
+    }
+
+    function onRowClick(tr, ev) {
+      if (!tr || tr.parentElement.tagName === 'THEAD') return;
+      const e = ev || window.event;
+      const multi = e && (e.ctrlKey || e.metaKey);
+      if (!multi) {
+        const table = tr.closest('table');
+        if (table) {
+          table.querySelectorAll('tbody tr.row-selected').forEach(r => {
+            if (r !== tr) r.classList.remove('row-selected');
+          });
+        }
+      }
+      tr.classList.toggle('row-selected');
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+    }
+
+    function bindRowClicks(rootId) {
+      const root = document.getElementById(rootId);
+      if (!root || root._rowClickBound) return;
+      root._rowClickBound = true;
+      root.addEventListener('click', function(e) {
+        const tr = e.target.closest('tbody tr');
+        if (tr) onRowClick(tr, e);
+      });
+    }
+
+    function renderFutures(r) {
+      const box = document.getElementById("futuresBar");
+      if (!box) return;
+      const fut = r.futures || {};
+      const hsi = fut.hsif || {};
+      const mhi = fut.mhif || {};
+      const hf = hsi.front || {};
+      const mf = mhi.front || {};
+      const ht = hsi.total || {};
+      const mt = mhi.total || {};
+      if (!hf.settle && !mf.settle) {
+        box.innerHTML = "";
+        return;
+      }
+      function card(title, f, t, tag) {
+        if (!f.settle) return `<div class="fut-card"><h3>${title}</h3><div class="mu">無資料</div></div>`;
+        return `<div class="fut-card">
+          <h3><span>${title}</span><span class="tag">${f.month || tag}</span></h3>
+          <div class="fut-grid">
+            <div class="fut-item"><div class="fl">結算價</div><div class="fv">${fmt(f.settle)}</div><div class="fs ${chgClass(f.settleChange)}">${fmtChg(f.settleChange)}</div></div>
+            <div class="fut-item"><div class="fl">成交量</div><div class="fv">${fmt(f.volume)}</div></div>
+            <div class="fut-item"><div class="fl">未平倉</div><div class="fv">${fmt(f.oi)}</div><div class="fs ${chgClass(f.oiChange)}">${fmtChg(f.oiChange)}</div></div>
+            <div class="fut-item"><div class="fl">開 / 高 / 低</div><div class="fv" style="font-size:0.8rem">${fmt(f.open)} / ${fmt(f.high)} / ${fmt(f.low)}</div></div>
+            <div class="fut-item"><div class="fl">全月份 OI</div><div class="fv">${fmt(t.oi || f.oi)}</div><div class="fs ${chgClass(t.oiChange)}">${t.oiChange!=null?fmtChg(t.oiChange):""}</div></div>
+          </div>
+        </div>`;
+      }
+      box.innerHTML = `<div class="futures-bar">${card("恒生指數期貨 HSI", hf, ht, "HSIF")}${card("小型恒指期貨 MHI", mf, mt, "MHIF")}</div>`;
+    }
+
+    function renderLevelsCard(r) {
+      const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
+      const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
+      const allCalls = r.heavyZones?.callWalls || [];
+      const allPuts = r.heavyZones?.putWalls || [];
+      const smap = {};
+      (r.strikes || []).forEach(s => { smap[s.strike] = s; });
+
+      // Settle from HSI futures front month
+      const settle = r.futures?.hsif?.front?.settle
+        || r.futures?.mhif?.front?.settle
+        || null;
+
+      // Nearest Call wall ABOVE settle (resistance), Put wall BELOW (support)
+      let nearCall = null, nearPut = null;
+      if (settle != null) {
+        const above = allCalls.filter(z => z.strike >= settle).sort((a,b) => a.strike - b.strike);
+        const below = allPuts.filter(z => z.strike <= settle).sort((a,b) => b.strike - a.strike);
+        nearCall = above[0] || allCalls.slice().sort((a,b) => Math.abs(a.strike - settle) - Math.abs(b.strike - settle))[0] || null;
+        nearPut = below[0] || allPuts.slice().sort((a,b) => Math.abs(a.strike - settle) - Math.abs(b.strike - settle))[0] || null;
+      }
+
+      function distLine(wall, side) {
+        if (!wall || settle == null) return "";
+        const d = wall.strike - settle;
+        const pts = (d >= 0 ? "+" : "") + Math.round(d);
+        const pct = settle ? ((d / settle) * 100).toFixed(2) : "—";
+        const pctStr = (d >= 0 ? "+" : "") + pct + "%";
+        if (side === "call") {
+          if (d > 0) return `Settle 上方 <strong>${pts}</strong> pts (${pctStr}) · 潛在阻力`;
+          if (d < 0) return `Settle 已升穿 · 在牆下方 ${Math.abs(Math.round(d))} pts`;
+          return `Settle 正坐在 Call 牆`;
+        } else {
+          if (d < 0) return `Settle 下方 <strong>${pts}</strong> pts (${pctStr}) · 潛在支持`;
+          if (d > 0) return `Settle 已跌破 · 在牆上方 ${Math.abs(Math.round(d))} pts`;
+          return `Settle 正坐在 Put 牆`;
+        }
+      }
+
+      // Bias in trader language
+      let biasTitle = "水平待定";
+      let biasNote = "需結算價與重貨區資料";
+      if (settle != null && (nearCall || nearPut)) {
+        const callAbove = nearCall && nearCall.strike > settle;
+        const putBelow = nearPut && nearPut.strike < settle;
+        const callDist = nearCall ? Math.abs(nearCall.strike - settle) : Infinity;
+        const putDist = nearPut ? Math.abs(nearPut.strike - settle) : Infinity;
+        if (callAbove && putBelow) {
+          biasTitle = "夾在牆中";
+          biasNote = `上有 Call ${nearCall.strike}（+${Math.round(callDist)}）· 下有 Put ${nearPut.strike}（-${Math.round(putDist)}）`;
+        } else if (callAbove && !putBelow) {
+          biasTitle = "潛在阻力在上";
+          biasNote = `最近 Call 牆 ${nearCall.strike}，上方約 ${Math.round(callDist)} pts`;
+        } else if (putBelow && !callAbove) {
+          biasTitle = "潛在支持在下";
+          biasNote = `最近 Put 牆 ${nearPut.strike}，下方約 ${Math.round(putDist)} pts`;
+        } else if (nearCall && nearCall.strike === settle) {
+          biasTitle = "坐在 Call 牆";
+          biasNote = `結算價 = Call 重貨 ${nearCall.strike}`;
+        } else if (nearPut && nearPut.strike === settle) {
+          biasTitle = "坐在 Put 牆";
+          biasNote = `結算價 = Put 重貨 ${nearPut.strike}`;
+        } else {
+          biasTitle = "牆位偏離 Settle";
+          biasNote = "最近重貨區不在典型阻力/支持位置，留意次月或次重牆";
+        }
+      }
+
+      document.getElementById("levelsCard").innerHTML = `
+        <div class="section" style="grid-column:1/-1;margin-bottom:0;">
+          <div class="section-header">
+            <h2>關鍵水平 Levels</h2>
+            <div class="header-right">
+              <span class="tag">${settle != null ? "Settle " + fmt(settle) : "無 Settle"} · Top 3 Call / Put</span>
+            </div>
+          </div>
+          <div style="padding:10px 12px 0 12px;">
+            <div style="background:rgba(39,39,42,.55);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px;">
+              <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">${biasTitle}</div>
+              <div style="font-size:0.78rem;color:var(--muted);">${biasNote}</div>
+              ${settle != null ? `
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;font-size:0.78rem;">
+                <div>
+                  <div class="em" style="margin-bottom:2px;">最近 Call 牆 ${nearCall ? nearCall.strike : "—"}</div>
+                  <div class="mu">${distLine(nearCall, "call")}</div>
+                  ${nearCall ? `<div class="mu">OI ${fmt(nearCall.oi)} <span class="${chgClass(nearCall.oiChange)}">${fmtChg(nearCall.oiChange)}</span></div>` : ""}
+                </div>
+                <div>
+                  <div class="ro" style="margin-bottom:2px;">最近 Put 牆 ${nearPut ? nearPut.strike : "—"}</div>
+                  <div class="mu">${distLine(nearPut, "put")}</div>
+                  ${nearPut ? `<div class="mu">OI ${fmt(nearPut.oi)} <span class="${chgClass(nearPut.oiChange)}">${fmtChg(nearPut.oiChange)}</span></div>` : ""}
+                </div>
+              </div>` : `<div class="mu" style="margin-top:6px;font-size:0.78rem;">無期貨結算價，無法計算距離</div>`}
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 12px;">
+            <div>
+              <div style="font-size:0.8rem;margin-bottom:6px;" class="em">Call 關鍵阻力</div>
+              ${calls.length ? calls.map((z) => {
+                const s = smap[z.strike] || {};
+                const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
+                const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
+                return `<div class="lvl-row">
+                  <span class="lvl-strike em">${z.strike}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
+                </div>`;
+              }).join("") : '<div class="lvl-meta">無資料</div>'}
+            </div>
+            <div>
+              <div style="font-size:0.8rem;margin-bottom:6px;" class="ro">Put 關鍵支持</div>
+              ${puts.length ? puts.map((z) => {
+                const s = smap[z.strike] || {};
+                const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
+                const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
+                return `<div class="lvl-row">
+                  <span class="lvl-strike ro">${z.strike}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
+                </div>`;
+              }).join("") : '<div class="lvl-meta">無資料</div>'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDayChange(r) {
+      const prevDate = r.prevDate;
+      const prev = reports[prevDate];
+      const box = document.getElementById("dayChange");
+      if (!prev) {
+        box.innerHTML = `<div class="day-change">
+          <div class="section-header" style="border:none;padding:0 0 8px 0;">
+            <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日</h3>
+          </div>
+          <div class="dc-label">尚無昨日資料可比較（需至少 2 個交易日）</div>
+        </div>`;
+        return;
+      }
+
+      function wallMap(walls) {
+        const m = {};
+        (walls || []).forEach(w => { m[w.strike] = w.oi; });
+        return m;
+      }
+      const tCall = wallMap(r.heavyZones?.callWalls);
+      const yCall = wallMap(prev.heavyZones?.callWalls);
+      const tPut = wallMap(r.heavyZones?.putWalls);
+      const yPut = wallMap(prev.heavyZones?.putWalls);
+
+      function diffSide(today, yest, label) {
+        const items = [];
+        const all = new Set([...Object.keys(today), ...Object.keys(yest)].map(Number));
+        [...all].sort((a,b)=>b-a).forEach(strike => {
+          const t = today[strike] || 0;
+          const y = yest[strike] || 0;
+          if (t && !y) items.push(`<div class="dc-item dc-new">${strike} 新進榜 OI ${fmt(t)}</div>`);
+          else if (!t && y) items.push(`<div class="dc-item dc-down">${strike} 跌出榜 (昨 ${fmt(y)})</div>`);
+          else if (t && y && t !== y) {
+            const d = t - y;
+            items.push(`<div class="dc-item ${d>0?"dc-up":"dc-down"}">${strike} OI ${fmt(t)} (${fmtChg(d)})</div>`);
+          }
+        });
+        if (!items.length) items.push(`<div class="dc-item mu">變化不大</div>`);
+        return `<div><div class="dc-label">${label}</div>${items.slice(0,6).join("")}</div>`;
+      }
+
+      box.innerHTML = `
+        <div class="day-change" id="dayChangeInner">
+          <div class="section-header" style="border:none;padding:0 0 8px 0;">
+            <h3 style="margin:0;font-size:0.8rem;">今日 vs 昨日牆位變化 <span class="tag" style="font-weight:400;color:var(--muted)">${r.date} vs ${prevDate}</span></h3>
+          </div>
+          <div class="dc-grid">
+            ${diffSide(tCall, yCall, "Call 牆")}
+            ${diffSide(tPut, yPut, "Put 牆")}
+          </div>
+        </div>
+      `;
+    }
+
+    function arrow(activeKey, key, dir) {
+      if (activeKey !== key) return '<span class="arrow">↕</span>';
+      return dir === "desc" ? '<span class="arrow">↓</span>' : '<span class="arrow">↑</span>';
+    }
+
+    function setStrikeSort(key) {
+      if (sortKey === key) sortDir = sortDir === "desc" ? "asc" : "desc";
+      else { sortKey = key; sortDir = key === "strike" ? "desc" : "desc"; }
+      renderStrikeTable();
+    }
+
+    function renderStrikeTable() {
+      if (!currentReport) return;
+      const r = currentReport;
+      let rows = [...(r.strikes || [])];
+
+      // Center for near-money: prefer MHI settle, else HSI, else null
+      const fut = currentReport.futures || {};
+      const center =
+        (fut.mhif && fut.mhif.front && fut.mhif.front.settle) ||
+        (fut.hsif && fut.hsif.front && fut.hsif.front.settle) ||
+        null;
+
+      // Filter
+      rows = rows.filter(s => {
+        const oi = (s.callOI||0) + (s.putOI||0);
+        const vol = (s.callVol||0) + (s.putVol||0);
+        if (onlyActive && oi === 0 && vol === 0) return false;
+        if (oi < minOI) return false;
+        if (vol < minVol) return false;
+        if (atmEnabled && center) {
+          if (Math.abs(s.strike - center) > atmRange) return false;
+        }
+        return true;
+      });
+
+      // Sort
+      rows.sort((a, b) => {
+        let va, vb;
+        switch (sortKey) {
+          case "callOI": va = a.callOI||0; vb = b.callOI||0; break;
+          case "putOI":  va = a.putOI||0;  vb = b.putOI||0;  break;
+          case "callVol":va = a.callVol||0;vb = b.callVol||0;break;
+          case "putVol": va = a.putVol||0; vb = b.putVol||0; break;
+          case "callSettle": va = a.callSettle||0; vb = b.callSettle||0; break;
+          case "putSettle": va = a.putSettle||0; vb = b.putSettle||0; break;
+          case "callChg": va = a.callChange||0; vb = b.callChange||0; break;
+          case "putChg": va = a.putChange||0; vb = b.putChange||0; break;
+          case "totalOI":va = (a.callOI||0)+(a.putOI||0); vb = (b.callOI||0)+(b.putOI||0); break;
+          case "chg":    va = Math.max(Math.abs(a.callChange||0), Math.abs(a.putChange||0));
+                         vb = Math.max(Math.abs(b.callChange||0), Math.abs(b.putChange||0)); break;
+          default:       va = a.strike; vb = b.strike;
+        }
+        return sortDir === "desc" ? vb - va : va - vb;
+      });
+
+      const important = getImportantSets(r.strikes || []);
+      const maxOI = Math.max(1, ...rows.map(x => Math.max(x.callOI||0, x.putOI||0)));
+
+      document.getElementById("strikes").innerHTML = `
+        <div class="section">
+          <div class="section-header">
+            <h2>即月行使價分佈</h2>
+            <div class="header-right">
+              <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
+            </div>
+          </div>
+          <div class="controls">
+            <div>
+              <label>最低 OI</label>
+              <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" oninput="onFilterChange()" />
+            </div>
+            <div>
+              <label>最低成交量</label>
+              <input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" oninput="onFilterChange()" />
+            </div>
+            
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  ${colCallVol ? `<th class="tr sortable ${sortKey==="callVol"?"active":""}" onclick="setStrikeSort('callVol')">Call成交 ${arrow(sortKey,"callVol",sortDir)}</th>` : ''}
+                  ${colCallOI ? `<th class="tr sortable ${sortKey==="callOI"?"active":""}" onclick="setStrikeSort('callOI')">Call OI ${arrow(sortKey,"callOI",sortDir)}</th>` : ''}
+                  ${colCallSettle ? `<th class="tr sortable ${sortKey==="callSettle"?"active":""}" onclick="setStrikeSort('callSettle')">Call結算價 ${arrow(sortKey,"callSettle",sortDir)}</th>` : ''}
+                  ${colCallChg ? `<th class="tr sortable ${sortKey==="callChg"?"active":""}" onclick="setStrikeSort('callChg')">CallΔ ${arrow(sortKey,"callChg",sortDir)}</th>` : ''}
+                  <th class="tc sortable ${sortKey==="strike"?"active":""}" onclick="setStrikeSort('strike')">行使價 ${arrow(sortKey,"strike",sortDir)}</th>
+                  ${colPutChg ? `<th class="tl sortable ${sortKey==="putChg"?"active":""}" onclick="setStrikeSort('putChg')">PutΔ ${arrow(sortKey,"putChg",sortDir)}</th>` : ''}
+                  ${colPutSettle ? `<th class="tl sortable ${sortKey==="putSettle"?"active":""}" onclick="setStrikeSort('putSettle')">Put結算價 ${arrow(sortKey,"putSettle",sortDir)}</th>` : ''}
+                  ${colPutOI ? `<th class="tl sortable ${sortKey==="putOI"?"active":""}" onclick="setStrikeSort('putOI')">Put OI ${arrow(sortKey,"putOI",sortDir)}</th>` : ''}
+                  ${colPutVol ? `<th class="tl sortable ${sortKey==="putVol"?"active":""}" onclick="setStrikeSort('putVol')">Put成交 ${arrow(sortKey,"putVol",sortDir)}</th>` : ''}
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.length === 0 ? `<tr><td colspan="9" class="mu" style="text-align:center;padding:20px;">沒有符合條件的行使價（試試降低最低 OI 或關閉近價）</td></tr>` : rows.map(row => {
+                  const isOI = important.oi.has(row.strike);
+                  const isVol = important.vol.has(row.strike);
+                  const isChg = important.chg.has(row.strike);
+                  const isAbs = important.abs.has(row.strike);
+                  let cls = "";
+                  if (isAbs) cls = "hl-abs";
+                  else if (isOI && isVol) cls = "hl-both";
+                  else if (isOI) cls = "hl-oi";
+                  else if (isVol) cls = "hl-vol";
+                  else if (isChg) cls = "hl-chg";
+
+                  const cw = Math.round(((row.callOI||0) / maxOI) * 88);
+                  const pw = Math.round(((row.putOI||0) / maxOI) * 88);
+                  return `<tr class="${cls}" onclick="onRowClick(this, event)">
+                    ${colCallVol ? `<td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>` : ''}
+                    ${colCallOI ? `<td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>` : ''}
+                    ${colCallSettle ? `<td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>` : ''}
+                    ${colCallChg ? `<td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>` : ''}
+                    <td class="tc mono" style="font-weight:500">${row.strike}</td>
+                    ${colPutChg ? `<td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>` : ''}
+                    ${colPutSettle ? `<td class="tl mono mu" style="font-size:0.75rem">${row.putSettle ? fmt(row.putSettle) : "—"}</td>` : ''}
+                    ${colPutOI ? `<td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>` : ''}
+                    ${colPutVol ? `<td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>` : ''}
+                  </tr>`;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function onFilterChange() {
+      const moi = document.getElementById("minOI");
+      const mv = document.getElementById("minVol");
+      if (moi) minOI = parseInt(moi.value, 10) || 0;
+      if (mv) minVol = parseInt(mv.value, 10) || 0;
+      try {
+        const s = JSON.parse(localStorage.getItem("hsi_oi_settings") || "{}");
+        s.minOI = minOI;
+        s.minVol = minVol;
+        localStorage.setItem("hsi_oi_settings", JSON.stringify(s));
+      } catch (e) {}
+      renderStrikeTable();
+    }
+
+
+    function onDateSelectChange() {
+      const sel = document.getElementById("dateSelect");
+      if (sel && sel.value) render(sel.value);
+    }
+
+    function onDateCalendarChange() {
+      const cal = document.getElementById("dateCalendar");
+      if (!cal || !cal.value) return;
+      const picked = cal.value;
+      if (reports[picked]) {
+        render(picked);
+        return;
+      }
+      // snap to nearest available trading day on or before picked
+      const candidates = availableDates.filter(d => d <= picked);
+      if (candidates.length) render(candidates[0]);
+      else if (availableDates.length) render(availableDates[availableDates.length - 1]);
+    }
+
+    function render(date) {
+      const r = reports[date];
+      if (!r) {
+        document.getElementById("status").textContent = "沒有資料。請先執行更新。";
+        return;
+      }
+      currentDate = date;
+      currentReport = r;
+
+      document.getElementById("status").textContent =
+        `顯示 ${r.date} · 共 ${availableDates.length} 個交易日 · 即月行使價 ${(r.strikes||[]).length} 個`;
+      const ph = document.getElementById("printHeader");
+      if (ph) {
+        ph.textContent = `恒指期權未平倉 · ${r.date} · 即月 ${r.summary.frontMonth} · Call OI ${fmt(r.summary.callOI)} / Put OI ${fmt(r.summary.putOI)} · 街貨 ${r.summary.callPct}% / ${r.summary.putPct}%`;
+      }
+
+      const sel = document.getElementById("dateSelect");
+      const cal = document.getElementById("dateCalendar");
+      if (sel) {
+        sel.innerHTML = availableDates.map(d =>
+          `<option value="${d}" ${d === date ? "selected" : ""}>${d}</option>`
+        ).join("");
+      }
+      if (cal) {
+        cal.value = date;
+        if (availableDates.length) {
+          cal.min = availableDates[availableDates.length - 1];
+          cal.max = availableDates[0];
+        }
+      }
+
+      const s = r.summary;
+      document.getElementById("summary").innerHTML = `
+        <div class="card"><div class="label">交易日</div><div class="value">${r.date}</div><div class="subv">前一日 ${r.prevDate}</div></div>
+        <div class="card"><div class="label">即月</div><div class="value">${s.frontMonth}</div></div>
+        <div class="card"><div class="label">Call OI</div><div class="value">${fmt(s.callOI)}</div><div class="subv ${chgClass(s.callOIChange)}">${fmtChg(s.callOIChange)}</div></div>
+        <div class="card"><div class="label">Put OI</div><div class="value">${fmt(s.putOI)}</div><div class="subv ${chgClass(s.putOIChange)}">${fmtChg(s.putOIChange)}</div></div>
+        <div class="card"><div class="label">街貨比例</div><div class="value">${s.callPct}% / ${s.putPct}%</div><div class="subv">Call / Put</div></div>
+        <div class="card"><div class="label">總 OI</div><div class="value">${fmt(s.totalOI)}</div><div class="subv ${chgClass(s.totalOIChange)}">${fmtChg(s.totalOIChange)}</div></div>
+      `;
+
+      renderFutures(r);
+      renderLevelsCard(r);
+      renderDayChange(r);
+      renderCompare(r.date || date);
+
+      const hz = r.heavyZones || {};
+      if (!(hz.callVolWalls && hz.callVolWalls.length) && r.strikes) {
+        hz.callVolWalls = [...r.strikes]
+          .filter(s => (s.callVol || 0) > 0)
+          .sort((a,b) => (b.callVol||0) - (a.callVol||0))
+          .slice(0,6)
+          .map(s => ({strike: s.strike, volume: s.callVol}));
+      }
+      if (!(hz.putVolWalls && hz.putVolWalls.length) && r.strikes) {
+        hz.putVolWalls = [...r.strikes]
+          .filter(s => (s.putVol || 0) > 0)
+          .sort((a,b) => (b.putVol||0) - (a.putVol||0))
+          .slice(0,6)
+          .map(s => ({strike: s.strike, volume: s.putVol}));
+      }
+
+      // keep heavy zone data on report for re-sort
+      r._hz = hz;
+      renderWalls();
+      renderStrikeTable();
+      renderTopVolume();
+      document.getElementById("sourceLink").href = r.sourceUrl || "#";
+      syncAtmUI();
+      bindRowClicks("strikes");
+      bindRowClicks("zones");
+      bindRowClicks("topVolume");
+    }
+
+    function sortRows(rows, key, dir, getters) {
+      const g = getters[key] || getters.default;
+      return [...rows].sort((a, b) => {
+        const va = g(a), vb = g(b);
+        return dir === "desc" ? vb - va : va - vb;
+      });
+    }
+
+
+    function setWallSort(key) {
+      if (wallSortKey === key) wallSortDir = wallSortDir === "desc" ? "asc" : "desc";
+      else { wallSortKey = key; wallSortDir = key === "strike" ? "desc" : "desc"; }
+      renderWalls();
+    }
+    function setVolSort(key) {
+      if (volSortKey === key) volSortDir = volSortDir === "desc" ? "asc" : "desc";
+      else { volSortKey = key; volSortDir = "desc"; }
+      renderWalls();
+    }
+    function setTopSort(key) {
+      if (topSortKey === key) topSortDir = topSortDir === "desc" ? "asc" : "desc";
+      else { topSortKey = key; topSortDir = "desc"; }
+      renderTopVolume();
+    }
+
+    function renderWalls() {
+      if (!currentReport) return;
+      let hz = currentReport._hz || currentReport.heavyZones || {};
+      const nm = currentReport.nextMonthZones || {};
+      // Optional near-money filter on walls
+      const center = getAtmCenter();
+      if (atmEnabled && center) {
+        const keep = (z) => Math.abs((z.strike || 0) - center) <= atmRange;
+        hz = {
+          callWalls: (hz.callWalls || []).filter(keep),
+          putWalls: (hz.putWalls || []).filter(keep),
+          callVolWalls: (hz.callVolWalls || []).filter(keep),
+          putVolWalls: (hz.putVolWalls || []).filter(keep),
+        };
+      }
+      const wallGet = {
+        oi: z => z.oi || 0,
+        strike: z => z.strike || 0,
+        chg: z => z.oiChange || 0,
+        default: z => z.oi || 0,
+      };
+      const volGet = {
+        volume: z => z.volume || 0,
+        strike: z => z.strike || 0,
+        default: z => z.volume || 0,
+      };
+      const callW = sortRows(hz.callWalls || [], wallSortKey, wallSortDir, wallGet);
+      const putW = sortRows(hz.putWalls || [], wallSortKey, wallSortDir, wallGet);
+      const callV = sortRows(hz.callVolWalls || [], volSortKey, volSortDir, volGet);
+      const putV = sortRows(hz.putVolWalls || [], volSortKey, volSortDir, volGet);
+      const wa = (k) => arrow(wallSortKey, k, wallSortDir);
+      const va = (k) => arrow(volSortKey, k, volSortDir);
+
+      let nmCall = nm.callWalls || [];
+      let nmPut = nm.putWalls || [];
+      if (atmEnabled && center) {
+        const keep = (z) => Math.abs((z.strike || 0) - center) <= atmRange;
+        nmCall = nmCall.filter(keep);
+        nmPut = nmPut.filter(keep);
+      }
+      nmCall = sortRows(nmCall, wallSortKey, wallSortDir, wallGet);
+      nmPut = sortRows(nmPut, wallSortKey, wallSortDir, wallGet);
+      const nmLabel = nm.month || currentReport.summary?.nextMonth || "下月";
+      const nextHtml = `
+        <div class="section" style="grid-column:1/-1;margin-top:8px;">
+          <div class="section-header">
+            <h2>下月重貨區 Next Month</h2>
+            <span class="tag">${nmLabel} · Call OI ${fmt(nm.callOI||0)} / Put OI ${fmt(nm.putOI||0)}</span>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>下月 Call 重貨區</h2><span class="tag em">${nmLabel}</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${nmCall.length ? nmCall.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("") : '<tr><td colspan="3" class="mu" style="text-align:center;padding:12px;">無資料</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>下月 Put 重貨區</h2><span class="tag ro">${nmLabel}</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${nmPut.length ? nmPut.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("") : '<tr><td colspan="3" class="mu" style="text-align:center;padding:12px;">無資料</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      document.getElementById("zones").innerHTML = `
+        <div class="section" style="grid-column:1/-1;margin-bottom:0;background:transparent;border:none;">
+          <div class="section-header" style="background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">
+            <h2>重貨區 / 成交量重區</h2>
+            <div class="header-right">
+              
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Call 重貨區 (潛在阻力)</h2><span class="tag em">OI Walls</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${callW.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Put 重貨區 (潛在支持)</h2><span class="tag ro">OI Walls</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${wallSortKey==="strike"?"active":""}" onclick="setWallSort('strike')">行使價 ${wa("strike")}</th>
+              <th class="tr sortable ${wallSortKey==="oi"?"active":""}" onclick="setWallSort('oi')">未平倉 ${wa("oi")}</th>
+              <th class="tr sortable ${wallSortKey==="chg"?"active":""}" onclick="setWallSort('chg')">變化 ${wa("chg")}</th>
+            </tr></thead>
+            <tbody>
+              ${putW.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.oi)}</td>
+                  <td class="tr mono ${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Call 成交量重區</h2><span class="tag em">Volume</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${volSortKey==="strike"?"active":""}" onclick="setVolSort('strike')">行使價 ${va("strike")}</th>
+              <th class="tr sortable ${volSortKey==="volume"?"active":""}" onclick="setVolSort('volume')">成交量 ${va("volume")}</th>
+            </tr></thead>
+            <tbody>
+              ${callV.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono em">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.volume)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div class="section-header"><h2>Put 成交量重區</h2><span class="tag ro">Volume</span></div>
+          <table>
+            <thead><tr>
+              <th class="sortable ${volSortKey==="strike"?"active":""}" onclick="setVolSort('strike')">行使價 ${va("strike")}</th>
+              <th class="tr sortable ${volSortKey==="volume"?"active":""}" onclick="setVolSort('volume')">成交量 ${va("volume")}</th>
+            </tr></thead>
+            <tbody>
+              ${putV.map(z => `
+                <tr onclick="onRowClick(this, event)">
+                  <td class="mono ro">${z.strike}</td>
+                  <td class="tr mono">${fmt(z.volume)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        ${nextHtml}
+      `;
+    }
+
+    function renderTopVolume() {
+      if (!currentReport) return;
+      const items = currentReport.topVolume || [];
+      const getters = {
+        volume: x => x.volume || 0,
+        strike: x => x.strike || 0,
+        oi: x => x.oi || 0,
+        chg: x => x.oiChange || 0,
+        settle: x => x.settle || 0,
+        default: x => x.volume || 0,
+      };
+      const sorted = sortRows(items, topSortKey, topSortDir, getters);
+      const a = (k) => arrow(topSortKey, k, topSortDir);
+
+      document.getElementById("topVolume").innerHTML = `
+        <div class="section">
+          <div class="section-header">
+            <h2>十大成交</h2>
+            <div class="header-right">
+              
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>月份</th>
+                  <th class="sortable ${topSortKey==="strike"?"active":""}" onclick="setTopSort('strike')">行使價 ${a("strike")}</th>
+                  <th>類型</th>
+                  <th class="tr sortable ${topSortKey==="volume"?"active":""}" onclick="setTopSort('volume')">成交量 ${a("volume")}</th>
+                  <th class="tr sortable ${topSortKey==="settle"?"active":""}" onclick="setTopSort('settle')">結算價 ${a("settle")}</th>
+                  <th class="tr">IV%</th>
+                  <th class="tr sortable ${topSortKey==="oi"?"active":""}" onclick="setTopSort('oi')">OI ${a("oi")}</th>
+                  <th class="tr sortable ${topSortKey==="chg"?"active":""}" onclick="setTopSort('chg')">OI變化 ${a("chg")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sorted.map(item => `
+                  <tr onclick="onRowClick(this, event)">
+                    <td class="mono mu" style="font-size:0.75rem">${item.month}</td>
+                    <td class="mono">${item.strike}</td>
+                    <td class="${item.type === "Call" ? "em" : "ro"}">${item.type === "Call" ? "認購" : "認沽"}</td>
+                    <td class="tr mono">${fmt(item.volume)}</td>
+                    <td class="tr mono">${item.settle}</td>
+                    <td class="tr mono mu">${item.iv}</td>
+                    <td class="tr mono">${fmt(item.oi)}</td>
+                    <td class="tr mono ${chgClass(item.oiChange)}">${fmtChg(item.oiChange)}</td>
+                  </tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    if (availableDates.length) {
+      render(availableDates[0]);
+    } else {
+      document.getElementById("status").textContent =
+        "尚未有數據。請執行 GitHub Actions 更新。";
+    }
+  
+    // product init
+    (function(){
+      const mode = productMode;
+      const bH = document.getElementById("btnHsi");
+      const bM = document.getElementById("btnMini");
+      if(bH) bH.classList.toggle("active", mode === "hsi");
+      if(bM) bM.classList.toggle("active", mode === "mini");
+      const mH = document.getElementById("menuProdHsi");
+      const mM = document.getElementById("menuProdMini");
+      if(mH) mH.classList.toggle("menu-active", mode === "hsi");
+      if(mM) mM.classList.toggle("menu-active", mode === "mini");
+      if(mode === "mini"){
+        const h1 = document.querySelector("header h1");
+        if(h1) h1.innerHTML = '小型恒指期權未平倉 <span>Mini-HSI Options OI</span>';
+        const sub = document.getElementById("productSub");
+        if(sub) sub.textContent = "小型恒指期權 · 港交所每日報告 · 重貨區 / 未平倉 · 合約乘數 Mini $10";
+      }
+    })();
+
+
+function toggleHeaderMenu(e){
+  if(e) e.stopPropagation();
+  const m = document.getElementById('headerMenu');
+  if(!m) return;
+  m.classList.toggle('open');
+}
+function closeHeaderMenu(){
+  const m = document.getElementById('headerMenu');
+  if(m) m.classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  const m = document.getElementById('headerMenu');
+  if(!m) return;
+  if(!m.contains(e.target)) m.classList.remove('open');
+});
+
+</script>
+</body>
+</html>
