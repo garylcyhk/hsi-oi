@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="apple-touch-icon" href="favicon.png" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>股票期權未平倉 · Exodus Trading Group</title>
@@ -215,24 +217,23 @@ footer p:first-child{font-size:.8rem}
 .brand-lockup .brand-text .brand-title{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
 @media(max-width:768px){.brand-lockup img{height:32px}}
 
+.brand-logo-link{display:block;line-height:0;border-radius:6px;overflow:hidden}
+.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block;transition:opacity .15s}
+.brand-logo-link:hover img{opacity:.85}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+@media(max-width:768px){.brand-logo-link img{height:32px}}
 </style>
 </head>
 <body>
 <header>
   <div>
-    <div class="brand-lockup">
-          <img src="exodus-logo.jpg" alt="Exodus Trading Group" />
-          <div class="brand-text">
-            <span class="brand-title">Exodus Trading Group</span>
-            <h1>股票期權未平倉 <span>Stock Options OI</span></h1>
-          </div>
-        </div>
+    <div class="brand-lockup"><a href="../" class="brand-logo-link" title="回到首頁"><img src="exodus-logo.jpg" alt="Exodus Trading Group" /></a><div class="brand-text"><h1>股票期權未平倉 <span>Stock Options OI</span></h1></div></div>
     <div class="site-nav">
       <a href="../">恒指期權 HSI OI</a>
       <a class="active" href="./">股票期權 Stocks</a>
         <a href="../futures/">期貨 Futures</a>
     </div>
-    <div class="sub"><span class="brand-name">Exodus Trading Group</span> · 港交所每日市場報告 · 700 / 9988 / 1810 / 3690 / 388</div>
+    <div class="sub">港交所每日市場報告 · 700 / 9988 / 1810 / 3690 / 388</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <label class="mu" style="font-size:.75rem">日期</label>
