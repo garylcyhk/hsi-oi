@@ -584,6 +584,8 @@ footer p:first-child{font-size:.8rem}
 .menu-dropdown{min-width:168px}
 
 .site-nav{display:none!important}
+.menu-dropdown button.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
+.product-toggle{display:none!important}
 </style>
 </head>
 <body>
@@ -591,10 +593,6 @@ footer p:first-child{font-size:.8rem}
     <div class="inner">
       <div>
         <div class="brand-lockup"><a href="./" class="brand-logo-link" title="回到首頁"><img src="exodus-logo.jpg" alt="Exodus Trading Group" /></a><div class="brand-text"><h1>恒指期權未平倉 <span>HSI Options OI</span></h1></div></div>
-        <div class="product-toggle" id="productToggle" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-          <button type="button" class="btn prod-btn active" id="btnHsi" onclick="switchProduct('hsi')">恒指期權 HSI</button>
-          <button type="button" class="btn prod-btn" id="btnMini" onclick="switchProduct('mini')">小型恒指期權 Mini-HSI</button>
-        </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <div class="date-picker">
@@ -624,6 +622,10 @@ footer p:first-child{font-size:.8rem}
             </svg>
           </button>
           <div class="menu-dropdown">
+            <div class="menu-section">產品</div>
+            <button type="button" id="menuProdHsi" onclick="closeHeaderMenu();switchProduct('hsi')">恒指期權 HSI</button>
+            <button type="button" id="menuProdMini" onclick="closeHeaderMenu();switchProduct('mini')">小型恒指期權 Mini-HSI</button>
+            <div class="menu-divider"></div>
             <div class="menu-section">頁面</div>
             <a href="./" class="menu-active">恒指期權 HSI OI</a>
             <a href="./stock-oi/">股票期權 Stocks</a>
@@ -816,8 +818,14 @@ footer p:first-child{font-size:.8rem}
       reports = (mode === "mini" ? (window.MINI_HSI_REPORTS || {}) : (window.HSI_REPORTS || {}));
       availableDates = Object.keys(reports).sort().reverse();
       currentDate = availableDates[0] || null;
-      document.getElementById("btnHsi").classList.toggle("active", mode === "hsi");
-      document.getElementById("btnMini").classList.toggle("active", mode === "mini");
+      const bH = document.getElementById("btnHsi");
+      const bM = document.getElementById("btnMini");
+      if (bH) bH.classList.toggle("active", mode === "hsi");
+      if (bM) bM.classList.toggle("active", mode === "mini");
+      const mH = document.getElementById("menuProdHsi");
+      const mM = document.getElementById("menuProdMini");
+      if (mH) mH.classList.toggle("menu-active", mode === "hsi");
+      if (mM) mM.classList.toggle("menu-active", mode === "mini");
       const sub = document.getElementById("productSub");
       if(sub){
         sub.textContent = mode === "mini"
@@ -2012,6 +2020,10 @@ function switchTab(name) {
       const bM = document.getElementById("btnMini");
       if(bH) bH.classList.toggle("active", mode === "hsi");
       if(bM) bM.classList.toggle("active", mode === "mini");
+      const mH = document.getElementById("menuProdHsi");
+      const mM = document.getElementById("menuProdMini");
+      if(mH) mH.classList.toggle("menu-active", mode === "hsi");
+      if(mM) mM.classList.toggle("menu-active", mode === "mini");
       if(mode === "mini"){
         const h1 = document.querySelector("header h1");
         if(h1) h1.innerHTML = '小型恒指期權未平倉 <span>Mini-HSI Options OI</span>';
