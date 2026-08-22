@@ -222,6 +222,32 @@ footer p:first-child{font-size:.8rem}
 .brand-logo-link:hover img{opacity:.85}
 .brand-lockup{display:flex;align-items:center;gap:12px}
 @media(max-width:768px){.brand-logo-link img{height:32px}}
+
+/* Header menu (hamburger) */
+.header-menu{position:relative;display:inline-flex;align-items:center}
+.menu-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;padding:0;border-radius:8px;
+  background:var(--card,#18181b);border:1px solid var(--border,#27272a);
+  color:var(--text,#e4e4e7);cursor:pointer;
+}
+.menu-toggle:hover{border-color:#3f3f46;background:#1f1f23}
+.menu-toggle svg{width:18px;height:18px;display:block}
+.menu-dropdown{
+  display:none;position:absolute;right:0;top:calc(100% + 6px);
+  min-width:140px;padding:6px;border-radius:10px;
+  background:#18181b;border:1px solid #27272a;
+  box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:50;
+}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown button{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:9px 12px;border:none;border-radius:7px;
+  background:transparent;color:var(--text,#e4e4e7);
+  font-size:.82rem;cursor:pointer;text-align:left;
+}
+.menu-dropdown button:hover{background:#27272a}
+
 </style>
 </head>
 <body>
@@ -239,8 +265,17 @@ footer p:first-child{font-size:.8rem}
     <label class="mu" style="font-size:.75rem">日期</label>
     <select id="dateSelect" onchange="render(this.value)"></select>
     <input type="date" id="dateCal" onchange="onCal()" />
-    <button class="btn" onclick="window.print()">🖨 列印</button>
-    <button class="btn" onclick="openSettings()">⚙️ 設定</button>
+    <div class="header-menu" id="headerMenu">
+          <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" title="選單" aria-label="選單">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </button>
+          <div class="menu-dropdown">
+            <button type="button" onclick="closeHeaderMenu();window.print()">列印</button>
+            <button type="button" onclick="closeHeaderMenu();openSettings()">設定</button>
+          </div>
+        </div>
   </div>
 </header>
 
@@ -750,6 +785,24 @@ function render(date){
 }
 if(dates.length) render(dates[0]);
 else document.getElementById("status").textContent="尚未有數據。請執行 python3 fetch_stock_oi.py";
+
+
+function toggleHeaderMenu(e){
+  if(e) e.stopPropagation();
+  const m = document.getElementById('headerMenu');
+  if(!m) return;
+  m.classList.toggle('open');
+}
+function closeHeaderMenu(){
+  const m = document.getElementById('headerMenu');
+  if(m) m.classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  const m = document.getElementById('headerMenu');
+  if(!m) return;
+  if(!m.contains(e.target)) m.classList.remove('open');
+});
+
 </script>
 </body>
 </html>
