@@ -570,6 +570,20 @@ footer p:first-child{font-size:.8rem}
 }
 .menu-dropdown button:hover{background:#27272a}
 
+
+.menu-dropdown a{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:9px 12px;border-radius:7px;
+  color:var(--text,#e4e4e7);font-size:.82rem;text-decoration:none;
+  box-sizing:border-box;
+}
+.menu-dropdown a:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px;letter-spacing:.04em}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-dropdown{min-width:168px}
+
+.site-nav{display:none!important}
 </style>
 </head>
 <body>
@@ -577,16 +591,10 @@ footer p:first-child{font-size:.8rem}
     <div class="inner">
       <div>
         <div class="brand-lockup"><a href="./" class="brand-logo-link" title="回到首頁"><img src="exodus-logo.jpg" alt="Exodus Trading Group" /></a><div class="brand-text"><h1>恒指期權未平倉 <span>HSI Options OI</span></h1></div></div>
-        <div class="site-nav">
-          <a class="active" href="./">恒指期權 HSI OI</a>
-          <a href="./stock-oi/">股票期權 Stocks</a>
-          <a href="./futures/">期貨 Futures</a>
-        </div>
         <div class="product-toggle" id="productToggle" style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
           <button type="button" class="btn prod-btn active" id="btnHsi" onclick="switchProduct('hsi')">恒指期權 HSI</button>
           <button type="button" class="btn prod-btn" id="btnMini" onclick="switchProduct('mini')">小型恒指期權 Mini-HSI</button>
         </div>
-        <div class="sub" id="productSub">港交所每日市場報告 · 重貨區 / 未平倉分佈 · 配合日內交易 · 合約乘數 HSI $50</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <div class="date-picker">
@@ -617,6 +625,11 @@ footer p:first-child{font-size:.8rem}
             </svg>
           </button>
           <div class="menu-dropdown">
+            <div class="menu-section">頁面</div>
+            <a href="./" class="menu-active">恒指期權 HSI OI</a>
+            <a href="./stock-oi/">股票期權 Stocks</a>
+            <a href="./futures/">期貨 Futures</a>
+            <div class="menu-divider"></div>
             <button type="button" onclick="closeHeaderMenu();window.print()">列印</button>
             <button type="button" onclick="closeHeaderMenu();openSettings()">設定</button>
           </div>
