@@ -55,7 +55,7 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
 .note { color: var(--muted); font-size: .78rem; margin-bottom: 14px; }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 12px;
 }
 .card {
@@ -86,6 +86,17 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
 .tag.res { background: rgba(244,63,94,.15); color: var(--rose); }
 .tag.sup { background: rgba(52,211,153,.15); color: var(--emerald); }
 .tag.mid { background: rgba(251,191,36,.12); color: var(--amber); }
+.pos { color: var(--emerald); }
+.neg { color: var(--rose); }
+.top3 { margin-top: 8px; padding-top: 8px; border-top: 1px solid #1f1f23; }
+.top3 .lbl { font-size: .68rem; color: var(--muted); margin: 6px 0 2px; }
+.top3 .ln { font-size: .75rem; font-family: ui-monospace, monospace; padding: 1px 0; display: flex; justify-content: space-between; gap: 8px; }
+.kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 8px; }
+.kpi .item { font-size: .75rem; }
+.kpi .item .v { font-family: ui-monospace, monospace; font-weight: 600; }
+.kpi .item .l { color: var(--muted); font-size: .68rem; }
+.card h2 { margin-bottom: 8px; }
+
 .stocks { margin-top: 8px; }
 .stocks table { width: 100%; border-collapse: collapse; font-size: .78rem; }
 .stocks th { text-align: left; color: var(--muted); font-weight: 500; padding: 4px 6px; font-size: .68rem; }
@@ -139,6 +150,7 @@ footer a { color: var(--muted); }
 <script src="data-mini.js"></script>
 <script src="stock-oi/data.js"></script>
 <script>
+
 function toggleHeaderMenu(e){
   if(e) e.stopPropagation();
   document.getElementById("headerMenu").classList.toggle("open");
@@ -149,6 +161,12 @@ document.addEventListener("click", function(e){
 });
 
 const fmt = n => (n==null||isNaN(n)) ? "—" : Number(n).toLocaleString("en-US");
+const fmtC = n => {
+  if(n==null||isNaN(n)) return "—";
+  const s = Number(n).toLocaleString("en-US");
+  return n>0 ? "+"+s : s;
+};
+const clsN = n => n>0?"pos":n<0?"neg":"";
 const STOCK_ORDER = ["TCH","ALB","MIU","MET","HEX"];
 
 function latestKey(bag){
@@ -191,20 +209,63 @@ function biasFromWalls(close, callWalls, putWalls){
 
 function hsiBias(r){
   if(!r) return { label:"無資料", cls:"na", note:"" };
-  const settle = settleOf(r);
-  const hz = r.heavyZones || {};
-  return biasFromWalls(settle, hz.callWalls, hz.putWalls);
+  return biasFromWalls(settleOf(r), r.heavyZones?.callWalls, r.heavyZones?.putWalls);
 }
 
 function stockBias(u){
   return biasFromWalls(u.close, u.callWalls, u.putWalls);
 }
 
-function futuresRegime(stockBag, hsiBag){
-  // Prefer multi-day from STOCK_OI
+function wallsTop3(list){
+  return (list||[]).slice(0,3);
+}
+
+function wallLines(list, side){
+  const color = side==="call"?"#34d399":"#fb7185";
+  return wallsTop3(list).map(z =>
+    `<div class="ln"><span style="color:${color}">${z.strike}</span>`+
+    `<span>OI ${fmt(z.oi)} <span class="${clsN(z.oiChange)}">${fmtC(z.oiChange)}</span></span></div>`
+  ).join("") || `<div class="ln"><span>—</span></div>`;
+}
+
+function optionsCard(title, href, r, date, extraNote){
+  if(!r){
+    return `<a class="card" href="${href}"><h2><span>${title}</span><span class="go">詳情 →</span></h2>
+      <div class="bias na">無資料</div></a>`;
+  }
+  const b = hsiBias(r);
+  const settle = settleOf(r);
+  const s = r.summary || {};
+  const pc = s.callOI ? (s.putOI/s.callOI) : null;
+  const hz = r.heavyZones || {};
+  const front = r.futures?.hsif?.front || r.futures?.mhif?.front || {};
+  return `<a class="card" href="${href}">
+    <h2><span>${title}</span><span class="go">詳情 →</span></h2>
+    <div class="bias ${b.cls}">${b.label}</div>
+    <div class="meta">${b.note||"—"}</div>
+    <div class="kpi">
+      <div class="item"><div class="l">Settle</div><div class="v">${settle!=null?fmt(settle):"—"}</div></div>
+      <div class="item"><div class="l">P/C</div><div class="v">${pc!=null?pc.toFixed(2):"—"}</div></div>
+      <div class="item"><div class="l">Call OI</div><div class="v">${fmt(s.callOI)} <span class="${clsN(s.callOIChange)}">${fmtC(s.callOIChange)}</span></div></div>
+      <div class="item"><div class="l">Put OI</div><div class="v">${fmt(s.putOI)} <span class="${clsN(s.putOIChange)}">${fmtC(s.putOIChange)}</span></div></div>
+      <div class="item"><div class="l">總 OI</div><div class="v">${fmt(s.totalOI)} <span class="${clsN(s.totalOIChange)}">${fmtC(s.totalOIChange)}</span></div></div>
+      <div class="item"><div class="l">即月</div><div class="v">${s.frontMonth||"—"}</div></div>
+    </div>
+    <div class="top3">
+      <div class="lbl">Call 重貨 Top 3</div>
+      ${wallLines(hz.callWalls, "call")}
+      <div class="lbl">Put 重貨 Top 3</div>
+      ${wallLines(hz.putWalls, "put")}
+    </div>
+    ${extraNote?`<div class="meta" style="margin-top:8px">${extraNote}</div>`:""}
+    <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${date||"—"}</span></div>
+  </a>`;
+}
+
+function futuresRegime(stockBag){
   const bag = stockBag || {};
-  const keys = Object.keys(bag).sort().reverse().slice(0, 15);
-  if(keys.length < 2) return { label:"—", cls:"na", note:"數據不足" };
+  const keys = Object.keys(bag).sort().reverse().slice(0, 20);
+  if(keys.length < 2) return { label:"—", cls:"na", note:"數據不足", detail:{} };
   let up=0, down=0;
   const regimes = { "新多":0, "新空":0, "回補":0, "平多":0, "其他":0 };
   for(let i=0;i<keys.length-1;i++){
@@ -220,15 +281,19 @@ function futuresRegime(stockBag, hsiBag){
     else if(dp<0 && doi<0) regimes["平多"]++;
     else regimes["其他"]++;
   }
-  const front = bag[keys[0]]?.futures?.hsif?.front;
-  const topReg = Object.entries(regimes).sort((a,b)=>b[1]-a[1])[0];
+  const front = bag[keys[0]]?.futures?.hsif?.front || {};
+  const mhi = bag[keys[0]]?.futures?.mhif?.front || {};
+  const topReg = Object.entries(regimes).filter(x=>x[0]!=="其他").sort((a,b)=>b[1]-a[1])[0] || ["—",0];
   let cls = "far";
   if(topReg[0]==="新多"||topReg[0]==="回補") cls="sup";
   if(topReg[0]==="新空"||topReg[0]==="平多") cls="res";
   return {
     label: topReg[0],
     cls,
-    note: `近${keys.length}日 漲${up} 跌${down} · Settle ${front?fmt(front.settle):"—"} · ΔOI ${front&&front.oiChange!=null?((front.oiChange>0?"+":"")+fmt(front.oiChange)):"—"}`
+    up, down, days: keys.length,
+    front, mhi,
+    regimes,
+    note: `近${keys.length}日 漲${up} 跌${down}`
   };
 }
 
@@ -244,58 +309,63 @@ function render(){
   const rS = dS ? stockBag[dS] : null;
 
   document.getElementById("status").textContent =
-    `最新數據 · HSI ${dH||"—"} · Mini ${dM||"—"} · Stocks/Futures ${dS||"—"}`;
+    `最新數據 · HSI ${dH||"—"} · Mini ${dM||"—"} · Stocks/Futures ${dS||"—"} · 點卡片進入詳情`;
 
   const bH = hsiBias(rH);
   const bM = hsiBias(rM);
-  const settleH = settleOf(rH);
-  const settleM = settleOf(rM);
-
-  // consistency
   let cons = "—";
   if(bH.label!=="—" && bM.label!=="—" && bH.label!=="無資料"){
-    cons = (bH.cls===bM.cls || bH.label===bM.label) ? "HSI↔Mini 一致" : "HSI↔Mini 分歧";
+    cons = (bH.cls===bM.cls || bH.label===bM.label) ? "HSI↔Mini 牆位判斷一致" : "HSI↔Mini 牆位判斷分歧";
   }
 
-  const fr = futuresRegime(stockBag, hsiBag);
-
-  // stock rows
+  // stocks richer
   let stockRows = "";
+  let nRes=0, nSup=0, nMid=0, nFar=0;
   if(rS && rS.underlyings){
     stockRows = STOCK_ORDER.map(h=>{
       const u = rS.underlyings[h];
       if(!u) return "";
       const b = stockBias(u);
+      if(b.cls==="res") nRes++; else if(b.cls==="sup") nSup++; else if(b.cls==="mid") nMid++; else nFar++;
       const code = String(u.code||"").replace(/^0+/,"")||u.code;
+      const pc = u.callOI ? (u.putOI/u.callOI) : null;
+      const callW = (u.callWalls||[])[0];
+      const putW = (u.putWalls||[])[0];
       return `<tr>
-        <td>${code}</td>
+        <td><strong>${code}</strong></td>
         <td class="tr">${u.close!=null?u.close.toFixed(2):"—"}</td>
+        <td class="tr">${callW?callW.strike:"—"}</td>
+        <td class="tr">${putW?putW.strike:"—"}</td>
+        <td class="tr">${pc!=null?pc.toFixed(2):"—"}</td>
         <td><span class="tag ${b.cls}">${b.label}</span></td>
       </tr>`;
     }).join("");
   }
 
+  const fr = futuresRegime(stockBag);
+  const f = fr.front || {};
+  const m = fr.mhi || {};
+
+  const regLine = fr.regimes
+    ? Object.entries(fr.regimes).filter(([k,v])=>k!=="其他"&&v>0).map(([k,v])=>`${k} ${v}`).join(" · ")
+    : "";
+
   document.getElementById("grid").innerHTML = `
-    <a class="card" href="./options/">
-      <h2><span>恒指期權 HSI</span><span class="go">詳情 →</span></h2>
-      <div class="bias ${bH.cls}">${bH.label}</div>
-      <div class="meta">${bH.note||"—"}</div>
-      <div class="row"><span class="k">Settle</span><span>${settleH!=null?fmt(settleH):"—"}</span></div>
-      <div class="row"><span class="k">日期</span><span>${dH||"—"}</span></div>
-    </a>
-    <a class="card" href="./options/">
-      <h2><span>小型恒指 Mini-HSI</span><span class="go">詳情 →</span></h2>
-      <div class="bias ${bM.cls}">${bM.label}</div>
-      <div class="meta">${bM.note||"—"}</div>
-      <div class="row"><span class="k">一致性</span><span>${cons}</span></div>
-      <div class="row"><span class="k">日期</span><span>${dM||"—"}</span></div>
-    </a>
+    ${optionsCard("恒指期權 HSI", "./options/", rH, dH, "")}
+    ${optionsCard("小型恒指 Mini-HSI", "./options/", rM, dM, cons)}
     <a class="card" href="./stock-oi/">
       <h2><span>股票期權籃子</span><span class="go">詳情 →</span></h2>
+      <div class="meta" style="margin-bottom:6px">
+        阻力 ${nRes} · 支持 ${nSup} · 夾中 ${nMid} · 牆遠 ${nFar}
+      </div>
       <div class="stocks">
         <table>
-          <thead><tr><th>股票</th><th class="tr">收市</th><th>偏向</th></tr></thead>
-          <tbody>${stockRows||'<tr><td colspan="3">無資料</td></tr>'}</tbody>
+          <thead><tr>
+            <th>股票</th><th class="tr">收市</th>
+            <th class="tr">Call牆</th><th class="tr">Put牆</th>
+            <th class="tr">P/C</th><th>偏向</th>
+          </tr></thead>
+          <tbody>${stockRows||'<tr><td colspan="6">無資料</td></tr>'}</tbody>
         </table>
       </div>
       <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
@@ -303,12 +373,21 @@ function render(){
     <a class="card" href="./futures/">
       <h2><span>期貨 HSI / MHI</span><span class="go">詳情 →</span></h2>
       <div class="bias ${fr.cls}">${fr.label}</div>
-      <div class="meta">${fr.note}</div>
-      <div class="row"><span class="k">日期</span><span>${dS||"—"}</span></div>
+      <div class="meta">${fr.note||""}${regLine?" · "+regLine:""}</div>
+      <div class="kpi">
+        <div class="item"><div class="l">HSI Settle</div><div class="v">${f.settle!=null?fmt(f.settle):"—"} <span class="${clsN(f.settleChange)}">${fmtC(f.settleChange)}</span></div></div>
+        <div class="item"><div class="l">HSI OI</div><div class="v">${fmt(f.oi)} <span class="${clsN(f.oiChange)}">${fmtC(f.oiChange)}</span></div></div>
+        <div class="item"><div class="l">HSI 成交</div><div class="v">${fmt(f.volume)}</div></div>
+        <div class="item"><div class="l">月份</div><div class="v">${f.month||"—"}</div></div>
+        <div class="item"><div class="l">MHI Settle</div><div class="v">${m.settle!=null?fmt(m.settle):"—"} <span class="${clsN(m.settleChange)}">${fmtC(m.settleChange)}</span></div></div>
+        <div class="item"><div class="l">MHI OI</div><div class="v">${fmt(m.oi)} <span class="${clsN(m.oiChange)}">${fmtC(m.oiChange)}</span></div></div>
+      </div>
+      <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
     </a>
   `;
 }
 render();
+
 </script>
 </body>
 </html>
