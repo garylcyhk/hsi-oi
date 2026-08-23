@@ -482,6 +482,15 @@ footer p:first-child{font-size:.8rem}
       <label>牆距 (pts)
         <input type="number" id="csvWallPts" value="80" min="10" step="10" onchange="rerunCsv()" />
       </label>
+      <label>大波幅 ≥ (pts)
+        <input type="number" id="mmPts" value="50" min="20" step="10" onchange="rerunCsv()" />
+      </label>
+      <label>視窗 bars
+        <input type="number" id="mmWin" value="20" min="5" max="60" step="1" onchange="rerunCsv()" />
+      </label>
+      <label>前/後 bars
+        <input type="number" id="mmPrePost" value="15" min="5" max="40" step="1" onchange="rerunCsv()" />
+      </label>
       <label><input type="checkbox" id="csvOnlyNearWall" onchange="rerunCsv()" /> 只顯示近牆事件</label>
       <label><input type="checkbox" id="csvOnlyKey" checked onchange="rerunCsv()" /> 只顯示關鍵 (Spike/Abs/SC/BC)</label>
     </div>
@@ -1205,8 +1214,10 @@ function normalizeRow(r){
   const vcp = csvNum(r, ["VCP","vcp"]) || 0;
   const sess = csvNum(r, ["SessDeltaPct"]);
   const fromOpen = csvNum(r, ["FromOpenPts"]);
+  const ratio = csvNum(r, ["Ratio","ratio"]);
+  const polarity = csvNum(r, ["Polarity","polarity"]);
   const range = (high!=null && low!=null) ? (high-low) : null;
-  return { time, open, high, low, close, vol, volMa, buy, sell, delta, abs, brk, hvBuy, hvSell, div, entry, sq, vcp, sess, fromOpen, range };
+  return { time, open, high, low, close, vol, volMa, buy, sell, delta, abs, brk, hvBuy, hvSell, div, entry, sq, vcp, sess, fromOpen, ratio, polarity, range };
 }
 
 function getWallsForDate(dateStr){
@@ -1460,136 +1471,207 @@ function analyzeCsv(rawRows){
   }
 
 
-  // ===== Major price moves: pure market pattern (not system SC/BC rules) =====
-  // Detect large directional swings from OHLC only, then describe data before/after.
+  
+  // ===== Major Moves Analysis – Order Flow before / during / after =====
+  const mmPts = parseFloat(document.getElementById("mmPts")?.value) || 50;
+  const mmWin = parseInt(document.getElementById("mmWin")?.value, 10) || 20;
+  const mmPrePost = parseInt(document.getElementById("mmPrePost")?.value, 10) || 15;
   const bigMoves = [];
-  const MOVE_PTS = 80;      // min points to count as a "big move" leg
-  const PRE_N = 15;         // bars before start of leg
-  const POST_N = 15;        // bars after end of leg
-  // Scan for swing legs: from local extreme to opposite extreme with |Δprice| >= MOVE_PTS
-  if(rows.length >= 20){
-    let pivot = 0;
-    let pivotPrice = rows[0].close;
-    let dir = 0; // +1 up leg forming, -1 down
-    for(let i=1;i<rows.length;i++){
-      const c = rows[i].close;
-      if(c==null||pivotPrice==null) continue;
-      const ch = c - pivotPrice;
-      if(dir===0){
-        if(Math.abs(ch) >= MOVE_PTS*0.4){ dir = ch>0?1:-1; }
-        continue;
+
+  function absBucket(a){
+    const v = Math.abs(Number(a)||0);
+    if(v >= 3) return "Extreme";
+    if(v >= 2) return "Strong";
+    if(v >= 1) return "Medium";
+    return "None";
+  }
+
+  function packOF(slice, label){
+    if(!slice || !slice.length) return { label, n:0 };
+    let sumD=0, sumV=0, sumRatio=0, nRatio=0, spikes=0, shrinks=0;
+    let absEx=0, absSt=0, absMd=0, vcpN=0, hvN=0, divN=0;
+    let upBars=0, downBars=0, polPos=0, polNeg=0, polFlip=0;
+    let prevPol = null;
+    let maxR=0, minR=1e9;
+    slice.forEach(p=>{
+      if(p.delta!=null) sumD += p.delta;
+      if(p.vol!=null) sumV += p.vol;
+      if(p.ratio!=null){ sumRatio += p.ratio; nRatio++; }
+      if(typeof isSpike==="function" && isSpike(p)) spikes++;
+      if(typeof isShrink==="function" && isShrink(p)) shrinks++;
+      const b = absBucket(p.abs);
+      if(b==="Extreme") absEx++;
+      else if(b==="Strong") absSt++;
+      else if(b==="Medium") absMd++;
+      if(p.vcp) vcpN++;
+      if(p.hvBuy || p.hvSell) hvN++;
+      if(p.div) divN++;
+      if(p.range!=null){ maxR=Math.max(maxR,p.range); minR=Math.min(minR,p.range); }
+      if(p.close!=null && p.open!=null){
+        if(p.close>p.open) upBars++;
+        else if(p.close<p.open) downBars++;
       }
-      // extend leg while same direction makes new extreme
-      if(dir>0){
-        if(c >= pivotPrice){ /* still rising from start - track end */ }
-        // find peak: when price retraces enough from running max
+      const pol = p.polarity!=null ? p.polarity : (p.delta!=null ? p.delta : null);
+      if(pol!=null){
+        if(pol>0) polPos++; else if(pol<0) polNeg++;
+        if(prevPol!=null && ((prevPol>0&&pol<0)||(prevPol<0&&pol>0))) polFlip++;
+        prevPol = pol;
       }
+    });
+    const first=slice[0], last=slice[slice.length-1];
+    const netP = (first.close!=null&&last.close!=null) ? last.close-first.close : null;
+    return {
+      label, n: slice.length,
+      sumD, sumV, avgVol: sumV/slice.length,
+      avgRatio: nRatio ? sumRatio/nRatio : null,
+      spikes, shrinks,
+      absEx, absSt, absMd, absAny: absEx+absSt+absMd,
+      vcpN, hvN, divN,
+      maxR: maxR||null, minR: minR===1e9?null:minR,
+      upBars, downBars, polPos, polNeg, polFlip,
+      netP,
+      sessLast: last.sess!=null ? last.sess : null,
+      fromOpenLast: last.fromOpen!=null ? last.fromOpen : null,
+      closeFirst: first.close, closeLast: last.close
+    };
+  }
+
+  function tagsFor(m){
+    const tags = [];
+    const pre = m.pre, post = m.post, mid = m.during;
+    if(pre.n){
+      if(pre.shrinks >= pre.n*0.35) tags.push("pre: volume dry-up");
+      if(pre.vcpN >= 2) tags.push("pre: VCP present");
+      if(pre.vcpN === 0) tags.push("pre: no VCP");
+      if(pre.absEx >= 1) tags.push("pre: Extreme Abs");
+      if(pre.absAny >= 2) tags.push("pre: Abs cluster");
+      if(pre.hvN >= 1) tags.push("pre: HV trigger");
+      if(m.dir==="UP" && pre.sumD < -15) tags.push("pre: sell-delta then UP (absorb/cover)");
+      if(m.dir==="DOWN" && pre.sumD > 15) tags.push("pre: buy-delta then DOWN (distribute)");
+      if(pre.netP!=null && Math.abs(pre.netP) < mmPts*0.3) tags.push("pre: price coiling");
+      if(pre.avgRatio!=null && pre.avgRatio >= 2) tags.push("pre: high Ratio");
+      if(pre.avgRatio!=null && pre.avgRatio < 1.2) tags.push("pre: low Ratio");
     }
-    // Simpler robust approach: rolling windows of N bars, flag large net move
-    const WIN = 8; // ~8 minutes
+    if(mid.n){
+      if(mid.polFlip >= 2) tags.push("during: polarity flips");
+      else if(m.dir==="UP" && mid.polPos > mid.polNeg) tags.push("during: polarity holds long");
+      else if(m.dir==="DOWN" && mid.polNeg > mid.polPos) tags.push("during: polarity holds short");
+      if(mid.absAny >= 2) tags.push("during: Abs while moving");
+      if(mid.avgVol > (pre.avgVol||0)*1.4) tags.push("during: volume expands");
+    }
+    if(post.n){
+      if(m.dir==="UP" && post.sumD < 0) tags.push("after: delta fades");
+      if(m.dir==="DOWN" && post.sumD > 0) tags.push("after: delta bounces");
+      if(m.dir==="UP" && post.netP!=null && post.netP < 0) tags.push("after: give-back");
+      if(m.dir==="DOWN" && post.netP!=null && post.netP > 0) tags.push("after: bounce");
+      if(m.dir==="UP" && post.netP!=null && post.netP > 0) tags.push("after: continuation up");
+      if(m.dir==="DOWN" && post.netP!=null && post.netP < 0) tags.push("after: continuation down");
+      if(post.absEx >= 1) tags.push("after: Extreme Abs");
+      if(post.vcpN >= 1) tags.push("after: VCP");
+      if(post.divN >= 1) tags.push("after: Delta divergence");
+      if(post.shrinks >= post.n*0.35) tags.push("after: volume dies");
+      if(post.spikes >= 2) tags.push("after: still active");
+    }
+    return tags;
+  }
+
+  if(rows.length >= mmWin + 5){
     const used = new Set();
-    for(let i=WIN;i<rows.length;i++){
-      const a = rows[i-WIN], b = rows[i];
-      if(a.close==null||b.close==null) continue;
+    for(let i = mmWin; i < rows.length; i++){
+      const a = rows[i - mmWin], b = rows[i];
+      if(a.close==null || b.close==null) continue;
       const move = b.close - a.close;
-      if(Math.abs(move) < MOVE_PTS) continue;
-      // de-dupe nearby windows (keep strongest in neighborhood)
+      if(Math.abs(move) < mmPts) continue;
       let skip = false;
-      for(const u of used){ if(Math.abs(u-i)<WIN){ skip=true; break; } }
+      for(const u of used){ if(Math.abs(u - i) < Math.floor(mmWin * 0.6)){ skip = true; break; } }
       if(skip) continue;
-      // refine: find actual start/end extremes inside [i-WIN, i]
-      const seg = rows.slice(i-WIN, i+1);
-      let lo=seg[0], hi=seg[0];
-      seg.forEach(r=>{
-        if(r.low!=null && (lo.low==null || r.low<lo.low)) lo=r;
-        if(r.high!=null && (hi.high==null || r.high>hi.high)) hi=r;
+
+      const seg = rows.slice(i - mmWin, i + 1);
+      let lo = seg[0], hi = seg[0];
+      seg.forEach(r => {
+        if(r.low!=null && (lo.low==null || r.low < lo.low)) lo = r;
+        if(r.high!=null && (hi.high==null || r.high > hi.high)) hi = r;
       });
       const isUp = move > 0;
       const startR = isUp ? lo : hi;
       const endR = isUp ? hi : lo;
-      const pts = isUp ? (endR.high - startR.low) : (startR.high - endR.low);
-      if(pts < MOVE_PTS) continue;
+      const pts = isUp ? ((endR.high??endR.close) - (startR.low??startR.close))
+                       : ((startR.high??startR.close) - (endR.low??endR.close));
+      if(pts < mmPts) continue;
       used.add(i);
 
-      const startIdx = rows.indexOf(startR);
-      const endIdx = rows.indexOf(endR);
-      const sIdx = startIdx>=0?startIdx:i-WIN;
-      const eIdx = endIdx>=0?endIdx:i;
+      const sIdx = Math.max(0, rows.indexOf(startR));
+      const eIdx = Math.max(sIdx, rows.indexOf(endR));
+      const duration = Math.max(1, eIdx - sIdx + 1);
 
-      function pack(slice, label){
-        if(!slice.length) return { label, n:0 };
-        let sumD=0, sumV=0, spikes=0, shrinks=0, absN=0, maxR=0, minR=1e9;
-        let upBars=0, downBars=0;
-        slice.forEach(p=>{
-          if(p.delta!=null) sumD+=p.delta;
-          if(p.vol!=null) sumV+=p.vol;
-          if(typeof isSpike==="function" && isSpike(p)) spikes++;
-          if(typeof isShrink==="function" && isShrink(p)) shrinks++;
-          if(p.abs) absN++;
-          if(p.range!=null){ maxR=Math.max(maxR,p.range); minR=Math.min(minR,p.range); }
-          if(p.close!=null&&p.open!=null){
-            if(p.close>p.open) upBars++;
-            else if(p.close<p.open) downBars++;
-          }
-        });
-        const first=slice[0], last=slice[slice.length-1];
-        const netP = (first.close!=null&&last.close!=null) ? last.close-first.close : null;
-        return {
-          label, n: slice.length, sumD, sumV, spikes, shrinks, absN,
-          maxR: maxR||null, minR: minR===1e9?null:minR,
-          upBars, downBars, netP,
-          avgVol: sumV/slice.length,
-          closeFirst: first.close, closeLast: last.close
-        };
-      }
-
-      const pre = pack(rows.slice(Math.max(0,sIdx-PRE_N), sIdx), "before");
-      const during = pack(rows.slice(sIdx, eIdx+1), "during");
-      const post = pack(rows.slice(eIdx+1, eIdx+1+POST_N), "after");
-
-      // pattern tags (observational only)
-      const tags = [];
-      if(pre.n){
-        if(pre.shrinks >= pre.n*0.4) tags.push("pre: volume dry-up (shrink common)");
-        if(pre.spikes >= 2) tags.push("pre: already spiking");
-        if(pre.absN >= 2) tags.push("pre: absorption cluster");
-        if(isUp && pre.sumD < -10) tags.push("pre: sell delta then upside (absorption/short-cover style)");
-        if(!isUp && pre.sumD > 10) tags.push("pre: buy delta then downside (distribution style)");
-        if(pre.maxR!=null && during.maxR!=null && during.maxR > pre.maxR*1.5) tags.push("range expands into the move");
-        if(pre.netP!=null && Math.abs(pre.netP) < MOVE_PTS*0.25) tags.push("pre: price coiling / small net");
-      }
-      if(post.n){
-        if(isUp && post.sumD < 0) tags.push("after: delta flips negative (fade risk)");
-        if(!isUp && post.sumD > 0) tags.push("after: delta flips positive (bounce risk)");
-        if(isUp && post.netP!=null && post.netP < 0) tags.push("after: price gives back");
-        if(!isUp && post.netP!=null && post.netP > 0) tags.push("after: price bounces");
-        if(isUp && post.netP!=null && post.netP > 0) tags.push("after: continuation higher");
-        if(!isUp && post.netP!=null && post.netP < 0) tags.push("after: continuation lower");
-        if(post.shrinks >= post.n*0.4) tags.push("after: volume dies");
-        if(post.spikes >= 2) tags.push("after: still active volume");
-      }
+      const pre = packOF(rows.slice(Math.max(0, sIdx - mmPrePost), sIdx), "before");
+      const during = packOF(rows.slice(sIdx, eIdx + 1), "during");
+      const post = packOF(rows.slice(eIdx + 1, eIdx + 1 + mmPrePost), "after");
 
       const tmS = String(startR.time||"").includes("T") ? String(startR.time).slice(11,16) : String(startR.time||"").slice(-8,-3);
       const tmE = String(endR.time||"").includes("T") ? String(endR.time).slice(11,16) : String(endR.time||"").slice(-8,-3);
 
-      bigMoves.push({
+      const m = {
         dir: isUp ? "UP" : "DOWN",
         pts: Math.round(pts),
+        duration,
         tmS, tmE,
         start: startR.close, end: endR.close,
-        pre, during, post, tags
-      });
+        pre, during, post
+      };
+      m.tags = tagsFor(m);
+      bigMoves.push(m);
     }
-    // sort by size
-    bigMoves.sort((a,b)=>b.pts-a.pts);
+    bigMoves.sort((a,b) => b.pts - a.pts);
   }
 
+  // Day-level pattern summary
+  function summarizeMoves(list){
+    const up = list.filter(m => m.dir==="UP");
+    const dn = list.filter(m => m.dir==="DOWN");
+    function common(arr, keyFn){
+      const freq = {};
+      arr.forEach(m => {
+        (m.tags||[]).forEach(tag => {
+          if(!keyFn(tag)) return;
+          freq[tag] = (freq[tag]||0)+1;
+        });
+      });
+      return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,6)
+        .map(([k,v]) => ({ tag:k, n:v, pct: Math.round(v/Math.max(arr.length,1)*100) }));
+    }
+    function rate(arr, pred){
+      if(!arr.length) return null;
+      return Math.round(arr.filter(pred).length / arr.length * 100);
+    }
+    return {
+      total: list.length,
+      nUp: up.length, nDn: dn.length,
+      beforeUp: common(up, t => t.startsWith("pre:")),
+      beforeDn: common(dn, t => t.startsWith("pre:")),
+      afterUp: common(up, t => t.startsWith("after:")),
+      afterDn: common(dn, t => t.startsWith("after:")),
+      extremeAbsBeforeUp: rate(up, m => m.pre && m.pre.absEx >= 1),
+      extremeAbsBeforeDn: rate(dn, m => m.pre && m.pre.absEx >= 1),
+      vcpBeforeUp: rate(up, m => m.pre && m.pre.vcpN >= 1),
+      vcpBeforeDn: rate(dn, m => m.pre && m.pre.vcpN >= 1),
+      vcpDryBeforeUp: rate(up, m => m.pre && m.pre.vcpN === 0),
+      vcpDryBeforeDn: rate(dn, m => m.pre && m.pre.vcpN === 0),
+      coilBeforeUp: rate(up, m => (m.tags||[]).some(x=>x.includes("coiling"))),
+      coilBeforeDn: rate(dn, m => (m.tags||[]).some(x=>x.includes("coiling"))),
+      contAfterUp: rate(up, m => (m.tags||[]).some(x=>x.includes("continuation up"))),
+      contAfterDn: rate(dn, m => (m.tags||[]).some(x=>x.includes("continuation down"))),
+      fadeAfterUp: rate(up, m => (m.tags||[]).some(x=>x.includes("give-back")||x.includes("delta fades"))),
+      bounceAfterDn: rate(dn, m => (m.tags||[]).some(x=>x.includes("bounce"))),
+    };
+  }
+  const moveSummary = summarizeMoves(bigMoves);
 
   return {
     dateStr, walls, events, rows: rows.length,
     nSpike, nShrink, nAbs, nSC, nBC,
     last, first, netDelta,
-    wallTouches, absNearWall, hvn, story, failures, climaxEvents, bigMoves,
+    wallTouches, absNearWall, hvn, story, failures, climaxEvents, bigMoves, moveSummary,
     regimes: { regPushLong, regPushShort, regFakeUp, regFakeDown, regFlat },
     tailReg: { tL, tS, tFU, tFD }
   };
@@ -1699,43 +1781,72 @@ function renderCsvResult(res){
   }
   const bigMoveLines = (function(){
     const list = res.bigMoves || [];
-    if(!list.length){
-      return '<div class="line mu">No major swings detected (≥80 pts in ~8 bars). Upload a fuller session or wait for larger ranges.</div>';
-    }
+    const sum = res.moveSummary || {};
     const fmtP = n => n==null||isNaN(n)?"—":Number(n).toLocaleString("en-US");
     const fmtC = n => n==null||isNaN(n)?"—":((Number(n)>0?"+":"")+Math.round(Number(n)));
-    const cell = p => {
+    const fmtPct = n => n==null||isNaN(n)?"—":(n+"%");
+    function ofCell(p){
       if(!p||!p.n) return "—";
-      return `ΣΔ ${fmtC(p.sumD)} · Vol ${fmtP(Math.round(p.avgVol||0))} · Sp ${p.spikes}/Sh ${p.shrinks}/Abs ${p.absN} · net ${fmtC(p.netP)}`;
-    };
+      const abs = `Abs E${p.absEx}/S${p.absSt}/M${p.absMd}`;
+      const ratio = p.avgRatio!=null ? `Ratio ${p.avgRatio.toFixed(2)}` : "Ratio —";
+      return `ΣΔ ${fmtC(p.sumD)} · ${ratio}<br/>${abs} · VCP ${p.vcpN} · HV ${p.hvN}<br/>Vol ${fmtP(Math.round(p.avgVol||0))} · Sp/Sh ${p.spikes}/${p.shrinks}<br/>net ${fmtC(p.netP)} · pol↔ ${p.polFlip} · Sess% ${p.sessLast!=null?p.sessLast.toFixed(1):"—"} · FO ${fmtC(p.fromOpenLast)}`;
+    }
+    function tagList(arr){
+      if(!arr||!arr.length) return '<span class="mu">—</span>';
+      return arr.map(x => `<div>· ${x.tag} <span class="mu">(${x.n} · ${x.pct}%)</span></div>`).join("");
+    }
+    const insight = `
+      <div class="csv-an-card" style="margin-bottom:12px">
+        <h3>日結洞察 · Day pattern summary</h3>
+        <div class="line">Major moves: <strong>${sum.total||0}</strong> · UP ${sum.nUp||0} · DOWN ${sum.nDn||0}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px">
+          <div>
+            <div class="mu" style="font-size:.72rem">Before UP moves</div>
+            ${tagList(sum.beforeUp)}
+            <div class="mu" style="margin-top:6px;font-size:.72rem">Extreme Abs ${fmtPct(sum.extremeAbsBeforeUp)} · VCP ${fmtPct(sum.vcpBeforeUp)} · VCP dry ${fmtPct(sum.vcpDryBeforeUp)} · Coil ${fmtPct(sum.coilBeforeUp)}</div>
+          </div>
+          <div>
+            <div class="mu" style="font-size:.72rem">Before DOWN moves</div>
+            ${tagList(sum.beforeDn)}
+            <div class="mu" style="margin-top:6px;font-size:.72rem">Extreme Abs ${fmtPct(sum.extremeAbsBeforeDn)} · VCP ${fmtPct(sum.vcpBeforeDn)} · VCP dry ${fmtPct(sum.vcpDryBeforeDn)} · Coil ${fmtPct(sum.coilBeforeDn)}</div>
+          </div>
+          <div>
+            <div class="mu" style="font-size:.72rem">After behaviour</div>
+            <div>· UP continuation ${fmtPct(sum.contAfterUp)} · UP fade/give-back ${fmtPct(sum.fadeAfterUp)}</div>
+            <div>· DOWN continuation ${fmtPct(sum.contAfterDn)} · DOWN bounce ${fmtPct(sum.bounceAfterDn)}</div>
+          </div>
+        </div>
+      </div>`;
+    if(!list.length){
+      return insight + '<div class="line mu">No major moves at current threshold. Lower 「大波幅 pts」 or widen 「視窗 bars」.</div>';
+    }
     const rows = list.map((m, idx) => {
       const dirC = m.dir==="UP" ? "ev-bc" : "ev-sc";
-      const tags = (m.tags||[]).slice(0,3).join("; ");
+      const tags = (m.tags||[]).join(" · ") || "—";
       return `<tr>
         <td>${idx+1}</td>
         <td><span class="${dirC}"><strong>${m.dir}</strong></span></td>
         <td>${m.pts}</td>
+        <td>${m.duration||"—"}</td>
         <td>${m.tmS||"—"}</td>
         <td>${m.tmE||"—"}</td>
         <td>${fmtP(m.start)}</td>
         <td>${fmtP(m.end)}</td>
-        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.pre)}</td>
-        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.during)}</td>
-        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.post)}</td>
-        <td style="font-size:.7rem;white-space:normal;max-width:200px;color:var(--muted)">${tags||"—"}</td>
+        <td style="font-size:.7rem;white-space:normal;max-width:240px;line-height:1.35">${ofCell(m.pre)}</td>
+        <td style="font-size:.7rem;white-space:normal;max-width:240px;line-height:1.35">${ofCell(m.during)}</td>
+        <td style="font-size:.7rem;white-space:normal;max-width:240px;line-height:1.35">${ofCell(m.post)}</td>
+        <td style="font-size:.68rem;white-space:normal;max-width:180px;color:var(--muted)">${tags}</td>
       </tr>`;
     }).join("");
-    return `
-      <div class="mu" style="margin-bottom:6px">${list.length} major moves · sorted by size (pts)</div>
-      <div class="csv-events" style="max-height:480px">
+    return insight + `
+      <div class="mu" style="margin-bottom:6px">${list.length} major moves · sorted by pts · OF = Ratio / Abs / VCP / Delta / HV</div>
+      <div class="csv-events" style="max-height:560px">
         <table class="perf-table all-data-table">
           <thead><tr>
-            <th>#</th><th>Dir</th><th>Pts</th>
+            <th>#</th><th>Dir</th><th>Pts</th><th>Bars</th>
             <th>Start</th><th>End</th>
-            <th>Price from</th><th>Price to</th>
-            <th>Before (pattern)</th>
-            <th>During</th>
-            <th>After (pattern)</th>
+            <th>From</th><th>To</th>
+            <th>Before OF</th><th>During OF</th><th>After OF</th>
             <th>Notes</th>
           </tr></thead>
           <tbody>${rows}</tbody>
@@ -1790,10 +1901,10 @@ const climaxLines = (res.climaxEvents||[]).length
         ${failLines}
       </div>
       <div class="csv-an-card" style="grid-column:1/-1">
-        <h3>Major moves · data pattern before / during / after</h3>
+        <h3>Major Moves Analysis · Before / During / After (Order Flow)</h3>
         <div class="mu" style="font-size:.72rem;margin-bottom:8px">
-          Pure market structure (OHLC + vol/delta) — <b>not</b> Entry/SC system rules.<br/>
-          All legs ≥80 pts listed below (table). Columns = data pattern before / during / after each move.
+          Order Flow Absorption study around major price legs — configurable pts / window.<br/>
+          Table: Before · During · After (Ratio, Abs Extreme/Strong/Medium, VCP, Δ, HV, polarity). Summary: common pre-UP / pre-DOWN patterns.
         </div>
         ${bigMoveLines}
       </div>
