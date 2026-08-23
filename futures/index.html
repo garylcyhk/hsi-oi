@@ -263,6 +263,17 @@ footer p:first-child{font-size:.8rem}
 .csv-an-card .story{font-size:.8rem;line-height:1.5;color:var(--text,#e4e4e7)}
 .csv-an-card .pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:.68rem;margin-right:4px}
 
+
+.fut-tabs{display:flex;gap:0;border-bottom:1px solid var(--border,#27272a);margin:0 0 14px}
+.fut-tab{
+  background:transparent;border:none;color:var(--muted,#a1a1aa);
+  padding:10px 16px;font-size:.85rem;cursor:pointer;
+  border-bottom:2px solid transparent;
+}
+.fut-tab.active{color:var(--emerald,#34d399);border-bottom-color:var(--emerald,#34d399)}
+.fut-panel{display:none}
+.fut-panel.active{display:block}
+
 </style>
 </head>
 <body>
@@ -285,6 +296,7 @@ footer p:first-child{font-size:.8rem}
             <a href="../options/">恒指期權 HSI OI</a>
             <a href="../stock-oi/">股票期權 Stocks</a>
             <a href="./" class="menu-active">期貨 Futures</a>
+            <a href="../analysis/">交易表現 Analysis</a>
             <div class="menu-divider"></div>
             <button type="button" onclick="closeHeaderMenu();window.print()">列印</button>
             <button type="button" onclick="closeHeaderMenu();openSettings()">設定</button>
@@ -326,34 +338,12 @@ footer p:first-child{font-size:.8rem}
 </div>
 
 <div class="container">
-
-  <div class="csv-box" id="csvBox">
-    <h2>
-      <span>分時 CSV 分析 · Vol / Absorption / SC·BC</span>
-      <span class="tag" id="csvFileLabel">未上傳</span>
-    </h2>
-    <div class="csv-controls">
-      <label>TradingView CSV
-        <input type="file" id="csvFile" accept=".csv,text/csv" onchange="onCsvFile(event)" />
-      </label>
-      <label>放量倍數 ≥
-        <input type="number" id="csvSpikeMult" value="2" min="1" step="0.1" onchange="rerunCsv()" />
-      </label>
-      <label>縮量倍數 ≤
-        <input type="number" id="csvShrinkMult" value="0.5" min="0.1" step="0.1" onchange="rerunCsv()" />
-      </label>
-      <label>牆距 (pts)
-        <input type="number" id="csvWallPts" value="80" min="10" step="10" onchange="rerunCsv()" />
-      </label>
-      <label><input type="checkbox" id="csvOnlyNearWall" onchange="rerunCsv()" /> 只顯示近牆事件</label>
-      <label><input type="checkbox" id="csvOnlyKey" checked onchange="rerunCsv()" /> 只顯示關鍵 (Spike/Abs/SC/BC)</label>
-    </div>
-    <div class="note" style="margin-bottom:8px">上傳 TV 匯出 CSV（含 Volume MA / Delta / Absorption 等）。牆位取當日 HSI 期權重貨（若有 data.js）。數據只在瀏覽器記憶體，不會上傳到伺服器。</div>
-    <div class="csv-summary" id="csvSummary"></div>
-    <div class="csv-panels" id="csvPanels"></div>
-    <div class="csv-events" id="csvEvents"></div>
+  <div class="fut-tabs" id="futTabs">
+    <button type="button" class="fut-tab active" data-panel="daily" onclick="switchFutTab('daily')">日線總覽</button>
+    <button type="button" class="fut-tab" data-panel="csv" onclick="switchFutTab('csv')">分時 CSV</button>
   </div>
 
+  <div class="fut-panel active" id="panel-daily">
   <div class="note" id="status">載入中…</div>
   <div class="filters" id="filters">
     <label>分析視窗
@@ -381,7 +371,41 @@ footer p:first-child{font-size:.8rem}
   <div class="fut-grid" id="frontCards"></div>
   <div id="tables"></div>
   <div id="history"></div>
-  <footer>
+  
+  </div>
+
+  <div class="fut-panel" id="panel-csv">
+<div class="csv-box" id="csvBox">
+    <h2>
+      <span>分時 CSV 分析 · Vol / Absorption / SC·BC</span>
+      <span class="tag" id="csvFileLabel">未上傳</span>
+    </h2>
+    <div class="csv-controls">
+      <label>TradingView CSV
+        <input type="file" id="csvFile" accept=".csv,text/csv" onchange="onCsvFile(event)" />
+      </label>
+      <label>放量倍數 ≥
+        <input type="number" id="csvSpikeMult" value="2" min="1" step="0.1" onchange="rerunCsv()" />
+      </label>
+      <label>縮量倍數 ≤
+        <input type="number" id="csvShrinkMult" value="0.5" min="0.1" step="0.1" onchange="rerunCsv()" />
+      </label>
+      <label>牆距 (pts)
+        <input type="number" id="csvWallPts" value="80" min="10" step="10" onchange="rerunCsv()" />
+      </label>
+      <label><input type="checkbox" id="csvOnlyNearWall" onchange="rerunCsv()" /> 只顯示近牆事件</label>
+      <label><input type="checkbox" id="csvOnlyKey" checked onchange="rerunCsv()" /> 只顯示關鍵 (Spike/Abs/SC/BC)</label>
+    </div>
+    <div class="note" style="margin-bottom:8px">上傳 TV 匯出 CSV（含 Volume MA / Delta / Absorption 等）。牆位取當日 HSI 期權重貨（若有 data.js）。數據只在瀏覽器記憶體，不會上傳到伺服器。</div>
+    <div class="csv-summary" id="csvSummary"></div>
+    <div class="csv-analysis" id="csvAnalysis"></div>
+    <div class="csv-events" id="csvEvents"></div>
+  </div>
+
+
+  </div>
+
+<footer>
     <p>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</p>
     <p style="margin-top:6px">
       <a id="srcH" href="#" target="_blank" rel="noopener">HSI Futures Report</a> ·
@@ -1349,6 +1373,23 @@ function rerunCsv(){
   const res = analyzeCsv(_csvRows);
   renderCsvResult(res);
 }
+
+
+function switchFutTab(name){
+  document.querySelectorAll(".fut-tab").forEach(b => {
+    b.classList.toggle("active", b.dataset.panel === name);
+  });
+  document.querySelectorAll(".fut-panel").forEach(p => {
+    p.classList.toggle("active", p.id === "panel-" + name);
+  });
+  try { localStorage.setItem("fut_tab", name); } catch(e) {}
+}
+(function(){
+  try {
+    const t = localStorage.getItem("fut_tab");
+    if(t === "csv" || t === "daily") switchFutTab(t);
+  } catch(e) {}
+})();
 
 </script>
 </body>
