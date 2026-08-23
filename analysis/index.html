@@ -122,6 +122,7 @@ footer{margin-top:24px;padding:16px;text-align:center;color:#52525b;font-size:.7
 
   <div class="panel">
     <h2>2. 表現總覽 Performance</h2>
+    <div class="note" style="margin-top:-6px">勝率只計算已標記 Win / Loss 的交易（不含 Scratch 與空白）。上傳後即可見總訊號；填寫結果後自動更新勝率。</div>
     <div class="kpi-grid" id="kpiGrid"></div>
     <div class="charts" id="charts"></div>
   </div>
@@ -208,8 +209,9 @@ function num(r, keys){
 
 function classify(row){
   const time = String(row.time||row.Time||"");
-  const entry = num(row, ["Entry","entry"])||0;
-  if(!entry) return null;
+  const entryRaw = num(row, ["Entry","entry"]);
+  if(entryRaw==null || entryRaw===0) return null;
+  const entry = entryRaw;
 
   const buy = num(row, ["BuyVol","buyvol"])||0;
   const sell = num(row, ["SellVol","sellvol"])||0;
@@ -298,8 +300,10 @@ function setResultField(key, field, value){
   if(!results[key]) results[key] = { result:"", points:"", notes:"" };
   results[key][field] = value;
   saveJSON(LS_RESULTS, results);
-  renderKPIs(filteredTrades());
-  renderCharts(filteredTrades());
+  const list = filteredTrades();
+  renderKPIs(list);
+  renderCharts(list);
+  // update trade count only; do not rebuild whole table (keeps focus)
 }
 
 function filteredTrades(){
@@ -322,26 +326,35 @@ function filteredTrades(){
 }
 
 function statsOf(list){
-  const logged = list.map(t => {
+  // Only Win/Loss count toward win rate; Scratch excluded from WR denominator
+  const graded = list.map(t => {
     const r = getResult(t.key);
     const pts = r.points===""||r.points==null ? null : Number(r.points);
     return { t, result: r.result, points: pts };
-  }).filter(x => x.result);
+  }).filter(x => x.result==="Win" || x.result==="Loss");
 
-  const wins = logged.filter(x => x.result==="Win");
-  const losses = logged.filter(x => x.result==="Loss");
-  const scratches = logged.filter(x => x.result==="Scratch");
-  const withPts = logged.filter(x => x.points!=null && !isNaN(x.points));
-  const avgPts = withPts.length ? withPts.reduce((a,b)=>a+b.points,0)/withPts.length : null;
-  const wr = logged.length ? (wins.length/logged.length*100) : null;
+  const scratched = list.filter(t => getResult(t.key).result==="Scratch").length;
+  const wins = graded.filter(x => x.result==="Win");
+  const losses = graded.filter(x => x.result==="Loss");
+  const withPts = list.map(t => {
+    const r = getResult(t.key);
+    if(r.result!=="Win" && r.result!=="Loss" && r.result!=="Scratch") return null;
+    if(r.points===""||r.points==null) return null;
+    const n = Number(r.points);
+    return isNaN(n) ? null : n;
+  }).filter(x => x!=null);
+  const avgPts = withPts.length ? withPts.reduce((a,b)=>a+b,0)/withPts.length : null;
+  const wr = graded.length ? (wins.length/graded.length*100) : null;
 
   function wrSub(pred){
-    const sub = logged.filter(x => pred(x.t));
+    const sub = graded.filter(x => pred(x.t));
     if(!sub.length) return null;
     return sub.filter(x=>x.result==="Win").length / sub.length * 100;
   }
+  function countSub(pred){
+    return list.filter(pred).length;
+  }
 
-  // best ratio range among logged
   const buckets = [
     {name:"<1.5", test:r => r!=null && r<1.5},
     {name:"1.5–3", test:r => r!=null && r>=1.5 && r<3},
@@ -350,15 +363,14 @@ function statsOf(list){
   ];
   let bestRatio = {name:"—", wr:null, n:0};
   buckets.forEach(b => {
-    const sub = logged.filter(x => b.test(x.t.ratio));
+    const sub = graded.filter(x => b.test(x.t.ratio));
     if(sub.length<2) return;
     const w = sub.filter(x=>x.result==="Win").length/sub.length*100;
     if(bestRatio.wr==null || w>bestRatio.wr) bestRatio = {name:b.name, wr:w, n:sub.length};
   });
 
-  // time of day
   const hours = {};
-  logged.forEach(x => {
+  graded.forEach(x => {
     const h = (x.t.tm||"").slice(0,2) || "??";
     if(!hours[h]) hours[h] = {w:0,n:0};
     hours[h].n++;
@@ -367,8 +379,12 @@ function statsOf(list){
 
   return {
     totalSignals: list.length,
-    logged: logged.length,
-    wins: wins.length, losses: losses.length, scratches: scratches.length,
+    countA: countSub(t => t.quality==="A"),
+    countB: countSub(t => t.quality==="B"),
+    countHV: countSub(t => t.isHV),
+    countNorm: countSub(t => !t.isHV),
+    graded: graded.length,
+    wins: wins.length, losses: losses.length, scratches: scratched,
     wr, avgPts,
     wrA: wrSub(t=>t.quality==="A"),
     wrB: wrSub(t=>t.quality==="B"),
@@ -385,14 +401,24 @@ function fmtN(x){ return x==null||isNaN(x) ? "—" : (Math.round(x*10)/10).toStr
 
 function renderKPIs(list){
   const s = statsOf(list);
-  document.getElementById("kpiGrid").innerHTML = `
-    <div class="kpi"><div class="l">訊號 / 已評</div><div class="v">${s.totalSignals} <span class="s">/ ${s.logged}</span></div></div>
-    <div class="kpi"><div class="l">勝率 Win Rate</div><div class="v ${s.wr!=null?(s.wr>=50?"pos":"neg"):""}">${fmtPct(s.wr)}</div>
-      <div class="s">W ${s.wins} · L ${s.losses} · S ${s.scratches}</div></div>
-    <div class="kpi"><div class="l">平均分數 Avg Pts</div><div class="v ${s.avgPts!=null?(s.avgPts>=0?"pos":"neg"):""}">${fmtN(s.avgPts)}</div></div>
-    <div class="kpi"><div class="l">A vs B 勝率</div><div class="v" style="font-size:.95rem">A ${fmtPct(s.wrA)}<br>B ${fmtPct(s.wrB)}</div></div>
-    <div class="kpi"><div class="l">HV vs 普通</div><div class="v" style="font-size:.95rem">HV ${fmtPct(s.wrHV)}<br>普通 ${fmtPct(s.wrNorm)}</div></div>
-    <div class="kpi"><div class="l">VCP 有 vs 無</div><div class="v" style="font-size:.95rem">有 ${fmtPct(s.wrVCP)}<br>無 ${fmtPct(s.wrNoVCP)}</div></div>
+  const el = document.getElementById("kpiGrid");
+  if(!el) return;
+  el.innerHTML = `
+    <div class="kpi"><div class="l">總訊號 Total Signals</div><div class="v">${s.totalSignals}</div>
+      <div class="s">A ${s.countA} · B ${s.countB} · HV ${s.countHV}</div></div>
+    <div class="kpi"><div class="l">勝率 Win Rate</div><div class="v ${s.wr!=null?(s.wr>=50?"pos":"neg"):"mu"}">${fmtPct(s.wr)}</div>
+      <div class="s">W ${s.wins} · L ${s.losses} · Scratch ${s.scratches}（勝率不含 Scratch）</div></div>
+    <div class="kpi"><div class="l">平均分數 Avg Points</div><div class="v ${s.avgPts!=null?(s.avgPts>=0?"pos":"neg"):"mu"}">${fmtN(s.avgPts)}</div></div>
+    <div class="kpi"><div class="l">A 勝率 Quality A</div><div class="v ${s.wrA!=null?(s.wrA>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrA)}</div>
+      <div class="s">${s.countA} 個 A setups</div></div>
+    <div class="kpi"><div class="l">B 勝率 Quality B</div><div class="v ${s.wrB!=null?(s.wrB>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrB)}</div>
+      <div class="s">${s.countB} 個 B setups</div></div>
+    <div class="kpi"><div class="l">HV 勝率</div><div class="v ${s.wrHV!=null?(s.wrHV>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrHV)}</div>
+      <div class="s">${s.countHV} 筆 HV</div></div>
+    <div class="kpi"><div class="l">普通進場勝率 Normal</div><div class="v ${s.wrNorm!=null?(s.wrNorm>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrNorm)}</div>
+      <div class="s">${s.countNorm} 筆普通</div></div>
+    <div class="kpi"><div class="l">有 VCP 勝率</div><div class="v ${s.wrVCP!=null?(s.wrVCP>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrVCP)}</div></div>
+    <div class="kpi"><div class="l">無 VCP 勝率</div><div class="v ${s.wrNoVCP!=null?(s.wrNoVCP>=50?"pos":"neg"):"mu"}">${fmtPct(s.wrNoVCP)}</div></div>
     <div class="kpi"><div class="l">最佳 Ratio 區間</div><div class="v" style="font-size:.95rem">${s.bestRatio.name}</div>
       <div class="s">${fmtPct(s.bestRatio.wr)} · n=${s.bestRatio.n}</div></div>
   `;
@@ -424,8 +450,10 @@ function renderCharts(list){
 }
 
 function renderTable(list){
-  document.getElementById("tradeCount").textContent = list.length + " 筆";
+  const countEl = document.getElementById("tradeCount");
+  if(countEl) countEl.textContent = list.length + " 筆";
   const body = document.getElementById("tradeBody");
+  if(!body) return;
   if(!list.length){
     body.innerHTML = '<tr><td colspan="10" class="mu">無訊號 — 請上傳 CSV（Entry ≠ 0）</td></tr>';
     return;
@@ -433,37 +461,54 @@ function renderTable(list){
   body.innerHTML = list.slice().reverse().map(t => {
     const r = getResult(t.key);
     const dirCls = t.dir==="BUY"?"tag-buy":"tag-sell";
-    return `<tr>
+    const keyAttr = encodeURIComponent(t.key);
+    return `<tr data-key="${keyAttr}">
       <td>${t.date} ${t.tm}</td>
       <td><span class="tag ${dirCls}">${t.dir}</span></td>
       <td>${t.isHV?'<span class="tag tag-hv">':''}${t.entryType}${t.isHV?'</span>':''}</td>
       <td><span class="tag ${t.quality==="A"?"tag-a":"tag-b"}">${t.quality}</span></td>
       <td>${t.ratio!=null?Number(t.ratio).toFixed(2):"—"}</td>
-      <td>${t.vcp?"Y":"—"}</td>
+      <td>${t.vcpVal!=null&&t.vcpVal!==0?t.vcpVal:(t.vcp?"Y":"—")}</td>
       <td>${t.setupQ!=null?t.setupQ:"—"}</td>
       <td>
-        <select onchange="setResultField('${t.key.replace(/'/g,"\\'")}','result',this.value)">
+        <select class="res-select" data-field="result">
           <option value="" ${!r.result?"selected":""}>—</option>
           <option value="Win" ${r.result==="Win"?"selected":""}>Win</option>
           <option value="Loss" ${r.result==="Loss"?"selected":""}>Loss</option>
           <option value="Scratch" ${r.result==="Scratch"?"selected":""}>Scratch</option>
         </select>
       </td>
-      <td><input class="pts" type="number" step="1" value="${r.points??""}" placeholder="pts"
-        onchange="setResultField('${t.key.replace(/'/g,"\\'")}','points',this.value)" /></td>
-      <td><input class="notes" type="text" value="${(r.notes||"").replace(/"/g,"&quot;")}" placeholder="備註"
-        onchange="setResultField('${t.key.replace(/'/g,"\\'")}','notes',this.value)" /></td>
+      <td><input class="pts res-input" data-field="points" type="number" step="1" value="${r.points??""}" placeholder="pts" /></td>
+      <td><input class="notes res-input" data-field="notes" type="text" value="${(r.notes||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;")}" placeholder="備註" /></td>
     </tr>`;
   }).join("");
 }
 
+function bindTradeLogEvents(){
+  const body = document.getElementById("tradeBody");
+  if(!body || body.dataset.bound==="1") return;
+  body.dataset.bound = "1";
+  body.addEventListener("change", function(e){
+    const el = e.target;
+    if(!el.classList.contains("res-select") && !el.classList.contains("res-input")) return;
+    const tr = el.closest("tr");
+    if(!tr) return;
+    const key = decodeURIComponent(tr.getAttribute("data-key")||"");
+    const field = el.getAttribute("data-field");
+    if(!key || !field) return;
+    setResultField(key, field, el.value);
+  });
+}
+
 function renderAll(){
-  document.getElementById("fileList").textContent =
+  const fl = document.getElementById("fileList");
+  if(fl) fl.textContent =
     fileNames.length ? ("已載入: "+fileNames.join(", ")+" · 訊號 "+trades.length+" 筆") : "尚未上傳";
   const list = filteredTrades();
   renderKPIs(list);
   renderCharts(list);
   renderTable(list);
+  bindTradeLogEvents();
 }
 
 renderAll();
