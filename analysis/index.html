@@ -222,26 +222,17 @@ function classify(row){
   const hvBuy = num(row, ["High Volume Buy Side"])||0;
   const hvSell = num(row, ["High Volume Sell Side"])||0;
 
-  // Direction
-  let dir = "BUY";
-  if(delta!=null) dir = delta >= 0 ? "BUY" : "SELL";
-  else if(buy||sell) dir = buy >= sell ? "BUY" : "SELL";
-  // Entry value sign override if negative entry means sell
-  if(entry < 0) dir = "SELL";
-  if(entry > 0 && delta==null && buy==0 && sell==0) dir = "BUY";
+  // Entry: 1=BUY, -1=SELL, 2=BUY HV, -2=SELL HV
+  let dir = "BUY", entryType = "BUY", isHV = false;
+  if(entry===1){ dir="BUY"; entryType="BUY"; isHV=false; }
+  else if(entry===-1){ dir="SELL"; entryType="SELL"; isHV=false; }
+  else if(entry===2){ dir="BUY"; entryType="BUY HV"; isHV=true; }
+  else if(entry===-2){ dir="SELL"; entryType="SELL HV"; isHV=true; }
+  else if(entry>0){ dir="BUY"; entryType=entry>=2?"BUY HV":"BUY"; isHV=entry>=2; }
+  else { dir="SELL"; entryType=entry<=-2?"SELL HV":"SELL"; isHV=entry<=-2; }
 
-  // Entry type
-  let isHV = !!(hvBuy || hvSell);
-  // heuristic: |entry|>=2 or label patterns
-  if(Math.abs(entry) >= 2) isHV = true;
-  if(Math.abs(delta||0) >= 30 && (buy+sell) >= 40) isHV = true;
-  const entryType = dir === "BUY" ? (isHV ? "BUY HV" : "BUY") : (isHV ? "SELL HV" : "SELL");
-
-  // Quality A/B from SetupQuality
-  let quality = "B";
-  if(sq >= 1) quality = "A";
-  // also boost if VCP + absorption
-  if(vcp && abs && sq>=0.5) quality = "A";
+  // SetupQuality: 3=A, 2=B
+  let quality = (sq===3 || sq>=3) ? "A" : "B";
 
   const date = time.slice(0,10);
   const tm = time.includes("T") ? time.slice(11,16) : time.slice(-8,-3);
@@ -249,7 +240,7 @@ function classify(row){
 
   return {
     key, time, date, tm, dir, entryType, quality, isHV,
-    ratio, vcp: !!vcp || (vcp&&vcp!==0), vcpVal: vcp,
+    ratio, vcp: vcp!==0 && vcp!=null, vcpVal: vcp, vcpLevel: vcp,
     setupQ: sq, absorption: abs, delta, buy, sell, close, entry
   };
 }
