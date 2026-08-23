@@ -451,7 +451,7 @@ footer p:first-child{font-size:.8rem}
     </h2>
     <div class="csv-controls">
       <label>TradingView CSV
-        <input type="file" id="csvFile" accept=".csv,text/csv" onchange="onCsvFile(event)" />
+        <input type="file" id="csvFile" accept=".csv,text/csv" multiple onchange="onCsvFile(event)" />
       </label>
       <label>放量倍數 ≥
         <input type="number" id="csvSpikeMult" value="2" min="1" step="0.1" onchange="rerunCsv()" />
@@ -465,7 +465,7 @@ footer p:first-child{font-size:.8rem}
       <label><input type="checkbox" id="csvOnlyNearWall" onchange="rerunCsv()" /> 只顯示近牆事件</label>
       <label><input type="checkbox" id="csvOnlyKey" checked onchange="rerunCsv()" /> 只顯示關鍵 (Spike/Abs/SC/BC)</label>
     </div>
-    <div class="note" style="margin-bottom:8px">流量事件分析（非 Entry 訊號）。牆位取當日 HSI OI。數據只在瀏覽器。</div>
+    <div class="note" style="margin-bottom:8px">流量事件分析（非 Entry 訊號）。可一次選多個 CSV，按時間合併。牆位取當日 HSI OI。數據只在瀏覽器。</div>
     <div class="csv-summary" id="csvSummary"></div>
     <div class="csv-analysis" id="csvAnalysis"></div>
     <div class="csv-events" id="csvEvents"></div>
@@ -1720,20 +1720,54 @@ const climaxLines = (res.climaxEvents||[]).length
 
 
 function onCsvFile(ev){
-  const f = ev.target.files && ev.target.files[0];
-  if(!f) return;
-  _csvName = f.name;
-  document.getElementById("csvFileLabel").textContent = f.name;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      _csvRows = parseCsv(String(reader.result||""));
-      rerunCsv();
-    } catch(err){
-      document.getElementById("csvEvents").innerHTML = '<div class="mu">解析失敗: '+err.message+'</div>';
-    }
-  };
-  reader.readAsText(f);
+  const files = Array.from(ev.target.files || []);
+  if(!files.length) return;
+  let pending = files.length;
+  const merged = [];
+  const names = [];
+  files.forEach(f => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const rows = parseCsv(String(reader.result||""));
+        rows.forEach(r => merged.push(r));
+        names.push(f.name);
+        // also feed 全部資料 + keep raw for patterns
+        try {
+          if(!window._allCsvRaw) window._allCsvRaw = [];
+          if(!window._allCsvCols) window._allCsvCols = [];
+          rows.forEach(r => window._allCsvRaw.push(r));
+          if(rows.length){
+            Object.keys(rows[0]).forEach(c => {
+              if(!window._allCsvCols.includes(c)) window._allCsvCols.push(c);
+            });
+          }
+        } catch(e){}
+      } catch(err){
+        console.error(err);
+        alert("解析失敗: "+f.name+"\n"+err.message);
+      }
+      pending--;
+      if(pending===0){
+        // sort by time if present
+        merged.sort((a,b)=>{
+          const ta = String(a.time||a.Time||"");
+          const tb = String(b.time||b.Time||"");
+          return ta.localeCompare(tb);
+        });
+        _csvRows = merged;
+        _csvName = names.join(", ");
+        const lab = document.getElementById("csvFileLabel");
+        if(lab) lab.textContent = names.length<=2 ? names.join(", ") : (names[0]+" +"+(names.length-1)+" files");
+        const al = document.getElementById("allFileLabel");
+        if(al) al.textContent = lab ? lab.textContent : names.join(", ");
+        rerunCsv();
+        try { if(typeof renderAllData==="function") renderAllData(); } catch(e){}
+      }
+    };
+    reader.readAsText(f);
+  });
+  ev.target.value = "";
 }
 
 function rerunCsv(){
