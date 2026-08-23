@@ -397,6 +397,7 @@ footer p:first-child{font-size:.8rem}
   <div class="csv-subtabs" style="display:flex;gap:0;border-bottom:1px solid var(--border,#27272a);margin-bottom:12px">
     <button type="button" class="fut-tab active" id="csvSubPerf" onclick="switchCsvSub('perf')">訊號表現</button>
     <button type="button" class="fut-tab" id="csvSubFlow" onclick="switchCsvSub('flow')">流量分析</button>
+    <button type="button" class="fut-tab" id="csvSubAll" onclick="switchCsvSub('all')">全部資料</button>
   </div>
 
   <!-- Performance -->
@@ -461,6 +462,49 @@ footer p:first-child{font-size:.8rem}
     <div class="csv-events" id="csvEvents"></div>
     </div>
   </div>
+
+  <!-- All data -->
+  <div id="csvAllPanel" style="display:none">
+    <div class="csv-box">
+      <h2>
+        <span>全部資料 · 可篩選</span>
+        <span class="tag" id="allFileLabel">未上傳</span>
+      </h2>
+      <div class="csv-controls">
+        <label>搜尋
+          <input type="text" id="allSearch" placeholder="時間 / 數值…" oninput="renderAllData()" style="width:140px" />
+        </label>
+        <label>Entry
+          <select id="allEntryFilter" onchange="renderAllData()">
+            <option value="all">全部</option>
+            <option value="sig">只訊號 ≠0</option>
+            <option value="1">1 BUY</option>
+            <option value="-1">-1 SELL</option>
+            <option value="2">2 BUY HV</option>
+            <option value="-2">-2 SELL HV</option>
+            <option value="0">= 0</option>
+          </select>
+        </label>
+        <label>Abs ≠0 <input type="checkbox" id="allAbsOnly" onchange="renderAllData()" /></label>
+        <label>VCP ≠0 <input type="checkbox" id="allVcpOnly" onchange="renderAllData()" /></label>
+        <label>最低 Volume
+          <input type="number" id="allMinVol" value="0" min="0" step="1" onchange="renderAllData()" style="width:70px" />
+        </label>
+        <label>最多列
+          <select id="allLimit" onchange="renderAllData()">
+            <option value="200">200</option>
+            <option value="500" selected>500</option>
+            <option value="1000">1000</option>
+            <option value="0">全部</option>
+          </select>
+        </label>
+        <span class="tag" id="allRowCount">0 列</span>
+      </div>
+      <div class="note">顯示上傳 CSV 的所有欄位。可與「訊號表現」共用同一檔案（在訊號表現上傳後會同步到此）。</div>
+      <div class="csv-events" id="allDataTable" style="max-height:70vh"></div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -1451,13 +1495,18 @@ try { perfFiles = JSON.parse(localStorage.getItem(PERF_LS_FILES)||"[]"); } catch
 function switchCsvSub(name){
   const perf = document.getElementById("csvPerfPanel");
   const flow = document.getElementById("csvFlowPanel");
+  const all = document.getElementById("csvAllPanel");
   if(perf) perf.style.display = name==="perf" ? "block" : "none";
   if(flow) flow.style.display = name==="flow" ? "block" : "none";
+  if(all) all.style.display = name==="all" ? "block" : "none";
   const bp = document.getElementById("csvSubPerf");
   const bf = document.getElementById("csvSubFlow");
+  const ba = document.getElementById("csvSubAll");
   if(bp) bp.classList.toggle("active", name==="perf");
   if(bf) bf.classList.toggle("active", name==="flow");
+  if(ba) ba.classList.toggle("active", name==="all");
   try { localStorage.setItem("fut_csv_sub", name); } catch(e){}
+  if(name==="all") renderAllData();
 }
 
 function perfParseCsv(text){
@@ -1552,6 +1601,20 @@ function onPerfFiles(ev){
           }
         } catch(e){}
         if(!perfFiles.includes(f.name)) perfFiles.push(f.name);
+        try {
+          const full = perfParseCsv(String(reader.result||""));
+          if(!window._allCsvRaw) window._allCsvRaw = [];
+          if(!window._allCsvCols) window._allCsvCols = [];
+          full.forEach(r => window._allCsvRaw.push(r));
+          if(full.length){
+            Object.keys(full[0]).forEach(c => {
+              if(!window._allCsvCols.includes(c)) window._allCsvCols.push(c);
+            });
+          }
+          const al = document.getElementById("allFileLabel");
+          if(al) al.textContent = (al.textContent==="未上傳"?"":al.textContent+", ")+f.name;
+        } catch(e){}
+
       } catch(err){ alert("解析失敗: "+f.name+"\n"+err.message); }
       pending--;
       if(pending===0){
@@ -1813,6 +1876,71 @@ try {
   if(sub==="flow"||sub==="perf") switchCsvSub(sub);
 } catch(e){}
 
+
+
+function renderAllData(){
+  const rows = window._allCsvRaw || [];
+  const cols = window._allCsvCols || (rows[0] ? Object.keys(rows[0]) : []);
+  const el = document.getElementById("allDataTable");
+  const cnt = document.getElementById("allRowCount");
+  if(!el) return;
+  if(!rows.length){
+    el.innerHTML = '<div class="csv-empty">請先在「訊號表現」上傳 CSV</div>';
+    if(cnt) cnt.textContent = "0 列";
+    return;
+  }
+  const q = (document.getElementById("allSearch")?.value || "").trim().toLowerCase();
+  const entryF = document.getElementById("allEntryFilter")?.value || "all";
+  const absOnly = document.getElementById("allAbsOnly")?.checked;
+  const vcpOnly = document.getElementById("allVcpOnly")?.checked;
+  const minVol = parseFloat(document.getElementById("allMinVol")?.value)||0;
+  const limit = parseInt(document.getElementById("allLimit")?.value,10)||0;
+
+  let filtered = rows.filter(r => {
+    const entry = r.Entry!=null ? r.Entry : r.entry;
+    const vol = r.Volume!=null ? r.Volume : (r.volume!=null?r.volume:0);
+    const abs = r.Absorption!=null ? r.Absorption : 0;
+    const vcp = r.VCP!=null ? r.VCP : 0;
+    if(entryF==="sig" && (!entry || entry===0)) return false;
+    if(entryF==="0" && entry!==0 && entry!=="0") return false;
+    if(entryF!=="all" && entryF!=="sig" && entryF!=="0" && Number(entry)!==Number(entryF)) return false;
+    if(absOnly && (!abs || abs===0)) return false;
+    if(vcpOnly && (!vcp || vcp===0)) return false;
+    if(minVol>0 && Number(vol)<minVol) return false;
+    if(q){
+      const blob = Object.values(r).join(" ").toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if(cnt) cnt.textContent = filtered.length + " / " + rows.length + " 列";
+  if(limit>0) filtered = filtered.slice(0, limit);
+
+  // prefer important columns first
+  const prefer = ["time","open","high","low","close","Volume","Entry","SetupQuality","Absorption","VCP","Ratio","BuyVol","SellVol","Delta","FromOpenPts","SessDeltaPct"];
+  const ordered = [];
+  prefer.forEach(c => { if(cols.includes(c)) ordered.push(c); });
+  cols.forEach(c => { if(!ordered.includes(c)) ordered.push(c); });
+
+  const head = ordered.map(c => `<th>${c}</th>`).join("");
+  const body = filtered.map(r => {
+    const cells = ordered.map(c => {
+      let v = r[c];
+      if(v==null||v==="") return "<td>—</td>";
+      if(typeof v==="number") return `<td>${Number.isInteger(v)?v:Math.round(v*1000)/1000}</td>`;
+      const s = String(v);
+      // shorten time
+      if(c==="time" && s.includes("T")) return `<td>${s.slice(0,16).replace("T"," ")}</td>`;
+      return `<td>${s}</td>`;
+    }).join("");
+    const entry = r.Entry!=null?r.Entry:0;
+    const hl = entry&&entry!==0 ? ' style="background:rgba(52,211,153,.06)"' : "";
+    return `<tr${hl}>${cells}</tr>`;
+  }).join("");
+
+  el.innerHTML = `<table class="perf-table"><thead><tr>${head}</tr></thead><tbody>${body||'<tr><td colspan="'+ordered.length+'">無符合篩選的列</td></tr>'}</tbody></table>`;
+}
 
 function switchFutTab(name){
   document.querySelectorAll(".fut-panel").forEach(p => {
