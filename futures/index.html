@@ -303,6 +303,25 @@ footer p:first-child{font-size:.8rem}
 .all-data-table .col-filter{width:100%;min-width:56px;box-sizing:border-box;background:#0f0f12;border:1px solid #27272a;color:#e4e4e7;border-radius:4px;padding:3px 5px;font-size:.68rem}
 .all-data-table .col-filter:focus{outline:none;border-color:#3f3f46}
 .all-data-table .col-filter.has-filter{border-color:rgba(52,211,153,.5)}
+
+.today-bias{
+  background:linear-gradient(135deg, rgba(52,211,153,.08), rgba(24,24,27,.9));
+  border:1px solid #27272a; border-radius:10px;
+  padding:14px 16px; margin-bottom:14px;
+}
+.today-bias .tb-main{
+  font-size:1.15rem; font-weight:600; letter-spacing:.02em; margin-bottom:6px;
+}
+.today-bias .tb-main.bull{ color:#34d399; }
+.today-bias .tb-main.bear{ color:#fb7185; }
+.today-bias .tb-main.mid{ color:#fbbf24; }
+.today-bias .tb-main.flat{ color:#a1a1aa; }
+.today-bias .tb-parts{
+  font-size:.8rem; color:#a1a1aa; line-height:1.55;
+  font-family:ui-monospace,monospace;
+}
+.today-bias .tb-parts span.sep{ color:#3f3f46; margin:0 6px; }
+
 </style>
 </head>
 <body>
@@ -393,6 +412,7 @@ footer p:first-child{font-size:.8rem}
     <span class="tag" id="filterHint"></span>
   </div>
 
+  <div id="todayBias" class="today-bias"></div>
   <div class="analysis" id="analysis"></div>
   <div id="levelsBias" style="margin-bottom:16px;"></div>
   <div class="compare" id="compare"></div>
@@ -578,6 +598,7 @@ function saveSettings(){
   closeSettings();
   renderAnalysis();
   renderLevelsBias();
+  renderTodayBias();
   applyFilters();
 }
 function resetSettings(){
@@ -786,6 +807,112 @@ function renderLevelsBias(){
       </div>
       <div class="bias mu"><a href="../" style="color:var(--muted)">→ 恒指期權頁看完整 Levels</a></div>
     </div>`;
+}
+
+
+function renderTodayBias(){
+  const box = document.getElementById("todayBias");
+  if(!box) return;
+
+  // --- Streak + Price×OI from series ---
+  const series = (typeof buildSeries === "function") ? buildSeries() : [];
+  let streak = 0, streakDir = 0;
+  for(let i = series.length-1; i >= 0; i--){
+    const c = series[i].hChg;
+    if(c === 0) break;
+    const dir = c > 0 ? 1 : -1;
+    if(streakDir === 0){ streakDir = dir; streak = 1; }
+    else if(dir === streakDir) streak++;
+    else break;
+  }
+  const streakText = streakDir > 0 ? `連升 ${streak} 日` : streakDir < 0 ? `連跌 ${streak} 日` : "持平";
+
+  let win = (typeof analysisWindow === "number") ? analysisWindow : 20;
+  const slice = (win > 0 && series.length) ? series.slice(-Math.min(win, series.length)) : series;
+  let acc=0, dist=0, sc=0, ll=0, up=0, down=0;
+  for(const x of slice){
+    const c = x.hChg, oc = x.hOIChg;
+    if(c > 0) up++; else if(c < 0) down++;
+    if(c > 0 && oc > 0) acc++;
+    else if(c < 0 && oc > 0) dist++;
+    else if(c > 0 && oc < 0) sc++;
+    else if(c < 0 && oc < 0) ll++;
+  }
+  const regimes = [
+    ["新多", acc], ["新空", dist], ["回補", sc], ["平多", ll]
+  ].sort((a,b)=>b[1]-a[1]);
+  const topReg = regimes[0] ? regimes[0][0] : "—";
+  const regNote = regimes.filter(x=>x[1]>0).map(x=>x[0]+x[1]).join(" · ") || "—";
+
+  // --- Walls from HSI OI ---
+  const hsiReports = (typeof window.HSI_REPORTS === "object" && window.HSI_REPORTS) ? window.HSI_REPORTS : {};
+  const hsiDates = Object.keys(hsiReports).sort().reverse();
+  const hDate = hsiDates.find(d => d === curDate) || hsiDates[0];
+  const hr = hDate ? hsiReports[hDate] : null;
+  const settle = (reports[curDate]?.futures?.hsif?.front?.settle)
+    || hr?.futures?.hsif?.front?.settle
+    || null;
+  let wallTitle = "牆位 —";
+  let wallNote = "";
+  if(hr && hr.heavyZones && settle != null){
+    const allCalls = hr.heavyZones.callWalls || [];
+    const allPuts = hr.heavyZones.putWalls || [];
+    const nearCall = allCalls.filter(z => z.strike >= settle).sort((a,b)=>a.strike-b.strike)[0];
+    const nearPut = allPuts.filter(z => z.strike <= settle).sort((a,b)=>b.strike-a.strike)[0];
+    const callAbove = nearCall && nearCall.strike >= settle;
+    const putBelow = nearPut && nearPut.strike <= settle;
+    const band = Math.max(settle * 0.01, 150);
+    const callNear = nearCall && (nearCall.strike - settle) <= band * 1.2;
+    const putNear = nearPut && (settle - nearPut.strike) <= band * 1.2;
+    if(callNear && putNear && callAbove && putBelow){
+      wallTitle = "夾在牆中";
+      wallNote = `Call ${nearCall.strike} (+${Math.round(nearCall.strike-settle)}) · Put ${nearPut.strike} (${Math.round(nearPut.strike-settle)})`;
+    } else if(callNear && callAbove){
+      wallTitle = "潛在阻力";
+      wallNote = `Call ${nearCall.strike} (+${Math.round(nearCall.strike-settle)})`;
+    } else if(putNear && putBelow){
+      wallTitle = "潛在支持";
+      wallNote = `Put ${nearPut.strike} (${Math.round(nearPut.strike-settle)})`;
+    } else {
+      wallTitle = "牆遠";
+      wallNote = [
+        nearCall ? `Call ${nearCall.strike}` : null,
+        nearPut ? `Put ${nearPut.strike}` : null
+      ].filter(Boolean).join(" · ");
+    }
+  }
+
+  // --- Path of least resistance (simple stack) ---
+  let score = 0; // + bull, - bear
+  if(streakDir > 0) score += Math.min(streak, 3);
+  if(streakDir < 0) score -= Math.min(streak, 3);
+  if(topReg === "新多" || topReg === "回補") score += 2;
+  if(topReg === "新空" || topReg === "平多") score -= 2;
+  if(wallTitle === "潛在支持") score += 1;
+  if(wallTitle === "潛在阻力") score -= 1;
+  if(wallTitle === "夾在牆中") score += 0;
+  if(up > down + 2) score += 1;
+  if(down > up + 2) score -= 1;
+
+  let path = "中性路徑";
+  let cls = "flat";
+  if(score >= 3){ path = "偏多路徑"; cls = "bull"; }
+  else if(score <= -3){ path = "偏空路徑"; cls = "bear"; }
+  else if(score >= 1){ path = "略偏多"; cls = "bull"; }
+  else if(score <= -1){ path = "略偏空"; cls = "bear"; }
+  else if(wallTitle === "夾在牆中"){ path = "夾在牆中 · 觀望"; cls = "mid"; }
+
+  const dateShow = curDate || "—";
+  box.innerHTML = `
+    <div class="tb-main ${cls}">${path}</div>
+    <div class="tb-parts">
+      ${dateShow}
+      <span class="sep">·</span>${streakText}
+      <span class="sep">·</span>${topReg}為主（${regNote}）
+      <span class="sep">·</span>${wallTitle}${wallNote ? " · " + wallNote : ""}
+      <span class="sep">·</span>Settle ${settle!=null ? Number(settle).toLocaleString("en-US") : "—"}
+    </div>
+  `;
 }
 
 function renderAnalysis(){
