@@ -1900,8 +1900,9 @@ function renderAllData(){
     return;
   }
 
-  // init per-column filter state
   if(!window._allColFilters) window._allColFilters = {};
+  if(!window._allSort) window._allSort = { col: null, dir: "asc" };
+
   const prefer = ["time","open","high","low","close","Volume","Entry","SetupQuality","Absorption","VCP","Ratio","BuyVol","SellVol","Delta","FromOpenPts","SessDeltaPct"];
   const ordered = [];
   prefer.forEach(c => { if(cols.includes(c)) ordered.push(c); });
@@ -1909,20 +1910,19 @@ function renderAllData(){
 
   const q = (document.getElementById("allSearch")?.value || "").trim().toLowerCase();
   const entryF = document.getElementById("allEntryFilter")?.value || "all";
-  const absOnly = document.getElementById("allAbsOnly")?.checked;
-  const vcpOnly = document.getElementById("allVcpOnly")?.checked;
+  const absOnly = !!document.getElementById("allAbsOnly")?.checked;
+  const vcpOnly = !!document.getElementById("allVcpOnly")?.checked;
   const minVol = parseFloat(document.getElementById("allMinVol")?.value)||0;
   const limit = parseInt(document.getElementById("allLimit")?.value,10)||0;
 
   function colMatch(r, c, filterStr){
-    if(!filterStr) return true;
+    if(filterStr==null) return true;
     const fs = String(filterStr).trim();
     if(!fs) return true;
     let v = r[c];
     if(v==null||v==="") return fs==="—" || fs==="-";
-    // operators: >= <= > < = != range a-b
     const num = Number(v);
-    const isNum = !isNaN(num) && typeof v !== "boolean" && String(v).trim()!=="";
+    const isNum = !isNaN(num) && String(v).trim()!=="";
     if(isNum){
       let m;
       if((m = fs.match(/^>=\s*(.+)$/))) return num >= Number(m[1]);
@@ -1932,8 +1932,7 @@ function renderAllData(){
       if((m = fs.match(/^!=\s*(.+)$/))) return num !== Number(m[1]);
       if((m = fs.match(/^=\s*(.+)$/))) return num === Number(m[1]);
       if((m = fs.match(/^(-?\d+\.?\d*)\s*[-~～]\s*(-?\d+\.?\d*)$/))) return num >= Number(m[1]) && num <= Number(m[2]);
-      // plain number = exact or contains
-      if(!isNaN(Number(fs)) && fs.match(/^-?\d+\.?\d*$/)) return num === Number(fs);
+      if(!isNaN(Number(fs)) && /^-?\d+\.?\d*$/.test(fs)) return num === Number(fs);
     }
     return String(v).toLowerCase().includes(fs.toLowerCase());
   }
@@ -1953,15 +1952,14 @@ function renderAllData(){
       const blob = Object.values(r).join(" ").toLowerCase();
       if(!blob.includes(q)) return false;
     }
-    // per-column filters
-    for(const c of ordered){
+    for(let i=0;i<ordered.length;i++){
+      const c = ordered[i];
       const f = window._allColFilters[c];
       if(f && !colMatch(r, c, f)) return false;
     }
     return true;
   });
 
-  if(!window._allSort) window._allSort = { col: null, dir: "asc" };
   if(window._allSort.col){
     const sc = window._allSort.col;
     const dir = window._allSort.dir==="asc"?1:-1;
@@ -1976,18 +1974,19 @@ function renderAllData(){
       return String(va).localeCompare(String(vb),"en")*dir;
     });
   }
+
   if(cnt) cnt.textContent = filtered.length + " / " + rows.length + " 列";
   const show = limit>0 ? filtered.slice(0, limit) : filtered;
 
   const head = ordered.map(c => {
-    const val = (window._allColFilters[c]||"").replace(/"/g,"&quot;");
-    const hasF = !!(window._allColFilters[c]||"").trim();
+    const raw = window._allColFilters[c]||"";
+    const val = String(raw).replace(/&/g,"&amp;").replace(/"/g,"&quot;");
+    const hasF = !!String(raw).trim();
     let sortCls = "";
     if(window._allSort.col===c) sortCls = window._allSort.dir==="asc"?"sort-asc":"sort-desc";
     return `<th>
       <div class="col-head ${sortCls}" data-sort-col="${c}" title="點擊排序">${c}</div>
-      <input class="col-filter${hasF?" has-filter":""}" data-col="${c}" value="${val}" placeholder="篩選…"
-        onclick="event.stopPropagation()" />
+      <input class="col-filter${hasF?" has-filter":""}" data-col="${c}" value="${val}" placeholder="篩選…" />
     </th>`;
   }).join("");
 
@@ -2007,48 +2006,76 @@ function renderAllData(){
 
   el.innerHTML = `<table class="perf-table all-data-table"><thead><tr>${head}</tr></thead>
     <tbody>${body||'<tr><td colspan="'+ordered.length+'">無符合篩選的列</td></tr>'}</tbody></table>
-    <div class="mu" style="margin-top:6px;font-size:.72rem">欄位篩選支援：文字包含 · 數字 <code>&gt;=10</code> <code>&lt;0</code> <code>1-5</code> <code>!=0</code> · 
+    <div class="mu" style="margin-top:6px;font-size:.72rem">欄位篩選：文字 · <code>&gt;=10</code> <code>&lt;0</code> <code>!=0</code> <code>1-5</code> ·
       <button type="button" class="btn" style="padding:2px 8px;font-size:.72rem" onclick="clearAllColFilters()">清除所有欄位篩選</button>
     </div>`;
 
-  // bind column filter inputs (debounce)
-  el.querySelectorAll(".col-head[data-sort-col]").forEach(h => {
-    h.addEventListener("click", function(){
-      const col = this.getAttribute("data-sort-col");
-      if(!window._allSort) window._allSort = { col: null, dir: "asc" };
-      if(window._allSort.col === col){
-        window._allSort.dir = window._allSort.dir==="asc"?"desc":"asc";
-      } else {
-        window._allSort = { col: col, dir: "asc" };
+  // restore focus without errors
+  const focusCol = window._allColFilterFocus;
+  const focusPos = window._allColFilterPos;
+  if(focusCol){
+    const inp = el.querySelector('input.col-filter[data-col="'+focusCol.replace(/"/g,'\\&quot;')+'"]');
+    // query with attribute - columns may have spaces
+    const allInps = el.querySelectorAll("input.col-filter");
+    allInps.forEach(inp => {
+      if(inp.getAttribute("data-col") === focusCol){
+        try {
+          inp.focus();
+          const pos = typeof focusPos==="number" ? focusPos : inp.value.length;
+          inp.setSelectionRange(pos, pos);
+        } catch(e){}
       }
-      renderAllData();
     });
-  });
-  el.querySelectorAll("input.col-filter").forEach(inp => {
-    inp.addEventListener("input", function(){
-      const col = this.getAttribute("data-col");
-      window._allColFilters[col] = this.value;
-      if(window._allColFilterTimer) clearTimeout(window._allColFilterTimer);
-      window._allColFilterTimer = setTimeout(() => renderAllData(), 200);
-    });
-    // restore focus on the active filter
-    if(window._allColFilterFocus === inp.getAttribute("data-col")){
-      const pos = window._allColFilterPos || this.value.length;
-      this.focus();
-      try { this.setSelectionRange(pos, pos); } catch(e){}
+  }
+
+  bindAllDataEvents();
+}
+
+function bindAllDataEvents(){
+  const el = document.getElementById("allDataTable");
+  if(!el) return;
+  // event delegation — only bind once on container
+  if(el.dataset.bound==="1") return;
+  el.dataset.bound = "1";
+
+  el.addEventListener("click", function(e){
+    const h = e.target.closest("[data-sort-col]");
+    if(!h || !el.contains(h)) return;
+    const col = h.getAttribute("data-sort-col");
+    if(!window._allSort) window._allSort = { col: null, dir: "asc" };
+    if(window._allSort.col === col){
+      window._allSort.dir = window._allSort.dir==="asc" ? "desc" : "asc";
+    } else {
+      window._allSort = { col: col, dir: "asc" };
     }
-    inp.addEventListener("focus", function(){
-      window._allColFilterFocus = this.getAttribute("data-col");
-    });
-    inp.addEventListener("keyup", function(){
-      window._allColFilterPos = this.selectionStart;
-    });
+    renderAllData();
+  });
+
+  el.addEventListener("input", function(e){
+    const inp = e.target;
+    if(!inp.classList || !inp.classList.contains("col-filter")) return;
+    const col = inp.getAttribute("data-col");
+    if(!col) return;
+    if(!window._allColFilters) window._allColFilters = {};
+    window._allColFilters[col] = inp.value;
+    window._allColFilterFocus = col;
+    window._allColFilterPos = inp.selectionStart;
+    if(window._allColFilterTimer) clearTimeout(window._allColFilterTimer);
+    window._allColFilterTimer = setTimeout(function(){ renderAllData(); }, 180);
+  });
+
+  el.addEventListener("keyup", function(e){
+    const inp = e.target;
+    if(!inp.classList || !inp.classList.contains("col-filter")) return;
+    window._allColFilterFocus = inp.getAttribute("data-col");
+    window._allColFilterPos = inp.selectionStart;
   });
 }
 
 function clearAllColFilters(){
   window._allColFilters = {};
   window._allColFilterFocus = null;
+  window._allColFilterPos = null;
   renderAllData();
 }
 
