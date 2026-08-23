@@ -1570,20 +1570,51 @@ function renderCsvResult(res){
     if(!p||!p.n) return "—";
     return `n=${p.n} · ΣΔ ${fmtC3(p.sumD)} · avgVol ${fmtP(Math.round(p.avgVol||0))} · Spike ${p.spikes} Shrink ${p.shrinks} Abs ${p.absN} · net ${fmtC3(p.netP)} · up/dn ${p.upBars}/${p.downBars}`;
   }
-  const bigMoveLines = (res.bigMoves||[]).length
-    ? (res.bigMoves||[]).slice(0,12).map(m => {
-        const dirC = m.dir==="UP" ? "ev-bc" : "ev-sc";
-        const tags = (m.tags||[]).map(x=>`<div class="line" style="padding-left:8px">· ${x}</div>`).join("");
-        return `<div class="line" style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #1f1f23">
-          <strong class="${dirC}">${m.dir} ${m.pts} pts</strong>
-          ${m.tmS} → ${m.tmE} · ${fmtP(m.start)} → ${fmtP(m.end)}
-          <br/><span style="color:var(--muted)"><b>Before</b> ${packLine(m.pre)}</span>
-          <br/><span style="color:var(--muted)"><b>During</b> ${packLine(m.during)}</span>
-          <br/><span style="color:var(--muted)"><b>After</b> ${packLine(m.post)}</span>
-          ${tags}
-        </div>`;
-      }).join("")
-    : '<div class="line mu">No major swings detected (≥80 pts in ~8 bars). Upload a fuller session or wait for larger ranges.</div>';
+  const bigMoveLines = (function(){
+    const list = res.bigMoves || [];
+    if(!list.length){
+      return '<div class="line mu">No major swings detected (≥80 pts in ~8 bars). Upload a fuller session or wait for larger ranges.</div>';
+    }
+    const fmtP = n => n==null||isNaN(n)?"—":Number(n).toLocaleString("en-US");
+    const fmtC = n => n==null||isNaN(n)?"—":((Number(n)>0?"+":"")+Math.round(Number(n)));
+    const cell = p => {
+      if(!p||!p.n) return "—";
+      return `ΣΔ ${fmtC(p.sumD)} · Vol ${fmtP(Math.round(p.avgVol||0))} · Sp ${p.spikes}/Sh ${p.shrinks}/Abs ${p.absN} · net ${fmtC(p.netP)}`;
+    };
+    const rows = list.map((m, idx) => {
+      const dirC = m.dir==="UP" ? "ev-bc" : "ev-sc";
+      const tags = (m.tags||[]).slice(0,3).join("; ");
+      return `<tr>
+        <td>${idx+1}</td>
+        <td><span class="${dirC}"><strong>${m.dir}</strong></span></td>
+        <td>${m.pts}</td>
+        <td>${m.tmS||"—"}</td>
+        <td>${m.tmE||"—"}</td>
+        <td>${fmtP(m.start)}</td>
+        <td>${fmtP(m.end)}</td>
+        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.pre)}</td>
+        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.during)}</td>
+        <td style="font-size:.72rem;white-space:normal;max-width:220px">${cell(m.post)}</td>
+        <td style="font-size:.7rem;white-space:normal;max-width:200px;color:var(--muted)">${tags||"—"}</td>
+      </tr>`;
+    }).join("");
+    return `
+      <div class="mu" style="margin-bottom:6px">${list.length} major moves · sorted by size (pts)</div>
+      <div class="csv-events" style="max-height:480px">
+        <table class="perf-table all-data-table">
+          <thead><tr>
+            <th>#</th><th>Dir</th><th>Pts</th>
+            <th>Start</th><th>End</th>
+            <th>Price from</th><th>Price to</th>
+            <th>Before (pattern)</th>
+            <th>During</th>
+            <th>After (pattern)</th>
+            <th>Notes</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  })();
 
   const fmtC2 = n => n==null||isNaN(n)?"—":((n>0?"+":"")+Number(n).toLocaleString("en-US"));
 const climaxLines = (res.climaxEvents||[]).length
@@ -1635,7 +1666,7 @@ const climaxLines = (res.climaxEvents||[]).length
         <h3>Major moves · data pattern before / during / after</h3>
         <div class="mu" style="font-size:.72rem;margin-bottom:8px">
           Pure market structure (OHLC + vol/delta) — <b>not</b> Entry/SC system rules.<br/>
-          Large legs ≥80 pts: what volume, delta, spike/shrink, absorption looked like <b>before</b>, during, and <b>after</b>.
+          All legs ≥80 pts listed below (table). Columns = data pattern before / during / after each move.
         </div>
         ${bigMoveLines}
       </div>
