@@ -446,7 +446,7 @@ footer p:first-child{font-size:.8rem}
   <div id="csvFlowPanel" style="display:none">
     <div class="csv-box" id="csvBox">
     <h2>
-      <span>分時流量 · Vol / Absorption / SC·BC</span>
+      <span>分時流量 · Flow · Vol / Absorption / SC·BC</span>
       <span class="tag" id="csvFileLabel">未上傳</span>
     </h2>
     <div class="csv-controls">
@@ -1210,21 +1210,21 @@ function analyzeCsv(rawRows){
         if(p.low!=null) minExt = minExt==null ? p.low : Math.min(minExt, p.low);
       });
       const path = sc2
-        ? (minExt!=null && r.low!=null && r.low <= minExt ? "創低後高潮" : "下跌中高潮")
-        : (maxExt!=null && r.high!=null && r.high >= maxExt ? "創高後高潮" : "上漲中高潮");
-      let lean = "前段 Delta 平衡";
-      if(preDelta > 20) lean = "前段偏多 Delta";
-      else if(preDelta < -20) lean = "前段偏空 Delta";
-      const absNote = preAbs >= 2 ? ("前 "+lookN+" 根含 "+preAbs+" 次 Abs") : (preAbs===1 ? "前段有 1 次 Abs" : "前段無 Abs");
+        ? (minExt!=null && r.low!=null && r.low <= minExt ? "創低後高潮 (new low then climax)" : "下跌中高潮 (climax in down-move)")
+        : (maxExt!=null && r.high!=null && r.high >= maxExt ? "創高後高潮 (new high then climax)" : "上漲中高潮 (climax in up-move)");
+      let lean = "前段 Delta 平衡 (balanced delta before)";
+      if(preDelta > 20) lean = "前段偏多 Delta (buy pressure before)";
+      else if(preDelta < -20) lean = "前段偏空 Delta (sell pressure before)";
+      const absNote = preAbs >= 2 ? ("前 "+lookN+" 根含 "+preAbs+" 次 Abs ("+preAbs+"x absorption before)") : (preAbs===1 ? "前段有 1 次 Abs (1x absorption before)" : "前段無 Abs (no absorption before)");
       const post = rows.slice(i+1, i+6);
-      let postNote = "數據不足";
+      let postNote = "數據不足 (not enough bars after)";
       if(post.length){
         const lastP = post[post.length-1];
         if(sc2 && lastP.close!=null && r.low!=null){
-          postNote = lastP.close > r.low + (r.range||10)*0.5 ? "之後反彈（SC 有效嫌疑）" : "之後續跌（趨勢延續）";
+          postNote = lastP.close > r.low + (r.range||10)*0.5 ? "之後反彈 · bounce after (SC may be valid)" : "之後續跌 · continued lower (trend continuation)";
         }
         if(bc2 && lastP.close!=null && r.high!=null){
-          postNote = lastP.close < r.high - (r.range||10)*0.5 ? "之後回落（BC 有效嫌疑）" : "之後續升（趨勢延續）";
+          postNote = lastP.close < r.high - (r.range||10)*0.5 ? "之後回落 · fade after (BC may be valid)" : "之後續升 · continued higher (trend continuation)";
         }
       }
       const tmC = String(r.time).includes("T") ? String(r.time).slice(11,16) : String(r.time).slice(-8,-3);
@@ -1445,48 +1445,51 @@ function renderCsvResult(res){
           ? (c.putN!=null?`Put牆 ${c.putN}`:"")
           : (c.callN!=null?`Call牆 ${c.callN}`:"");
         return `<div class="line" style="margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1f1f23">
-          <strong class="${c.type==="SC?"?"ev-sc":"ev-bc"}">${c.type}</strong>
+          <strong class="${c.type==="SC?"?"ev-sc":"ev-bc"}">${c.type==="SC?"?"SC? Selling Climax":"BC? Buying Climax"}</strong>
           ${c.tm} @ ${c.close!=null?Number(c.close).toLocaleString("en-US"):"—"}
           · Δ ${fmtC2(c.delta)} · Vol ${c.vol!=null?Number(c.vol).toLocaleString("en-US"):"—"}
-          <br/><span style="color:var(--muted)">前 10 根：${c.path} · ${c.lean} · ΣΔ ${fmtC2(c.preDelta)} · Spike ${c.preSpike} · Shrink ${c.preShrink} · ${c.absNote}</span>
-          <br/><span style="color:var(--muted)">之後：${c.postNote}${wall?" · "+wall:""}${c.fromOpen!=null?" · FromOpen "+fmtC2(c.fromOpen):""}</span>
+          <br/><span style="color:var(--muted)"><b>Before (10 bars)</b> · ${c.path} · ${c.lean} · ΣΔ ${fmtC2(c.preDelta)} · Spike ${c.preSpike} · Shrink ${c.preShrink} · ${c.absNote}</span>
+          <br/><span style="color:var(--muted)"><b>After (5 bars)</b> · ${c.postNote}${wall?" · "+wall:""}${c.fromOpen!=null?" · FromOpen "+fmtC2(c.fromOpen):""}</span>
         </div>`;
       }).join("")
-    : '<div class="line mu">本段無 SC?/BC? 候選 — 可調低放量倍數或上傳完整時段</div>';
+    : '<div class="line mu">本段無 SC?/BC? 候選 · No SC/BC candidates — lower spike multiplier or upload full session</div>';
 
   if(an){
     an.innerHTML = `
       <div class="csv-an-card">
-        <h3>場次敘事 · 路徑</h3>
+        <h3>場次敘事 · Session story / path</h3>
         <div class="story"><strong>${story.lean}</strong></div>
         ${(story.parts||[]).map(p=>`<div class="line">· ${p}</div>`).join("")}
       </div>
       <div class="csv-an-card">
-        <h3>Price × Delta 體制</h3>
+        <h3>Price × Delta 體制 · regimes</h3>
         <div class="line">推進多 ${rg.regPushLong||0} · 推進空 ${rg.regPushShort||0}</div>
         <div class="line">虛漲 ${rg.regFakeUp||0} · 虛跌 ${rg.regFakeDown||0} · 平 ${rg.regFlat||0}</div>
         <div class="line" style="margin-top:6px;color:var(--muted)">近 30 根：多 ${tr.tL||0} / 空 ${tr.tS||0} / 虛漲 ${tr.tFU||0} / 虛跌 ${tr.tFD||0}</div>
       </div>
       <div class="csv-an-card">
-        <h3>牆位互動（近牆）</h3>
+        <h3>牆位互動 · Wall touches</h3>
         ${touchLines}
       </div>
       <div class="csv-an-card">
-        <h3>Absorption @ 牆</h3>
+        <h3>Absorption @ 牆 · near walls</h3>
         ${absLines}
       </div>
       <div class="csv-an-card">
-        <h3>分時重倉區 HVN (20pt)</h3>
+        <h3>分時重倉區 · Intraday HVN (20pt)</h3>
         ${hvnLines}
         <div class="line" style="margin-top:4px;color:var(--muted)">對照日線 Call/Put 牆是否重疊</div>
       </div>
       <div class="csv-an-card">
-        <h3>SETUP 失敗（後 10 根）</h3>
+        <h3>SETUP 失敗 · Failed setups (next 10 bars)</h3>
         ${failLines}
       </div>
       <div class="csv-an-card" style="grid-column:1/-1">
-        <h3>SC / BC 前的走勢（Before the move）</h3>
-        <div class="mu" style="font-size:.72rem;margin-bottom:6px">每筆高潮：前 10 根路徑 · Delta 偏向 · Abs/Spike · 之後 5 根確認</div>
+        <h3>SC / BC 前的走勢 · Before the move</h3>
+        <div class="mu" style="font-size:.72rem;margin-bottom:6px">
+          SC = Selling Climax · BC = Buying Climax · 候選 candidates<br/>
+          Each event: path in prior 10 bars · delta bias · Abs/Spike · confirm with next 5 bars
+        </div>
         ${climaxLines}
       </div>
     `;
