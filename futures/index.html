@@ -226,6 +226,43 @@ footer p:first-child{font-size:.8rem}
 .menu-dropdown{min-width:168px}
 
 .site-nav{display:none!important}
+
+/* CSV intraday analyzer */
+.csv-box{background:var(--card,#18181b);border:1px solid var(--border,#27272a);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.csv-box h2{margin:0 0 10px;font-size:.85rem;font-weight:500;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.csv-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;font-size:.78rem}
+.csv-controls label{color:var(--muted,#a1a1aa);display:flex;align-items:center;gap:6px}
+.csv-controls input[type=file]{font-size:.75rem;color:var(--text,#e4e4e7)}
+.csv-controls input[type=number]{width:70px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 6px}
+.csv-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:10px}
+.csv-kpi{background:#0f0f12;border:1px solid #1f1f23;border-radius:8px;padding:8px 10px}
+.csv-kpi .l{font-size:.68rem;color:var(--muted);margin-bottom:2px}
+.csv-kpi .v{font-family:ui-monospace,monospace;font-size:.9rem;font-weight:600}
+.csv-events{overflow-x:auto;max-height:420px;overflow-y:auto}
+.csv-events table{width:100%;border-collapse:collapse;font-size:.75rem}
+.csv-events th{text-align:left;padding:6px 8px;color:var(--muted);font-size:.68rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:#18181b}
+.csv-events td{padding:5px 8px;border-bottom:1px solid #1f1f23;font-family:ui-monospace,monospace;white-space:nowrap}
+.csv-events tr:hover{background:rgba(255,255,255,.03)}
+.ev-spike{color:#fbbf24}
+.ev-shrink{color:#a1a1aa}
+.ev-abs{color:#34d399}
+.ev-sc{color:#fb7185;font-weight:600}
+.ev-bc{color:#34d399;font-weight:600}
+.ev-setup{color:#60a5fa}
+
+.csv-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:12px}
+.csv-panel{background:#0f0f12;border:1px solid #1f1f23;border-radius:8px;padding:10px 12px}
+.csv-panel h3{margin:0 0 8px;font-size:.75rem;font-weight:500;color:var(--muted,#a1a1aa)}
+.csv-panel .ln{font-size:.75rem;font-family:ui-monospace,monospace;padding:2px 0;display:flex;justify-content:space-between;gap:8px}
+.csv-panel .story{font-size:.78rem;line-height:1.45;color:var(--text,#e4e4e7)}
+
+.csv-analysis{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin:12px 0}
+.csv-an-card{background:#0f0f12;border:1px solid #1f1f23;border-radius:8px;padding:10px 12px}
+.csv-an-card h3{margin:0 0 8px;font-size:.78rem;font-weight:500;color:var(--muted,#a1a1aa)}
+.csv-an-card .line{font-size:.75rem;font-family:ui-monospace,monospace;padding:2px 0;line-height:1.45}
+.csv-an-card .story{font-size:.8rem;line-height:1.5;color:var(--text,#e4e4e7)}
+.csv-an-card .pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:.68rem;margin-right:4px}
+
 </style>
 </head>
 <body>
@@ -289,6 +326,34 @@ footer p:first-child{font-size:.8rem}
 </div>
 
 <div class="container">
+
+  <div class="csv-box" id="csvBox">
+    <h2>
+      <span>分時 CSV 分析 · Vol / Absorption / SC·BC</span>
+      <span class="tag" id="csvFileLabel">未上傳</span>
+    </h2>
+    <div class="csv-controls">
+      <label>TradingView CSV
+        <input type="file" id="csvFile" accept=".csv,text/csv" onchange="onCsvFile(event)" />
+      </label>
+      <label>放量倍數 ≥
+        <input type="number" id="csvSpikeMult" value="2" min="1" step="0.1" onchange="rerunCsv()" />
+      </label>
+      <label>縮量倍數 ≤
+        <input type="number" id="csvShrinkMult" value="0.5" min="0.1" step="0.1" onchange="rerunCsv()" />
+      </label>
+      <label>牆距 (pts)
+        <input type="number" id="csvWallPts" value="80" min="10" step="10" onchange="rerunCsv()" />
+      </label>
+      <label><input type="checkbox" id="csvOnlyNearWall" onchange="rerunCsv()" /> 只顯示近牆事件</label>
+      <label><input type="checkbox" id="csvOnlyKey" checked onchange="rerunCsv()" /> 只顯示關鍵 (Spike/Abs/SC/BC)</label>
+    </div>
+    <div class="note" style="margin-bottom:8px">上傳 TV 匯出 CSV（含 Volume MA / Delta / Absorption 等）。牆位取當日 HSI 期權重貨（若有 data.js）。數據只在瀏覽器記憶體，不會上傳到伺服器。</div>
+    <div class="csv-summary" id="csvSummary"></div>
+    <div class="csv-panels" id="csvPanels"></div>
+    <div class="csv-events" id="csvEvents"></div>
+  </div>
+
   <div class="note" id="status">載入中…</div>
   <div class="filters" id="filters">
     <label>分析視窗
@@ -819,6 +884,471 @@ document.addEventListener('click', function(e){
   if(!m) return;
   if(!m.contains(e.target)) m.classList.remove('open');
 });
+
+
+
+/* ===== TradingView CSV intraday analyzer ===== */
+let _csvRows = null;
+let _csvName = "";
+
+function parseCsv(text){
+  const lines = text.replace(/^\uFEFF/, "").trim().split(/\r?\n/);
+  if(lines.length < 2) return [];
+  const headers = lines[0].split(",").map(h => h.trim());
+  const rows = [];
+  for(let i=1;i<lines.length;i++){
+    const line = lines[i];
+    if(!line.trim()) continue;
+    // simple CSV split (no nested quotes expected from TV)
+    const cols = line.split(",");
+    const o = {};
+    headers.forEach((h, idx) => {
+      let v = (cols[idx]||"").trim();
+      if(v===""){ o[h] = null; return; }
+      const n = Number(v);
+      o[h] = isNaN(n) ? v : n;
+    });
+    rows.push(o);
+  }
+  return rows;
+}
+
+function csvNum(r, keys){
+  for(const k of keys){
+    if(r[k]!=null && r[k]!=="" && !isNaN(Number(r[k]))) return Number(r[k]);
+  }
+  return null;
+}
+
+function normalizeRow(r){
+  const time = r.time || r.Time || r.datetime || "";
+  const open = csvNum(r, ["open","Open"]);
+  const high = csvNum(r, ["high","High"]);
+  const low = csvNum(r, ["low","Low"]);
+  const close = csvNum(r, ["close","Close"]);
+  const vol = csvNum(r, ["Volume","volume"]);
+  const volMa = csvNum(r, ["Volume MA","VolumeMA","volume_ma"]);
+  const buy = csvNum(r, ["BuyVol","buyvol"]);
+  const sell = csvNum(r, ["SellVol","sellvol"]);
+  const delta = csvNum(r, ["Delta","delta"]) ?? ((buy!=null&&sell!=null)? buy-sell : null);
+  const abs = csvNum(r, ["Absorption","absorption"]) || 0;
+  const brk = csvNum(r, ["Volume Break 20 MA","Volume Break 20MA"]) || 0;
+  const hvBuy = csvNum(r, ["High Volume Buy Side"]) || 0;
+  const hvSell = csvNum(r, ["High Volume Sell Side"]) || 0;
+  const div = csvNum(r, ["Delta Divergence"]) || 0;
+  const entry = csvNum(r, ["Entry","entry"]) || 0;
+  const sq = csvNum(r, ["SetupQuality","Setup Quality"]) || 0;
+  const vcp = csvNum(r, ["VCP","vcp"]) || 0;
+  const sess = csvNum(r, ["SessDeltaPct"]);
+  const fromOpen = csvNum(r, ["FromOpenPts"]);
+  const range = (high!=null && low!=null) ? (high-low) : null;
+  return { time, open, high, low, close, vol, volMa, buy, sell, delta, abs, brk, hvBuy, hvSell, div, entry, sq, vcp, sess, fromOpen, range };
+}
+
+function getWallsForDate(dateStr){
+  // dateStr YYYY-MM-DD from first bar
+  const hsi = window.HSI_REPORTS || {};
+  const stock = (typeof reports!=="undefined" && reports) ? reports : (window.STOCK_OI||{});
+  let callWalls = [], putWalls = [], settle = null, src = "";
+  if(hsi[dateStr]?.heavyZones){
+    callWalls = hsi[dateStr].heavyZones.callWalls || [];
+    putWalls = hsi[dateStr].heavyZones.putWalls || [];
+    settle = hsi[dateStr].futures?.hsif?.front?.settle || hsi[dateStr].futures?.mhif?.front?.settle || null;
+    src = "HSI OI "+dateStr;
+  } else {
+    // nearest earlier HSI date
+    const keys = Object.keys(hsi).sort().reverse();
+    const hit = keys.find(d => d <= dateStr);
+    if(hit && hsi[hit]?.heavyZones){
+      callWalls = hsi[hit].heavyZones.callWalls || [];
+      putWalls = hsi[hit].heavyZones.putWalls || [];
+      settle = hsi[hit].futures?.hsif?.front?.settle || null;
+      src = "HSI OI "+hit+" (nearest)";
+    }
+  }
+  // fallback: stock futures settle only
+  if(settle==null && stock[dateStr]?.futures?.hsif?.front){
+    settle = stock[dateStr].futures.hsif.front.settle;
+    if(!src) src = "Futures settle "+dateStr;
+  }
+  return {
+    callWalls: callWalls.slice(0,8),
+    putWalls: putWalls.slice(0,8),
+    settle,
+    src: src || "無牆位資料"
+  };
+}
+
+function nearWall(price, walls, pts){
+  if(price==null) return null;
+  let best = null;
+  for(const w of walls||[]){
+    const d = price - w.strike;
+    if(Math.abs(d) <= pts){
+      if(!best || Math.abs(d) < Math.abs(best.dist)) best = { strike: w.strike, dist: d, oi: w.oi };
+    }
+  }
+  return best;
+}
+
+
+
+function analyzeCsv(rawRows){
+  const rows = rawRows.map(normalizeRow).filter(r => r.close!=null);
+  if(!rows.length) return null;
+
+  const spikeMult = parseFloat(document.getElementById("csvSpikeMult")?.value)||2;
+  const shrinkMult = parseFloat(document.getElementById("csvShrinkMult")?.value)||0.5;
+  const wallPts = parseFloat(document.getElementById("csvWallPts")?.value)||80;
+  const onlyNear = !!document.getElementById("csvOnlyNearWall")?.checked;
+  const onlyKey = !!document.getElementById("csvOnlyKey")?.checked;
+
+  const t0 = String(rows[0].time||"");
+  const dateStr = t0.slice(0,10);
+  const walls = getWallsForDate(dateStr);
+
+  const deltas = rows.map(r => r.delta).filter(d => d!=null);
+  const absD = deltas.map(d => Math.abs(d)).sort((a,b)=>a-b);
+  const p90 = absD.length ? absD[Math.floor(absD.length*0.9)] : 20;
+  const ranges = rows.map(r => r.range).filter(x => x!=null).sort((a,b)=>a-b);
+  const rangeP75 = ranges.length ? ranges[Math.floor(ranges.length*0.75)] : 10;
+
+  const events = [];
+  let nSpike=0, nShrink=0, nAbs=0, nSC=0, nBC=0;
+
+  // Wall touches
+  const wallTouches = []; // {tm, side, strike, dist, close, delta, tags, rejected}
+  // Absorption near walls
+  const absNearWall = [];
+  // Delta regimes per bar
+  let regPushLong=0, regPushShort=0, regFakeUp=0, regFakeDown=0, regFlat=0;
+  // HVN lite: volume by 20pt bin
+  const bins = {};
+
+  function isSpike(r){
+    return (r.vol!=null && r.volMa!=null && r.volMa>0 && r.vol >= spikeMult*r.volMa) || !!r.brk;
+  }
+  function isShrink(r){
+    return (r.vol!=null && r.volMa!=null && r.volMa>0 && r.vol <= shrinkMult*r.volMa);
+  }
+
+  for(let i=0;i<rows.length;i++){
+    const r = rows[i];
+    const tags = [];
+    const volSpike = isSpike(r);
+    const volShrink = isShrink(r);
+    const isAbs = r.abs && r.abs!==0 && (r.vol==null||r.volMa==null||r.vol >= r.volMa*0.8);
+
+    if(volSpike){ tags.push("SPIKE"); nSpike++; }
+    if(volShrink){ tags.push("SHRINK"); nShrink++; }
+    if(isAbs){ tags.push("ABS"); nAbs++; }
+
+    const wide = r.range!=null && r.range >= rangeP75;
+    const strongSell = r.delta!=null && r.delta <= -Math.max(p90, 8);
+    const strongBuy = r.delta!=null && r.delta >= Math.max(p90, 8);
+    const downBar = r.close!=null && r.open!=null && r.close < r.open;
+    const upBar = r.close!=null && r.open!=null && r.close > r.open;
+
+    const callN = nearWall(r.high ?? r.close, walls.callWalls, wallPts);
+    const putN = nearWall(r.low ?? r.close, walls.putWalls, wallPts);
+
+    const sc2 = volSpike && strongSell && (putN || (wide && downBar));
+    const bc2 = volSpike && strongBuy && (callN || (wide && upBar));
+    if(sc2){ tags.push("SC?"); nSC++; }
+    if(bc2){ tags.push("BC?"); nBC++; }
+    if(r.entry||r.sq||r.vcp) tags.push("SETUP");
+    if(r.div) tags.push("DIV");
+    if(r.hvBuy) tags.push("HV-BUY");
+    if(r.hvSell) tags.push("HV-SELL");
+
+    const tm = String(r.time).includes("T") ? String(r.time).slice(11,16) : String(r.time).slice(-8,-3);
+
+    // --- Wall interaction ---
+    if(callN){
+      // reject if next few bars don't break far above
+      let rejected = false;
+      const look = rows.slice(i+1, i+6);
+      if(look.length){
+        const maxH = Math.max(...look.map(x => x.high??x.close));
+        rejected = maxH < callN.strike + wallPts*0.5 && (r.delta==null || r.delta<=0 || isAbs);
+      }
+      wallTouches.push({ tm, side:"Call", strike:callN.strike, dist:callN.dist, close:r.close, delta:r.delta, volSpike, isAbs, sc:sc2, bc:bc2, rejected });
+    }
+    if(putN){
+      let held = false;
+      const look = rows.slice(i+1, i+6);
+      if(look.length){
+        const minL = Math.min(...look.map(x => x.low??x.close));
+        held = minL > putN.strike - wallPts*0.5 && (r.delta==null || r.delta>=0 || isAbs);
+      }
+      wallTouches.push({ tm, side:"Put", strike:putN.strike, dist:putN.dist, close:r.close, delta:r.delta, volSpike, isAbs, sc:sc2, bc:bc2, held });
+    }
+
+    if(isAbs && (callN||putN)){
+      absNearWall.push({ tm, close:r.close, delta:r.delta, call:callN, put:putN });
+    }
+
+    // --- Price × Delta regime (bar vs prior) ---
+    if(i>0 && r.delta!=null && rows[i-1].close!=null && r.close!=null){
+      const dp = r.close - rows[i-1].close;
+      const d = r.delta;
+      if(dp>0 && d>0) regPushLong++;
+      else if(dp<0 && d<0) regPushShort++;
+      else if(dp>0 && d<0) regFakeUp++;
+      else if(dp<0 && d>0) regFakeDown++;
+      else regFlat++;
+    }
+
+    // --- HVN lite ---
+    if(r.close!=null && r.vol!=null){
+      const bin = Math.round(r.close/20)*20;
+      bins[bin] = (bins[bin]||0) + r.vol;
+    }
+
+    if(!tags.length) continue;
+    if(onlyKey && !tags.some(x => ["SPIKE","ABS","SC?","BC?"].includes(x))) continue;
+    if(onlyNear && !callN && !putN) continue;
+
+    let wallNote = "";
+    if(callN) wallNote += `Call ${callN.strike} (${callN.dist>=0?"+":""}${Math.round(callN.dist)}) `;
+    if(putN) wallNote += `Put ${putN.strike} (${putN.dist>=0?"+":""}${Math.round(putN.dist)})`;
+
+    events.push({
+      tm, time: r.time, close: r.close, high: r.high, low: r.low,
+      vol: r.vol, delta: r.delta, tags, wallNote: wallNote.trim(),
+      nearCall: !!callN, nearPut: !!putN, sess: r.sess, fromOpen: r.fromOpen
+    });
+  }
+
+  // HVN top 5
+  const hvn = Object.entries(bins).map(([p,v])=>({price:+p, vol:v})).sort((a,b)=>b.vol-a.vol).slice(0,5);
+
+  // Session story
+  const first = rows[0], last = rows[rows.length-1];
+  const netDelta = deltas.reduce((a,b)=>a+b,0);
+  const story = buildSessionStory({ first, last, netDelta, regPushLong, regPushShort, regFakeUp, regFakeDown, wallTouches, nSC, nBC, walls });
+
+  // Failures: SETUP then opposite delta
+  const failures = [];
+  for(let i=0;i<rows.length;i++){
+    const r = rows[i];
+    if(!(r.entry||r.sq||r.vcp)) continue;
+    const fut = rows.slice(i+1, i+11);
+    if(!fut.length || r.delta==null) continue;
+    const sumD = fut.reduce((a,x)=>a+(x.delta||0),0);
+    if(r.delta>0 && sumD < -p90) failures.push({ tm: String(r.time).slice(11,16), type:"多頭 SETUP 後 Delta 轉弱", close:r.close });
+    if(r.delta<0 && sumD > p90) failures.push({ tm: String(r.time).slice(11,16), type:"空頭 SETUP 後 Delta 轉強", close:r.close });
+  }
+
+  // Last 30 bars regime
+  const tail = rows.slice(-30);
+  let tL=0,tS=0,tFU=0,tFD=0;
+  for(let i=1;i<tail.length;i++){
+    const a=tail[i-1], b=tail[i];
+    if(a.close==null||b.close==null||b.delta==null) continue;
+    const dp=b.close-a.close, d=b.delta;
+    if(dp>0&&d>0) tL++; else if(dp<0&&d<0) tS++; else if(dp>0&&d<0) tFU++; else if(dp<0&&d>0) tFD++;
+  }
+
+  return {
+    dateStr, walls, events, rows: rows.length,
+    nSpike, nShrink, nAbs, nSC, nBC,
+    last, first, netDelta,
+    wallTouches, absNearWall, hvn, story, failures,
+    regimes: { regPushLong, regPushShort, regFakeUp, regFakeDown, regFlat },
+    tailReg: { tL, tS, tFU, tFD }
+  };
+}
+
+function buildSessionStory(ctx){
+  const { first, last, netDelta, regPushLong, regPushShort, regFakeUp, regFakeDown, wallTouches, nSC, nBC, walls } = ctx;
+  const parts = [];
+  const fromOpen = last?.fromOpen;
+  const sess = last?.sess;
+
+  if(fromOpen!=null){
+    if(fromOpen>80) parts.push(`價格相對開盤偏強 (+${Math.round(fromOpen)} pts)`);
+    else if(fromOpen<-80) parts.push(`價格相對開盤偏弱 (${Math.round(fromOpen)} pts)`);
+    else parts.push(`價格在開盤附近徘徊 (${fromOpen>=0?"+":""}${Math.round(fromOpen)} pts)`);
+  }
+  if(netDelta!=null){
+    if(netDelta>50) parts.push(`全日淨 Delta 偏多 (${netDelta>0?"+":""}${Math.round(netDelta)})`);
+    else if(netDelta<-50) parts.push(`全日淨 Delta 偏空 (${Math.round(netDelta)})`);
+    else parts.push(`全日淨 Delta 接近平衡`);
+  }
+  // Path of least resistance
+  if(regPushLong > regPushShort && regPushLong > regFakeUp) parts.push("主導：價漲+Delta 正 → 推進多");
+  else if(regPushShort > regPushLong && regPushShort > regFakeDown) parts.push("主導：價跌+Delta 負 → 推進空");
+  else if(regFakeUp > regPushLong) parts.push("警戒：多段價漲但 Delta 負 → 虛漲/派發嫌疑");
+  else if(regFakeDown > regPushShort) parts.push("警戒：多段價跌但 Delta 正 → 虛跌/吸籌嫌疑");
+
+  const callHits = wallTouches.filter(w=>w.side==="Call");
+  const putHits = wallTouches.filter(w=>w.side==="Put");
+  if(callHits.length) parts.push(`Call 牆觸及 ${callHits.length} 次` + (callHits.some(w=>w.rejected)?"（含拒絕）":""));
+  if(putHits.length) parts.push(`Put 牆觸及 ${putHits.length} 次` + (putHits.some(w=>w.held)?"（含守住）":""));
+  if(nSC) parts.push(`SC 候選 ${nSC}`);
+  if(nBC) parts.push(`BC 候選 ${nBC}`);
+
+  // Positive / negative stack
+  let pos=0, neg=0;
+  if(fromOpen>50) pos++; if(fromOpen<-50) neg++;
+  if(netDelta>50) pos++; if(netDelta<-50) neg++;
+  if(regPushLong>regPushShort) pos++; if(regPushShort>regPushLong) neg++;
+  if(regFakeUp>regPushLong) neg++; if(regFakeDown>regPushShort) pos++;
+  let lean = "中性";
+  if(pos>=neg+2) lean = "偏多路徑（正資訊佔優）";
+  else if(neg>=pos+2) lean = "偏空路徑（負資訊佔優）";
+  else if(pos>neg) lean = "略偏多";
+  else if(neg>pos) lean = "略偏空";
+
+  return { parts, lean, pos, neg };
+}
+
+function renderCsvResult(res){
+  const sum = document.getElementById("csvSummary");
+  const an = document.getElementById("csvAnalysis");
+  const ev = document.getElementById("csvEvents");
+  if(!res){
+    sum.innerHTML = "";
+    if(an) an.innerHTML = "";
+    ev.innerHTML = '<div class="mu">無法解析 CSV</div>';
+    return;
+  }
+  const last = res.last || {};
+  const fmt = n => n==null||isNaN(n)?"—":Number(n).toLocaleString("en-US");
+  const fmtC = n => n==null||isNaN(n)?"—":((n>0?"+":"")+Number(n).toLocaleString("en-US"));
+
+  sum.innerHTML = `
+    <div class="csv-kpi"><div class="l">日期</div><div class="v">${res.dateStr||"—"}</div></div>
+    <div class="csv-kpi"><div class="l">Bars</div><div class="v">${res.rows}</div></div>
+    <div class="csv-kpi"><div class="l">Spike</div><div class="v ev-spike">${res.nSpike}</div></div>
+    <div class="csv-kpi"><div class="l">Shrink</div><div class="v ev-shrink">${res.nShrink}</div></div>
+    <div class="csv-kpi"><div class="l">Absorption</div><div class="v ev-abs">${res.nAbs}</div></div>
+    <div class="csv-kpi"><div class="l">SC?</div><div class="v ev-sc">${res.nSC}</div></div>
+    <div class="csv-kpi"><div class="l">BC?</div><div class="v ev-bc">${res.nBC}</div></div>
+    <div class="csv-kpi"><div class="l">淨 Delta</div><div class="v">${fmtC(res.netDelta)}</div></div>
+    <div class="csv-kpi"><div class="l">SessΔ%</div><div class="v">${last.sess!=null?Number(last.sess).toFixed(2):"—"}</div></div>
+    <div class="csv-kpi"><div class="l">FromOpen</div><div class="v">${fmtC(last.fromOpen)}</div></div>
+    <div class="csv-kpi"><div class="l">牆來源</div><div class="v" style="font-size:.7rem;font-weight:500">${res.walls.src}</div></div>
+  `;
+
+  const rg = res.regimes || {};
+  const tr = res.tailReg || {};
+  const story = res.story || { parts:[], lean:"—" };
+
+  // Wall touch summary (dedupe consecutive same strike)
+  const touchLines = (res.wallTouches||[]).slice(-12).map(w => {
+    const flag = w.side==="Call" ? (w.rejected?"拒絕":"觸及") : (w.held?"守住":"觸及");
+    return `<div class="line">${w.tm} ${w.side} ${w.strike} · ${flag} · Δ ${fmtC(w.delta)}${w.volSpike?" · SPIKE":""}${w.isAbs?" · ABS":""}</div>`;
+  }).join("") || '<div class="line mu">無近牆觸及</div>';
+
+  const absLines = (res.absNearWall||[]).slice(0,8).map(a => {
+    const w = a.call ? `Call ${a.call.strike}` : (a.put ? `Put ${a.put.strike}` : "");
+    return `<div class="line">${a.tm} ABS @ ${fmt(a.close)} · ${w} · Δ ${fmtC(a.delta)}</div>`;
+  }).join("") || '<div class="line mu">無近牆 Absorption</div>';
+
+  const hvnLines = (res.hvn||[]).map((h,i) =>
+    `<div class="line">#${i+1} ${h.price} · Vol ${fmt(h.vol)}</div>`
+  ).join("") || '<div class="line mu">—</div>';
+
+  const failLines = (res.failures||[]).slice(0,6).map(f =>
+    `<div class="line">${f.tm} ${f.type} @ ${fmt(f.close)}</div>`
+  ).join("") || '<div class="line mu">無明顯 SETUP 失敗</div>';
+
+  if(an){
+    an.innerHTML = `
+      <div class="csv-an-card">
+        <h3>場次敘事 · 路徑</h3>
+        <div class="story"><strong>${story.lean}</strong></div>
+        ${(story.parts||[]).map(p=>`<div class="line">· ${p}</div>`).join("")}
+      </div>
+      <div class="csv-an-card">
+        <h3>Price × Delta 體制</h3>
+        <div class="line">推進多 ${rg.regPushLong||0} · 推進空 ${rg.regPushShort||0}</div>
+        <div class="line">虛漲 ${rg.regFakeUp||0} · 虛跌 ${rg.regFakeDown||0} · 平 ${rg.regFlat||0}</div>
+        <div class="line" style="margin-top:6px;color:var(--muted)">近 30 根：多 ${tr.tL||0} / 空 ${tr.tS||0} / 虛漲 ${tr.tFU||0} / 虛跌 ${tr.tFD||0}</div>
+      </div>
+      <div class="csv-an-card">
+        <h3>牆位互動（近牆）</h3>
+        ${touchLines}
+      </div>
+      <div class="csv-an-card">
+        <h3>Absorption @ 牆</h3>
+        ${absLines}
+      </div>
+      <div class="csv-an-card">
+        <h3>分時重倉區 HVN (20pt)</h3>
+        ${hvnLines}
+        <div class="line" style="margin-top:4px;color:var(--muted)">對照日線 Call/Put 牆是否重疊</div>
+      </div>
+      <div class="csv-an-card">
+        <h3>SETUP 失敗（後 10 根）</h3>
+        ${failLines}
+      </div>
+    `;
+  }
+
+  const tagHtml = tags => tags.map(t=>{
+    let c = "";
+    if(t==="SPIKE") c="ev-spike";
+    else if(t==="SHRINK") c="ev-shrink";
+    else if(t==="ABS") c="ev-abs";
+    else if(t==="SC?") c="ev-sc";
+    else if(t==="BC?") c="ev-bc";
+    else if(t==="SETUP") c="ev-setup";
+    return `<span class="${c}">${t}</span>`;
+  }).join(" ");
+
+  ev.innerHTML = `
+    <table>
+      <thead><tr>
+        <th>時間</th><th>Close</th><th>Vol</th><th>Delta</th>
+        <th>事件</th><th>近牆</th><th>FromOpen</th>
+      </tr></thead>
+      <tbody>
+        ${res.events.length ? res.events.map(e => `
+          <tr>
+            <td>${e.tm}</td>
+            <td>${fmt(e.close)}</td>
+            <td>${fmt(e.vol)}</td>
+            <td class="${e.delta>0?"pos":e.delta<0?"neg":""}">${fmtC(e.delta)}</td>
+            <td>${tagHtml(e.tags)}</td>
+            <td>${e.wallNote||"—"}</td>
+            <td>${fmtC(e.fromOpen)}</td>
+          </tr>
+        `).join("") : '<tr><td colspan="7" class="mu">無符合條件的事件（可關閉「只顯示關鍵」）</td></tr>'}
+      </tbody>
+    </table>
+    <div class="mu" style="margin-top:8px;font-size:.72rem">
+      SC?/BC? = 候選。Call 牆: ${(res.walls.callWalls||[]).slice(0,3).map(w=>w.strike).join(", ")||"—"} ·
+      Put 牆: ${(res.walls.putWalls||[]).slice(0,3).map(w=>w.strike).join(", ")||"—"}
+    </div>
+  `;
+}
+
+
+function onCsvFile(ev){
+  const f = ev.target.files && ev.target.files[0];
+  if(!f) return;
+  _csvName = f.name;
+  document.getElementById("csvFileLabel").textContent = f.name;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      _csvRows = parseCsv(String(reader.result||""));
+      rerunCsv();
+    } catch(err){
+      document.getElementById("csvEvents").innerHTML = '<div class="mu">解析失敗: '+err.message+'</div>';
+    }
+  };
+  reader.readAsText(f);
+}
+
+function rerunCsv(){
+  if(!_csvRows) return;
+  const res = analyzeCsv(_csvRows);
+  renderCsvResult(res);
+}
 
 </script>
 </body>
