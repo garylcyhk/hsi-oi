@@ -286,6 +286,12 @@ footer p:first-child{font-size:.8rem}
 .tag-a{display:inline-block;padding:1px 7px;border-radius:999px;font-size:.68rem;background:rgba(96,165,250,.15);color:#60a5fa}
 .tag-b{display:inline-block;padding:1px 7px;border-radius:999px;font-size:.68rem;background:rgba(161,161,170,.12);color:#a1a1aa}
 .tag-hv{color:#fbbf24}
+
+.csv-empty{padding:28px 12px;text-align:center;color:var(--muted);font-size:.85rem;border:1px dashed #27272a;border-radius:8px;margin:8px 0}
+.csv-subtabs{margin-bottom:14px}
+.perf-table tr.res-win{box-shadow:inset 3px 0 0 #34d399}
+.perf-table tr.res-loss{box-shadow:inset 3px 0 0 #fb7185}
+.perf-table tr.res-scratch{box-shadow:inset 3px 0 0 #71717a}
 </style>
 </head>
 <body>
@@ -405,10 +411,20 @@ footer p:first-child{font-size:.8rem}
         </label>
         <label>由 <input type="date" id="perfFrom" onchange="renderPerf()" /></label>
         <label>至 <input type="date" id="perfTo" onchange="renderPerf()" /></label>
-        <label><input type="checkbox" id="perfOnlyLogged" onchange="renderPerf()" /> 只顯示已填結果</label>
+        <label><input type="checkbox" id="perfOnlyLogged" onchange="renderPerf()" /> 已填結果</label>
+        <label><input type="checkbox" id="perfOnlyA" onchange="renderPerf()" /> 只 A</label>
+        <label><input type="checkbox" id="perfOnlyHV" onchange="renderPerf()" /> 只 HV</label>
+        <label>方向
+          <select id="perfDir" onchange="renderPerf()">
+            <option value="all">全部</option>
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+          </select>
+        </label>
         <button type="button" class="btn" onclick="clearPerfData()">清除資料</button>
+        <button type="button" class="btn" onclick="exportPerfCsv()">匯出結果 CSV</button>
       </div>
-      <div class="note" id="perfDateNote">Entry: 1=BUY · -1=SELL · 2=BUY HV · -2=SELL HV　|　SetupQuality: 3=A · 2=B　|　結果存於本機瀏覽器</div>
+      <div class="note" id="perfDateNote">Entry: 1=BUY · -1=SELL · 2=BUY HV · -2=SELL HV　|　SQ: 3=A · 2=B　|　勝率只計 Win/Loss（不含 Scratch）　|　本機儲存</div>
       <div class="csv-summary" id="perfKpis"></div>
       <div class="csv-analysis" id="perfCharts"></div>
       <div class="csv-events" id="perfTable"></div>
@@ -1419,6 +1435,7 @@ function rerunCsv(){
 
 
 
+
 /* ===== Performance (Entry signals) ===== */
 const PERF_LS_TRADES = "exodus_fut_perf_trades_v2";
 const PERF_LS_RESULTS = "exodus_fut_perf_results_v2";
@@ -1431,10 +1448,15 @@ try { perfResults = JSON.parse(localStorage.getItem(PERF_LS_RESULTS)||"{}"); } c
 try { perfFiles = JSON.parse(localStorage.getItem(PERF_LS_FILES)||"[]"); } catch(e){}
 
 function switchCsvSub(name){
-  document.getElementById("csvPerfPanel").style.display = name==="perf" ? "block" : "none";
-  document.getElementById("csvFlowPanel").style.display = name==="flow" ? "block" : "none";
-  document.getElementById("csvSubPerf").classList.toggle("active", name==="perf");
-  document.getElementById("csvSubFlow").classList.toggle("active", name==="flow");
+  const perf = document.getElementById("csvPerfPanel");
+  const flow = document.getElementById("csvFlowPanel");
+  if(perf) perf.style.display = name==="perf" ? "block" : "none";
+  if(flow) flow.style.display = name==="flow" ? "block" : "none";
+  const bp = document.getElementById("csvSubPerf");
+  const bf = document.getElementById("csvSubFlow");
+  if(bp) bp.classList.toggle("active", name==="perf");
+  if(bf) bf.classList.toggle("active", name==="flow");
+  try { localStorage.setItem("fut_csv_sub", name); } catch(e){}
 }
 
 function perfParseCsv(text){
@@ -1463,23 +1485,19 @@ function perfNum(r, keys){
   return null;
 }
 
-/** Entry: 1=BUY, -1=SELL, 2=BUY HV, -2=SELL HV */
 function mapEntry(entry){
   if(entry===1) return { dir:"BUY", type:"BUY", hv:false };
   if(entry===-1) return { dir:"SELL", type:"SELL", hv:false };
   if(entry===2) return { dir:"BUY", type:"BUY HV", hv:true };
   if(entry===-2) return { dir:"SELL", type:"SELL HV", hv:true };
-  // fallback numeric
   if(entry>0) return { dir:"BUY", type: entry>=2?"BUY HV":"BUY", hv: entry>=2 };
   if(entry<0) return { dir:"SELL", type: entry<=-2?"SELL HV":"SELL", hv: entry<=-2 };
   return null;
 }
 
-/** SetupQuality: 3=A, 2=B */
 function mapQuality(sq){
   if(sq===3 || sq>=3) return "A";
-  if(sq===2) return "B";
-  if(sq===1) return "B";
+  if(sq===2 || sq===1) return "B";
   return "B";
 }
 
@@ -1488,28 +1506,23 @@ function classifyPerfRow(row){
   if(entry==null || entry===0) return null;
   const mapped = mapEntry(entry);
   if(!mapped) return null;
-
   const time = String(row.time||row.Time||"");
   const sq = perfNum(row, ["SetupQuality","Setup Quality"])||0;
   const vcp = perfNum(row, ["VCP","vcp"])||0;
   const abs = perfNum(row, ["Absorption","absorption"]);
   const ratio = perfNum(row, ["Ratio","ratio"]);
   const delta = perfNum(row, ["Delta","delta"]);
-  const buy = perfNum(row, ["BuyVol","buyvol"]);
-  const sell = perfNum(row, ["SellVol","sellvol"]);
   const fromOpen = perfNum(row, ["FromOpenPts"]);
   const close = perfNum(row, ["close","Close"]);
-
   const date = time.slice(0,10);
   const tm = time.includes("T") ? time.slice(11,16) : time.slice(-8,-3);
   const key = time || `${date}_${entry}_${close}`;
-
   return {
     key, time, date, tm, entry,
     dir: mapped.dir, entryType: mapped.type, isHV: mapped.hv,
     quality: mapQuality(sq), setupQ: sq,
-    vcp, vcpLevel: vcp, hasVcp: vcp!==0 && vcp!=null,
-    absorption: abs, ratio, delta, buy, sell, fromOpen, close
+    vcp, hasVcp: vcp!==0 && vcp!=null,
+    absorption: abs, ratio, delta, fromOpen, close
   };
 }
 
@@ -1522,10 +1535,21 @@ function onPerfFiles(ev){
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        perfParseCsv(String(reader.result||"")).forEach(r => {
+        const raw = String(reader.result||"");
+        perfParseCsv(raw).forEach(r => {
           const t = classifyPerfRow(r);
           if(t) batch.push(t);
         });
+        // also feed flow analyzer if available
+        try {
+          if(typeof parseCsv==="function" && typeof analyzeCsv==="function"){
+            window._csvRows = parseCsv(raw);
+            window._csvName = f.name;
+            const lab = document.getElementById("csvFileLabel");
+            if(lab) lab.textContent = f.name;
+            if(typeof rerunCsv==="function") rerunCsv();
+          }
+        } catch(e){}
         if(!perfFiles.includes(f.name)) perfFiles.push(f.name);
       } catch(err){ alert("解析失敗: "+f.name+"\n"+err.message); }
       pending--;
@@ -1559,35 +1583,57 @@ function setPerfField(key, field, value){
   if(!perfResults[key]) perfResults[key]={result:"",points:"",notes:""};
   perfResults[key][field]=value;
   localStorage.setItem(PERF_LS_RESULTS, JSON.stringify(perfResults));
-  renderPerf();
+  // refresh KPIs/charts only
+  const list = filteredPerf();
+  renderPerfKpis(list);
+  renderPerfCharts(list);
+  // update row class without full table rebuild
+  const tr = document.querySelector('#perfTableBody tr[data-key="'+encodeURIComponent(key)+'"]');
+  if(tr && field==="result"){
+    tr.classList.remove("res-win","res-loss","res-scratch");
+    if(value==="Win") tr.classList.add("res-win");
+    if(value==="Loss") tr.classList.add("res-loss");
+    if(value==="Scratch") tr.classList.add("res-scratch");
+  }
 }
 
 function filteredPerf(){
   const from = document.getElementById("perfFrom")?.value;
   const to = document.getElementById("perfTo")?.value;
   const only = document.getElementById("perfOnlyLogged")?.checked;
+  const onlyA = document.getElementById("perfOnlyA")?.checked;
+  const onlyHV = document.getElementById("perfOnlyHV")?.checked;
+  const dir = document.getElementById("perfDir")?.value || "all";
   return perfTrades.filter(t=>{
     if(from && t.date < from) return false;
     if(to && t.date > to) return false;
     if(only && !getPerfResult(t.key).result) return false;
+    if(onlyA && t.quality!=="A") return false;
+    if(onlyHV && !t.isHV) return false;
+    if(dir!=="all" && t.dir!==dir) return false;
     return true;
   });
 }
 
 function perfStats(list){
-  const logged = list.map(t=>{
+  const graded = list.map(t=>{
     const r=getPerfResult(t.key);
     const pts=r.points===""||r.points==null?null:Number(r.points);
     return {t, result:r.result, points:pts};
-  }).filter(x=>x.result);
-  const wins=logged.filter(x=>x.result==="Win");
-  const losses=logged.filter(x=>x.result==="Loss");
-  const scratches=logged.filter(x=>x.result==="Scratch");
-  const withPts=logged.filter(x=>x.points!=null&&!isNaN(x.points));
-  const avgPts=withPts.length?withPts.reduce((a,b)=>a+b.points,0)/withPts.length:null;
-  const wr=logged.length?wins.length/logged.length*100:null;
-  const sub=(pred)=>{
-    const s=logged.filter(x=>pred(x.t));
+  }).filter(x=>x.result==="Win"||x.result==="Loss");
+  const scratched = list.filter(t=>getPerfResult(t.key).result==="Scratch").length;
+  const wins=graded.filter(x=>x.result==="Win");
+  const losses=graded.filter(x=>x.result==="Loss");
+  const withPts=list.map(t=>{
+    const r=getPerfResult(t.key);
+    if(!r.result) return null;
+    if(r.points===""||r.points==null) return null;
+    const n=Number(r.points); return isNaN(n)?null:n;
+  }).filter(x=>x!=null);
+  const avgPts=withPts.length?withPts.reduce((a,b)=>a+b,0)/withPts.length:null;
+  const wr=graded.length?wins.length/graded.length*100:null;
+  const sub=pred=>{
+    const s=graded.filter(x=>pred(x.t));
     if(!s.length) return null;
     return s.filter(x=>x.result==="Win").length/s.length*100;
   };
@@ -1599,29 +1645,29 @@ function perfStats(list){
   ];
   let best={name:"—",wr:null,n:0};
   buckets.forEach(b=>{
-    const s=logged.filter(x=>b.test(x.t.ratio));
+    const s=graded.filter(x=>b.test(x.t.ratio));
     if(s.length<2) return;
     const w=s.filter(x=>x.result==="Win").length/s.length*100;
     if(best.wr==null||w>best.wr) best={name:b.name,wr:w,n:s.length};
   });
-  // VCP levels 0,1,2,3
-  const vcpWr = {};
+  const vcpWr={};
   [0,1,2,3].forEach(lv=>{
-    const s=logged.filter(x=>(x.t.vcp||0)===lv);
+    const s=graded.filter(x=>(x.t.vcp||0)===lv);
     vcpWr[lv]=s.length?s.filter(x=>x.result==="Win").length/s.length*100:null;
-    vcpWr[lv+"_n"]=s.length;
   });
   return {
-    total:list.length, logged:logged.length,
-    wins:wins.length, losses:losses.length, scratches:scratches.length,
+    total:list.length, graded:graded.length,
+    countA:list.filter(t=>t.quality==="A").length,
+    countB:list.filter(t=>t.quality==="B").length,
+    countHV:list.filter(t=>t.isHV).length,
+    wins:wins.length, losses:losses.length, scratches:scratched,
     wr, avgPts,
     wrA:sub(t=>t.quality==="A"), wrB:sub(t=>t.quality==="B"),
     wrHV:sub(t=>t.isHV), wrNorm:sub(t=>!t.isHV),
     wrVCP:sub(t=>t.hasVcp), wrNoVCP:sub(t=>!t.hasVcp),
     best, vcpWr,
-    wrBuy:sub(t=>t.dir==="BUY"), wrSell:sub(t=>t.dir==="SELL"),
+    wrBuy:sub(t=>t.entryType==="BUY"), wrSell:sub(t=>t.entryType==="SELL"),
     wrBuyHV:sub(t=>t.entryType==="BUY HV"), wrSellHV:sub(t=>t.entryType==="SELL HV"),
-    wrBuyN:sub(t=>t.entryType==="BUY"), wrSellN:sub(t=>t.entryType==="SELL"),
   };
 }
 
@@ -1630,92 +1676,142 @@ function fmtN(x){ return x==null||isNaN(x)?"—":(Math.round(x*10)/10).toString(
 
 function perfBar(label, pct){
   const w=pct==null?0:Math.max(0,Math.min(100,pct));
-  const cls=pct!=null&&pct>=50?"":"weak";
-  return `<div class="bar-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem">
+  return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem">
     <div style="width:72px;color:var(--muted)">${label}</div>
     <div style="flex:1;height:10px;background:#1f1f23;border-radius:999px;overflow:hidden">
-      <div class="fill ${cls}" style="height:100%;width:${w}%;background:${pct!=null&&pct>=50?"#34d399":"#71717a"};border-radius:999px"></div>
+      <div style="height:100%;width:${w}%;background:${pct!=null&&pct>=50?"#34d399":"#71717a"};border-radius:999px"></div>
     </div>
     <div style="width:48px;text-align:right;font-family:ui-monospace,monospace">${fmtPct(pct)}</div>
   </div>`;
 }
 
-function renderPerf(){
-  const list = filteredPerf();
+function renderPerfKpis(list){
   const s = perfStats(list);
-  const dates = [...new Set(perfTrades.map(t=>t.date))].sort();
-  document.getElementById("perfFileLabel").textContent =
-    perfFiles.length ? perfFiles.slice(-2).join(", ")+(perfFiles.length>2?"…":"") : "未上傳";
-  document.getElementById("perfDateNote").innerHTML =
-    (dates.length?`資料日期: <strong>${dates[0]}</strong>${dates.length>1?" ~ <strong>"+dates[dates.length-1]+"</strong>":""} · `:"") +
-    `訊號 ${perfTrades.length} 筆 · Entry 1=BUY -1=SELL 2=BUY HV -2=SELL HV · SQ 3=A 2=B`;
-
-  document.getElementById("perfKpis").innerHTML = `
-    <div class="csv-kpi"><div class="l">總訊號</div><div class="v">${s.total}</div><div class="s">已評 ${s.logged}</div></div>
-    <div class="csv-kpi"><div class="l">勝率</div><div class="v ${s.wr!=null?(s.wr>=50?"pos":"neg"):""}">${fmtPct(s.wr)}</div>
+  const el = document.getElementById("perfKpis");
+  if(!el) return;
+  el.innerHTML = `
+    <div class="csv-kpi"><div class="l">總訊號</div><div class="v">${s.total}</div>
+      <div class="s">A ${s.countA} · B ${s.countB} · HV ${s.countHV}</div></div>
+    <div class="csv-kpi"><div class="l">勝率 Win Rate</div><div class="v ${s.wr!=null?(s.wr>=50?"pos":"neg"):""}">${fmtPct(s.wr)}</div>
       <div class="s">W${s.wins} L${s.losses} S${s.scratches}</div></div>
     <div class="csv-kpi"><div class="l">平均分數</div><div class="v ${s.avgPts!=null?(s.avgPts>=0?"pos":"neg"):""}">${fmtN(s.avgPts)}</div></div>
-    <div class="csv-kpi"><div class="l">A vs B</div><div class="v" style="font-size:.9rem">A ${fmtPct(s.wrA)}<br>B ${fmtPct(s.wrB)}</div></div>
-    <div class="csv-kpi"><div class="l">HV vs 普通</div><div class="v" style="font-size:.9rem">HV ${fmtPct(s.wrHV)}<br>普通 ${fmtPct(s.wrNorm)}</div></div>
-    <div class="csv-kpi"><div class="l">VCP 有 vs 無</div><div class="v" style="font-size:.9rem">有 ${fmtPct(s.wrVCP)}<br>無 ${fmtPct(s.wrNoVCP)}</div></div>
+    <div class="csv-kpi"><div class="l">A 勝率</div><div class="v">${fmtPct(s.wrA)}</div></div>
+    <div class="csv-kpi"><div class="l">B 勝率</div><div class="v">${fmtPct(s.wrB)}</div></div>
+    <div class="csv-kpi"><div class="l">HV 勝率</div><div class="v">${fmtPct(s.wrHV)}</div></div>
+    <div class="csv-kpi"><div class="l">普通勝率</div><div class="v">${fmtPct(s.wrNorm)}</div></div>
+    <div class="csv-kpi"><div class="l">有 VCP</div><div class="v">${fmtPct(s.wrVCP)}</div></div>
+    <div class="csv-kpi"><div class="l">無 VCP</div><div class="v">${fmtPct(s.wrNoVCP)}</div></div>
     <div class="csv-kpi"><div class="l">最佳 Ratio</div><div class="v" style="font-size:.9rem">${s.best.name}</div>
       <div class="s">${fmtPct(s.best.wr)} n=${s.best.n}</div></div>
   `;
+}
 
-  document.getElementById("perfCharts").innerHTML = `
+function renderPerfCharts(list){
+  const s = perfStats(list);
+  const el = document.getElementById("perfCharts");
+  if(!el) return;
+  el.innerHTML = `
     <div class="csv-an-card"><h3>勝率 · Entry 類型</h3>
-      ${perfBar("BUY", s.wrBuyN)}${perfBar("SELL", s.wrSellN)}
+      ${perfBar("BUY", s.wrBuy)}${perfBar("SELL", s.wrSell)}
       ${perfBar("BUY HV", s.wrBuyHV)}${perfBar("SELL HV", s.wrSellHV)}
     </div>
     <div class="csv-an-card"><h3>勝率 · 品質 A vs B</h3>
       ${perfBar("A (SQ=3)", s.wrA)}${perfBar("B (SQ=2)", s.wrB)}
     </div>
     <div class="csv-an-card"><h3>勝率 · VCP 等級</h3>
-      ${perfBar("VCP 0", s.vcpWr[0])}
-      ${perfBar("VCP 1", s.vcpWr[1])}
-      ${perfBar("VCP 2", s.vcpWr[2])}
-      ${perfBar("VCP 3", s.vcpWr[3])}
+      ${perfBar("VCP 0", s.vcpWr[0])}${perfBar("VCP 1", s.vcpWr[1])}
+      ${perfBar("VCP 2", s.vcpWr[2])}${perfBar("VCP 3", s.vcpWr[3])}
     </div>
   `;
+}
 
-  const esc = k => k.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+function renderPerfTable(list){
+  const el = document.getElementById("perfTable");
+  if(!el) return;
+  if(!list.length){
+    el.innerHTML = '<div class="csv-empty">上傳 TradingView CSV 後，會列出 Entry ≠ 0 的訊號。<br>填寫結果後自動更新上方勝率。</div>';
+    return;
+  }
   const rows = list.slice().reverse().map(t=>{
     const r=getPerfResult(t.key);
-    const absStr = t.absorption==null?"—":String(t.absorption);
-    return `<tr>
+    const rc = r.result==="Win"?"res-win":r.result==="Loss"?"res-loss":r.result==="Scratch"?"res-scratch":"";
+    const keyAttr = encodeURIComponent(t.key);
+    return `<tr class="${rc}" data-key="${keyAttr}">
       <td>${t.date} ${t.tm}</td>
       <td><span class="tag-${t.dir==="BUY"?"buy":"sell"}">${t.dir}</span></td>
       <td class="${t.isHV?"tag-hv":""}">${t.entryType}</td>
       <td><span class="tag-${t.quality==="A"?"a":"b"}">${t.quality}</span></td>
       <td>${t.ratio!=null?Number(t.ratio).toFixed(2):"—"}</td>
       <td>${t.vcp||0}</td>
-      <td>${absStr}</td>
-      <td><select onchange="setPerfField('${esc(t.key)}','result',this.value)">
+      <td>${t.absorption==null?"—":t.absorption}</td>
+      <td><select class="perf-res" data-field="result">
         <option value="" ${!r.result?"selected":""}>—</option>
         <option value="Win" ${r.result==="Win"?"selected":""}>Win</option>
         <option value="Loss" ${r.result==="Loss"?"selected":""}>Loss</option>
         <option value="Scratch" ${r.result==="Scratch"?"selected":""}>Scratch</option>
       </select></td>
-      <td><input class="pts" type="number" step="1" value="${r.points??""}" placeholder="pts"
-        onchange="setPerfField('${esc(t.key)}','points',this.value)" /></td>
-      <td><input class="notes" type="text" value="${(r.notes||"").replace(/"/g,"&quot;")}" placeholder="備註"
-        onchange="setPerfField('${esc(t.key)}','notes',this.value)" /></td>
+      <td><input class="pts perf-inp" data-field="points" type="number" step="1" value="${r.points??""}" placeholder="pts" /></td>
+      <td><input class="notes perf-inp" data-field="notes" type="text" value="${(r.notes||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;")}" placeholder="備註" /></td>
     </tr>`;
   }).join("");
-
-  document.getElementById("perfTable").innerHTML = `
-    <table class="perf-table">
-      <thead><tr>
-        <th>時間</th><th>方向</th><th>類型</th><th>品質</th>
-        <th>Ratio</th><th>VCP</th><th>Absorption</th>
-        <th>結果</th><th>分數</th><th>備註</th>
-      </tr></thead>
-      <tbody>${rows||'<tr><td colspan="10" class="mu">上傳 CSV 後顯示 Entry ≠ 0 的訊號</td></tr>'}</tbody>
-    </table>`;
+  el.innerHTML = `<table class="perf-table"><thead><tr>
+    <th>時間</th><th>方向</th><th>類型</th><th>品質</th><th>Ratio</th><th>VCP</th><th>Abs</th>
+    <th>結果</th><th>分數</th><th>備註</th>
+  </tr></thead><tbody id="perfTableBody">${rows}</tbody></table>
+  <div class="mu" style="margin-top:6px;font-size:.72rem">${list.length} 筆顯示中</div>`;
 }
 
-// init
-if(typeof renderPerf==="function"){ try{ renderPerf(); }catch(e){} }
+function bindPerfTableEvents(){
+  const el = document.getElementById("perfTable");
+  if(!el || el.dataset.bound==="1") return;
+  el.dataset.bound = "1";
+  el.addEventListener("change", function(e){
+    const t = e.target;
+    if(!t.classList.contains("perf-res") && !t.classList.contains("perf-inp")) return;
+    const tr = t.closest("tr");
+    if(!tr) return;
+    const key = decodeURIComponent(tr.getAttribute("data-key")||"");
+    const field = t.getAttribute("data-field");
+    if(key && field) setPerfField(key, field, t.value);
+  });
+}
+
+function exportPerfCsv(){
+  const list = filteredPerf();
+  if(!list.length){ alert("無資料可匯出"); return; }
+  const lines = ["time,dir,entryType,quality,ratio,vcp,absorption,result,points,notes"];
+  list.forEach(t=>{
+    const r=getPerfResult(t.key);
+    lines.push([t.time,t.dir,t.entryType,t.quality,t.ratio,t.vcp,t.absorption,r.result,r.points,JSON.stringify(r.notes||"")].join(","));
+  });
+  const blob = new Blob([lines.join("\n")], {type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "exodus-perf-export.csv";
+  a.click();
+}
+
+function renderPerf(){
+  const list = filteredPerf();
+  const dates = [...new Set(perfTrades.map(t=>t.date))].sort();
+  const lab = document.getElementById("perfFileLabel");
+  if(lab) lab.textContent = perfFiles.length ? (perfFiles.slice(-2).join(", ")+(perfFiles.length>2?"…":"")) : "未上傳";
+  const note = document.getElementById("perfDateNote");
+  if(note) note.innerHTML =
+    (dates.length?`資料日期: <strong>${dates[0]}</strong>${dates.length>1?" ~ <strong>"+dates[dates.length-1]+"</strong>":""} · `:"") +
+    `訊號 <strong>${perfTrades.length}</strong> · Entry 1=BUY -1=SELL 2=BUY HV -2=SELL HV · SQ 3=A 2=B · 勝率不含 Scratch`;
+  renderPerfKpis(list);
+  renderPerfCharts(list);
+  renderPerfTable(list);
+  bindPerfTableEvents();
+}
+
+try { renderPerf(); } catch(e){}
+try {
+  const sub = localStorage.getItem("fut_csv_sub");
+  if(sub==="flow"||sub==="perf") switchCsvSub(sub);
+} catch(e){}
+
 
 function switchFutTab(name){
   document.querySelectorAll(".fut-tab").forEach(b => {
