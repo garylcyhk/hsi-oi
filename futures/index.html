@@ -1152,6 +1152,7 @@ function analyzeCsv(rawRows){
 
   const events = [];
   let nSpike=0, nShrink=0, nAbs=0, nSC=0, nBC=0;
+  const climaxEvents = [];
 
   // Wall touches
   const wallTouches = []; // {tm, side, strike, dist, close, delta, tags, rejected}
@@ -1193,6 +1194,50 @@ function analyzeCsv(rawRows){
     const bc2 = volSpike && strongBuy && (callN || (wide && upBar));
     if(sc2){ tags.push("SC?"); nSC++; }
     if(bc2){ tags.push("BC?"); nBC++; }
+
+    if(sc2 || bc2){
+      const lookN = 10;
+      const pre = rows.slice(Math.max(0,i-lookN), i);
+      let preDelta = 0, preVol = 0, preAbs = 0, preSpike = 0, preShrink = 0;
+      let maxExt = null, minExt = null;
+      pre.forEach(p => {
+        if(p.delta!=null) preDelta += p.delta;
+        if(p.vol!=null) preVol += p.vol;
+        if(p.abs) preAbs++;
+        if(typeof isSpike==="function" && isSpike(p)) preSpike++;
+        if(typeof isShrink==="function" && isShrink(p)) preShrink++;
+        if(p.high!=null) maxExt = maxExt==null ? p.high : Math.max(maxExt, p.high);
+        if(p.low!=null) minExt = minExt==null ? p.low : Math.min(minExt, p.low);
+      });
+      const path = sc2
+        ? (minExt!=null && r.low!=null && r.low <= minExt ? "創低後高潮" : "下跌中高潮")
+        : (maxExt!=null && r.high!=null && r.high >= maxExt ? "創高後高潮" : "上漲中高潮");
+      let lean = "前段 Delta 平衡";
+      if(preDelta > 20) lean = "前段偏多 Delta";
+      else if(preDelta < -20) lean = "前段偏空 Delta";
+      const absNote = preAbs >= 2 ? ("前 "+lookN+" 根含 "+preAbs+" 次 Abs") : (preAbs===1 ? "前段有 1 次 Abs" : "前段無 Abs");
+      const post = rows.slice(i+1, i+6);
+      let postNote = "數據不足";
+      if(post.length){
+        const lastP = post[post.length-1];
+        if(sc2 && lastP.close!=null && r.low!=null){
+          postNote = lastP.close > r.low + (r.range||10)*0.5 ? "之後反彈（SC 有效嫌疑）" : "之後續跌（趨勢延續）";
+        }
+        if(bc2 && lastP.close!=null && r.high!=null){
+          postNote = lastP.close < r.high - (r.range||10)*0.5 ? "之後回落（BC 有效嫌疑）" : "之後續升（趨勢延續）";
+        }
+      }
+      const tmC = String(r.time).includes("T") ? String(r.time).slice(11,16) : String(r.time).slice(-8,-3);
+      climaxEvents.push({
+        type: sc2 ? "SC?" : "BC?",
+        tm: tmC, time: r.time, close: r.close, high: r.high, low: r.low,
+        delta: r.delta, vol: r.vol, path: path, lean: lean, absNote: absNote, postNote: postNote,
+        preDelta: preDelta, preVol: preVol, preSpike: preSpike, preShrink: preShrink, preAbs: preAbs,
+        callN: callN ? callN.strike : null,
+        putN: putN ? putN.strike : null,
+        fromOpen: r.fromOpen
+      });
+    }
     if(r.entry||r.sq||r.vcp) tags.push("SETUP");
     if(r.div) tags.push("DIV");
     if(r.hvBuy) tags.push("HV-BUY");
@@ -1291,7 +1336,7 @@ function analyzeCsv(rawRows){
     dateStr, walls, events, rows: rows.length,
     nSpike, nShrink, nAbs, nSC, nBC,
     last, first, netDelta,
-    wallTouches, absNearWall, hvn, story, failures,
+    wallTouches, absNearWall, hvn, story, failures, climaxEvents,
     regimes: { regPushLong, regPushShort, regFakeUp, regFakeDown, regFlat },
     tailReg: { tL, tS, tFU, tFD }
   };
@@ -1392,6 +1437,23 @@ function renderCsvResult(res){
     `<div class="line">${f.tm} ${f.type} @ ${fmt(f.close)}</div>`
   ).join("") || '<div class="line mu">無明顯 SETUP 失敗</div>';
 
+
+  const fmtC2 = n => n==null||isNaN(n)?"—":((n>0?"+":"")+Number(n).toLocaleString("en-US"));
+  const climaxLines = (res.climaxEvents||[]).length
+    ? (res.climaxEvents||[]).map(c => {
+        const wall = c.type==="SC?"
+          ? (c.putN!=null?`Put牆 ${c.putN}`:"")
+          : (c.callN!=null?`Call牆 ${c.callN}`:"");
+        return `<div class="line" style="margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1f1f23">
+          <strong class="${c.type==="SC?"?"ev-sc":"ev-bc"}">${c.type}</strong>
+          ${c.tm} @ ${c.close!=null?Number(c.close).toLocaleString("en-US"):"—"}
+          · Δ ${fmtC2(c.delta)} · Vol ${c.vol!=null?Number(c.vol).toLocaleString("en-US"):"—"}
+          <br/><span style="color:var(--muted)">前 10 根：${c.path} · ${c.lean} · ΣΔ ${fmtC2(c.preDelta)} · Spike ${c.preSpike} · Shrink ${c.preShrink} · ${c.absNote}</span>
+          <br/><span style="color:var(--muted)">之後：${c.postNote}${wall?" · "+wall:""}${c.fromOpen!=null?" · FromOpen "+fmtC2(c.fromOpen):""}</span>
+        </div>`;
+      }).join("")
+    : '<div class="line mu">本段無 SC?/BC? 候選 — 可調低放量倍數或上傳完整時段</div>';
+
   if(an){
     an.innerHTML = `
       <div class="csv-an-card">
@@ -1421,6 +1483,11 @@ function renderCsvResult(res){
       <div class="csv-an-card">
         <h3>SETUP 失敗（後 10 根）</h3>
         ${failLines}
+      </div>
+      <div class="csv-an-card" style="grid-column:1/-1">
+        <h3>SC / BC 前的走勢（Before the move）</h3>
+        <div class="mu" style="font-size:.72rem;margin-bottom:6px">每筆高潮：前 10 根路徑 · Delta 偏向 · Abs/Spike · 之後 5 根確認</div>
+        ${climaxLines}
       </div>
     `;
   }
