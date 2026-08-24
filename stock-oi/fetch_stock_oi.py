@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 HKEX Stock Options Daily Report — watchlist OI walls
-Watchlist: 700 Tencent, 9988 Alibaba, 1810 Xiaomi, 3690 Meituan, 388 HKEX
+Watchlist: 700 Tencent, 9988 Alibaba, 1810 Xiaomi, 3690 Meituan, 388 HKEX, 1024 Kuaishou
 """
 import re, json, sys
 from datetime import datetime, timedelta
@@ -18,6 +18,7 @@ WATCHLIST = [
     {"code": "01810", "hkats": "MIU", "name": "小米 Xiaomi"},
     {"code": "03690", "hkats": "MET", "name": "美團 Meituan"},
     {"code": "00388", "hkats": "HEX", "name": "港交所 HKEX"},
+    {"code": "01024", "hkats": "KST", "name": "快手 Kuaishou"},
 ]
 
 def to_code(date_str: str) -> str:

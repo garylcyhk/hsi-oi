@@ -609,7 +609,7 @@ function onCal(){
   else { const c=dates.filter(d=>d<=v); if(c.length) render(c[0]); else if(dates.length) render(dates[dates.length-1]); }
 }
 
-const STOCK_ORDER = ["TCH","ALB","MIU","MET","HEX"];
+const STOCK_ORDER = ["TCH","ALB","MIU","MET","HEX","KST"];
 
 function nearestWalls(u){
   const close = u.close || 0;
