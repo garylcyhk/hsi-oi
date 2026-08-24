@@ -785,11 +785,11 @@ function selectStock(hkats){
 function render(date){
   const r=reports[date]; if(!r){ document.getElementById("status").textContent="無資料"; return; }
   curDate=date;
-  document.getElementById("status").textContent=`顯示 ${date} · ${dates.length} 個交易日 · 5 隻股票期權`;
+  document.getElementById("status").textContent=`顯示 ${date} · ${dates.length} 個交易日 · ${STOCK_ORDER.length} 隻股票期權`;
   document.getElementById("dateSelect").innerHTML=dates.map(d=>`<option value="${d}" ${d===date?"selected":""}>${d}</option>`).join("");
   const cal=document.getElementById("dateCal"); if(cal){ cal.value=date; if(dates.length){ cal.min=dates[dates.length-1]; cal.max=dates[0]; } }
   document.getElementById("src").href=r.sourceUrl||"#";
-  const order=["TCH","ALB","MIU","MET","HEX"];
+  const order=STOCK_ORDER;
   document.getElementById("stockTabs").innerHTML=order.map(h=>{
     const u=r.underlyings[h]; if(!u) return "";
     const codeLabel=String(u.code||"").replace(/^0+/,"")||u.code;
