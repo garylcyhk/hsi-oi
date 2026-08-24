@@ -1,6 +1,6 @@
 /* Exodus site gate — client-side only (not real server security) */
 (function(){
-  const HASH = "abbcf0ae965c7aa42dd0b7ed6c10ac2cd7bb4815f59844f201dbf6f38431aa98";
+  const HASH = "96d4faa7fc30584f2f5612e58ff222b062cbd49d5910151899f54494f174120e";
   const KEY = "exodus_auth_ok_v1";
   const HOURS = 12;
 
