@@ -154,6 +154,29 @@ body.compact .item .v{ font-size:.95rem; }
   flex: 1; height: 100%;
 }
 #consLine { grid-column: 1 / -1; }
+
+.cons-banner{
+  grid-column:1/-1;
+  border-radius:8px;
+  padding:10px 14px;
+  font-size:.85rem;
+  border:1px solid #27272a;
+  background:#121214;
+  font-family:ui-monospace,monospace;
+}
+.cons-banner.agree{
+  border-color:rgba(52,211,153,.35);
+  background:rgba(52,211,153,.08);
+  color:#34d399;
+}
+.cons-banner.diverge{
+  border-color:rgba(251,191,36,.35);
+  background:rgba(251,191,36,.08);
+  color:#fbbf24;
+}
+.cons-banner.na{ color:#a1a1aa; }
+.cons-banner .cons-title{ font-weight:600; margin-right:8px; }
+
 </style>
 </head>
 <body>
@@ -218,7 +241,7 @@ body.compact .item .v{ font-size:.95rem; }
       <input type="checkbox" id="setShowFut" checked />
     </div>
     <div class="modal-row">
-      <label>顯示一致/分歧提示</label>
+      <label>顯示一致/分歧 · HSI↔Mini</label>
       <input type="checkbox" id="setShowCons" checked />
     </div>
     <div class="modal-actions">
@@ -430,9 +453,16 @@ function render(){
 
   const bH = hsiBias(rH);
   const bM = hsiBias(rM);
-  let cons = "—";
-  if(bH.label!=="—" && bM.label!=="—" && bH.label!=="無資料"){
-    cons = (bH.cls===bM.cls || bH.label===bM.label) ? "HSI↔Mini 牆位判斷一致" : "HSI↔Mini 牆位判斷分歧";
+  let consText = "資料不足，無法比較 HSI / Mini 牆位";
+  let consCls = "na";
+  if(bH.label!=="—" && bM.label!=="—" && bH.label!=="無資料" && bM.label!=="無資料"){
+    if(bH.cls===bM.cls || bH.label===bM.label){
+      consText = "HSI ↔ Mini 牆位判斷一致 · " + bH.label;
+      consCls = "agree";
+    } else {
+      consText = "HSI ↔ Mini 牆位判斷分歧 · HSI「"+bH.label+"」vs Mini「"+bM.label+"」";
+      consCls = "diverge";
+    }
   }
 
   // stocks richer
@@ -470,7 +500,7 @@ function render(){
   document.getElementById("grid").innerHTML = `
     <div id="cardHsi">${optionsCard("恒指期權 HSI", "./options/", rH, dH, "")}</div>
     <div id="cardMini">${optionsCard("小型恒指 Mini-HSI", "./options/", rM, dM, "")}</div>
-    <div id="consLine" class="meta" style="grid-column:1/-1;margin:0 0 4px;padding:0 2px">${cons}</div>
+    <div id="consLine" class="cons-banner ${consCls}"><span class="cons-title">一致 / 分歧</span>${consText}</div>
     <div id="cardStock"><a class="card" href="./stock-oi/">
       <h2><span>股票期權籃子</span><span class="go">詳情 →</span></h2>
       <div class="meta" style="margin-bottom:6px">
