@@ -110,6 +110,50 @@ footer a { color: var(--muted); }
   .brand-logo-link img { height: 32px; }
   h1 { font-size: .95rem; }
 }
+
+.modal-overlay{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.55);
+  z-index:100; align-items:center; justify-content:center; padding:16px;
+}
+.modal-overlay.open{ display:flex; }
+.modal{
+  background:#18181b; border:1px solid #27272a; border-radius:12px;
+  padding:18px 20px; width:100%; max-width:380px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.modal h3{ margin:0 0 14px; font-size:1rem; font-weight:600; }
+.modal-row{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:12px; margin-bottom:12px; font-size:.85rem;
+}
+.modal-row label{ color:var(--muted); flex-shrink:0; }
+.modal-row select, .modal-row input[type="checkbox"]{
+  background:#0f0f12; border:1px solid #27272a; color:var(--text);
+  border-radius:6px; padding:6px 8px; font-size:.82rem;
+}
+.modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+.modal-actions button{
+  border-radius:8px; padding:7px 14px; font-size:.82rem; cursor:pointer;
+  border:1px solid #27272a; background:#27272a; color:var(--text);
+}
+.modal-actions button.primary{
+  background:rgba(52,211,153,.15); border-color:rgba(52,211,153,.35); color:#34d399;
+}
+body.compact .card{ padding:10px 12px; }
+body.compact .grid{ gap:10px; }
+body.compact .item .v{ font-size:.95rem; }
+
+
+#grid > #cardHsi, #grid > #cardMini, #grid > #cardStock, #grid > #cardFut {
+  display: flex; flex-direction: column; min-width: 0;
+}
+#grid > #cardHsi > .card, #grid > #cardMini > .card,
+#grid > #cardStock > .card, #grid > #cardFut > .card,
+#grid > #cardHsi > a.card, #grid > #cardMini > a.card,
+#grid > #cardStock > a.card, #grid > #cardFut > a.card {
+  flex: 1; height: 100%;
+}
+#consLine { grid-column: 1 / -1; }
 </style>
 </head>
 <body>
@@ -132,10 +176,58 @@ footer a { color: var(--muted); }
       <a href="./options/">恒指期權 HSI OI</a>
       <a href="./stock-oi/">股票期權 Stocks</a>
       <a href="./futures/">期貨 Futures</a>
-            <a href="./analysis/">交易表現 Analysis</a>
+      <a href="./analysis/">交易表現 Analysis</a>
+      <div class="menu-divider"></div>
+      <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
+      <button type="button" onclick="closeHeaderMenu();openSettings()">設定 Settings</button>
     </div>
   </div>
 </header>
+
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h3>總覽設定 · Home Settings</h3>
+    <div class="modal-row">
+      <label>字體大小 Font</label>
+      <select id="setFontScale">
+        <option value="85">小 85%</option>
+        <option value="100">標準 100%</option>
+        <option value="115">中 115%</option>
+        <option value="130">大 130%</option>
+        <option value="150">更大 150%</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label>緊湊模式 Compact</label>
+      <input type="checkbox" id="setCompact" />
+    </div>
+    <div class="modal-row">
+      <label>顯示 HSI 期權卡</label>
+      <input type="checkbox" id="setShowHsi" checked />
+    </div>
+    <div class="modal-row">
+      <label>顯示 Mini-HSI 卡</label>
+      <input type="checkbox" id="setShowMini" checked />
+    </div>
+    <div class="modal-row">
+      <label>顯示股票期權卡</label>
+      <input type="checkbox" id="setShowStock" checked />
+    </div>
+    <div class="modal-row">
+      <label>顯示期貨卡</label>
+      <input type="checkbox" id="setShowFut" checked />
+    </div>
+    <div class="modal-row">
+      <label>顯示一致/分歧提示</label>
+      <input type="checkbox" id="setShowCons" checked />
+    </div>
+    <div class="modal-actions">
+      <button type="button" onclick="closeSettings()">取消</button>
+      <button type="button" class="primary" onclick="saveSettings()">儲存</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="container">
   <div class="note" id="status">載入中…</div>
@@ -376,9 +468,10 @@ function render(){
     : "";
 
   document.getElementById("grid").innerHTML = `
-    ${optionsCard("恒指期權 HSI", "./options/", rH, dH, "")}
-    ${optionsCard("小型恒指 Mini-HSI", "./options/", rM, dM, cons)}
-    <a class="card" href="./stock-oi/">
+    <div id="cardHsi">${optionsCard("恒指期權 HSI", "./options/", rH, dH, "")}</div>
+    <div id="cardMini">${optionsCard("小型恒指 Mini-HSI", "./options/", rM, dM, "")}</div>
+    <div id="consLine" class="meta" style="grid-column:1/-1;margin:0 0 4px;padding:0 2px">${cons}</div>
+    <div id="cardStock"><a class="card" href="./stock-oi/">
       <h2><span>股票期權籃子</span><span class="go">詳情 →</span></h2>
       <div class="meta" style="margin-bottom:6px">
         阻力 ${nRes} · 支持 ${nSup} · 夾中 ${nMid} · 牆遠 ${nFar}
@@ -394,8 +487,8 @@ function render(){
         </table>
       </div>
       <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
-    </a>
-    <a class="card" href="./futures/">
+    </a></div>
+    <div id="cardFut"><a class="card" href="./futures/">
       <h2><span>期貨 HSI / MHI</span><span class="go">詳情 →</span></h2>
       <div class="bias ${fr.cls}">${fr.label}</div>
       <div class="bias ${fr.streakCls||"far"}" style="font-size:1rem;margin-top:2px">${fr.streakText||"—"}</div>
@@ -409,10 +502,77 @@ function render(){
         <div class="item"><div class="l">MHI OI</div><div class="v">${fmt(m.oi)} <span class="${clsN(m.oiChange)}">${fmtC(m.oiChange)}</span></div></div>
       </div>
       <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
-    </a>
+    </a></div>
   `;
+  applyHomeSettings();
+}}
+
+const HOME_LS = "exodus_home_settings_v1";
+let homeSettings = {
+  fontScale: 100,
+  compact: false,
+  showHsi: true,
+  showMini: true,
+  showStock: true,
+  showFut: true,
+  showCons: true
+};
+try {
+  const s = JSON.parse(localStorage.getItem(HOME_LS)||"null");
+  if(s) homeSettings = Object.assign(homeSettings, s);
+} catch(e){}
+
+function applyHomeSettings(){
+  document.documentElement.style.fontSize = (homeSettings.fontScale/100*14) + "px";
+  document.body.classList.toggle("compact", !!homeSettings.compact);
+  const map = {
+    cardHsi: homeSettings.showHsi,
+    cardMini: homeSettings.showMini,
+    cardStock: homeSettings.showStock,
+    cardFut: homeSettings.showFut,
+    consLine: homeSettings.showCons
+  };
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = map[id] ? "" : "none";
+  });
 }
+
+function openSettings(){
+  const m = document.getElementById("settingsModal");
+  if(!m) return;
+  document.getElementById("setFontScale").value = String(homeSettings.fontScale||100);
+  document.getElementById("setCompact").checked = !!homeSettings.compact;
+  document.getElementById("setShowHsi").checked = homeSettings.showHsi !== false;
+  document.getElementById("setShowMini").checked = homeSettings.showMini !== false;
+  document.getElementById("setShowStock").checked = homeSettings.showStock !== false;
+  document.getElementById("setShowFut").checked = homeSettings.showFut !== false;
+  document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
+  m.classList.add("open");
+}
+function closeSettings(){
+  const m = document.getElementById("settingsModal");
+  if(m) m.classList.remove("open");
+}
+function saveSettings(){
+  homeSettings.fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
+  homeSettings.compact = document.getElementById("setCompact").checked;
+  homeSettings.showHsi = document.getElementById("setShowHsi").checked;
+  homeSettings.showMini = document.getElementById("setShowMini").checked;
+  homeSettings.showStock = document.getElementById("setShowStock").checked;
+  homeSettings.showFut = document.getElementById("setShowFut").checked;
+  homeSettings.showCons = document.getElementById("setShowCons").checked;
+  try { localStorage.setItem(HOME_LS, JSON.stringify(homeSettings)); } catch(e){}
+  applyHomeSettings();
+  closeSettings();
+}
+function closeHeaderMenu(){
+  const m = document.getElementById("headerMenu");
+  if(m) m.classList.remove("open");
+}
+
 render();
+applyHomeSettings();
 
 </script>
 </body>
