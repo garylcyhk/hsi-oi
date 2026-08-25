@@ -179,6 +179,82 @@ body.compact .item .v{ font-size:.95rem; }
 .cons-banner.na{ color:#a1a1aa; }
 .cons-banner .cons-title{ font-weight:600; margin-right:8px; }
 
+
+/* Daily Pre-Market Checklist */
+.checklist-wrap{
+  margin-top:20px; background:var(--card); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+}
+.checklist-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer;
+  user-select:none;
+}
+.checklist-head:hover{ background:rgba(255,255,255,.02); }
+.checklist-head h2{ margin:0; font-size:.95rem; font-weight:600; }
+.checklist-head .ver{ color:var(--muted); font-size:.72rem; font-weight:400; margin-left:8px; }
+.checklist-head .chev{ color:var(--muted); font-size:.85rem; transition:transform .15s; }
+.checklist-wrap.collapsed .chev{ transform:rotate(-90deg); }
+.checklist-wrap.collapsed .checklist-body{ display:none; }
+.checklist-body{ padding:14px 16px 18px; }
+.cl-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;
+}
+.cl-sec{
+  background:#121214; border:1px solid #1f1f23; border-radius:10px; padding:12px 14px;
+}
+.cl-sec h3{
+  margin:0 0 10px; font-size:.78rem; font-weight:600; color:var(--emerald);
+  letter-spacing:.02em;
+}
+.cl-sec h3 span{ color:var(--muted); font-weight:400; font-size:.7rem; }
+.cl-item{
+  display:flex; align-items:flex-start; gap:8px; padding:4px 0;
+  font-size:.8rem; line-height:1.4; color:var(--text);
+}
+.cl-item input[type=checkbox]{
+  margin-top:3px; flex-shrink:0; accent-color:#34d399; width:15px; height:15px; cursor:pointer;
+}
+.cl-item.done{ color:var(--muted); text-decoration:line-through; opacity:.75; }
+.cl-fill{
+  display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;
+  font-size:.78rem; margin:4px 0 2px; color:var(--muted);
+}
+.cl-fill input[type=text], .cl-fill select, .cl-note input, .cl-note select{
+  background:#0f0f12; border:1px solid #27272a; color:var(--text);
+  border-radius:6px; padding:4px 8px; font-size:.78rem; max-width:140px;
+}
+.cl-fill input.wide{ max-width:200px; min-width:120px; }
+.cl-rule{
+  margin-top:12px; padding:10px 12px; border-radius:8px;
+  border:1px solid rgba(52,211,153,.25); background:rgba(52,211,153,.06);
+  font-size:.8rem; line-height:1.5;
+}
+.cl-rule strong{ color:var(--emerald); }
+.cl-note{
+  margin-top:12px; padding:12px 14px; border-radius:10px;
+  border:1px solid #27272a; background:#0f0f12;
+}
+.cl-note h3{ margin:0 0 10px; font-size:.78rem; color:var(--amber); }
+.cl-note .note-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px 12px;
+}
+.cl-note label{ display:block; font-size:.68rem; color:var(--muted); margin-bottom:3px; }
+.cl-note input, .cl-note select{ width:100%; max-width:none; box-sizing:border-box; }
+.cl-actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.cl-actions button{
+  border-radius:8px; padding:6px 12px; font-size:.78rem; cursor:pointer;
+  border:1px solid #27272a; background:#27272a; color:var(--text);
+}
+.cl-actions button.primary{
+  background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.3); color:#34d399;
+}
+@media print{
+  .checklist-wrap{ break-inside:avoid; border-color:#ccc; }
+  .checklist-wrap.collapsed .checklist-body{ display:block !important; }
+  header, .menu-toggle, .modal-overlay, .cl-actions{ display:none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -246,6 +322,10 @@ body.compact .item .v{ font-size:.95rem; }
       <label>顯示一致/分歧 · HSI↔Mini</label>
       <input type="checkbox" id="setShowCons" checked />
     </div>
+    <div class="modal-row">
+      <label>顯示開市前清單 Checklist</label>
+      <input type="checkbox" id="setShowChecklist" checked />
+    </div>
     <div class="modal-actions">
       <button type="button" onclick="closeSettings()">取消</button>
       <button type="button" class="primary" onclick="saveSettings()">儲存</button>
@@ -257,6 +337,148 @@ body.compact .item .v{ font-size:.95rem; }
 <div class="container">
   <div class="note" id="status">載入中…</div>
   <div class="grid" id="grid"></div>
+</div>
+
+<div class="container" id="checklistBlock" style="padding-top:0">
+  <div class="checklist-wrap" id="checklistWrap">
+    <div class="checklist-head" onclick="toggleChecklist()">
+      <h2>Daily Pre-Market Checklist <span class="ver">v5.1 · 24 Aug 2026</span></h2>
+      <span class="chev" id="clChev">▼</span>
+    </div>
+    <div class="checklist-body" id="checklistBody">
+
+      <div class="cl-grid">
+        <div class="cl-sec">
+          <h3>1. Higher Timeframe <span>· 2 min</span></h3>
+          <label class="cl-item"><input type="checkbox" data-cl="htf1"> Daily trend (up / down / range)</label>
+          <label class="cl-item"><input type="checkbox" data-cl="htf2"> Weekly trend direction</label>
+          <label class="cl-item"><input type="checkbox" data-cl="htf3"> Daily Volume Profile: <strong>P / b / D</strong></label>
+          <label class="cl-item"><input type="checkbox" data-cl="htf4"> Any clear <strong>bP</strong> sequence?</label>
+        </div>
+
+        <div class="cl-sec">
+          <h3>2. Key Levels to Mark</h3>
+          <label class="cl-item"><input type="checkbox" data-cl="lv1"> PDH / PDL</label>
+          <label class="cl-item"><input type="checkbox" data-cl="lv2"> Session High / Low</label>
+          <label class="cl-item"><input type="checkbox" data-cl="lv3"> Daily POC + VAH / VAL</label>
+          <label class="cl-item"><input type="checkbox" data-cl="lv4"> Nearest strong HVN / LVN</label>
+          <label class="cl-item"><input type="checkbox" data-cl="lv5"> Call Wall & Put Wall (OI)</label>
+          <label class="cl-item"><input type="checkbox" data-cl="lv6"> Major swings not yet swept</label>
+        </div>
+
+        <div class="cl-sec">
+          <h3>3. Options & Money Flow <span>· 2 min</span></h3>
+          <label class="cl-item"><input type="checkbox" data-cl="oi1"> Volume Put/Call Ratio</label>
+          <label class="cl-item"><input type="checkbox" data-cl="oi2"> OI Put/Call Ratio</label>
+          <div class="cl-fill">Call Wall <input type="text" class="wide" data-cl-field="callWall" placeholder="level"></div>
+          <div class="cl-fill">Put Wall <input type="text" class="wide" data-cl-field="putWall" placeholder="level"></div>
+          <div class="cl-fill">HSI Money Flow
+            <select data-cl-field="moneyFlow">
+              <option value="">—</option>
+              <option>Bullish</option>
+              <option>Defensive</option>
+              <option>Mixed</option>
+            </select>
+          </div>
+          <div class="cl-fill">Bias
+            <select data-cl-field="selectivity">
+              <option value="">—</option>
+              <option>More selective</option>
+              <option>Normal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cl-sec">
+          <h3>4. News Filter</h3>
+          <label class="cl-item"><input type="checkbox" data-cl="nw1"> Investing.com Economic Calendar</label>
+          <div class="cl-fill">High Impact today?
+            <select data-cl-field="highImpact">
+              <option value="">—</option>
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+          <label class="cl-item"><input type="checkbox" data-cl="nw2"> If Yes → reduce size / flat in window</label>
+        </div>
+
+        <div class="cl-sec">
+          <h3>5. Session Bias & Timing</h3>
+          <label class="cl-item"><input type="checkbox" data-cl="ss1"> Overnight / Asia behaviour</label>
+          <label class="cl-item"><input type="checkbox" data-cl="ss2"> Killzone focus (London / NY if relevant)</label>
+          <div class="cl-fill">Preferred side
+            <select data-cl-field="side">
+              <option value="">—</option>
+              <option>Long bias</option>
+              <option>Selective</option>
+              <option>No trade preference</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cl-sec">
+          <h3>6. Risk & Mindset</h3>
+          <label class="cl-item"><input type="checkbox" data-cl="rk1"> Max risk / trade = <strong>0.5%</strong></label>
+          <label class="cl-item"><input type="checkbox" data-cl="rk2"> Max trades today = <strong>1–2</strong> (prefer 1 A+)</label>
+          <label class="cl-item"><input type="checkbox" data-cl="rk3"> Daily loss limit set</label>
+          <label class="cl-item"><input type="checkbox" data-cl="rk4"> Mood: calm and ready?</label>
+          <label class="cl-item"><input type="checkbox" data-cl="rk5"> Cash is a position. No setup = No trade.</label>
+          <label class="cl-item"><input type="checkbox" data-cl="rk6"> If entry feels early → wait.</label>
+        </div>
+      </div>
+
+      <div class="cl-sec" style="margin-top:12px">
+        <h3>7. A+ Entry Logic <span>· must have all</span></h3>
+        <label class="cl-item"><input type="checkbox" data-cl="ap1"> 1. Liquidity Sweep / Spring</label>
+        <label class="cl-item"><input type="checkbox" data-cl="ap2"> 2. Strong Absorption (Footprint)</label>
+        <label class="cl-item"><input type="checkbox" data-cl="ap3"> 3. Pullback to 0.5 or 0.618</label>
+        <label class="cl-item"><input type="checkbox" data-cl="ap4"> 4. CVD confirmation</label>
+        <label class="cl-item"><input type="checkbox" data-cl="ap5"> 5. Location at POI / HVN / key level</label>
+        <p style="margin:8px 0 0;font-size:.75rem;color:var(--muted)">Seller Exhaustion should appear first.</p>
+      </div>
+
+      <div class="cl-note">
+        <h3>One-Line Daily Note</h3>
+        <div class="note-grid">
+          <div><label>Date</label><input type="text" data-cl-field="noteDate" placeholder="YYYY-MM-DD"></div>
+          <div><label>Profile Shape</label>
+            <select data-cl-field="noteProfile">
+              <option value="">—</option><option>P</option><option>b</option><option>D</option>
+            </select>
+          </div>
+          <div><label>OI PCR</label><input type="text" data-cl-field="notePcr" placeholder="e.g. 0.92"></div>
+          <div><label>Call Wall</label><input type="text" data-cl-field="noteCall" placeholder="level"></div>
+          <div><label>Put Wall</label><input type="text" data-cl-field="notePut" placeholder="level"></div>
+          <div><label>Money Flow</label>
+            <select data-cl-field="noteMF">
+              <option value="">—</option><option>Bullish</option><option>Defensive</option><option>Mixed</option>
+            </select>
+          </div>
+          <div><label>Bias</label>
+            <select data-cl-field="noteBias">
+              <option value="">—</option><option>More selective</option><option>Normal</option>
+            </select>
+          </div>
+          <div><label>High Impact News</label>
+            <select data-cl-field="noteNews">
+              <option value="">—</option><option>No</option><option>Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-rule">
+        <strong>Final Rule</strong> — Shape and options only adjust selectivity.
+        <strong>Absorption + checklist decides the trade.</strong>
+      </div>
+
+      <div class="cl-actions">
+        <button type="button" class="primary" onclick="saveChecklist()">儲存 Save</button>
+        <button type="button" onclick="resetChecklist()">清除今日 Clear today</button>
+        <button type="button" onclick="window.print()">列印 Print</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -547,7 +769,8 @@ let homeSettings = {
   showMini: true,
   showStock: true,
   showFut: true,
-  showCons: true
+  showCons: true,
+  showChecklist: true
 };
 try {
   const s = JSON.parse(localStorage.getItem(HOME_LS)||"null");
@@ -568,6 +791,8 @@ function applyHomeSettings(){
     const el = document.getElementById(id);
     if(el) el.style.display = map[id] ? "" : "none";
   });
+  const cl = document.getElementById("checklistBlock");
+  if(cl) cl.style.display = homeSettings.showChecklist === false ? "none" : "";
 }
 
 function openSettings(){
@@ -580,6 +805,8 @@ function openSettings(){
   document.getElementById("setShowStock").checked = homeSettings.showStock !== false;
   document.getElementById("setShowFut").checked = homeSettings.showFut !== false;
   document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
+  const sc = document.getElementById("setShowChecklist");
+  if(sc) sc.checked = homeSettings.showChecklist !== false;
   m.classList.add("open");
 }
 function closeSettings(){
@@ -594,6 +821,8 @@ function saveSettings(){
   homeSettings.showStock = document.getElementById("setShowStock").checked;
   homeSettings.showFut = document.getElementById("setShowFut").checked;
   homeSettings.showCons = document.getElementById("setShowCons").checked;
+  const sc2 = document.getElementById("setShowChecklist");
+  if(sc2) homeSettings.showChecklist = sc2.checked;
   try { localStorage.setItem(HOME_LS, JSON.stringify(homeSettings)); } catch(e){}
   applyHomeSettings();
   closeSettings();
@@ -603,8 +832,69 @@ function closeHeaderMenu(){
   if(m) m.classList.remove("open");
 }
 
+
+/* Checklist persistence */
+const CL_KEY = "exodus_checklist_v51_";
+function clToday(){
+  const d = new Date();
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
+  return y+"-"+m+"-"+day;
+}
+function loadChecklist(){
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(CL_KEY + clToday()) || "{}") || {}; } catch(e){}
+  document.querySelectorAll("[data-cl]").forEach(cb => {
+    cb.checked = !!data.checks && !!data.checks[cb.getAttribute("data-cl")];
+    const lab = cb.closest(".cl-item");
+    if(lab) lab.classList.toggle("done", cb.checked);
+  });
+  document.querySelectorAll("[data-cl-field]").forEach(el => {
+    const k = el.getAttribute("data-cl-field");
+    if(data.fields && data.fields[k] != null) el.value = data.fields[k];
+  });
+  const nd = document.querySelector('[data-cl-field="noteDate"]');
+  if(nd && !nd.value) nd.value = clToday();
+}
+function saveChecklist(){
+  const checks = {};
+  document.querySelectorAll("[data-cl]").forEach(cb => {
+    checks[cb.getAttribute("data-cl")] = !!cb.checked;
+  });
+  const fields = {};
+  document.querySelectorAll("[data-cl-field]").forEach(el => {
+    fields[el.getAttribute("data-cl-field")] = el.value;
+  });
+  try { localStorage.setItem(CL_KEY + clToday(), JSON.stringify({ checks, fields })); } catch(e){}
+}
+function resetChecklist(){
+  if(!confirm("清除今日 checklist？")) return;
+  try { localStorage.removeItem(CL_KEY + clToday()); } catch(e){}
+  document.querySelectorAll("[data-cl]").forEach(cb => {
+    cb.checked = false;
+    const lab = cb.closest(".cl-item");
+    if(lab) lab.classList.remove("done");
+  });
+  document.querySelectorAll("[data-cl-field]").forEach(el => { el.value = ""; });
+  const nd = document.querySelector('[data-cl-field="noteDate"]');
+  if(nd) nd.value = clToday();
+}
+function toggleChecklist(){
+  const w = document.getElementById("checklistWrap");
+  if(w) w.classList.toggle("collapsed");
+}
+document.addEventListener("change", function(e){
+  const t = e.target;
+  if(t && t.matches && t.matches("[data-cl]")){
+    const lab = t.closest(".cl-item");
+    if(lab) lab.classList.toggle("done", t.checked);
+    saveChecklist();
+  }
+  if(t && t.matches && t.matches("[data-cl-field]")) saveChecklist();
+});
+
 render();
 applyHomeSettings();
+loadChecklist();
 
 </script>
 </body>
