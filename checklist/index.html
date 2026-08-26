@@ -60,6 +60,18 @@ footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
 
 .tab-dragging{ opacity:.45; }
 .tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
+
+#clFontScale{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:4px 8px;font-size:.78rem}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.modal h3{margin:0 0 14px;font-size:1rem}
+.modal-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:.85rem}
+.modal-row label{color:var(--muted)}
+.modal-row select{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
 </style>
 </head>
 <body>
@@ -79,14 +91,46 @@ footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
       <a href="../analysis/">交易表現 Analysis</a>
       <a href="./" class="menu-active">開市清單 Checklist</a>
       <div class="menu-divider"></div>
-      <button type="button" onclick="window.print()">列印 Print</button>
+      <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
+      <button type="button" onclick="closeHeaderMenu();openSettings()">設定 Settings</button>
     </div>
   </div>
 </header>
 
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h3>開市清單設定 · Checklist Settings</h3>
+    <div class="modal-row">
+      <label>字體大小 Font</label>
+      <select id="setFontScale">
+        <option value="85">小 85%</option>
+        <option value="100">標準 100%</option>
+        <option value="115">中 115%</option>
+        <option value="130">大 130%</option>
+        <option value="150">更大 150%</option>
+        <option value="170">特大 170%</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn" onclick="closeSettings()">取消</button>
+      <button type="button" class="btn primary" onclick="saveSettings()">儲存</button>
+    </div>
+  </div>
+</div>
+
+
 <div class="container">
   <div class="toolbar">
     <span class="note" id="status">今日清單可勾選、改寫、拖曳排序 · 自動儲存在瀏覽器</span>
+    <label class="note" style="display:flex;align-items:center;gap:6px;white-space:nowrap">字體
+      <select id="clFontScale" onchange="setClFont(this.value)">
+        <option value="85">小 85%</option>
+        <option value="100" selected>標準 100%</option>
+        <option value="115">中 115%</option>
+        <option value="130">大 130%</option>
+        <option value="150">更大 150%</option>
+      </select>
+    </label>
     <button class="btn" id="editBtn" onclick="toggleEdit()">編輯 Edit</button>
     <button class="btn" onclick="addSection()">＋ 新區塊</button>
     <button class="btn primary" onclick="saveAll()">儲存 Save</button>
@@ -347,6 +391,50 @@ document.addEventListener("click", function(e){
 ["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
   document.getElementById(id).addEventListener("change", saveAll);
 });
+
+
+const FONT_KEY = "exodus_cl_font_v1";
+function setClFont(v){
+  const n = parseInt(v,10) || 100;
+  document.documentElement.style.fontSize = (n/100*14) + "px";
+  try { localStorage.setItem(FONT_KEY, String(n)); } catch(e){}
+  const sel = document.getElementById("clFontScale");
+  if(sel) sel.value = String(n);
+}
+(function initClFont(){
+  let n = 100;
+  try { n = parseInt(localStorage.getItem(FONT_KEY)||"100",10)||100; } catch(e){}
+  setClFont(n);
+})();
+
+
+const CL_SET = "exodus_checklist_settings_v1";
+let clSet = { fontScale: 100 };
+try { Object.assign(clSet, JSON.parse(localStorage.getItem(CL_SET)||"{}")); } catch(e){}
+function applyFont(){
+  document.documentElement.style.fontSize = ((clSet.fontScale||100)/100*14) + "px";
+}
+function openSettings(){
+  const m = document.getElementById("settingsModal");
+  if(!m) return;
+  document.getElementById("setFontScale").value = String(clSet.fontScale||100);
+  m.classList.add("open");
+}
+function closeSettings(){
+  const m = document.getElementById("settingsModal");
+  if(m) m.classList.remove("open");
+}
+function saveSettings(){
+  clSet.fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
+  try { localStorage.setItem(CL_SET, JSON.stringify(clSet)); } catch(e){}
+  applyFont();
+  closeSettings();
+}
+function closeHeaderMenu(){
+  const m = document.getElementById("headerMenu");
+  if(m) m.classList.remove("open");
+}
+applyFont();
 
 loadTemplate();
 loadDay();
