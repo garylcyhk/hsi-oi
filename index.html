@@ -255,6 +255,29 @@ body.compact .item .v{ font-size:.95rem; }
   header, .menu-toggle, .modal-overlay, .cl-actions{ display:none !important; }
 }
 
+
+.cl-write{
+  margin-top:12px; padding:12px 14px; border-radius:10px;
+  border:1px solid #27272a; background:#0f0f12;
+}
+.cl-write h3{ margin:0 0 8px; font-size:.78rem; color:#e4e4e7; }
+.cl-write textarea{
+  width:100%; min-height:120px; box-sizing:border-box; resize:vertical;
+  background:#09090b; border:1px solid #27272a; color:var(--text);
+  border-radius:8px; padding:10px 12px; font-size:.85rem; line-height:1.5;
+  font-family:inherit;
+}
+.cl-write textarea:focus{ outline:none; border-color:#3f3f46; }
+.cl-save-msg{
+  font-size:.75rem; color:#34d399; min-height:1.1em; margin-left:8px;
+}
+.cl-skip-bar{
+  display:none; margin-top:16px; padding:10px 14px; border-radius:10px;
+  border:1px dashed #3f3f46; color:var(--muted); font-size:.82rem;
+  align-items:center; justify-content:space-between; gap:10px;
+}
+.cl-skip-bar.show{ display:flex; }
+
 </style>
 </head>
 <body>
@@ -278,6 +301,7 @@ body.compact .item .v{ font-size:.95rem; }
       <a href="./stock-oi/">股票期權 Stocks</a>
       <a href="./futures/">期貨 Futures</a>
       <a href="./analysis/">交易表現 Analysis</a>
+      <a href="./checklist/">開市清單 Checklist</a>
       <div class="menu-divider"></div>
       <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
       <button type="button" onclick="closeHeaderMenu();openSettings()">設定 Settings</button>
@@ -336,10 +360,14 @@ body.compact .item .v{ font-size:.95rem; }
 
 <div class="container">
   <div class="note" id="status">載入中…</div>
+  <a id="clLinkCard" class="card" href="./checklist/" style="display:block;margin-bottom:12px;text-decoration:none;color:inherit">
+    <h2><span>開市清單 Daily Pre-Market Checklist</span><span class="go">開啟 →</span></h2>
+    <div class="meta">可寫、儲存、拖曳重排區塊 · 不佔總覽主畫面</div>
+  </a>
   <div class="grid" id="grid"></div>
 </div>
 
-<div class="container" id="checklistBlock" style="padding-top:0">
+<div class="container" id="checklistBlock" style="padding-top:0;display:none">
   <div class="checklist-wrap" id="checklistWrap">
     <div class="checklist-head" onclick="toggleChecklist()">
       <h2>Daily Pre-Market Checklist <span class="ver">v5.1 · 24 Aug 2026</span></h2>
@@ -467,17 +495,28 @@ body.compact .item .v{ font-size:.95rem; }
         </div>
       </div>
 
+      <div class="cl-write">
+        <h3>今日筆記 · Write & save</h3>
+        <textarea id="clFreeWrite" data-cl-field="freeWrite" placeholder="寫下今日觀察、牆位、偏向、要注意的新聞… Autosave in this browser."></textarea>
+      </div>
+
       <div class="cl-rule">
         <strong>Final Rule</strong> — Shape and options only adjust selectivity.
         <strong>Absorption + checklist decides the trade.</strong>
       </div>
 
       <div class="cl-actions">
-        <button type="button" class="primary" onclick="saveChecklist()">儲存 Save</button>
+        <button type="button" class="primary" onclick="saveChecklist(true)">儲存 Save</button>
         <button type="button" onclick="resetChecklist()">清除今日 Clear today</button>
         <button type="button" onclick="window.print()">列印 Print</button>
+        <button type="button" onclick="skipChecklistToday()">今日略過 Skip today</button>
+        <span class="cl-save-msg" id="clSaveMsg"></span>
       </div>
     </div>
+  </div>
+  <div class="cl-skip-bar" id="clSkipBar">
+    <span>今日已略過 checklist · Checklist skipped today.</span>
+    <button type="button" onclick="unskipChecklistToday()">顯示 Show</button>
   </div>
 </div>
 
@@ -854,8 +893,9 @@ function loadChecklist(){
   });
   const nd = document.querySelector('[data-cl-field="noteDate"]');
   if(nd && !nd.value) nd.value = clToday();
+  applySkipUI(!!data.skipped);
 }
-function saveChecklist(){
+function readChecklistState(){
   const checks = {};
   document.querySelectorAll("[data-cl]").forEach(cb => {
     checks[cb.getAttribute("data-cl")] = !!cb.checked;
@@ -864,7 +904,46 @@ function saveChecklist(){
   document.querySelectorAll("[data-cl-field]").forEach(el => {
     fields[el.getAttribute("data-cl-field")] = el.value;
   });
-  try { localStorage.setItem(CL_KEY + clToday(), JSON.stringify({ checks, fields })); } catch(e){}
+  return { checks, fields };
+}
+function saveChecklist(showMsg){
+  let prev = {};
+  try { prev = JSON.parse(localStorage.getItem(CL_KEY + clToday()) || "{}") || {}; } catch(e){}
+  const cur = readChecklistState();
+  const payload = { checks: cur.checks, fields: cur.fields, skipped: !!prev.skipped };
+  try { localStorage.setItem(CL_KEY + clToday(), JSON.stringify(payload)); } catch(e){
+    alert("無法儲存（瀏覽器封鎖了 localStorage）");
+    return;
+  }
+  if(showMsg){
+    const m = document.getElementById("clSaveMsg");
+    if(m){ m.textContent = "已儲存 · Saved " + new Date().toLocaleTimeString(); }
+  }
+}
+function applySkipUI(skipped){
+  const wrap = document.getElementById("checklistWrap");
+  const bar = document.getElementById("clSkipBar");
+  if(wrap) wrap.style.display = skipped ? "none" : "";
+  if(bar) bar.classList.toggle("show", !!skipped);
+}
+function skipChecklistToday(){
+  if(!confirm("今日略過 checklist？\nSkip checklist for today?")) return;
+  let prev = {};
+  try { prev = JSON.parse(localStorage.getItem(CL_KEY + clToday()) || "{}") || {}; } catch(e){}
+  const cur = readChecklistState();
+  try {
+    localStorage.setItem(CL_KEY + clToday(), JSON.stringify({
+      checks: cur.checks, fields: cur.fields, skipped: true
+    }));
+  } catch(e){}
+  applySkipUI(true);
+}
+function unskipChecklistToday(){
+  let prev = {};
+  try { prev = JSON.parse(localStorage.getItem(CL_KEY + clToday()) || "{}") || {}; } catch(e){}
+  prev.skipped = false;
+  try { localStorage.setItem(CL_KEY + clToday(), JSON.stringify(prev)); } catch(e){}
+  applySkipUI(false);
 }
 function resetChecklist(){
   if(!confirm("清除今日 checklist？")) return;

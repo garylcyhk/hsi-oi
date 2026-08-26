@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>開市清單 · Exodus Trading Group</title>
+<style>
+:root { --bg:#09090b; --card:#18181b; --border:#27272a; --text:#e4e4e7; --muted:#a1a1aa; --emerald:#34d399; --rose:#fb7185; --amber:#fbbf24; }
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link{display:block;line-height:0}
+.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover}
+h1{margin:0;font-size:1.05rem;font-weight:600}
+h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left;box-sizing:border-box}
+.menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.container{width:100%;max-width:1100px;margin:0 auto;padding:16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.toolbar .note{color:var(--muted);font-size:.78rem;flex:1}
+.btn{border-radius:8px;padding:7px 12px;font-size:.8rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
+.btn.primary{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.35);color:#34d399}
+.btn.ghost{background:transparent}
+.btn.danger{color:#fb7185;border-color:rgba(251,113,133,.3)}
+.secs{display:flex;flex-direction:column;gap:12px}
+.sec{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.sec.dragging{opacity:.45}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sec-head .grip,.item .grip{cursor:grab;color:#52525b;padding:2px 4px;user-select:none;font-size:.9rem}
+.sec-head input.title{flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);font-weight:600;font-size:.85rem;padding:4px 6px;border-radius:6px}
+.sec-head input.title:focus,.item input.txt:focus{border-color:#3f3f46;outline:none;background:#0f0f12}
+.item{display:flex;align-items:flex-start;gap:6px;padding:4px 0}
+.item.done input.txt{color:var(--muted);text-decoration:line-through}
+.item input[type=checkbox]{margin-top:5px;accent-color:#34d399}
+.item input.txt{flex:1;background:transparent;border:1px dashed transparent;color:var(--text);font-size:.82rem;padding:4px 6px;border-radius:6px}
+.item button.x,.sec-head button.x{border:none;background:transparent;color:#52525b;cursor:pointer;font-size:.9rem;padding:2px 6px}
+.item button.x:hover,.sec-head button.x:hover{color:#fb7185}
+.note-box{margin-top:14px;background:#121214;border:1px solid var(--border);border-radius:12px;padding:14px}
+.note-box h3{margin:0 0 10px;font-size:.8rem;color:var(--amber)}
+.note-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 12px}
+.note-grid label{display:block;font-size:.68rem;color:var(--muted);margin-bottom:3px}
+.note-grid input,.note-grid select{width:100%;background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
+.rule{margin-top:12px;padding:10px 12px;border-radius:8px;border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.06);font-size:.8rem;line-height:1.5}
+footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
+.edit-on .sec-head input.title,.edit-on .item input.txt{border-color:#27272a}
+.hint{font-size:.72rem;color:#71717a;margin-top:6px}
+@media print{
+  header,.toolbar,.item .grip,.sec-head .grip,.item .x,.sec-head .x,.btn{display:none!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus"></a>
+    <h1>開市清單 <span>Checklist v5.1</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" aria-label="選單">☰</button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="./" class="menu-active">開市清單 Checklist</a>
+      <div class="menu-divider"></div>
+      <button type="button" onclick="window.print()">列印 Print</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <span class="note" id="status">今日清單可勾選、改寫、拖曳排序 · 自動儲存在瀏覽器</span>
+    <button class="btn" id="editBtn" onclick="toggleEdit()">編輯 Edit</button>
+    <button class="btn" onclick="addSection()">＋ 新區塊</button>
+    <button class="btn primary" onclick="saveAll()">儲存 Save</button>
+    <button class="btn" onclick="resetToday()">清除今日勾選</button>
+    <button class="btn danger" onclick="resetTemplate()">還原預設模板</button>
+  </div>
+  <div class="secs" id="secs"></div>
+  <div class="note-box">
+    <h3>One-Line Daily Note</h3>
+    <div class="note-grid">
+      <div><label>Date</label><input id="nDate"></div>
+      <div><label>Profile Shape</label><select id="nProfile"><option value="">—</option><option>P</option><option>b</option><option>D</option></select></div>
+      <div><label>OI PCR</label><input id="nPcr"></div>
+      <div><label>Call Wall</label><input id="nCall"></div>
+      <div><label>Put Wall</label><input id="nPut"></div>
+      <div><label>Money Flow</label><select id="nMF"><option value="">—</option><option>Bullish</option><option>Defensive</option><option>Mixed</option></select></div>
+      <div><label>Bias</label><select id="nBias"><option value="">—</option><option>More selective</option><option>Normal</option></select></div>
+      <div><label>High Impact News</label><select id="nNews"><option value="">—</option><option>No</option><option>Yes</option></select></div>
+    </div>
+  </div>
+  <div class="rule"><strong>Final Rule</strong> — Shape and options only adjust selectivity. <strong>Absorption + checklist decides the trade.</strong></div>
+  <div class="hint">拖曳 ☰ 可重排區塊與項目 · 編輯模式下可改文字、加項、刪項 · 資料只存在本機瀏覽器（localStorage）</div>
+</div>
+<footer>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</footer>
+
+<script>
+const TPL_KEY = "exodus_cl_template_v2";
+const DAY_KEY = "exodus_cl_day_v2_";
+function today(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+const DEFAULT_SECS = [
+  { id:"s1", title:"1. Higher Timeframe Context (2 min)", items:[
+    "Daily trend direction (up / down / range)",
+    "Weekly trend direction",
+    "Recent Daily Volume Profile shape: P / b / D",
+    "Special note: Any clear bP sequence?"
+  ]},
+  { id:"s2", title:"2. Key Levels to Mark", items:[
+    "Previous Day High / Low (PDH / PDL)",
+    "Session High / Low",
+    "Daily POC + VAH / VAL",
+    "Nearest strong HVN and LVN",
+    "Call Wall & Put Wall (from options OI)",
+    "Major swing highs / lows not yet swept"
+  ]},
+  { id:"s3", title:"3. Options & Money Flow Bias (2 min)", items:[
+    "Volume Put/Call Ratio",
+    "OI Put/Call Ratio",
+    "Call Wall / Put Wall levels noted",
+    "HSI Money Flow (DBS / Citics): Bullish / Defensive / Mixed",
+    "Bias note: More selective / Normal"
+  ]},
+  { id:"s4", title:"4. News Filter", items:[
+    "Check Investing.com Economic Calendar",
+    "Any High Impact news today?",
+    "If Yes → reduce size or stay flat during the event"
+  ]},
+  { id:"s5", title:"5. Session Bias & Timing", items:[
+    "Overnight / Asia session behaviour",
+    "Expected killzone focus (London / NY if relevant)",
+    "Preferred side: Long / Selective / No trade"
+  ]},
+  { id:"s6", title:"6. Risk & Mindset Check", items:[
+    "Max risk per trade = 0.5%",
+    "Max trades today = 1–2 only (prefer 1 A+)",
+    "Daily loss limit set",
+    "Mood check: Calm and ready?",
+    "Cash is a position. No setup = No trade.",
+    "If the entry still feels early → wait."
+  ]},
+  { id:"s7", title:"7. A+ Entry Logic (Must Have All)", items:[
+    "Liquidity Sweep / Spring",
+    "Strong Absorption (Footprint)",
+    "Pullback to 0.5 or 0.618",
+    "CVD confirmation",
+    "Location at POI / HVN / key level",
+    "Seller Exhaustion should appear first"
+  ]}
+];
+
+let secs = [];
+let checks = {};
+let editMode = false;
+let dragSec = null, dragItem = null;
+
+function loadTemplate(){
+  try {
+    const raw = localStorage.getItem(TPL_KEY);
+    if(raw){ secs = JSON.parse(raw); return; }
+  } catch(e){}
+  secs = JSON.parse(JSON.stringify(DEFAULT_SECS));
+}
+function loadDay(){
+  checks = {};
+  try {
+    const raw = localStorage.getItem(DAY_KEY + today());
+    if(raw){
+      const o = JSON.parse(raw);
+      checks = o.checks || {};
+      const f = o.fields || {};
+      ["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el && f[id]!=null) el.value = f[id];
+      });
+    }
+  } catch(e){}
+  const nd = document.getElementById("nDate");
+  if(nd && !nd.value) nd.value = today();
+}
+function saveAll(){
+  try { localStorage.setItem(TPL_KEY, JSON.stringify(secs)); } catch(e){}
+  const fields = {};
+  ["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) fields[id] = el.value;
+  });
+  try { localStorage.setItem(DAY_KEY + today(), JSON.stringify({ checks, fields })); } catch(e){}
+  const st = document.getElementById("status");
+  if(st){ st.textContent = "已儲存 · Saved " + new Date().toLocaleTimeString(); }
+}
+
+function uid(){ return "i"+Math.random().toString(36).slice(2,9); }
+
+function render(){
+  const box = document.getElementById("secs");
+  box.innerHTML = "";
+  document.body.classList.toggle("edit-on", editMode);
+  secs.forEach((sec, si) => {
+    const el = document.createElement("div");
+    el.className = "sec";
+    el.draggable = editMode;
+    el.dataset.si = si;
+    el.addEventListener("dragstart", onSecDragStart);
+    el.addEventListener("dragover", onSecDragOver);
+    el.addEventListener("drop", onSecDrop);
+    const head = document.createElement("div");
+    head.className = "sec-head";
+    head.innerHTML = `<span class="grip" title="拖曳排序">☰</span>`;
+    const title = document.createElement("input");
+    title.className = "title";
+    title.value = sec.title;
+    title.readOnly = !editMode;
+    title.addEventListener("input", () => { sec.title = title.value; });
+    head.appendChild(title);
+    if(editMode){
+      const add = document.createElement("button");
+      add.className = "btn ghost"; add.textContent = "＋項";
+      add.onclick = () => { sec.items.push("New item"); render(); saveAll(); };
+      const del = document.createElement("button");
+      del.className = "x"; del.textContent = "✕";
+      del.onclick = () => { if(confirm("刪除此區塊？")){ secs.splice(si,1); render(); saveAll(); } };
+      head.appendChild(add); head.appendChild(del);
+    }
+    el.appendChild(head);
+    (sec.items||[]).forEach((txt, ii) => {
+      const row = document.createElement("div");
+      row.className = "item";
+      row.draggable = editMode;
+      row.dataset.si = si; row.dataset.ii = ii;
+      row.addEventListener("dragstart", onItemDragStart);
+      row.addEventListener("dragover", onItemDragOver);
+      row.addEventListener("drop", onItemDrop);
+      const key = sec.id + ":" + ii;
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = !!checks[key];
+      if(cb.checked) row.classList.add("done");
+      cb.onchange = () => { checks[key] = cb.checked; row.classList.toggle("done", cb.checked); saveAll(); };
+      const grip = document.createElement("span"); grip.className = "grip"; grip.textContent = "⋮⋮";
+      const inp = document.createElement("input");
+      inp.className = "txt"; inp.value = txt; inp.readOnly = !editMode;
+      inp.addEventListener("input", () => { sec.items[ii] = inp.value; });
+      inp.addEventListener("change", saveAll);
+      row.appendChild(grip); row.appendChild(cb); row.appendChild(inp);
+      if(editMode){
+        const x = document.createElement("button");
+        x.className = "x"; x.textContent = "✕";
+        x.onclick = () => { sec.items.splice(ii,1); render(); saveAll(); };
+        row.appendChild(x);
+      }
+      el.appendChild(row);
+    });
+    box.appendChild(el);
+  });
+}
+
+function onSecDragStart(e){
+  if(!editMode) return;
+  dragSec = +e.currentTarget.dataset.si;
+  e.dataTransfer.effectAllowed = "move";
+}
+function onSecDragOver(e){ if(editMode){ e.preventDefault(); } }
+function onSecDrop(e){
+  e.preventDefault();
+  if(!editMode || dragSec==null) return;
+  const to = +e.currentTarget.dataset.si;
+  if(isNaN(to) || to===dragSec) return;
+  const [m] = secs.splice(dragSec,1);
+  secs.splice(to,0,m);
+  dragSec = null;
+  render(); saveAll();
+}
+function onItemDragStart(e){
+  if(!editMode) return;
+  e.stopPropagation();
+  dragItem = { si:+e.currentTarget.dataset.si, ii:+e.currentTarget.dataset.ii };
+  e.dataTransfer.effectAllowed = "move";
+}
+function onItemDragOver(e){ if(editMode){ e.preventDefault(); e.stopPropagation(); } }
+function onItemDrop(e){
+  e.preventDefault(); e.stopPropagation();
+  if(!editMode || !dragItem) return;
+  const tsi = +e.currentTarget.dataset.si, tii = +e.currentTarget.dataset.ii;
+  const from = secs[dragItem.si].items;
+  const [m] = from.splice(dragItem.ii,1);
+  secs[tsi].items.splice(tii,0,m);
+  dragItem = null;
+  render(); saveAll();
+}
+
+function toggleEdit(){
+  editMode = !editMode;
+  document.getElementById("editBtn").textContent = editMode ? "完成 Done" : "編輯 Edit";
+  render();
+}
+function addSection(){
+  secs.push({ id: uid(), title: "New section", items: ["New item"] });
+  editMode = true;
+  document.getElementById("editBtn").textContent = "完成 Done";
+  render(); saveAll();
+}
+function resetToday(){
+  if(!confirm("清除今日勾選與筆記？模板文字會保留。")) return;
+  checks = {};
+  try { localStorage.removeItem(DAY_KEY + today()); } catch(e){}
+  ["nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value="";
+  });
+  document.getElementById("nDate").value = today();
+  render();
+}
+function resetTemplate(){
+  if(!confirm("還原預設 v5.1 模板？自訂文字會消失。")) return;
+  secs = JSON.parse(JSON.stringify(DEFAULT_SECS));
+  try { localStorage.removeItem(TPL_KEY); } catch(e){}
+  render(); saveAll();
+}
+
+function toggleHeaderMenu(e){
+  if(e) e.stopPropagation();
+  document.getElementById("headerMenu").classList.toggle("open");
+}
+document.addEventListener("click", function(e){
+  const m = document.getElementById("headerMenu");
+  if(m && !m.contains(e.target)) m.classList.remove("open");
+});
+["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
+  document.getElementById(id).addEventListener("change", saveAll);
+});
+
+loadTemplate();
+loadDay();
+render();
+</script>
+</body>
+</html>
