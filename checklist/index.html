@@ -57,6 +57,9 @@ footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
 @media print{
   header,.toolbar,.item .grip,.sec-head .grip,.item .x,.sec-head .x,.btn{display:none!important}
 }
+
+.tab-dragging{ opacity:.45; }
+.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
 </style>
 </head>
 <body>
@@ -349,5 +352,6 @@ loadTemplate();
 loadDay();
 render();
 </script>
+<script src="../tab-order.js"></script>
 </body>
 </html>

@@ -278,6 +278,9 @@ body.compact .item .v{ font-size:.95rem; }
 }
 .cl-skip-bar.show{ display:flex; }
 
+
+.tab-dragging{ opacity:.45; }
+.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
 </style>
 </head>
 <body>
@@ -976,5 +979,6 @@ applyHomeSettings();
 loadChecklist();
 
 </script>
+<script src="tab-order.js"></script>
 </body>
 </html>

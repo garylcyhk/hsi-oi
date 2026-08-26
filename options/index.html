@@ -588,6 +588,9 @@ footer p:first-child{font-size:.8rem}
 .site-nav{display:none!important}
 .menu-dropdown button.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
 .product-toggle{display:none!important}
+
+.tab-dragging{ opacity:.45; }
+.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
 </style>
 </head>
 <body>
@@ -2054,5 +2057,6 @@ document.addEventListener('click', function(e){
 });
 
 </script>
+<script src="../tab-order.js"></script>
 </body>
 </html>

@@ -264,6 +264,9 @@ footer p:first-child{font-size:.8rem}
 .menu-dropdown{min-width:168px}
 
 .site-nav{display:none!important}
+
+.tab-dragging{ opacity:.45; }
+.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
 </style>
 </head>
 <body>
@@ -821,5 +824,6 @@ document.addEventListener('click', function(e){
 });
 
 </script>
+<script src="../tab-order.js"></script>
 </body>
 </html>

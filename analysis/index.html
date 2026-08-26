@@ -76,6 +76,9 @@ footer{margin-top:24px;padding:16px;text-align:center;color:#52525b;font-size:.7
   h1{font-size:.95rem}
   td input.notes{width:90px}
 }
+
+.tab-dragging{ opacity:.45; }
+.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
 </style>
 </head>
 <body>
@@ -515,5 +518,6 @@ function renderAll(){
 
 renderAll();
 </script>
+<script src="../tab-order.js"></script>
 </body>
 </html>
