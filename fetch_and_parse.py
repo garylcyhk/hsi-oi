@@ -354,6 +354,8 @@ def parse_report(text: str, date_str: str) -> dict:
             "putVolWalls": next_m.get("putVolWalls", []),
         },
         "strikes": front.get("strikes", []),
+        "nextStrikes": next_m.get("strikes", []),
+        "monthLabel": front_month,
         "topVolume": top,
         "futures": {},  # filled by main()
     }

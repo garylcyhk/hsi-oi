@@ -821,6 +821,8 @@ footer p:first-child{font-size:.8rem}
     let currentDate = availableDates[0] || null;
     
     let currentReport = null;
+    let monthMode = "auto"; // auto | front | next
+
 
     function switchProduct(mode){
       if(mode !== "hsi" && mode !== "mini") return;
@@ -1371,12 +1373,14 @@ function switchTab(name) {
     }
 
     function renderLevelsCard(r) {
-      const calls = (r.heavyZones?.callWalls || []).slice(0, 3);
-      const puts = (r.heavyZones?.putWalls || []).slice(0, 3);
-      const allCalls = r.heavyZones?.callWalls || [];
-      const allPuts = r.heavyZones?.putWalls || [];
+      const pack = activeMonth(r);
+      const hz = pack.zones || {};
+      const calls = (hz.callWalls || []).slice(0, 3);
+      const puts = (hz.putWalls || []).slice(0, 3);
+      const allCalls = hz.callWalls || [];
+      const allPuts = hz.putWalls || [];
       const smap = {};
-      (r.strikes || []).forEach(s => { smap[s.strike] = s; });
+      (pack.strikes || []).forEach(s => { smap[s.strike] = s; });
 
       // Settle from HSI futures front month
       const settle = r.futures?.hsif?.front?.settle
@@ -1615,7 +1619,8 @@ function switchTab(name) {
     function renderStrikeTable() {
       if (!currentReport) return;
       const r = currentReport;
-      let rows = [...(r.strikes || [])];
+      const pack = activeMonth(r);
+      let rows = [...(pack.strikes || [])];
 
       // Center for near-money: prefer MHI settle, else HSI, else null
       const fut = currentReport.futures || {};
@@ -1624,7 +1629,7 @@ function switchTab(name) {
         (fut.hsif && fut.hsif.front && fut.hsif.front.settle) ||
         null;
 
-      attachGreeks(rows, center, r.monthLabel || r.month || (r.front && r.front.month));
+      attachGreeks(rows, center, pack.label);
 
       // Filter
       rows = rows.filter(s => {
@@ -1669,12 +1674,20 @@ function switchTab(name) {
       document.getElementById("strikes").innerHTML = `
         <div class="section">
           <div class="section-header">
-            <h2>即月行使價分佈</h2>
+            <h2>${pack.useNext ? "下月" : "即月"}行使價分佈 · ${pack.label}</h2>
             <div class="header-right">
               <span class="tag">顯示 ${rows.length} / ${(r.strikes||[]).length} strikes</span>
             </div>
           </div>
           <div class="controls">
+            <div>
+              <label>月份</label>
+              <select id="monthSelect" onchange="monthMode=this.value;renderStrikeTable();renderLevelsCard(currentReport);">
+                <option value="auto" ${monthMode==="auto"?"selected":""}>自動（到期用下月）</option>
+                <option value="front" ${monthMode==="front"?"selected":""}>即月 ${r.summary && r.summary.frontMonth ? r.summary.frontMonth : ""}</option>
+                <option value="next" ${monthMode==="next"?"selected":""}>下月 ${r.summary && r.summary.nextMonth ? r.summary.nextMonth : ""}</option>
+              </select>
+            </div>
             <div>
               <label>最低 OI</label>
               <input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" oninput="onFilterChange()" />
@@ -1774,6 +1787,38 @@ function switchTab(name) {
       const candidates = availableDates.filter(d => d <= picked);
       if (candidates.length) render(candidates[0]);
       else if (availableDates.length) render(availableDates[availableDates.length - 1]);
+    }
+
+    
+    function frontExpired(r){
+      const rows = r.strikes || [];
+      if (!rows.length) return false;
+      const iv = rows.filter(s => (s.callIV||0) > 0 || (s.putIV||0) > 0).length;
+      const nextIv = (r.nextStrikes||[]).filter(s => (s.callIV||0) > 0 || (s.putIV||0) > 0).length;
+      return iv === 0 && nextIv > 0;
+    }
+    function activeMonth(r){
+      const useNext = monthMode === "next" || (monthMode === "auto" && frontExpired(r));
+      if (useNext && (r.nextStrikes||[]).length){
+        const z = r.nextMonthZones || {};
+        return {
+          useNext: true,
+          label: z.month || r.summary.nextMonth || "下月",
+          strikes: r.nextStrikes,
+          zones: {
+            callWalls: z.callWalls || [],
+            putWalls: z.putWalls || [],
+            callVolWalls: z.callVolWalls || [],
+            putVolWalls: z.putVolWalls || []
+          }
+        };
+      }
+      return {
+        useNext: false,
+        label: (r.summary && r.summary.frontMonth) || r.monthLabel || "即月",
+        strikes: r.strikes || [],
+        zones: r.heavyZones || {}
+      };
     }
 
     function render(date) {
