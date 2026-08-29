@@ -5,6 +5,7 @@ window.HSI_REPORTS = {
     "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc260818.htm",
     "summary": {
       "frontMonth": "2026-08",
+      "nextMonth": "2026-09",
       "callOI": 17299,
       "putOI": 28735,
       "callOIChange": 466,
@@ -132,6 +133,127 @@ window.HSI_REPORTS = {
         }
       ]
     },
+    "nextMonthZones": {
+      "month": "2026-09",
+      "callOI": 12809,
+      "putOI": 17189,
+      "callWalls": [
+        {
+          "strike": 28000,
+          "oi": 1715,
+          "oiChange": 9
+        },
+        {
+          "strike": 25000,
+          "oi": 1139,
+          "oiChange": 0
+        },
+        {
+          "strike": 27000,
+          "oi": 1063,
+          "oiChange": 31
+        },
+        {
+          "strike": 28800,
+          "oi": 813,
+          "oiChange": 0
+        },
+        {
+          "strike": 27200,
+          "oi": 573,
+          "oiChange": 16
+        },
+        {
+          "strike": 26400,
+          "oi": 569,
+          "oiChange": 2
+        }
+      ],
+      "putWalls": [
+        {
+          "strike": 17600,
+          "oi": 2959,
+          "oiChange": 5
+        },
+        {
+          "strike": 22000,
+          "oi": 1583,
+          "oiChange": -7
+        },
+        {
+          "strike": 25000,
+          "oi": 1112,
+          "oiChange": 0
+        },
+        {
+          "strike": 19800,
+          "oi": 694,
+          "oiChange": 5
+        },
+        {
+          "strike": 23800,
+          "oi": 638,
+          "oiChange": 8
+        },
+        {
+          "strike": 21800,
+          "oi": 594,
+          "oiChange": 1
+        }
+      ],
+      "callVolWalls": [
+        {
+          "strike": 27000,
+          "volume": 65
+        },
+        {
+          "strike": 27400,
+          "volume": 37
+        },
+        {
+          "strike": 28200,
+          "volume": 36
+        },
+        {
+          "strike": 27200,
+          "volume": 31
+        },
+        {
+          "strike": 26000,
+          "volume": 25
+        },
+        {
+          "strike": 25800,
+          "volume": 23
+        }
+      ],
+      "putVolWalls": [
+        {
+          "strike": 24000,
+          "volume": 52
+        },
+        {
+          "strike": 23200,
+          "volume": 41
+        },
+        {
+          "strike": 24800,
+          "volume": 40
+        },
+        {
+          "strike": 18000,
+          "volume": 30
+        },
+        {
+          "strike": 23400,
+          "volume": 29
+        },
+        {
+          "strike": 23000,
+          "volume": 24
+        }
+      ]
+    },
     "strikes": [
       {
         "strike": 15000,
@@ -139,10 +261,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10441,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 15100,
@@ -150,10 +274,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10341,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 102
       },
       {
         "strike": 15200,
@@ -161,10 +287,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10241,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 101
       },
       {
         "strike": 15300,
@@ -172,10 +300,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10141,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 100
       },
       {
         "strike": 15500,
@@ -183,10 +313,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9941,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 15600,
@@ -194,10 +326,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9841,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 96
       },
       {
         "strike": 15700,
@@ -205,10 +339,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9741,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 95
       },
       {
         "strike": 15800,
@@ -216,10 +352,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9641,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 15900,
@@ -227,10 +365,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9541,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 93
       },
       {
         "strike": 16000,
@@ -238,10 +378,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9441,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 16100,
@@ -249,10 +391,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9341,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 90
       },
       {
         "strike": 16200,
@@ -260,10 +404,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9241,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 89
       },
       {
         "strike": 16300,
@@ -271,10 +417,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9141,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 88
       },
       {
         "strike": 16400,
@@ -282,10 +430,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9041,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 87
       },
       {
         "strike": 16500,
@@ -293,10 +443,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8941,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 16600,
@@ -304,10 +456,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8841,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 85
       },
       {
         "strike": 16700,
@@ -315,10 +469,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8741,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 84
       },
       {
         "strike": 16800,
@@ -326,10 +482,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8641,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 16900,
@@ -337,10 +495,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8541,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 81
       },
       {
         "strike": 17000,
@@ -348,10 +508,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8441,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 80
       },
       {
         "strike": 17100,
@@ -359,10 +521,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8341,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 79
       },
       {
         "strike": 17200,
@@ -370,10 +534,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8241,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 78
       },
       {
         "strike": 17300,
@@ -381,10 +547,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8141,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 77
       },
       {
         "strike": 17400,
@@ -392,10 +560,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8041,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 76
       },
       {
         "strike": 17500,
@@ -403,10 +573,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7941,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 17600,
@@ -414,10 +586,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7841,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 74
       },
       {
         "strike": 17700,
@@ -425,10 +599,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7741,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 73
       },
       {
         "strike": 17800,
@@ -436,10 +612,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7641,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 72
       },
       {
         "strike": 17900,
@@ -447,10 +625,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7541,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 71
       },
       {
         "strike": 18000,
@@ -458,10 +638,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7441,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 18100,
@@ -469,10 +651,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7341,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 68
       },
       {
         "strike": 18200,
@@ -480,10 +664,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7241,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 67
       },
       {
         "strike": 18300,
@@ -491,10 +677,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7141,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 66
       },
       {
         "strike": 18400,
@@ -502,10 +690,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7041,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 65
       },
       {
         "strike": 18500,
@@ -513,10 +703,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6941,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 18600,
@@ -524,10 +716,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6841,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 63
       },
       {
         "strike": 18700,
@@ -535,10 +729,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6741,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 18800,
@@ -546,10 +742,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6641,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 61
       },
       {
         "strike": 18900,
@@ -557,10 +755,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6541,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 60
       },
       {
         "strike": 19000,
@@ -568,10 +768,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6441,
+        "callIV": 0,
         "putOI": 397,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 59
       },
       {
         "strike": 19100,
@@ -579,10 +781,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6341,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 19200,
@@ -590,10 +794,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6241,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 57
       },
       {
         "strike": 19300,
@@ -601,10 +807,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6141,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 56
       },
       {
         "strike": 19400,
@@ -612,10 +820,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6041,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 19500,
@@ -623,10 +833,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5941,
+        "callIV": 0,
         "putOI": 467,
         "putChange": 0,
         "putVol": 3,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 54
       },
       {
         "strike": 19600,
@@ -634,10 +846,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5841,
+        "callIV": 0,
         "putOI": 333,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 53
       },
       {
         "strike": 19700,
@@ -645,10 +859,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5741,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 52
       },
       {
         "strike": 19800,
@@ -656,10 +872,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5641,
+        "callIV": 0,
         "putOI": 494,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 51
       },
       {
         "strike": 19900,
@@ -667,10 +885,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5541,
+        "callIV": 0,
         "putOI": 403,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 51
       },
       {
         "strike": 20000,
@@ -678,10 +898,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5441,
+        "callIV": 0,
         "putOI": 481,
         "putChange": -7,
         "putVol": 16,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 50
       },
       {
         "strike": 20200,
@@ -689,10 +911,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5241,
+        "callIV": 0,
         "putOI": 238,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 48
       },
       {
         "strike": 20400,
@@ -700,10 +924,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5041,
+        "callIV": 0,
         "putOI": 310,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 46
       },
       {
         "strike": 20600,
@@ -711,10 +937,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4841,
+        "callIV": 0,
         "putOI": 402,
         "putChange": 1,
         "putVol": 3,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 44
       },
       {
         "strike": 20800,
@@ -722,10 +950,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4641,
+        "callIV": 0,
         "putOI": 539,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 42
       },
       {
         "strike": 21000,
@@ -733,10 +963,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4441,
+        "callIV": 0,
         "putOI": 741,
         "putChange": 1,
         "putVol": 9,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 40
       },
       {
         "strike": 21200,
@@ -744,10 +976,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4241,
+        "callIV": 0,
         "putOI": 261,
         "putChange": 7,
         "putVol": 12,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 38
       },
       {
         "strike": 21400,
@@ -755,10 +989,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4041,
+        "callIV": 0,
         "putOI": 482,
         "putChange": 8,
         "putVol": 8,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 36
       },
       {
         "strike": 21600,
@@ -766,10 +1002,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3841,
+        "callIV": 0,
         "putOI": 360,
         "putChange": 5,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 35
       },
       {
         "strike": 21800,
@@ -777,10 +1015,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3641,
+        "callIV": 0,
         "putOI": 276,
         "putChange": 0,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 33
       },
       {
         "strike": 22000,
@@ -788,10 +1028,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3441,
+        "callIV": 0,
         "putOI": 767,
         "putChange": 3,
         "putVol": 8,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 31
       },
       {
         "strike": 22200,
@@ -799,10 +1041,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3241,
+        "callIV": 0,
         "putOI": 336,
         "putChange": 11,
         "putVol": 14,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 29
       },
       {
         "strike": 22400,
@@ -810,10 +1054,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3041,
+        "callIV": 0,
         "putOI": 284,
         "putChange": 1,
         "putVol": 13,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 27
       },
       {
         "strike": 22600,
@@ -821,10 +1067,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2842,
+        "callIV": 26,
         "putOI": 726,
         "putChange": 0,
         "putVol": 7,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 26
       },
       {
         "strike": 22800,
@@ -832,10 +1080,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2642,
+        "callIV": 24,
         "putOI": 600,
         "putChange": 0,
         "putVol": 9,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 24
       },
       {
         "strike": 23000,
@@ -843,10 +1093,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2444,
+        "callIV": 25,
         "putOI": 913,
         "putChange": -4,
         "putVol": 17,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 24
       },
       {
         "strike": 23200,
@@ -854,10 +1106,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2244,
+        "callIV": 23,
         "putOI": 463,
         "putChange": -2,
         "putVol": 21,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 23
       },
       {
         "strike": 23400,
@@ -865,10 +1119,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2045,
+        "callIV": 22,
         "putOI": 2676,
         "putChange": 0,
         "putVol": 37,
-        "putSettle": 5
+        "putSettle": 5,
+        "putIV": 23
       },
       {
         "strike": 23600,
@@ -876,10 +1132,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1848,
+        "callIV": 22,
         "putOI": 1270,
         "putChange": 18,
         "putVol": 28,
-        "putSettle": 7
+        "putSettle": 7,
+        "putIV": 22
       },
       {
         "strike": 23800,
@@ -887,10 +1145,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1652,
+        "callIV": 21,
         "putOI": 574,
         "putChange": 34,
         "putVol": 62,
-        "putSettle": 11
+        "putSettle": 11,
+        "putIV": 21
       },
       {
         "strike": 24000,
@@ -898,10 +1158,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1468,
+        "callIV": 23,
         "putOI": 879,
         "putChange": 16,
         "putVol": 117,
-        "putSettle": 17
+        "putSettle": 17,
+        "putIV": 21
       },
       {
         "strike": 24200,
@@ -909,10 +1171,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1269,
+        "callIV": 20,
         "putOI": 620,
         "putChange": 18,
         "putVol": 169,
-        "putSettle": 26
+        "putSettle": 26,
+        "putIV": 20
       },
       {
         "strike": 24400,
@@ -920,10 +1184,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1083,
+        "callIV": 20,
         "putOI": 501,
         "putChange": 14,
         "putVol": 209,
-        "putSettle": 37
+        "putSettle": 37,
+        "putIV": 19
       },
       {
         "strike": 24600,
@@ -931,10 +1197,12 @@ window.HSI_REPORTS = {
         "callChange": 2,
         "callVol": 2,
         "callSettle": 897,
+        "callIV": 18,
         "putOI": 1141,
         "putChange": -23,
         "putVol": 305,
-        "putSettle": 55
+        "putSettle": 55,
+        "putIV": 18
       },
       {
         "strike": 24800,
@@ -942,10 +1210,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 17,
         "callSettle": 721,
+        "callIV": 17,
         "putOI": 1000,
         "putChange": 46,
         "putVol": 375,
-        "putSettle": 82
+        "putSettle": 82,
+        "putIV": 18
       },
       {
         "strike": 25000,
@@ -953,10 +1223,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 42,
         "callSettle": 562,
+        "callIV": 17,
         "putOI": 1147,
         "putChange": 38,
         "putVol": 573,
-        "putSettle": 120
+        "putSettle": 120,
+        "putIV": 17
       },
       {
         "strike": 25200,
@@ -964,10 +1236,12 @@ window.HSI_REPORTS = {
         "callChange": 44,
         "callVol": 97,
         "callSettle": 414,
+        "callIV": 16,
         "putOI": 1087,
         "putChange": 131,
         "putVol": 695,
-        "putSettle": 175
+        "putSettle": 175,
+        "putIV": 16
       },
       {
         "strike": 25400,
@@ -975,10 +1249,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 356,
         "callSettle": 293,
+        "callIV": 16,
         "putOI": 600,
         "putChange": 10,
         "putVol": 244,
-        "putSettle": 255
+        "putSettle": 255,
+        "putIV": 16
       },
       {
         "strike": 25600,
@@ -986,10 +1262,12 @@ window.HSI_REPORTS = {
         "callChange": 79,
         "callVol": 543,
         "callSettle": 198,
+        "callIV": 16,
         "putOI": 582,
         "putChange": 180,
         "putVol": 252,
-        "putSettle": 358
+        "putSettle": 358,
+        "putIV": 16
       },
       {
         "strike": 25800,
@@ -997,10 +1275,12 @@ window.HSI_REPORTS = {
         "callChange": 171,
         "callVol": 573,
         "callSettle": 130,
+        "callIV": 16,
         "putOI": 573,
         "putChange": 194,
         "putVol": 231,
-        "putSettle": 487
+        "putSettle": 487,
+        "putIV": 15
       },
       {
         "strike": 26000,
@@ -1008,10 +1288,12 @@ window.HSI_REPORTS = {
         "callChange": 48,
         "callVol": 347,
         "callSettle": 82,
+        "callIV": 16,
         "putOI": 178,
         "putChange": 2,
         "putVol": 15,
-        "putSettle": 641
+        "putSettle": 641,
+        "putIV": 16
       },
       {
         "strike": 26200,
@@ -1019,10 +1301,12 @@ window.HSI_REPORTS = {
         "callChange": 8,
         "callVol": 180,
         "callSettle": 49,
+        "callIV": 16,
         "putOI": 255,
         "putChange": 199,
         "putVol": 200,
-        "putSettle": 805
+        "putSettle": 805,
+        "putIV": 16
       },
       {
         "strike": 26400,
@@ -1030,10 +1314,12 @@ window.HSI_REPORTS = {
         "callChange": 21,
         "callVol": 147,
         "callSettle": 29,
+        "callIV": 16,
         "putOI": 100,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 987
+        "putSettle": 987,
+        "putIV": 16
       },
       {
         "strike": 26600,
@@ -1041,10 +1327,12 @@ window.HSI_REPORTS = {
         "callChange": 63,
         "callVol": 146,
         "callSettle": 17,
+        "callIV": 16,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1179
+        "putSettle": 1179,
+        "putIV": 17
       },
       {
         "strike": 26800,
@@ -1052,10 +1340,12 @@ window.HSI_REPORTS = {
         "callChange": 28,
         "callVol": 56,
         "callSettle": 9,
+        "callIV": 16,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1369
+        "putSettle": 1369,
+        "putIV": 17
       },
       {
         "strike": 27000,
@@ -1063,10 +1353,12 @@ window.HSI_REPORTS = {
         "callChange": 9,
         "callVol": 57,
         "callSettle": 5,
+        "callIV": 17,
         "putOI": 24,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1569
+        "putSettle": 1569,
+        "putIV": 19
       },
       {
         "strike": 27200,
@@ -1074,10 +1366,12 @@ window.HSI_REPORTS = {
         "callChange": 2,
         "callVol": 19,
         "callSettle": 2,
+        "callIV": 16,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1766
+        "putSettle": 1766,
+        "putIV": 19
       },
       {
         "strike": 27400,
@@ -1085,10 +1379,12 @@ window.HSI_REPORTS = {
         "callChange": -3,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 17,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1960
+        "putSettle": 1960,
+        "putIV": 17
       },
       {
         "strike": 27600,
@@ -1096,10 +1392,12 @@ window.HSI_REPORTS = {
         "callChange": -6,
         "callVol": 15,
         "callSettle": 1,
+        "callIV": 18,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2161
+        "putSettle": 2161,
+        "putIV": 20
       },
       {
         "strike": 27800,
@@ -1107,10 +1405,12 @@ window.HSI_REPORTS = {
         "callChange": 5,
         "callVol": 7,
         "callSettle": 1,
+        "callIV": 19,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2360
+        "putSettle": 2360,
+        "putIV": 19
       },
       {
         "strike": 28000,
@@ -1118,10 +1418,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 4,
         "callSettle": 1,
+        "callIV": 21,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2560
+        "putSettle": 2560,
+        "putIV": 21
       },
       {
         "strike": 28200,
@@ -1129,10 +1431,12 @@ window.HSI_REPORTS = {
         "callChange": 2,
         "callVol": 2,
         "callSettle": 1,
+        "callIV": 22,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2759
+        "putSettle": 2759,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -1140,10 +1444,12 @@ window.HSI_REPORTS = {
         "callChange": -3,
         "callVol": 3,
         "callSettle": 1,
+        "callIV": 24,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2959
+        "putSettle": 2959,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -1151,10 +1457,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 7,
         "callSettle": 1,
+        "callIV": 25,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3159
+        "putSettle": 3159,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -1162,10 +1470,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3359
+        "putSettle": 3359,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -1173,10 +1483,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 28,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3559
+        "putSettle": 3559,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -1184,10 +1496,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 29,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3759
+        "putSettle": 3759,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -1195,10 +1509,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 30,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3959
+        "putSettle": 3959,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -1206,10 +1522,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 32,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4159
+        "putSettle": 4159,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -1217,10 +1535,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4359
+        "putSettle": 4359,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -1228,10 +1548,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 34,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4559
+        "putSettle": 4559,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -1239,10 +1561,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 36,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4759
+        "putSettle": 4759,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -1250,10 +1574,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 37,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4959
+        "putSettle": 4959,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -1261,10 +1587,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 38,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5159
+        "putSettle": 5159,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -1272,10 +1600,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 39,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5359
+        "putSettle": 5359,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -1283,10 +1613,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 41,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5559
+        "putSettle": 5559,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -1294,10 +1626,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 42,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5759
+        "putSettle": 5759,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -1305,10 +1639,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 43,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5959
+        "putSettle": 5959,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -1316,10 +1652,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 44,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6159
+        "putSettle": 6159,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -1327,10 +1665,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6359
+        "putSettle": 6359,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -1338,10 +1678,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 46,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6559
+        "putSettle": 6559,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -1581,7 +1923,8 @@ window.HSI_REPORTS = {
         },
         "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260818.htm"
       }
-    }
+    },
+    "product": "hsi-options"
   },
   "2026-08-19": {
     "date": "2026-08-19",
@@ -1845,10 +2188,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10459,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 109
       },
       {
         "strike": 15100,
@@ -1856,10 +2201,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10359,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 108
       },
       {
         "strike": 15200,
@@ -1867,10 +2214,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10259,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 15300,
@@ -1878,10 +2227,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10159,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 105
       },
       {
         "strike": 15500,
@@ -1889,10 +2240,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9959,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 15600,
@@ -1900,10 +2253,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9859,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 102
       },
       {
         "strike": 15700,
@@ -1911,10 +2266,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9759,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 100
       },
       {
         "strike": 15800,
@@ -1922,10 +2279,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9659,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 99
       },
       {
         "strike": 15900,
@@ -1933,10 +2292,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9559,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 98
       },
       {
         "strike": 16000,
@@ -1944,10 +2305,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9459,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 16100,
@@ -1955,10 +2318,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9359,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 95
       },
       {
         "strike": 16200,
@@ -1966,10 +2331,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9259,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 16300,
@@ -1977,10 +2344,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9159,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 93
       },
       {
         "strike": 16400,
@@ -1988,10 +2357,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9059,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 16500,
@@ -1999,10 +2370,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8959,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 91
       },
       {
         "strike": 16600,
@@ -2010,10 +2383,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8859,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 89
       },
       {
         "strike": 16700,
@@ -2021,10 +2396,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8759,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 88
       },
       {
         "strike": 16800,
@@ -2032,10 +2409,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8659,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 87
       },
       {
         "strike": 16900,
@@ -2043,10 +2422,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8559,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 17000,
@@ -2054,10 +2435,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8459,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 85
       },
       {
         "strike": 17100,
@@ -2065,10 +2448,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8359,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 84
       },
       {
         "strike": 17200,
@@ -2076,10 +2461,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8259,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 17300,
@@ -2087,10 +2474,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8159,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 81
       },
       {
         "strike": 17400,
@@ -2098,10 +2487,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8059,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 80
       },
       {
         "strike": 17500,
@@ -2109,10 +2500,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7959,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 79
       },
       {
         "strike": 17600,
@@ -2120,10 +2513,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7859,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 78
       },
       {
         "strike": 17700,
@@ -2131,10 +2526,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7759,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 77
       },
       {
         "strike": 17800,
@@ -2142,10 +2539,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7659,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 76
       },
       {
         "strike": 17900,
@@ -2153,10 +2552,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7559,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 18000,
@@ -2164,10 +2565,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7459,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 73
       },
       {
         "strike": 18100,
@@ -2175,10 +2578,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7359,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 72
       },
       {
         "strike": 18200,
@@ -2186,10 +2591,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7259,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 71
       },
       {
         "strike": 18300,
@@ -2197,10 +2604,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7159,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 18400,
@@ -2208,10 +2617,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7059,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 69
       },
       {
         "strike": 18500,
@@ -2219,10 +2630,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6959,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 68
       },
       {
         "strike": 18600,
@@ -2230,10 +2643,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6859,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 67
       },
       {
         "strike": 18700,
@@ -2241,10 +2656,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6759,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 66
       },
       {
         "strike": 18800,
@@ -2252,10 +2669,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6659,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 65
       },
       {
         "strike": 18900,
@@ -2263,10 +2682,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6559,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 19000,
@@ -2274,10 +2695,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6459,
+        "callIV": 0,
         "putOI": 397,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 63
       },
       {
         "strike": 19100,
@@ -2285,10 +2708,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6359,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 19200,
@@ -2296,10 +2721,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6259,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 61
       },
       {
         "strike": 19300,
@@ -2307,10 +2734,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6159,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 60
       },
       {
         "strike": 19400,
@@ -2318,10 +2747,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6059,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 59
       },
       {
         "strike": 19500,
@@ -2329,10 +2760,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5959,
+        "callIV": 0,
         "putOI": 467,
         "putChange": 0,
         "putVol": 4,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 19600,
@@ -2340,10 +2773,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5859,
+        "callIV": 0,
         "putOI": 333,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 56
       },
       {
         "strike": 19700,
@@ -2351,10 +2786,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5759,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 19800,
@@ -2362,10 +2799,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5659,
+        "callIV": 0,
         "putOI": 494,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 54
       },
       {
         "strike": 19900,
@@ -2373,10 +2812,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5559,
+        "callIV": 0,
         "putOI": 403,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 53
       },
       {
         "strike": 20000,
@@ -2384,10 +2825,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5459,
+        "callIV": 0,
         "putOI": 481,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 52
       },
       {
         "strike": 20200,
@@ -2395,10 +2838,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5259,
+        "callIV": 0,
         "putOI": 238,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 50
       },
       {
         "strike": 20400,
@@ -2406,10 +2851,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5059,
+        "callIV": 0,
         "putOI": 310,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 48
       },
       {
         "strike": 20600,
@@ -2417,10 +2864,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4859,
+        "callIV": 0,
         "putOI": 402,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 46
       },
       {
         "strike": 20800,
@@ -2428,10 +2877,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4659,
+        "callIV": 0,
         "putOI": 539,
         "putChange": 0,
         "putVol": 7,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 44
       },
       {
         "strike": 21000,
@@ -2439,10 +2890,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4459,
+        "callIV": 0,
         "putOI": 741,
         "putChange": 0,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 43
       },
       {
         "strike": 21200,
@@ -2450,10 +2903,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4259,
+        "callIV": 0,
         "putOI": 261,
         "putChange": 0,
         "putVol": 8,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 41
       },
       {
         "strike": 21400,
@@ -2461,10 +2916,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4059,
+        "callIV": 0,
         "putOI": 482,
         "putChange": 0,
         "putVol": 11,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 39
       },
       {
         "strike": 21600,
@@ -2472,10 +2929,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3859,
+        "callIV": 0,
         "putOI": 359,
         "putChange": -1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 37
       },
       {
         "strike": 21800,
@@ -2483,10 +2942,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3659,
+        "callIV": 0,
         "putOI": 278,
         "putChange": 2,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 35
       },
       {
         "strike": 22000,
@@ -2494,10 +2955,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3459,
+        "callIV": 0,
         "putOI": 867,
         "putChange": 100,
         "putVol": 109,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 33
       },
       {
         "strike": 22200,
@@ -2505,10 +2968,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3259,
+        "callIV": 0,
         "putOI": 335,
         "putChange": -1,
         "putVol": 8,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 31
       },
       {
         "strike": 22400,
@@ -2516,10 +2981,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3059,
+        "callIV": 0,
         "putOI": 284,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 29
       },
       {
         "strike": 22600,
@@ -2527,10 +2994,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2860,
+        "callIV": 27,
         "putOI": 735,
         "putChange": 9,
         "putVol": 10,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 27
       },
       {
         "strike": 22800,
@@ -2538,10 +3007,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2660,
+        "callIV": 25,
         "putOI": 608,
         "putChange": 8,
         "putVol": 16,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 25
       },
       {
         "strike": 23000,
@@ -2549,10 +3020,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2460,
+        "callIV": 24,
         "putOI": 912,
         "putChange": -1,
         "putVol": 14,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 25
       },
       {
         "strike": 23200,
@@ -2560,10 +3033,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2259,
+        "callIV": 0,
         "putOI": 464,
         "putChange": 1,
         "putVol": 12,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 25
       },
       {
         "strike": 23400,
@@ -2571,10 +3046,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 7,
         "callSettle": 2062,
+        "callIV": 23,
         "putOI": 2674,
         "putChange": -2,
         "putVol": 42,
-        "putSettle": 4
+        "putSettle": 4,
+        "putIV": 23
       },
       {
         "strike": 23600,
@@ -2582,10 +3059,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1864,
+        "callIV": 22,
         "putOI": 1388,
         "putChange": 118,
         "putVol": 248,
-        "putSettle": 6
+        "putSettle": 6,
+        "putIV": 23
       },
       {
         "strike": 23800,
@@ -2593,10 +3072,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1663,
+        "callIV": 19,
         "putOI": 597,
         "putChange": 23,
         "putVol": 38,
-        "putSettle": 9
+        "putSettle": 9,
+        "putIV": 22
       },
       {
         "strike": 24000,
@@ -2604,10 +3085,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1472,
+        "callIV": 21,
         "putOI": 877,
         "putChange": -2,
         "putVol": 40,
-        "putSettle": 13
+        "putSettle": 13,
+        "putIV": 21
       },
       {
         "strike": 24200,
@@ -2615,10 +3098,12 @@ window.HSI_REPORTS = {
         "callChange": 18,
         "callVol": 18,
         "callSettle": 1278,
+        "callIV": 20,
         "putOI": 662,
         "putChange": 42,
         "putVol": 95,
-        "putSettle": 21
+        "putSettle": 21,
+        "putIV": 20
       },
       {
         "strike": 24400,
@@ -2626,10 +3111,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 2,
         "callSettle": 1087,
+        "callIV": 19,
         "putOI": 514,
         "putChange": 13,
         "putVol": 135,
-        "putSettle": 30
+        "putSettle": 30,
+        "putIV": 19
       },
       {
         "strike": 24600,
@@ -2637,10 +3124,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 4,
         "callSettle": 904,
+        "callIV": 18,
         "putOI": 1181,
         "putChange": 40,
         "putVol": 321,
-        "putSettle": 46
+        "putSettle": 46,
+        "putIV": 18
       },
       {
         "strike": 24800,
@@ -2648,10 +3137,12 @@ window.HSI_REPORTS = {
         "callChange": -4,
         "callVol": 6,
         "callSettle": 726,
+        "callIV": 17,
         "putOI": 1026,
         "putChange": 26,
         "putVol": 406,
-        "putSettle": 70
+        "putSettle": 70,
+        "putIV": 18
       },
       {
         "strike": 25000,
@@ -2659,10 +3150,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 24,
         "callSettle": 564,
+        "callIV": 17,
         "putOI": 1218,
         "putChange": 71,
         "putVol": 595,
-        "putSettle": 105
+        "putSettle": 105,
+        "putIV": 17
       },
       {
         "strike": 25200,
@@ -2670,10 +3163,12 @@ window.HSI_REPORTS = {
         "callChange": 10,
         "callVol": 56,
         "callSettle": 415,
+        "callIV": 16,
         "putOI": 1115,
         "putChange": 28,
         "putVol": 404,
-        "putSettle": 156
+        "putSettle": 156,
+        "putIV": 16
       },
       {
         "strike": 25400,
@@ -2681,10 +3176,12 @@ window.HSI_REPORTS = {
         "callChange": 70,
         "callVol": 366,
         "callSettle": 289,
+        "callIV": 16,
         "putOI": 684,
         "putChange": 84,
         "putVol": 438,
-        "putSettle": 231
+        "putSettle": 231,
+        "putIV": 16
       },
       {
         "strike": 25600,
@@ -2692,10 +3189,12 @@ window.HSI_REPORTS = {
         "callChange": 65,
         "callVol": 383,
         "callSettle": 192,
+        "callIV": 16,
         "putOI": 559,
         "putChange": -23,
         "putVol": 90,
-        "putSettle": 332
+        "putSettle": 332,
+        "putIV": 15
       },
       {
         "strike": 25800,
@@ -2703,10 +3202,12 @@ window.HSI_REPORTS = {
         "callChange": 137,
         "callVol": 481,
         "callSettle": 122,
+        "callIV": 16,
         "putOI": 579,
         "putChange": 6,
         "putVol": 17,
-        "putSettle": 459
+        "putSettle": 459,
+        "putIV": 15
       },
       {
         "strike": 26000,
@@ -2714,10 +3215,12 @@ window.HSI_REPORTS = {
         "callChange": 120,
         "callVol": 429,
         "callSettle": 75,
+        "callIV": 16,
         "putOI": 177,
         "putChange": -1,
         "putVol": 18,
-        "putSettle": 611
+        "putSettle": 611,
+        "putIV": 15
       },
       {
         "strike": 26200,
@@ -2725,10 +3228,12 @@ window.HSI_REPORTS = {
         "callChange": 10,
         "callVol": 270,
         "callSettle": 43,
+        "callIV": 16,
         "putOI": 262,
         "putChange": 7,
         "putVol": 13,
-        "putSettle": 787
+        "putSettle": 787,
+        "putIV": 16
       },
       {
         "strike": 26400,
@@ -2736,10 +3241,12 @@ window.HSI_REPORTS = {
         "callChange": -7,
         "callVol": 137,
         "callSettle": 24,
+        "callIV": 16,
         "putOI": 101,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 964
+        "putSettle": 964,
+        "putIV": 16
       },
       {
         "strike": 26600,
@@ -2747,10 +3254,12 @@ window.HSI_REPORTS = {
         "callChange": 28,
         "callVol": 95,
         "callSettle": 13,
+        "callIV": 16,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1157
+        "putSettle": 1157,
+        "putIV": 17
       },
       {
         "strike": 26800,
@@ -2758,10 +3267,12 @@ window.HSI_REPORTS = {
         "callChange": 4,
         "callVol": 38,
         "callSettle": 7,
+        "callIV": 16,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1349
+        "putSettle": 1349,
+        "putIV": 17
       },
       {
         "strike": 27000,
@@ -2769,10 +3280,12 @@ window.HSI_REPORTS = {
         "callChange": 19,
         "callVol": 46,
         "callSettle": 3,
+        "callIV": 16,
         "putOI": 25,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1555
+        "putSettle": 1555,
+        "putIV": 21
       },
       {
         "strike": 27200,
@@ -2780,10 +3293,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 31,
         "callSettle": 2,
+        "callIV": 17,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1753
+        "putSettle": 1753,
+        "putIV": 22
       },
       {
         "strike": 27400,
@@ -2791,10 +3306,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 17,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1951
+        "putSettle": 1951,
+        "putIV": 24
       },
       {
         "strike": 27600,
@@ -2802,10 +3319,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 19,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2153
+        "putSettle": 2153,
+        "putIV": 26
       },
       {
         "strike": 27800,
@@ -2813,10 +3332,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 20,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2351
+        "putSettle": 2351,
+        "putIV": 28
       },
       {
         "strike": 28000,
@@ -2824,10 +3345,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 22,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2541
+        "putSettle": 2541,
+        "putIV": 0
       },
       {
         "strike": 28200,
@@ -2835,10 +3358,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 23,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2741
+        "putSettle": 2741,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -2846,10 +3371,12 @@ window.HSI_REPORTS = {
         "callChange": -5,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 25,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2941
+        "putSettle": 2941,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -2857,10 +3384,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 3,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3141
+        "putSettle": 3141,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -2868,10 +3397,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 28,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3341
+        "putSettle": 3341,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -2879,10 +3410,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 29,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3541
+        "putSettle": 3541,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -2890,10 +3423,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 31,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3741
+        "putSettle": 3741,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -2901,10 +3436,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 32,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3941
+        "putSettle": 3941,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -2912,10 +3449,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4141
+        "putSettle": 4141,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -2923,10 +3462,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 35,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4341
+        "putSettle": 4341,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -2934,10 +3475,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 36,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4541
+        "putSettle": 4541,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -2945,10 +3488,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 37,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4741
+        "putSettle": 4741,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -2956,10 +3501,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 39,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4941
+        "putSettle": 4941,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -2967,10 +3514,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5141
+        "putSettle": 5141,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -2978,10 +3527,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 41,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5341
+        "putSettle": 5341,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -2989,10 +3540,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 43,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5541
+        "putSettle": 5541,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -3000,10 +3553,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 44,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5741
+        "putSettle": 5741,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -3011,10 +3566,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5941
+        "putSettle": 5941,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -3022,10 +3579,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 46,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6141
+        "putSettle": 6141,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -3033,10 +3592,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 48,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6341
+        "putSettle": 6341,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -3044,10 +3605,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 49,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6541
+        "putSettle": 6541,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -3287,7 +3850,8 @@ window.HSI_REPORTS = {
         },
         "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260819.htm"
       }
-    }
+    },
+    "product": "hsi-options"
   },
   "2026-08-20": {
     "date": "2026-08-20",
@@ -3551,10 +4115,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10695,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 118
       },
       {
         "strike": 15100,
@@ -3562,10 +4128,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10595,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 116
       },
       {
         "strike": 15200,
@@ -3573,10 +4141,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10495,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 115
       },
       {
         "strike": 15300,
@@ -3584,10 +4154,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10395,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 114
       },
       {
         "strike": 15500,
@@ -3595,10 +4167,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10195,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 111
       },
       {
         "strike": 15600,
@@ -3606,10 +4180,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10095,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 110
       },
       {
         "strike": 15700,
@@ -3617,10 +4193,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9995,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 108
       },
       {
         "strike": 15800,
@@ -3628,10 +4206,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9895,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 15900,
@@ -3639,10 +4219,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9795,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 106
       },
       {
         "strike": 16000,
@@ -3650,10 +4232,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9695,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 104
       },
       {
         "strike": 16100,
@@ -3661,10 +4245,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9595,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 16200,
@@ -3672,10 +4258,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9495,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 102
       },
       {
         "strike": 16300,
@@ -3683,10 +4271,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9395,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 101
       },
       {
         "strike": 16400,
@@ -3694,10 +4284,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9295,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 99
       },
       {
         "strike": 16500,
@@ -3705,10 +4297,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9195,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 98
       },
       {
         "strike": 16600,
@@ -3716,10 +4310,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9095,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 16700,
@@ -3727,10 +4323,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8995,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 95
       },
       {
         "strike": 16800,
@@ -3738,10 +4336,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8895,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 16900,
@@ -3749,10 +4349,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8795,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 93
       },
       {
         "strike": 17000,
@@ -3760,10 +4362,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8695,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 17100,
@@ -3771,10 +4375,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8595,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 91
       },
       {
         "strike": 17200,
@@ -3782,10 +4388,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8495,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 89
       },
       {
         "strike": 17300,
@@ -3793,10 +4401,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8395,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 88
       },
       {
         "strike": 17400,
@@ -3804,10 +4414,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8295,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 87
       },
       {
         "strike": 17500,
@@ -3815,10 +4427,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8195,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 17600,
@@ -3826,10 +4440,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8095,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 85
       },
       {
         "strike": 17700,
@@ -3837,10 +4453,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7995,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 83
       },
       {
         "strike": 17800,
@@ -3848,10 +4466,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7895,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 17900,
@@ -3859,10 +4479,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7795,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 81
       },
       {
         "strike": 18000,
@@ -3870,10 +4492,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7695,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 80
       },
       {
         "strike": 18100,
@@ -3881,10 +4505,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7595,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 79
       },
       {
         "strike": 18200,
@@ -3892,10 +4518,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7495,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 78
       },
       {
         "strike": 18300,
@@ -3903,10 +4531,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7395,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 76
       },
       {
         "strike": 18400,
@@ -3914,10 +4544,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7295,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 18500,
@@ -3925,10 +4557,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7195,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 74
       },
       {
         "strike": 18600,
@@ -3936,10 +4570,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7095,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 73
       },
       {
         "strike": 18700,
@@ -3947,10 +4583,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6995,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 72
       },
       {
         "strike": 18800,
@@ -3958,10 +4596,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6895,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 71
       },
       {
         "strike": 18900,
@@ -3969,10 +4609,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6795,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 19000,
@@ -3980,10 +4622,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6695,
+        "callIV": 0,
         "putOI": 397,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 68
       },
       {
         "strike": 19100,
@@ -3991,10 +4635,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6595,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 67
       },
       {
         "strike": 19200,
@@ -4002,10 +4648,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6495,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 66
       },
       {
         "strike": 19300,
@@ -4013,10 +4661,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6395,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 65
       },
       {
         "strike": 19400,
@@ -4024,10 +4674,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6295,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 19500,
@@ -4035,10 +4687,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6195,
+        "callIV": 0,
         "putOI": 467,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 63
       },
       {
         "strike": 19600,
@@ -4046,10 +4700,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6095,
+        "callIV": 0,
         "putOI": 333,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 19700,
@@ -4057,10 +4713,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5995,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 61
       },
       {
         "strike": 19800,
@@ -4068,10 +4726,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5895,
+        "callIV": 0,
         "putOI": 494,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 60
       },
       {
         "strike": 19900,
@@ -4079,10 +4739,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5795,
+        "callIV": 0,
         "putOI": 403,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 59
       },
       {
         "strike": 20000,
@@ -4090,10 +4752,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5695,
+        "callIV": 0,
         "putOI": 481,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 20200,
@@ -4101,10 +4765,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5495,
+        "callIV": 0,
         "putOI": 238,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 20400,
@@ -4112,10 +4778,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5295,
+        "callIV": 0,
         "putOI": 308,
         "putChange": -2,
         "putVol": 3,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 53
       },
       {
         "strike": 20600,
@@ -4123,10 +4791,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5095,
+        "callIV": 0,
         "putOI": 402,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 51
       },
       {
         "strike": 20800,
@@ -4134,10 +4804,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4895,
+        "callIV": 0,
         "putOI": 539,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 49
       },
       {
         "strike": 21000,
@@ -4145,10 +4817,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4695,
+        "callIV": 0,
         "putOI": 741,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 47
       },
       {
         "strike": 21200,
@@ -4156,10 +4830,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4495,
+        "callIV": 0,
         "putOI": 261,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 45
       },
       {
         "strike": 21400,
@@ -4167,10 +4843,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4295,
+        "callIV": 0,
         "putOI": 482,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 43
       },
       {
         "strike": 21600,
@@ -4178,10 +4856,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4095,
+        "callIV": 0,
         "putOI": 359,
         "putChange": 0,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 41
       },
       {
         "strike": 21800,
@@ -4189,10 +4869,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3895,
+        "callIV": 0,
         "putOI": 274,
         "putChange": -4,
         "putVol": 6,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 39
       },
       {
         "strike": 22000,
@@ -4200,10 +4882,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3695,
+        "callIV": 0,
         "putOI": 867,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 37
       },
       {
         "strike": 22200,
@@ -4211,10 +4895,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3495,
+        "callIV": 0,
         "putOI": 337,
         "putChange": 2,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 35
       },
       {
         "strike": 22400,
@@ -4222,10 +4908,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3295,
+        "callIV": 0,
         "putOI": 282,
         "putChange": -2,
         "putVol": 9,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 33
       },
       {
         "strike": 22600,
@@ -4233,10 +4921,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3095,
+        "callIV": 0,
         "putOI": 733,
         "putChange": -2,
         "putVol": 4,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 31
       },
       {
         "strike": 22800,
@@ -4244,10 +4934,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2895,
+        "callIV": 0,
         "putOI": 603,
         "putChange": -5,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 29
       },
       {
         "strike": 23000,
@@ -4255,10 +4947,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2703,
+        "callIV": 35,
         "putOI": 916,
         "putChange": 4,
         "putVol": 12,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 27
       },
       {
         "strike": 23200,
@@ -4266,10 +4960,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2514,
+        "callIV": 38,
         "putOI": 468,
         "putChange": 4,
         "putVol": 9,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 25
       },
       {
         "strike": 23400,
@@ -4277,10 +4973,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2296,
+        "callIV": 23,
         "putOI": 2688,
         "putChange": 14,
         "putVol": 44,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 23
       },
       {
         "strike": 23600,
@@ -4288,10 +4986,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2100,
+        "callIV": 26,
         "putOI": 1381,
         "putChange": -7,
         "putVol": 21,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 23
       },
       {
         "strike": 23800,
@@ -4299,10 +4999,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1910,
+        "callIV": 28,
         "putOI": 610,
         "putChange": 13,
         "putVol": 47,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 22
       },
       {
         "strike": 24000,
@@ -4310,10 +5012,12 @@ window.HSI_REPORTS = {
         "callChange": -137,
         "callVol": 201,
         "callSettle": 1702,
+        "callIV": 22,
         "putOI": 923,
         "putChange": 46,
         "putVol": 91,
-        "putSettle": 5
+        "putSettle": 5,
+        "putIV": 21
       },
       {
         "strike": 24200,
@@ -4321,10 +5025,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 1,
         "callSettle": 1505,
+        "callIV": 21,
         "putOI": 694,
         "putChange": 32,
         "putVol": 117,
-        "putSettle": 8
+        "putSettle": 8,
+        "putIV": 21
       },
       {
         "strike": 24400,
@@ -4332,10 +5038,12 @@ window.HSI_REPORTS = {
         "callChange": -133,
         "callVol": 203,
         "callSettle": 1310,
+        "callIV": 20,
         "putOI": 538,
         "putChange": 24,
         "putVol": 255,
-        "putSettle": 13
+        "putSettle": 13,
+        "putIV": 20
       },
       {
         "strike": 24600,
@@ -4343,10 +5051,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 1,
         "callSettle": 1117,
+        "callIV": 19,
         "putOI": 1254,
         "putChange": 73,
         "putVol": 354,
-        "putSettle": 21
+        "putSettle": 21,
+        "putIV": 19
       },
       {
         "strike": 24800,
@@ -4354,10 +5064,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 11,
         "callSettle": 927,
+        "callIV": 18,
         "putOI": 1062,
         "putChange": 36,
         "putVol": 366,
-        "putSettle": 33
+        "putSettle": 33,
+        "putIV": 18
       },
       {
         "strike": 25000,
@@ -4365,10 +5077,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 16,
         "callSettle": 750,
+        "callIV": 18,
         "putOI": 1258,
         "putChange": 40,
         "putVol": 515,
-        "putSettle": 53
+        "putSettle": 53,
+        "putIV": 17
       },
       {
         "strike": 25200,
@@ -4376,10 +5090,12 @@ window.HSI_REPORTS = {
         "callChange": -210,
         "callVol": 225,
         "callSettle": 579,
+        "callIV": 17,
         "putOI": 1117,
         "putChange": 2,
         "putVol": 523,
-        "putSettle": 84
+        "putSettle": 84,
+        "putIV": 17
       },
       {
         "strike": 25400,
@@ -4387,10 +5103,12 @@ window.HSI_REPORTS = {
         "callChange": -64,
         "callVol": 194,
         "callSettle": 434,
+        "callIV": 17,
         "putOI": 662,
         "putChange": -22,
         "putVol": 562,
-        "putSettle": 130
+        "putSettle": 130,
+        "putIV": 16
       },
       {
         "strike": 25600,
@@ -4398,10 +5116,12 @@ window.HSI_REPORTS = {
         "callChange": -44,
         "callVol": 284,
         "callSettle": 296,
+        "callIV": 16,
         "putOI": 673,
         "putChange": 114,
         "putVol": 538,
-        "putSettle": 202
+        "putSettle": 202,
+        "putIV": 16
       },
       {
         "strike": 25800,
@@ -4409,10 +5129,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 695,
         "callSettle": 196,
+        "callIV": 16,
         "putOI": 756,
         "putChange": 177,
         "putVol": 435,
-        "putSettle": 301
+        "putSettle": 301,
+        "putIV": 16
       },
       {
         "strike": 26000,
@@ -4420,10 +5142,12 @@ window.HSI_REPORTS = {
         "callChange": -77,
         "callVol": 637,
         "callSettle": 127,
+        "callIV": 16,
         "putOI": 203,
         "putChange": 26,
         "putVol": 91,
-        "putSettle": 430
+        "putSettle": 430,
+        "putIV": 16
       },
       {
         "strike": 26200,
@@ -4431,10 +5155,12 @@ window.HSI_REPORTS = {
         "callChange": 1110,
         "callVol": 1617,
         "callSettle": 79,
+        "callIV": 16,
         "putOI": 269,
         "putChange": 7,
         "putVol": 29,
-        "putSettle": 583
+        "putSettle": 583,
+        "putIV": 16
       },
       {
         "strike": 26400,
@@ -4442,10 +5168,12 @@ window.HSI_REPORTS = {
         "callChange": 308,
         "callVol": 657,
         "callSettle": 48,
+        "callIV": 17,
         "putOI": 102,
         "putChange": 1,
         "putVol": 2,
-        "putSettle": 753
+        "putSettle": 753,
+        "putIV": 17
       },
       {
         "strike": 26600,
@@ -4453,10 +5181,12 @@ window.HSI_REPORTS = {
         "callChange": -10,
         "callVol": 357,
         "callSettle": 27,
+        "callIV": 17,
         "putOI": 19,
         "putChange": 1,
         "putVol": 2,
-        "putSettle": 932
+        "putSettle": 932,
+        "putIV": 17
       },
       {
         "strike": 26800,
@@ -4464,10 +5194,12 @@ window.HSI_REPORTS = {
         "callChange": 213,
         "callVol": 520,
         "callSettle": 16,
+        "callIV": 17,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1122
+        "putSettle": 1122,
+        "putIV": 17
       },
       {
         "strike": 27000,
@@ -4475,10 +5207,12 @@ window.HSI_REPORTS = {
         "callChange": 28,
         "callVol": 254,
         "callSettle": 9,
+        "callIV": 18,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1317
+        "putSettle": 1317,
+        "putIV": 19
       },
       {
         "strike": 27200,
@@ -4486,10 +5220,12 @@ window.HSI_REPORTS = {
         "callChange": -6,
         "callVol": 112,
         "callSettle": 5,
+        "callIV": 18,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1509
+        "putSettle": 1509,
+        "putIV": 17
       },
       {
         "strike": 27400,
@@ -4497,10 +5233,12 @@ window.HSI_REPORTS = {
         "callChange": 6,
         "callVol": 46,
         "callSettle": 3,
+        "callIV": 19,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1707
+        "putSettle": 1707,
+        "putIV": 18
       },
       {
         "strike": 27600,
@@ -4508,10 +5246,12 @@ window.HSI_REPORTS = {
         "callChange": -4,
         "callVol": 12,
         "callSettle": 2,
+        "callIV": 19,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1906
+        "putSettle": 1906,
+        "putIV": 18
       },
       {
         "strike": 27800,
@@ -4519,10 +5259,12 @@ window.HSI_REPORTS = {
         "callChange": 5,
         "callVol": 8,
         "callSettle": 1,
+        "callIV": 20,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2106
+        "putSettle": 2106,
+        "putIV": 20
       },
       {
         "strike": 28000,
@@ -4530,10 +5272,12 @@ window.HSI_REPORTS = {
         "callChange": -5,
         "callVol": 17,
         "callSettle": 1,
+        "callIV": 21,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2305
+        "putSettle": 2305,
+        "putIV": 0
       },
       {
         "strike": 28200,
@@ -4541,10 +5285,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 11,
         "callSettle": 1,
+        "callIV": 23,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2505
+        "putSettle": 2505,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -4552,10 +5298,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 24,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2705
+        "putSettle": 2705,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -4563,10 +5311,12 @@ window.HSI_REPORTS = {
         "callChange": 2,
         "callVol": 21,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2905
+        "putSettle": 2905,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -4574,10 +5324,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 2,
         "callSettle": 1,
+        "callIV": 27,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3105
+        "putSettle": 3105,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -4585,10 +5337,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 29,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3305
+        "putSettle": 3305,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -4596,10 +5350,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 30,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3505
+        "putSettle": 3505,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -4607,10 +5363,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 32,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3705
+        "putSettle": 3705,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -4618,10 +5376,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3905
+        "putSettle": 3905,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -4629,10 +5389,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 35,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4105
+        "putSettle": 4105,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -4640,10 +5402,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 36,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4305
+        "putSettle": 4305,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -4651,10 +5415,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 38,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4505
+        "putSettle": 4505,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -4662,10 +5428,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 39,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4705
+        "putSettle": 4705,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -4673,10 +5441,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 41,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4905
+        "putSettle": 4905,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -4684,10 +5454,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 42,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5105
+        "putSettle": 5105,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -4695,10 +5467,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 43,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5305
+        "putSettle": 5305,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -4706,10 +5480,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5505
+        "putSettle": 5505,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -4717,10 +5493,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 46,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5705
+        "putSettle": 5705,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -4728,10 +5506,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 47,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5905
+        "putSettle": 5905,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -4739,10 +5519,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 49,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6105
+        "putSettle": 6105,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -4750,10 +5532,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 50,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6305
+        "putSettle": 6305,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -4993,7 +5777,8 @@ window.HSI_REPORTS = {
         },
         "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260820.htm"
       }
-    }
+    },
+    "product": "hsi-options"
   },
   "2026-08-21": {
     "date": "2026-08-21",
@@ -5257,10 +6042,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 11024,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 129
       },
       {
         "strike": 15100,
@@ -5268,10 +6055,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10924,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 127
       },
       {
         "strike": 15200,
@@ -5279,10 +6068,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10824,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 126
       },
       {
         "strike": 15300,
@@ -5290,10 +6081,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10724,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 124
       },
       {
         "strike": 15500,
@@ -5301,10 +6094,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10524,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 121
       },
       {
         "strike": 15600,
@@ -5312,10 +6107,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10424,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 120
       },
       {
         "strike": 15700,
@@ -5323,10 +6120,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10324,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 118
       },
       {
         "strike": 15800,
@@ -5334,10 +6133,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10224,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 117
       },
       {
         "strike": 15900,
@@ -5345,10 +6146,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10124,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 116
       },
       {
         "strike": 16000,
@@ -5356,10 +6159,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10024,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 114
       },
       {
         "strike": 16100,
@@ -5367,10 +6172,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9924,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 113
       },
       {
         "strike": 16200,
@@ -5378,10 +6185,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9824,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 112
       },
       {
         "strike": 16300,
@@ -5389,10 +6198,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9724,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 110
       },
       {
         "strike": 16400,
@@ -5400,10 +6211,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9624,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 109
       },
       {
         "strike": 16500,
@@ -5411,10 +6224,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9524,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 16600,
@@ -5422,10 +6237,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9424,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 106
       },
       {
         "strike": 16700,
@@ -5433,10 +6250,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9324,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 105
       },
       {
         "strike": 16800,
@@ -5444,10 +6263,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9224,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 16900,
@@ -5455,10 +6276,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9124,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 102
       },
       {
         "strike": 17000,
@@ -5466,10 +6289,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9024,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 101
       },
       {
         "strike": 17100,
@@ -5477,10 +6302,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8924,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 100
       },
       {
         "strike": 17200,
@@ -5488,10 +6315,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8824,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 98
       },
       {
         "strike": 17300,
@@ -5499,10 +6328,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8724,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 17400,
@@ -5510,10 +6341,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8624,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 96
       },
       {
         "strike": 17500,
@@ -5521,10 +6354,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8524,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 17600,
@@ -5532,10 +6367,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8424,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 93
       },
       {
         "strike": 17700,
@@ -5543,10 +6380,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8324,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 17800,
@@ -5554,10 +6393,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8224,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 91
       },
       {
         "strike": 17900,
@@ -5565,10 +6406,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8124,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 89
       },
       {
         "strike": 18000,
@@ -5576,10 +6419,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8024,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 88
       },
       {
         "strike": 18100,
@@ -5587,10 +6432,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7924,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 87
       },
       {
         "strike": 18200,
@@ -5598,10 +6445,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7824,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 18300,
@@ -5609,10 +6458,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7724,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 84
       },
       {
         "strike": 18400,
@@ -5620,10 +6471,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7624,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 83
       },
       {
         "strike": 18500,
@@ -5631,10 +6484,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7524,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 18600,
@@ -5642,10 +6497,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7424,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 81
       },
       {
         "strike": 18700,
@@ -5653,10 +6510,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7324,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 80
       },
       {
         "strike": 18800,
@@ -5664,10 +6523,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7224,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 78
       },
       {
         "strike": 18900,
@@ -5675,10 +6536,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7124,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 77
       },
       {
         "strike": 19000,
@@ -5686,10 +6549,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7024,
+        "callIV": 0,
         "putOI": 397,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 76
       },
       {
         "strike": 19100,
@@ -5697,10 +6562,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6924,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 19200,
@@ -5708,10 +6575,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6824,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 74
       },
       {
         "strike": 19300,
@@ -5719,10 +6588,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6724,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 72
       },
       {
         "strike": 19400,
@@ -5730,10 +6601,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6624,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 71
       },
       {
         "strike": 19500,
@@ -5741,10 +6614,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6524,
+        "callIV": 0,
         "putOI": 467,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 19600,
@@ -5752,10 +6627,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6424,
+        "callIV": 0,
         "putOI": 333,
         "putChange": 0,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 69
       },
       {
         "strike": 19700,
@@ -5763,10 +6640,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6324,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 68
       },
       {
         "strike": 19800,
@@ -5774,10 +6653,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6224,
+        "callIV": 0,
         "putOI": 494,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 67
       },
       {
         "strike": 19900,
@@ -5785,10 +6666,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6124,
+        "callIV": 0,
         "putOI": 403,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 66
       },
       {
         "strike": 20000,
@@ -5796,10 +6679,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6024,
+        "callIV": 0,
         "putOI": 481,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 20200,
@@ -5807,10 +6692,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5824,
+        "callIV": 0,
         "putOI": 238,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 20400,
@@ -5818,10 +6705,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5624,
+        "callIV": 0,
         "putOI": 307,
         "putChange": -1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 60
       },
       {
         "strike": 20600,
@@ -5829,10 +6718,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5424,
+        "callIV": 0,
         "putOI": 402,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 20800,
@@ -5840,10 +6731,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5224,
+        "callIV": 0,
         "putOI": 544,
         "putChange": 5,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 21000,
@@ -5851,10 +6744,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5024,
+        "callIV": 0,
         "putOI": 741,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 53
       },
       {
         "strike": 21200,
@@ -5862,10 +6757,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4824,
+        "callIV": 0,
         "putOI": 261,
         "putChange": 0,
         "putVol": 10,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 51
       },
       {
         "strike": 21400,
@@ -5873,10 +6770,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4624,
+        "callIV": 0,
         "putOI": 492,
         "putChange": 10,
         "putVol": 10,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 49
       },
       {
         "strike": 21600,
@@ -5884,10 +6783,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4424,
+        "callIV": 0,
         "putOI": 369,
         "putChange": 10,
         "putVol": 10,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 47
       },
       {
         "strike": 21800,
@@ -5895,10 +6796,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4224,
+        "callIV": 0,
         "putOI": 273,
         "putChange": -1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 45
       },
       {
         "strike": 22000,
@@ -5906,10 +6809,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4024,
+        "callIV": 0,
         "putOI": 867,
         "putChange": 0,
         "putVol": 6,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 42
       },
       {
         "strike": 22200,
@@ -5917,10 +6822,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3824,
+        "callIV": 0,
         "putOI": 351,
         "putChange": 14,
         "putVol": 22,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 40
       },
       {
         "strike": 22400,
@@ -5928,10 +6835,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3624,
+        "callIV": 0,
         "putOI": 291,
         "putChange": 9,
         "putVol": 18,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 38
       },
       {
         "strike": 22600,
@@ -5939,10 +6848,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3424,
+        "callIV": 0,
         "putOI": 703,
         "putChange": -30,
         "putVol": 57,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 36
       },
       {
         "strike": 22800,
@@ -5950,10 +6861,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 10,
         "callSettle": 3224,
+        "callIV": 0,
         "putOI": 551,
         "putChange": -52,
         "putVol": 89,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 34
       },
       {
         "strike": 23000,
@@ -5961,10 +6874,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3024,
+        "callIV": 0,
         "putOI": 946,
         "putChange": 30,
         "putVol": 82,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 32
       },
       {
         "strike": 23200,
@@ -5972,10 +6887,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2824,
+        "callIV": 0,
         "putOI": 462,
         "putChange": -6,
         "putVol": 51,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 30
       },
       {
         "strike": 23400,
@@ -5983,10 +6900,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2624,
+        "callIV": 0,
         "putOI": 2603,
         "putChange": -85,
         "putVol": 440,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 28
       },
       {
         "strike": 23600,
@@ -5994,10 +6913,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2424,
+        "callIV": 0,
         "putOI": 943,
         "putChange": -438,
         "putVol": 522,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 26
       },
       {
         "strike": 23800,
@@ -6005,10 +6926,12 @@ window.HSI_REPORTS = {
         "callChange": -6,
         "callVol": 8,
         "callSettle": 2224,
+        "callIV": 0,
         "putOI": 606,
         "putChange": -4,
         "putVol": 245,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 24
       },
       {
         "strike": 24000,
@@ -6016,10 +6939,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 2024,
+        "callIV": 0,
         "putOI": 1099,
         "putChange": 176,
         "putVol": 392,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 22
       },
       {
         "strike": 24200,
@@ -6027,10 +6952,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 8,
         "callSettle": 1825,
+        "callIV": 20,
         "putOI": 987,
         "putChange": 293,
         "putVol": 550,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 21
       },
       {
         "strike": 24400,
@@ -6038,10 +6965,12 @@ window.HSI_REPORTS = {
         "callChange": -10,
         "callVol": 10,
         "callSettle": 1626,
+        "callIV": 19,
         "putOI": 580,
         "putChange": 42,
         "putVol": 168,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 20
       },
       {
         "strike": 24600,
@@ -6049,10 +6978,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1431,
+        "callIV": 20,
         "putOI": 1021,
         "putChange": -233,
         "putVol": 755,
-        "putSettle": 5
+        "putSettle": 5,
+        "putIV": 19
       },
       {
         "strike": 24800,
@@ -6060,10 +6991,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1233,
+        "callIV": 19,
         "putOI": 783,
         "putChange": -279,
         "putVol": 710,
-        "putSettle": 9
+        "putSettle": 9,
+        "putIV": 19
       },
       {
         "strike": 25000,
@@ -6071,10 +7004,12 @@ window.HSI_REPORTS = {
         "callChange": -21,
         "callVol": 12,
         "callSettle": 1039,
+        "callIV": 18,
         "putOI": 924,
         "putChange": -334,
         "putVol": 846,
-        "putSettle": 16
+        "putSettle": 16,
+        "putIV": 18
       },
       {
         "strike": 25200,
@@ -6082,10 +7017,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 14,
         "callSettle": 849,
+        "callIV": 17,
         "putOI": 1186,
         "putChange": 69,
         "putVol": 915,
-        "putSettle": 27
+        "putSettle": 27,
+        "putIV": 17
       },
       {
         "strike": 25400,
@@ -6093,10 +7030,12 @@ window.HSI_REPORTS = {
         "callChange": 10,
         "callVol": 110,
         "callSettle": 662,
+        "callIV": 15,
         "putOI": 1099,
         "putChange": 437,
         "putVol": 1072,
-        "putSettle": 47
+        "putSettle": 47,
+        "putIV": 16
       },
       {
         "strike": 25600,
@@ -6104,10 +7043,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 261,
         "callSettle": 499,
+        "callIV": 15,
         "putOI": 867,
         "putChange": 194,
         "putVol": 1272,
-        "putSettle": 80
+        "putSettle": 80,
+        "putIV": 16
       },
       {
         "strike": 25800,
@@ -6115,10 +7056,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 499,
         "callSettle": 347,
+        "callIV": 15,
         "putOI": 585,
         "putChange": -171,
         "putVol": 1072,
-        "putSettle": 132
+        "putSettle": 132,
+        "putIV": 15
       },
       {
         "strike": 26000,
@@ -6126,10 +7069,12 @@ window.HSI_REPORTS = {
         "callChange": 1691,
         "callVol": 3454,
         "callSettle": 232,
+        "callIV": 15,
         "putOI": 270,
         "putChange": 67,
         "putVol": 266,
-        "putSettle": 212
+        "putSettle": 212,
+        "putIV": 15
       },
       {
         "strike": 26200,
@@ -6137,10 +7082,12 @@ window.HSI_REPORTS = {
         "callChange": 164,
         "callVol": 1018,
         "callSettle": 145,
+        "callIV": 15,
         "putOI": 204,
         "putChange": -65,
         "putVol": 253,
-        "putSettle": 322
+        "putSettle": 322,
+        "putIV": 15
       },
       {
         "strike": 26400,
@@ -6148,10 +7095,12 @@ window.HSI_REPORTS = {
         "callChange": -4,
         "callVol": 781,
         "callSettle": 87,
+        "callIV": 15,
         "putOI": 108,
         "putChange": 6,
         "putVol": 7,
-        "putSettle": 465
+        "putSettle": 465,
+        "putIV": 15
       },
       {
         "strike": 26600,
@@ -6159,10 +7108,12 @@ window.HSI_REPORTS = {
         "callChange": 70,
         "callVol": 302,
         "callSettle": 50,
+        "callIV": 16,
         "putOI": 20,
         "putChange": 1,
         "putVol": 2,
-        "putSettle": 627
+        "putSettle": 627,
+        "putIV": 16
       },
       {
         "strike": 26800,
@@ -6170,10 +7121,12 @@ window.HSI_REPORTS = {
         "callChange": 15,
         "callVol": 437,
         "callSettle": 27,
+        "callIV": 16,
         "putOI": 19,
         "putChange": 1,
         "putVol": 2,
-        "putSettle": 808
+        "putSettle": 808,
+        "putIV": 17
       },
       {
         "strike": 27000,
@@ -6181,10 +7134,12 @@ window.HSI_REPORTS = {
         "callChange": -76,
         "callVol": 248,
         "callSettle": 15,
+        "callIV": 16,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 995
+        "putSettle": 995,
+        "putIV": 17
       },
       {
         "strike": 27200,
@@ -6192,10 +7147,12 @@ window.HSI_REPORTS = {
         "callChange": -15,
         "callVol": 414,
         "callSettle": 8,
+        "callIV": 17,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1187
+        "putSettle": 1187,
+        "putIV": 18
       },
       {
         "strike": 27400,
@@ -6203,10 +7160,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 32,
         "callSettle": 4,
+        "callIV": 17,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1390
+        "putSettle": 1390,
+        "putIV": 21
       },
       {
         "strike": 27600,
@@ -6214,10 +7173,12 @@ window.HSI_REPORTS = {
         "callChange": -3,
         "callVol": 45,
         "callSettle": 2,
+        "callIV": 17,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1578
+        "putSettle": 1578,
+        "putIV": 17
       },
       {
         "strike": 27800,
@@ -6225,10 +7186,12 @@ window.HSI_REPORTS = {
         "callChange": -65,
         "callVol": 138,
         "callSettle": 1,
+        "callIV": 18,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1785
+        "putSettle": 1785,
+        "putIV": 24
       },
       {
         "strike": 28000,
@@ -6236,10 +7199,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 11,
         "callSettle": 1,
+        "callIV": 20,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1985
+        "putSettle": 1985,
+        "putIV": 26
       },
       {
         "strike": 28200,
@@ -6247,10 +7212,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 4,
         "callSettle": 1,
+        "callIV": 21,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2185
+        "putSettle": 2185,
+        "putIV": 28
       },
       {
         "strike": 28400,
@@ -6258,10 +7225,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 23,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2376
+        "putSettle": 2376,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -6269,10 +7238,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 25,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2576
+        "putSettle": 2576,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -6280,10 +7251,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 9,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2776
+        "putSettle": 2776,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -6291,10 +7264,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 2,
         "callSettle": 1,
+        "callIV": 28,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2976
+        "putSettle": 2976,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -6302,10 +7277,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 30,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3176
+        "putSettle": 3176,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -6313,10 +7290,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 31,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3376
+        "putSettle": 3376,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -6324,10 +7303,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3576
+        "putSettle": 3576,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -6335,10 +7316,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 34,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3776
+        "putSettle": 3776,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -6346,10 +7329,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 4,
         "callSettle": 1,
+        "callIV": 36,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3976
+        "putSettle": 3976,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -6357,10 +7342,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 37,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4176
+        "putSettle": 4176,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -6368,10 +7355,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 39,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4376
+        "putSettle": 4376,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -6379,10 +7368,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4576
+        "putSettle": 4576,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -6390,10 +7381,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 42,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4776
+        "putSettle": 4776,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -6401,10 +7394,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 43,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4976
+        "putSettle": 4976,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -6412,10 +7407,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5176
+        "putSettle": 5176,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -6423,10 +7420,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 46,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5376
+        "putSettle": 5376,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -6434,10 +7433,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 48,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5576
+        "putSettle": 5576,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -6445,10 +7446,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 49,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5776
+        "putSettle": 5776,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -6456,10 +7459,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 50,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5976
+        "putSettle": 5976,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -6699,7 +7704,8 @@ window.HSI_REPORTS = {
         },
         "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/mhif260821.htm"
       }
-    }
+    },
+    "product": "hsi-options"
   },
   "2026-08-24": {
     "date": "2026-08-24",
@@ -6963,10 +7969,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10460,
+        "callIV": 195,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 164
       },
       {
         "strike": 15100,
@@ -6974,10 +7982,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10354,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 162
       },
       {
         "strike": 15200,
@@ -6985,10 +7995,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10254,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 160
       },
       {
         "strike": 15300,
@@ -6996,10 +8008,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10154,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 158
       },
       {
         "strike": 15500,
@@ -7007,10 +8021,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9954,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 154
       },
       {
         "strike": 15600,
@@ -7018,10 +8034,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9854,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 153
       },
       {
         "strike": 15700,
@@ -7029,10 +8047,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9754,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 151
       },
       {
         "strike": 15800,
@@ -7040,10 +8060,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9654,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 149
       },
       {
         "strike": 15900,
@@ -7051,10 +8073,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9554,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 147
       },
       {
         "strike": 16000,
@@ -7062,10 +8086,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9454,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 145
       },
       {
         "strike": 16100,
@@ -7073,10 +8099,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9354,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 143
       },
       {
         "strike": 16200,
@@ -7084,10 +8112,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9254,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 142
       },
       {
         "strike": 16300,
@@ -7095,10 +8125,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9154,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 140
       },
       {
         "strike": 16400,
@@ -7106,10 +8138,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9054,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 138
       },
       {
         "strike": 16500,
@@ -7117,10 +8151,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8954,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 136
       },
       {
         "strike": 16600,
@@ -7128,10 +8164,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8854,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 134
       },
       {
         "strike": 16700,
@@ -7139,10 +8177,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8754,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 133
       },
       {
         "strike": 16800,
@@ -7150,10 +8190,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8654,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 131
       },
       {
         "strike": 16900,
@@ -7161,10 +8203,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8554,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 129
       },
       {
         "strike": 17000,
@@ -7172,10 +8216,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8454,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 127
       },
       {
         "strike": 17100,
@@ -7183,10 +8229,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8354,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 126
       },
       {
         "strike": 17200,
@@ -7194,10 +8242,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8254,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 124
       },
       {
         "strike": 17300,
@@ -7205,10 +8255,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8154,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 122
       },
       {
         "strike": 17400,
@@ -7216,10 +8268,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8054,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 120
       },
       {
         "strike": 17500,
@@ -7227,10 +8281,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7954,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 119
       },
       {
         "strike": 17600,
@@ -7238,10 +8294,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7854,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 117
       },
       {
         "strike": 17700,
@@ -7249,10 +8307,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7754,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 115
       },
       {
         "strike": 17800,
@@ -7260,10 +8320,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7654,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 114
       },
       {
         "strike": 17900,
@@ -7271,10 +8333,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7554,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 112
       },
       {
         "strike": 18000,
@@ -7282,10 +8346,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7454,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 110
       },
       {
         "strike": 18100,
@@ -7293,10 +8359,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7354,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 109
       },
       {
         "strike": 18200,
@@ -7304,10 +8372,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7254,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 18300,
@@ -7315,10 +8385,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7154,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 105
       },
       {
         "strike": 18400,
@@ -7326,10 +8398,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7054,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 104
       },
       {
         "strike": 18500,
@@ -7337,10 +8411,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6954,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 102
       },
       {
         "strike": 18600,
@@ -7348,10 +8424,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6854,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 101
       },
       {
         "strike": 18700,
@@ -7359,10 +8437,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6754,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 99
       },
       {
         "strike": 18800,
@@ -7370,10 +8450,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6654,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 18900,
@@ -7381,10 +8463,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6554,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 96
       },
       {
         "strike": 19000,
@@ -7392,10 +8476,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6454,
+        "callIV": 0,
         "putOI": 397,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 19100,
@@ -7403,10 +8489,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6354,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 93
       },
       {
         "strike": 19200,
@@ -7414,10 +8502,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6254,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 91
       },
       {
         "strike": 19300,
@@ -7425,10 +8515,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6154,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 90
       },
       {
         "strike": 19400,
@@ -7436,10 +8528,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6054,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 88
       },
       {
         "strike": 19500,
@@ -7447,10 +8541,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5954,
+        "callIV": 0,
         "putOI": 468,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 19600,
@@ -7458,10 +8554,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5854,
+        "callIV": 0,
         "putOI": 334,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 85
       },
       {
         "strike": 19700,
@@ -7469,10 +8567,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5754,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 83
       },
       {
         "strike": 19800,
@@ -7480,10 +8580,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5654,
+        "callIV": 0,
         "putOI": 492,
         "putChange": -2,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 19900,
@@ -7491,10 +8593,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5554,
+        "callIV": 0,
         "putOI": 404,
         "putChange": 1,
         "putVol": 2,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 80
       },
       {
         "strike": 20000,
@@ -7502,10 +8606,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5454,
+        "callIV": 0,
         "putOI": 499,
         "putChange": 18,
         "putVol": 22,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 79
       },
       {
         "strike": 20200,
@@ -7513,10 +8619,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5254,
+        "callIV": 0,
         "putOI": 254,
         "putChange": 16,
         "putVol": 16,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 76
       },
       {
         "strike": 20400,
@@ -7524,10 +8632,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5054,
+        "callIV": 0,
         "putOI": 341,
         "putChange": 34,
         "putVol": 55,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 73
       },
       {
         "strike": 20600,
@@ -7535,10 +8645,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4854,
+        "callIV": 0,
         "putOI": 459,
         "putChange": 57,
         "putVol": 65,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 20800,
@@ -7546,10 +8658,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4654,
+        "callIV": 0,
         "putOI": 596,
         "putChange": 52,
         "putVol": 63,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 67
       },
       {
         "strike": 21000,
@@ -7557,10 +8671,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4454,
+        "callIV": 0,
         "putOI": 789,
         "putChange": 48,
         "putVol": 53,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 21200,
@@ -7568,10 +8684,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4254,
+        "callIV": 0,
         "putOI": 297,
         "putChange": 36,
         "putVol": 45,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 61
       },
       {
         "strike": 21400,
@@ -7579,10 +8697,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4054,
+        "callIV": 0,
         "putOI": 544,
         "putChange": 52,
         "putVol": 69,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 21600,
@@ -7590,10 +8710,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3854,
+        "callIV": 0,
         "putOI": 411,
         "putChange": 42,
         "putVol": 54,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 21800,
@@ -7601,10 +8723,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3654,
+        "callIV": 0,
         "putOI": 294,
         "putChange": 21,
         "putVol": 52,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 52
       },
       {
         "strike": 22000,
@@ -7612,10 +8736,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 1,
         "callSettle": 3454,
+        "callIV": 0,
         "putOI": 896,
         "putChange": 29,
         "putVol": 42,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 50
       },
       {
         "strike": 22200,
@@ -7623,10 +8749,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3254,
+        "callIV": 0,
         "putOI": 417,
         "putChange": 66,
         "putVol": 79,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 47
       },
       {
         "strike": 22400,
@@ -7634,10 +8762,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3054,
+        "callIV": 0,
         "putOI": 420,
         "putChange": 129,
         "putVol": 213,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 44
       },
       {
         "strike": 22600,
@@ -7645,10 +8775,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2854,
+        "callIV": 0,
         "putOI": 775,
         "putChange": 72,
         "putVol": 148,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 41
       },
       {
         "strike": 22800,
@@ -7656,10 +8788,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2654,
+        "callIV": 0,
         "putOI": 570,
         "putChange": 19,
         "putVol": 51,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 38
       },
       {
         "strike": 23000,
@@ -7667,10 +8801,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2468,
+        "callIV": 50,
         "putOI": 967,
         "putChange": 21,
         "putVol": 126,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 36
       },
       {
         "strike": 23200,
@@ -7678,10 +8814,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2268,
+        "callIV": 47,
         "putOI": 464,
         "putChange": 2,
         "putVol": 70,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 33
       },
       {
         "strike": 23400,
@@ -7689,10 +8827,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2068,
+        "callIV": 43,
         "putOI": 2600,
         "putChange": -3,
         "putVol": 84,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 32
       },
       {
         "strike": 23600,
@@ -7700,10 +8840,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1855,
+        "callIV": 27,
         "putOI": 1109,
         "putChange": 166,
         "putVol": 380,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 31
       },
       {
         "strike": 23800,
@@ -7711,10 +8853,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 2,
         "callSettle": 1673,
+        "callIV": 38,
         "putOI": 869,
         "putChange": 263,
         "putVol": 650,
-        "putSettle": 5
+        "putSettle": 5,
+        "putIV": 30
       },
       {
         "strike": 24000,
@@ -7722,10 +8866,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 3,
         "callSettle": 1458,
+        "callIV": 26,
         "putOI": 894,
         "putChange": -205,
         "putVol": 494,
-        "putSettle": 8
+        "putSettle": 8,
+        "putIV": 29
       },
       {
         "strike": 24200,
@@ -7733,10 +8879,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1260,
+        "callIV": 24,
         "putOI": 847,
         "putChange": -140,
         "putVol": 826,
-        "putSettle": 12
+        "putSettle": 12,
+        "putIV": 27
       },
       {
         "strike": 24400,
@@ -7744,10 +8892,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 12,
         "callSettle": 1083,
+        "callIV": 29,
         "putOI": 590,
         "putChange": 10,
         "putVol": 416,
-        "putSettle": 19
+        "putSettle": 19,
+        "putIV": 26
       },
       {
         "strike": 24600,
@@ -7755,10 +8905,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 4,
         "callSettle": 876,
+        "callIV": 23,
         "putOI": 1161,
         "putChange": 140,
         "putVol": 542,
-        "putSettle": 29
+        "putSettle": 29,
+        "putIV": 24
       },
       {
         "strike": 24800,
@@ -7766,10 +8918,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 10,
         "callSettle": 723,
+        "callIV": 27,
         "putOI": 872,
         "putChange": 89,
         "putVol": 1378,
-        "putSettle": 47
+        "putSettle": 47,
+        "putIV": 23
       },
       {
         "strike": 25000,
@@ -7777,10 +8931,12 @@ window.HSI_REPORTS = {
         "callChange": -3,
         "callVol": 17,
         "callSettle": 531,
+        "callIV": 22,
         "putOI": 928,
         "putChange": 4,
         "putVol": 1492,
-        "putSettle": 75
+        "putSettle": 75,
+        "putIV": 22
       },
       {
         "strike": 25200,
@@ -7788,10 +8944,12 @@ window.HSI_REPORTS = {
         "callChange": 50,
         "callVol": 84,
         "callSettle": 365,
+        "callIV": 20,
         "putOI": 1312,
         "putChange": 126,
         "putVol": 1361,
-        "putSettle": 118
+        "putSettle": 118,
+        "putIV": 21
       },
       {
         "strike": 25400,
@@ -7799,10 +8957,12 @@ window.HSI_REPORTS = {
         "callChange": -35,
         "callVol": 718,
         "callSettle": 243,
+        "callIV": 20,
         "putOI": 1053,
         "putChange": -46,
         "putVol": 1450,
-        "putSettle": 188
+        "putSettle": 188,
+        "putIV": 20
       },
       {
         "strike": 25600,
@@ -7810,10 +8970,12 @@ window.HSI_REPORTS = {
         "callChange": 160,
         "callVol": 1017,
         "callSettle": 142,
+        "callIV": 19,
         "putOI": 570,
         "putChange": -297,
         "putVol": 905,
-        "putSettle": 294
+        "putSettle": 294,
+        "putIV": 19
       },
       {
         "strike": 25800,
@@ -7821,10 +8983,12 @@ window.HSI_REPORTS = {
         "callChange": 394,
         "callVol": 1548,
         "callSettle": 77,
+        "callIV": 19,
         "putOI": 575,
         "putChange": -10,
         "putVol": 309,
-        "putSettle": 413
+        "putSettle": 413,
+        "putIV": 17
       },
       {
         "strike": 26000,
@@ -7832,10 +8996,12 @@ window.HSI_REPORTS = {
         "callChange": 105,
         "callVol": 1444,
         "callSettle": 37,
+        "callIV": 18,
         "putOI": 287,
         "putChange": 17,
         "putVol": 154,
-        "putSettle": 578
+        "putSettle": 578,
+        "putIV": 18
       },
       {
         "strike": 26200,
@@ -7843,10 +9009,12 @@ window.HSI_REPORTS = {
         "callChange": -32,
         "callVol": 1361,
         "callSettle": 17,
+        "callIV": 19,
         "putOI": 202,
         "putChange": -2,
         "putVol": 15,
-        "putSettle": 756
+        "putSettle": 756,
+        "putIV": 16
       },
       {
         "strike": 26400,
@@ -7854,10 +9022,12 @@ window.HSI_REPORTS = {
         "callChange": 18,
         "callVol": 603,
         "callSettle": 6,
+        "callIV": 18,
         "putOI": 91,
         "putChange": -17,
         "putVol": 30,
-        "putSettle": 949
+        "putSettle": 949,
+        "putIV": 16
       },
       {
         "strike": 26600,
@@ -7865,10 +9035,12 @@ window.HSI_REPORTS = {
         "callChange": 187,
         "callVol": 455,
         "callSettle": 2,
+        "callIV": 18,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1148
+        "putSettle": 1148,
+        "putIV": 18
       },
       {
         "strike": 26800,
@@ -7876,10 +9048,12 @@ window.HSI_REPORTS = {
         "callChange": 48,
         "callVol": 244,
         "callSettle": 1,
+        "callIV": 19,
         "putOI": 18,
         "putChange": -1,
         "putVol": 1,
-        "putSettle": 1346
+        "putSettle": 1346,
+        "putIV": 0
       },
       {
         "strike": 27000,
@@ -7887,10 +9061,12 @@ window.HSI_REPORTS = {
         "callChange": 54,
         "callVol": 160,
         "callSettle": 1,
+        "callIV": 21,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1546
+        "putSettle": 1546,
+        "putIV": 0
       },
       {
         "strike": 27200,
@@ -7898,10 +9074,12 @@ window.HSI_REPORTS = {
         "callChange": -8,
         "callVol": 77,
         "callSettle": 1,
+        "callIV": 24,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1746
+        "putSettle": 1746,
+        "putIV": 0
       },
       {
         "strike": 27400,
@@ -7909,10 +9087,12 @@ window.HSI_REPORTS = {
         "callChange": 16,
         "callVol": 26,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1946
+        "putSettle": 1946,
+        "putIV": 0
       },
       {
         "strike": 27600,
@@ -7920,10 +9100,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 19,
         "callSettle": 1,
+        "callIV": 29,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2146
+        "putSettle": 2146,
+        "putIV": 0
       },
       {
         "strike": 27800,
@@ -7931,10 +9113,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 18,
         "callSettle": 1,
+        "callIV": 31,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2346
+        "putSettle": 2346,
+        "putIV": 0
       },
       {
         "strike": 28000,
@@ -7942,10 +9126,12 @@ window.HSI_REPORTS = {
         "callChange": -12,
         "callVol": 20,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2546
+        "putSettle": 2546,
+        "putIV": 0
       },
       {
         "strike": 28200,
@@ -7953,10 +9139,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 10,
         "callSettle": 1,
+        "callIV": 35,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2746
+        "putSettle": 2746,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -7964,10 +9152,12 @@ window.HSI_REPORTS = {
         "callChange": 3,
         "callVol": 12,
         "callSettle": 1,
+        "callIV": 38,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2946
+        "putSettle": 2946,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -7975,10 +9165,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 4,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3146
+        "putSettle": 3146,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -7986,10 +9178,12 @@ window.HSI_REPORTS = {
         "callChange": 1,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 42,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3346
+        "putSettle": 3346,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -7997,10 +9191,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 44,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3546
+        "putSettle": 3546,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -8008,10 +9204,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 46,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3746
+        "putSettle": 3746,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -8019,10 +9217,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 48,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3946
+        "putSettle": 3946,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -8030,10 +9230,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 50,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4146
+        "putSettle": 4146,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -8041,10 +9243,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 52,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4346
+        "putSettle": 4346,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -8052,10 +9256,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 3,
         "callSettle": 1,
+        "callIV": 54,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4546
+        "putSettle": 4546,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -8063,10 +9269,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 4,
         "callSettle": 1,
+        "callIV": 56,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4746
+        "putSettle": 4746,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -8074,10 +9282,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 58,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4946
+        "putSettle": 4946,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -8085,10 +9295,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 60,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5146
+        "putSettle": 5146,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -8096,10 +9308,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 62,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5346
+        "putSettle": 5346,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -8107,10 +9321,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 64,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5546
+        "putSettle": 5546,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -8118,10 +9334,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 66,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5746
+        "putSettle": 5746,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -8129,10 +9347,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 68,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5946
+        "putSettle": 5946,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -8140,10 +9360,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 70,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6146
+        "putSettle": 6146,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -8151,10 +9373,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 72,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6346
+        "putSettle": 6346,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -8162,10 +9386,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 74,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6546
+        "putSettle": 6546,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -8670,10 +9896,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10550,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 191
       },
       {
         "strike": 15100,
@@ -8681,10 +9909,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10450,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 188
       },
       {
         "strike": 15200,
@@ -8692,10 +9922,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10350,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 186
       },
       {
         "strike": 15300,
@@ -8703,10 +9935,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10250,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 184
       },
       {
         "strike": 15500,
@@ -8714,10 +9948,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10050,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 180
       },
       {
         "strike": 15600,
@@ -8725,10 +9961,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9950,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 177
       },
       {
         "strike": 15700,
@@ -8736,10 +9974,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9850,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 175
       },
       {
         "strike": 15800,
@@ -8747,10 +9987,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9750,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 173
       },
       {
         "strike": 15900,
@@ -8758,10 +10000,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9650,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 171
       },
       {
         "strike": 16000,
@@ -8769,10 +10013,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9550,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 169
       },
       {
         "strike": 16100,
@@ -8780,10 +10026,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9450,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 167
       },
       {
         "strike": 16200,
@@ -8791,10 +10039,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9350,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 165
       },
       {
         "strike": 16300,
@@ -8802,10 +10052,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9250,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 163
       },
       {
         "strike": 16400,
@@ -8813,10 +10065,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9150,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 161
       },
       {
         "strike": 16500,
@@ -8824,10 +10078,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9050,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 158
       },
       {
         "strike": 16600,
@@ -8835,10 +10091,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8950,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 156
       },
       {
         "strike": 16700,
@@ -8846,10 +10104,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8850,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 154
       },
       {
         "strike": 16800,
@@ -8857,10 +10117,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8750,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 152
       },
       {
         "strike": 16900,
@@ -8868,10 +10130,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8650,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 150
       },
       {
         "strike": 17000,
@@ -8879,10 +10143,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8550,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 148
       },
       {
         "strike": 17100,
@@ -8890,10 +10156,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8450,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 146
       },
       {
         "strike": 17200,
@@ -8901,10 +10169,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8350,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 144
       },
       {
         "strike": 17300,
@@ -8912,10 +10182,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8250,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 142
       },
       {
         "strike": 17400,
@@ -8923,10 +10195,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8150,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 140
       },
       {
         "strike": 17500,
@@ -8934,10 +10208,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8050,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 138
       },
       {
         "strike": 17600,
@@ -8945,10 +10221,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7950,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 136
       },
       {
         "strike": 17700,
@@ -8956,10 +10234,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7850,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 135
       },
       {
         "strike": 17800,
@@ -8967,10 +10247,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7750,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 133
       },
       {
         "strike": 17900,
@@ -8978,10 +10260,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7650,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 131
       },
       {
         "strike": 18000,
@@ -8989,10 +10273,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7550,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 129
       },
       {
         "strike": 18100,
@@ -9000,10 +10286,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7450,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 127
       },
       {
         "strike": 18200,
@@ -9011,10 +10299,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7350,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 125
       },
       {
         "strike": 18300,
@@ -9022,10 +10312,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7250,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 123
       },
       {
         "strike": 18400,
@@ -9033,10 +10325,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7150,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 121
       },
       {
         "strike": 18500,
@@ -9044,10 +10338,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7050,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 119
       },
       {
         "strike": 18600,
@@ -9055,10 +10351,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6950,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 118
       },
       {
         "strike": 18700,
@@ -9066,10 +10364,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6850,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 116
       },
       {
         "strike": 18800,
@@ -9077,10 +10377,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6750,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 114
       },
       {
         "strike": 18900,
@@ -9088,10 +10390,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6650,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 112
       },
       {
         "strike": 19000,
@@ -9099,10 +10403,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6550,
+        "callIV": 0,
         "putOI": 398,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 110
       },
       {
         "strike": 19100,
@@ -9110,10 +10416,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6450,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 108
       },
       {
         "strike": 19200,
@@ -9121,10 +10429,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6350,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 19300,
@@ -9132,10 +10442,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6250,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 105
       },
       {
         "strike": 19400,
@@ -9143,10 +10455,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6150,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 19500,
@@ -9154,10 +10468,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6050,
+        "callIV": 0,
         "putOI": 468,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 101
       },
       {
         "strike": 19600,
@@ -9165,10 +10481,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5950,
+        "callIV": 0,
         "putOI": 334,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 99
       },
       {
         "strike": 19700,
@@ -9176,10 +10494,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5850,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 98
       },
       {
         "strike": 19800,
@@ -9187,10 +10507,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5750,
+        "callIV": 0,
         "putOI": 492,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 96
       },
       {
         "strike": 19900,
@@ -9198,10 +10520,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5650,
+        "callIV": 0,
         "putOI": 404,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 20000,
@@ -9209,10 +10533,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5550,
+        "callIV": 0,
         "putOI": 499,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 20200,
@@ -9220,10 +10546,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5350,
+        "callIV": 0,
         "putOI": 254,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 89
       },
       {
         "strike": 20400,
@@ -9231,10 +10559,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5150,
+        "callIV": 0,
         "putOI": 341,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 85
       },
       {
         "strike": 20600,
@@ -9242,10 +10572,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4950,
+        "callIV": 0,
         "putOI": 946,
         "putChange": 487,
         "putVol": 487,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 20800,
@@ -9253,10 +10585,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4750,
+        "callIV": 0,
         "putOI": 718,
         "putChange": 122,
         "putVol": 125,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 79
       },
       {
         "strike": 21000,
@@ -9264,10 +10598,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4550,
+        "callIV": 0,
         "putOI": 873,
         "putChange": 84,
         "putVol": 84,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 21200,
@@ -9275,10 +10611,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4350,
+        "callIV": 0,
         "putOI": 350,
         "putChange": 53,
         "putVol": 53,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 72
       },
       {
         "strike": 21400,
@@ -9286,10 +10624,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4150,
+        "callIV": 0,
         "putOI": 555,
         "putChange": 11,
         "putVol": 11,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 69
       },
       {
         "strike": 21600,
@@ -9297,10 +10637,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3950,
+        "callIV": 0,
         "putOI": 411,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 65
       },
       {
         "strike": 21800,
@@ -9308,10 +10650,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3750,
+        "callIV": 0,
         "putOI": 300,
         "putChange": 6,
         "putVol": 6,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 22000,
@@ -9319,10 +10663,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3550,
+        "callIV": 0,
         "putOI": 898,
         "putChange": 2,
         "putVol": 14,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 59
       },
       {
         "strike": 22200,
@@ -9330,10 +10676,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3350,
+        "callIV": 0,
         "putOI": 424,
         "putChange": 7,
         "putVol": 23,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 55
       },
       {
         "strike": 22400,
@@ -9341,10 +10689,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3150,
+        "callIV": 0,
         "putOI": 430,
         "putChange": 10,
         "putVol": 15,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 52
       },
       {
         "strike": 22600,
@@ -9352,10 +10702,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2950,
+        "callIV": 0,
         "putOI": 776,
         "putChange": 1,
         "putVol": 22,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 49
       },
       {
         "strike": 22800,
@@ -9363,10 +10715,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2750,
+        "callIV": 0,
         "putOI": 569,
         "putChange": -1,
         "putVol": 14,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 46
       },
       {
         "strike": 23000,
@@ -9374,10 +10728,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2550,
+        "callIV": 0,
         "putOI": 965,
         "putChange": -2,
         "putVol": 30,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 42
       },
       {
         "strike": 23200,
@@ -9385,10 +10741,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2350,
+        "callIV": 0,
         "putOI": 470,
         "putChange": 6,
         "putVol": 6,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 39
       },
       {
         "strike": 23400,
@@ -9396,10 +10754,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2152,
+        "callIV": 39,
         "putOI": 2600,
         "putChange": 0,
         "putVol": 30,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 36
       },
       {
         "strike": 23600,
@@ -9407,10 +10767,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1950,
+        "callIV": 0,
         "putOI": 1126,
         "putChange": 17,
         "putVol": 30,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 33
       },
       {
         "strike": 23800,
@@ -9418,10 +10780,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1751,
+        "callIV": 30,
         "putOI": 874,
         "putChange": 5,
         "putVol": 17,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 30
       },
       {
         "strike": 24000,
@@ -9429,10 +10793,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 4,
         "callSettle": 1552,
+        "callIV": 29,
         "putOI": 908,
         "putChange": 14,
         "putVol": 48,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 29
       },
       {
         "strike": 24200,
@@ -9440,10 +10806,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1350,
+        "callIV": 0,
         "putOI": 863,
         "putChange": 16,
         "putVol": 47,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 27
       },
       {
         "strike": 24400,
@@ -9451,10 +10819,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1159,
+        "callIV": 28,
         "putOI": 578,
         "putChange": -12,
         "putVol": 119,
-        "putSettle": 6
+        "putSettle": 6,
+        "putIV": 26
       },
       {
         "strike": 24600,
@@ -9462,10 +10832,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 1,
         "callSettle": 955,
+        "callIV": 21,
         "putOI": 1088,
         "putChange": -73,
         "putVol": 244,
-        "putSettle": 10
+        "putSettle": 10,
+        "putIV": 24
       },
       {
         "strike": 24800,
@@ -9473,10 +10845,12 @@ window.HSI_REPORTS = {
         "callChange": 2,
         "callVol": 3,
         "callSettle": 764,
+        "callIV": 21,
         "putOI": 919,
         "putChange": 47,
         "putVol": 439,
-        "putSettle": 19
+        "putSettle": 19,
+        "putIV": 23
       },
       {
         "strike": 25000,
@@ -9484,10 +10858,12 @@ window.HSI_REPORTS = {
         "callChange": -23,
         "callVol": 56,
         "callSettle": 581,
+        "callIV": 21,
         "putOI": 1030,
         "putChange": 102,
         "putVol": 768,
-        "putSettle": 35
+        "putSettle": 35,
+        "putIV": 21
       },
       {
         "strike": 25200,
@@ -9495,10 +10871,12 @@ window.HSI_REPORTS = {
         "callChange": -43,
         "callVol": 127,
         "callSettle": 403,
+        "callIV": 19,
         "putOI": 1495,
         "putChange": 183,
         "putVol": 1525,
-        "putSettle": 64
+        "putSettle": 64,
+        "putIV": 20
       },
       {
         "strike": 25400,
@@ -9506,10 +10884,12 @@ window.HSI_REPORTS = {
         "callChange": -87,
         "callVol": 344,
         "callSettle": 259,
+        "callIV": 18,
         "putOI": 1024,
         "putChange": -29,
         "putVol": 1140,
-        "putSettle": 114
+        "putSettle": 114,
+        "putIV": 19
       },
       {
         "strike": 25600,
@@ -9517,10 +10897,12 @@ window.HSI_REPORTS = {
         "callChange": 283,
         "callVol": 1541,
         "callSettle": 146,
+        "callIV": 18,
         "putOI": 547,
         "putChange": -23,
         "putVol": 355,
-        "putSettle": 199
+        "putSettle": 199,
+        "putIV": 18
       },
       {
         "strike": 25800,
@@ -9528,10 +10910,12 @@ window.HSI_REPORTS = {
         "callChange": -251,
         "callVol": 1649,
         "callSettle": 73,
+        "callIV": 18,
         "putOI": 574,
         "putChange": -1,
         "putVol": 26,
-        "putSettle": 326
+        "putSettle": 326,
+        "putIV": 18
       },
       {
         "strike": 26000,
@@ -9539,10 +10923,12 @@ window.HSI_REPORTS = {
         "callChange": 131,
         "callVol": 1228,
         "callSettle": 33,
+        "callIV": 18,
         "putOI": 285,
         "putChange": -2,
         "putVol": 9,
-        "putSettle": 488
+        "putSettle": 488,
+        "putIV": 19
       },
       {
         "strike": 26200,
@@ -9550,10 +10936,12 @@ window.HSI_REPORTS = {
         "callChange": -612,
         "callVol": 1251,
         "callSettle": 13,
+        "callIV": 18,
         "putOI": 199,
         "putChange": -3,
         "putVol": 5,
-        "putSettle": 663
+        "putSettle": 663,
+        "putIV": 18
       },
       {
         "strike": 26400,
@@ -9561,10 +10949,12 @@ window.HSI_REPORTS = {
         "callChange": 4,
         "callVol": 335,
         "callSettle": 5,
+        "callIV": 19,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 862
+        "putSettle": 862,
+        "putIV": 22
       },
       {
         "strike": 26600,
@@ -9572,10 +10962,12 @@ window.HSI_REPORTS = {
         "callChange": -45,
         "callVol": 94,
         "callSettle": 2,
+        "callIV": 19,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1054
+        "putSettle": 1054,
+        "putIV": 21
       },
       {
         "strike": 26800,
@@ -9583,10 +10975,12 @@ window.HSI_REPORTS = {
         "callChange": -5,
         "callVol": 30,
         "callSettle": 1,
+        "callIV": 21,
         "putOI": 18,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1252
+        "putSettle": 1252,
+        "putIV": 22
       },
       {
         "strike": 27000,
@@ -9594,10 +10988,12 @@ window.HSI_REPORTS = {
         "callChange": -11,
         "callVol": 45,
         "callSettle": 1,
+        "callIV": 23,
         "putOI": 25,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1451
+        "putSettle": 1451,
+        "putIV": 23
       },
       {
         "strike": 27200,
@@ -9605,10 +11001,12 @@ window.HSI_REPORTS = {
         "callChange": -27,
         "callVol": 29,
         "callSettle": 1,
+        "callIV": 26,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1654
+        "putSettle": 1654,
+        "putIV": 31
       },
       {
         "strike": 27400,
@@ -9616,10 +11014,12 @@ window.HSI_REPORTS = {
         "callChange": 4,
         "callVol": 15,
         "callSettle": 1,
+        "callIV": 29,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1853
+        "putSettle": 1853,
+        "putIV": 33
       },
       {
         "strike": 27600,
@@ -9627,10 +11027,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 3,
         "callSettle": 1,
+        "callIV": 32,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2057
+        "putSettle": 2057,
+        "putIV": 41
       },
       {
         "strike": 27800,
@@ -9638,10 +11040,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 34,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2250
+        "putSettle": 2250,
+        "putIV": 0
       },
       {
         "strike": 28000,
@@ -9649,10 +11053,12 @@ window.HSI_REPORTS = {
         "callChange": -10,
         "callVol": 21,
         "callSettle": 1,
+        "callIV": 37,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2450
+        "putSettle": 2450,
+        "putIV": 0
       },
       {
         "strike": 28200,
@@ -9660,10 +11066,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2650
+        "putSettle": 2650,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -9671,10 +11079,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 42,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2850
+        "putSettle": 2850,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -9682,10 +11092,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3050
+        "putSettle": 3050,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -9693,10 +11105,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 47,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3250
+        "putSettle": 3250,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -9704,10 +11118,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 50,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3450
+        "putSettle": 3450,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -9715,10 +11131,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 52,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3650
+        "putSettle": 3650,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -9726,10 +11144,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 55,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3850
+        "putSettle": 3850,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -9737,10 +11157,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 57,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4050
+        "putSettle": 4050,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -9748,10 +11170,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 59,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4250
+        "putSettle": 4250,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -9759,10 +11183,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 62,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4450
+        "putSettle": 4450,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -9770,10 +11196,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 64,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4650
+        "putSettle": 4650,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -9781,10 +11209,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 66,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4850
+        "putSettle": 4850,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -9792,10 +11222,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 68,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5050
+        "putSettle": 5050,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -9803,10 +11235,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 71,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5250
+        "putSettle": 5250,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -9814,10 +11248,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 73,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5450
+        "putSettle": 5450,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -9825,10 +11261,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 75,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5650
+        "putSettle": 5650,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -9836,10 +11274,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 77,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5850
+        "putSettle": 5850,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -9847,10 +11287,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 79,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6050
+        "putSettle": 6050,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -9858,10 +11300,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 82,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6250
+        "putSettle": 6250,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -9869,10 +11313,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 84,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6450
+        "putSettle": 6450,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -10377,10 +11823,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10670,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 236
       },
       {
         "strike": 15100,
@@ -10388,10 +11836,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10570,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 233
       },
       {
         "strike": 15200,
@@ -10399,10 +11849,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10470,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 230
       },
       {
         "strike": 15300,
@@ -10410,10 +11862,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10370,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 227
       },
       {
         "strike": 15500,
@@ -10421,10 +11875,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10170,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 222
       },
       {
         "strike": 15600,
@@ -10432,10 +11888,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10070,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 219
       },
       {
         "strike": 15700,
@@ -10443,10 +11901,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9970,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 217
       },
       {
         "strike": 15800,
@@ -10454,10 +11914,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9870,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 214
       },
       {
         "strike": 15900,
@@ -10465,10 +11927,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9770,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 211
       },
       {
         "strike": 16000,
@@ -10476,10 +11940,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9670,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 209
       },
       {
         "strike": 16100,
@@ -10487,10 +11953,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9570,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 206
       },
       {
         "strike": 16200,
@@ -10498,10 +11966,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9470,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 204
       },
       {
         "strike": 16300,
@@ -10509,10 +11979,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9370,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 201
       },
       {
         "strike": 16400,
@@ -10520,10 +11992,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9270,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 199
       },
       {
         "strike": 16500,
@@ -10531,10 +12005,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9170,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 196
       },
       {
         "strike": 16600,
@@ -10542,10 +12018,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9070,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 194
       },
       {
         "strike": 16700,
@@ -10553,10 +12031,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8970,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 191
       },
       {
         "strike": 16800,
@@ -10564,10 +12044,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8870,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 189
       },
       {
         "strike": 16900,
@@ -10575,10 +12057,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8770,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 186
       },
       {
         "strike": 17000,
@@ -10586,10 +12070,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8670,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 184
       },
       {
         "strike": 17100,
@@ -10597,10 +12083,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8570,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 181
       },
       {
         "strike": 17200,
@@ -10608,10 +12096,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8470,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 179
       },
       {
         "strike": 17300,
@@ -10619,10 +12109,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8370,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 176
       },
       {
         "strike": 17400,
@@ -10630,10 +12122,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8270,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 174
       },
       {
         "strike": 17500,
@@ -10641,10 +12135,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8170,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 172
       },
       {
         "strike": 17600,
@@ -10652,10 +12148,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8070,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 169
       },
       {
         "strike": 17700,
@@ -10663,10 +12161,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7970,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 167
       },
       {
         "strike": 17800,
@@ -10674,10 +12174,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7870,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 164
       },
       {
         "strike": 17900,
@@ -10685,10 +12187,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7770,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 162
       },
       {
         "strike": 18000,
@@ -10696,10 +12200,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7670,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 160
       },
       {
         "strike": 18100,
@@ -10707,10 +12213,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7570,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 157
       },
       {
         "strike": 18200,
@@ -10718,10 +12226,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7470,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 155
       },
       {
         "strike": 18300,
@@ -10729,10 +12239,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7370,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 153
       },
       {
         "strike": 18400,
@@ -10740,10 +12252,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7270,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 151
       },
       {
         "strike": 18500,
@@ -10751,10 +12265,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7170,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 148
       },
       {
         "strike": 18600,
@@ -10762,10 +12278,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7070,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 146
       },
       {
         "strike": 18700,
@@ -10773,10 +12291,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6970,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 144
       },
       {
         "strike": 18800,
@@ -10784,10 +12304,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6870,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 141
       },
       {
         "strike": 18900,
@@ -10795,10 +12317,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6770,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 139
       },
       {
         "strike": 19000,
@@ -10806,10 +12330,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6670,
+        "callIV": 0,
         "putOI": 398,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 137
       },
       {
         "strike": 19100,
@@ -10817,10 +12343,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6570,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 135
       },
       {
         "strike": 19200,
@@ -10828,10 +12356,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6470,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 133
       },
       {
         "strike": 19300,
@@ -10839,10 +12369,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6370,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 130
       },
       {
         "strike": 19400,
@@ -10850,10 +12382,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6270,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 128
       },
       {
         "strike": 19500,
@@ -10861,10 +12395,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6170,
+        "callIV": 0,
         "putOI": 468,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 126
       },
       {
         "strike": 19600,
@@ -10872,10 +12408,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6070,
+        "callIV": 0,
         "putOI": 334,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 124
       },
       {
         "strike": 19700,
@@ -10883,10 +12421,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5970,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 122
       },
       {
         "strike": 19800,
@@ -10894,10 +12434,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5870,
+        "callIV": 0,
         "putOI": 492,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 119
       },
       {
         "strike": 19900,
@@ -10905,10 +12447,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5770,
+        "callIV": 0,
         "putOI": 404,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 117
       },
       {
         "strike": 20000,
@@ -10916,10 +12460,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5670,
+        "callIV": 0,
         "putOI": 499,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 115
       },
       {
         "strike": 20200,
@@ -10927,10 +12473,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5470,
+        "callIV": 0,
         "putOI": 254,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 111
       },
       {
         "strike": 20400,
@@ -10938,10 +12486,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5270,
+        "callIV": 0,
         "putOI": 341,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 107
       },
       {
         "strike": 20600,
@@ -10949,10 +12499,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5070,
+        "callIV": 0,
         "putOI": 946,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 20800,
@@ -10960,10 +12512,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4870,
+        "callIV": 0,
         "putOI": 718,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 98
       },
       {
         "strike": 21000,
@@ -10971,10 +12525,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4670,
+        "callIV": 0,
         "putOI": 873,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 94
       },
       {
         "strike": 21200,
@@ -10982,10 +12538,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4470,
+        "callIV": 0,
         "putOI": 351,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 90
       },
       {
         "strike": 21400,
@@ -10993,10 +12551,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4270,
+        "callIV": 0,
         "putOI": 555,
         "putChange": 0,
         "putVol": 18,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 21600,
@@ -11004,10 +12564,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4070,
+        "callIV": 0,
         "putOI": 411,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 82
       },
       {
         "strike": 21800,
@@ -11015,10 +12577,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3870,
+        "callIV": 0,
         "putOI": 300,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 78
       },
       {
         "strike": 22000,
@@ -11026,10 +12590,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3670,
+        "callIV": 0,
         "putOI": 898,
         "putChange": 0,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 74
       },
       {
         "strike": 22200,
@@ -11037,10 +12603,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3470,
+        "callIV": 0,
         "putOI": 431,
         "putChange": 7,
         "putVol": 20,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 22400,
@@ -11048,10 +12616,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3270,
+        "callIV": 0,
         "putOI": 434,
         "putChange": 4,
         "putVol": 5,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 66
       },
       {
         "strike": 22600,
@@ -11059,10 +12629,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3070,
+        "callIV": 0,
         "putOI": 813,
         "putChange": 37,
         "putVol": 53,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 62
       },
       {
         "strike": 22800,
@@ -11070,10 +12642,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2870,
+        "callIV": 0,
         "putOI": 572,
         "putChange": 3,
         "putVol": 29,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 23000,
@@ -11081,10 +12655,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2670,
+        "callIV": 0,
         "putOI": 966,
         "putChange": 1,
         "putVol": 10,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 54
       },
       {
         "strike": 23200,
@@ -11092,10 +12668,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2470,
+        "callIV": 0,
         "putOI": 495,
         "putChange": 25,
         "putVol": 33,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 50
       },
       {
         "strike": 23400,
@@ -11103,10 +12681,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2270,
+        "callIV": 0,
         "putOI": 2596,
         "putChange": -4,
         "putVol": 15,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 46
       },
       {
         "strike": 23600,
@@ -11114,10 +12694,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2070,
+        "callIV": 0,
         "putOI": 1132,
         "putChange": 6,
         "putVol": 17,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 42
       },
       {
         "strike": 23800,
@@ -11125,10 +12707,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1870,
+        "callIV": 0,
         "putOI": 862,
         "putChange": -12,
         "putVol": 18,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 39
       },
       {
         "strike": 24000,
@@ -11136,10 +12720,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1670,
+        "callIV": 0,
         "putOI": 918,
         "putChange": 10,
         "putVol": 53,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 35
       },
       {
         "strike": 24200,
@@ -11147,10 +12733,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1471,
+        "callIV": 31,
         "putOI": 896,
         "putChange": 33,
         "putVol": 91,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 31
       },
       {
         "strike": 24400,
@@ -11158,10 +12746,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1274,
+        "callIV": 32,
         "putOI": 680,
         "putChange": 102,
         "putVol": 183,
-        "putSettle": 2
+        "putSettle": 2,
+        "putIV": 29
       },
       {
         "strike": 24600,
@@ -11169,10 +12759,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1076,
+        "callIV": 30,
         "putOI": 1421,
         "putChange": 333,
         "putVol": 820,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 27
       },
       {
         "strike": 24800,
@@ -11180,10 +12772,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 1,
         "callSettle": 884,
+        "callIV": 29,
         "putOI": 958,
         "putChange": 39,
         "putVol": 341,
-        "putSettle": 6
+        "putSettle": 6,
+        "putIV": 25
       },
       {
         "strike": 25000,
@@ -11191,10 +12785,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 3,
         "callSettle": 681,
+        "callIV": 22,
         "putOI": 1013,
         "putChange": -17,
         "putVol": 398,
-        "putSettle": 12
+        "putSettle": 12,
+        "putIV": 23
       },
       {
         "strike": 25200,
@@ -11202,10 +12798,12 @@ window.HSI_REPORTS = {
         "callChange": -9,
         "callVol": 51,
         "callSettle": 494,
+        "callIV": 21,
         "putOI": 1658,
         "putChange": 163,
         "putVol": 1188,
-        "putSettle": 23
+        "putSettle": 23,
+        "putIV": 21
       },
       {
         "strike": 25400,
@@ -11213,10 +12811,12 @@ window.HSI_REPORTS = {
         "callChange": -90,
         "callVol": 379,
         "callSettle": 311,
+        "callIV": 17,
         "putOI": 1421,
         "putChange": 397,
         "putVol": 1538,
-        "putSettle": 49
+        "putSettle": 49,
+        "putIV": 19
       },
       {
         "strike": 25600,
@@ -11224,10 +12824,12 @@ window.HSI_REPORTS = {
         "callChange": -63,
         "callVol": 516,
         "callSettle": 174,
+        "callIV": 17,
         "putOI": 592,
         "putChange": 45,
         "putVol": 1110,
-        "putSettle": 102
+        "putSettle": 102,
+        "putIV": 17
       },
       {
         "strike": 25800,
@@ -11235,10 +12837,12 @@ window.HSI_REPORTS = {
         "callChange": 7,
         "callVol": 1730,
         "callSettle": 76,
+        "callIV": 17,
         "putOI": 715,
         "putChange": 141,
         "putVol": 625,
-        "putSettle": 205
+        "putSettle": 205,
+        "putIV": 17
       },
       {
         "strike": 26000,
@@ -11246,10 +12850,12 @@ window.HSI_REPORTS = {
         "callChange": -115,
         "callVol": 2103,
         "callSettle": 26,
+        "callIV": 16,
         "putOI": 295,
         "putChange": 10,
         "putVol": 34,
-        "putSettle": 357
+        "putSettle": 357,
+        "putIV": 17
       },
       {
         "strike": 26200,
@@ -11257,10 +12863,12 @@ window.HSI_REPORTS = {
         "callChange": -54,
         "callVol": 880,
         "callSettle": 7,
+        "callIV": 16,
         "putOI": 201,
         "putChange": 2,
         "putVol": 26,
-        "putSettle": 534
+        "putSettle": 534,
+        "putIV": 15
       },
       {
         "strike": 26400,
@@ -11268,10 +12876,12 @@ window.HSI_REPORTS = {
         "callChange": -73,
         "callVol": 358,
         "callSettle": 2,
+        "callIV": 17,
         "putOI": 92,
         "putChange": 1,
         "putVol": 17,
-        "putSettle": 731
+        "putSettle": 731,
+        "putIV": 16
       },
       {
         "strike": 26600,
@@ -11279,10 +12889,12 @@ window.HSI_REPORTS = {
         "callChange": -9,
         "callVol": 101,
         "callSettle": 1,
+        "callIV": 19,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 930
+        "putSettle": 930,
+        "putIV": 0
       },
       {
         "strike": 26800,
@@ -11290,10 +12902,12 @@ window.HSI_REPORTS = {
         "callChange": -13,
         "callVol": 75,
         "callSettle": 1,
+        "callIV": 23,
         "putOI": 18,
         "putChange": 0,
         "putVol": 2,
-        "putSettle": 1130
+        "putSettle": 1130,
+        "putIV": 0
       },
       {
         "strike": 27000,
@@ -11301,10 +12915,12 @@ window.HSI_REPORTS = {
         "callChange": 7,
         "callVol": 50,
         "callSettle": 1,
+        "callIV": 27,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1330
+        "putSettle": 1330,
+        "putIV": 0
       },
       {
         "strike": 27200,
@@ -11312,10 +12928,12 @@ window.HSI_REPORTS = {
         "callChange": -7,
         "callVol": 20,
         "callSettle": 1,
+        "callIV": 30,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1541
+        "putSettle": 1541,
+        "putIV": 42
       },
       {
         "strike": 27400,
@@ -11323,10 +12941,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1,
+        "callIV": 33,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1730
+        "putSettle": 1730,
+        "putIV": 0
       },
       {
         "strike": 27600,
@@ -11334,10 +12954,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 37,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1942
+        "putSettle": 1942,
+        "putIV": 52
       },
       {
         "strike": 27800,
@@ -11345,10 +12967,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2142
+        "putSettle": 2142,
+        "putIV": 56
       },
       {
         "strike": 28000,
@@ -11356,10 +12980,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 43,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2342
+        "putSettle": 2342,
+        "putIV": 60
       },
       {
         "strike": 28200,
@@ -11367,10 +12993,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 47,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2530
+        "putSettle": 2530,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -11378,10 +13006,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 50,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2730
+        "putSettle": 2730,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -11389,10 +13019,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 53,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2930
+        "putSettle": 2930,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -11400,10 +13032,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 56,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3130
+        "putSettle": 3130,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -11411,10 +13045,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 59,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3330
+        "putSettle": 3330,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -11422,10 +13058,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 62,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3530
+        "putSettle": 3530,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -11433,10 +13071,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 65,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3730
+        "putSettle": 3730,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -11444,10 +13084,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 68,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3930
+        "putSettle": 3930,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -11455,10 +13097,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 71,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4130
+        "putSettle": 4130,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -11466,10 +13110,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 74,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4330
+        "putSettle": 4330,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -11477,10 +13123,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 76,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4530
+        "putSettle": 4530,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -11488,10 +13136,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 79,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4730
+        "putSettle": 4730,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -11499,10 +13149,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 82,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4930
+        "putSettle": 4930,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -11510,10 +13162,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 85,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5130
+        "putSettle": 5130,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -11521,10 +13175,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 87,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5330
+        "putSettle": 5330,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -11532,10 +13188,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 90,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5530
+        "putSettle": 5530,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -11543,10 +13201,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 93,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5730
+        "putSettle": 5730,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -11554,10 +13214,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 95,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5930
+        "putSettle": 5930,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -11565,10 +13227,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 98,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6130
+        "putSettle": 6130,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -11576,10 +13240,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 101,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6330
+        "putSettle": 6330,
+        "putIV": 0
       }
     ],
     "topVolume": [
@@ -12084,10 +13750,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10598,
+        "callIV": 0,
         "putOI": 23,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 332
       },
       {
         "strike": 15100,
@@ -12095,10 +13763,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10498,
+        "callIV": 0,
         "putOI": 14,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 328
       },
       {
         "strike": 15200,
@@ -12106,10 +13776,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10398,
+        "callIV": 0,
         "putOI": 28,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 324
       },
       {
         "strike": 15300,
@@ -12117,10 +13789,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10298,
+        "callIV": 0,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 320
       },
       {
         "strike": 15500,
@@ -12128,10 +13802,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 10098,
+        "callIV": 0,
         "putOI": 39,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 313
       },
       {
         "strike": 15600,
@@ -12139,10 +13815,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9998,
+        "callIV": 0,
         "putOI": 80,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 309
       },
       {
         "strike": 15700,
@@ -12150,10 +13828,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9898,
+        "callIV": 0,
         "putOI": 40,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 305
       },
       {
         "strike": 15800,
@@ -12161,10 +13841,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9798,
+        "callIV": 0,
         "putOI": 29,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 301
       },
       {
         "strike": 15900,
@@ -12172,10 +13854,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9698,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 298
       },
       {
         "strike": 16000,
@@ -12183,10 +13867,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9598,
+        "callIV": 0,
         "putOI": 76,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 294
       },
       {
         "strike": 16100,
@@ -12194,10 +13880,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9498,
+        "callIV": 0,
         "putOI": 60,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 290
       },
       {
         "strike": 16200,
@@ -12205,10 +13893,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9398,
+        "callIV": 0,
         "putOI": 75,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 287
       },
       {
         "strike": 16300,
@@ -12216,10 +13906,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9298,
+        "callIV": 0,
         "putOI": 37,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 283
       },
       {
         "strike": 16400,
@@ -12227,10 +13919,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9198,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 279
       },
       {
         "strike": 16500,
@@ -12238,10 +13932,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 9098,
+        "callIV": 0,
         "putOI": 91,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 276
       },
       {
         "strike": 16600,
@@ -12249,10 +13945,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8998,
+        "callIV": 0,
         "putOI": 56,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 272
       },
       {
         "strike": 16700,
@@ -12260,10 +13958,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8898,
+        "callIV": 0,
         "putOI": 43,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 269
       },
       {
         "strike": 16800,
@@ -12271,10 +13971,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8798,
+        "callIV": 0,
         "putOI": 88,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 265
       },
       {
         "strike": 16900,
@@ -12282,10 +13984,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8698,
+        "callIV": 0,
         "putOI": 82,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 262
       },
       {
         "strike": 17000,
@@ -12293,10 +13997,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8598,
+        "callIV": 0,
         "putOI": 213,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 258
       },
       {
         "strike": 17100,
@@ -12304,10 +14010,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8498,
+        "callIV": 0,
         "putOI": 47,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 255
       },
       {
         "strike": 17200,
@@ -12315,10 +14023,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8398,
+        "callIV": 0,
         "putOI": 174,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 251
       },
       {
         "strike": 17300,
@@ -12326,10 +14036,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8298,
+        "callIV": 0,
         "putOI": 191,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 248
       },
       {
         "strike": 17400,
@@ -12337,10 +14049,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8198,
+        "callIV": 0,
         "putOI": 64,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 245
       },
       {
         "strike": 17500,
@@ -12348,10 +14062,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 8098,
+        "callIV": 0,
         "putOI": 98,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 241
       },
       {
         "strike": 17600,
@@ -12359,10 +14075,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7998,
+        "callIV": 0,
         "putOI": 57,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 238
       },
       {
         "strike": 17700,
@@ -12370,10 +14088,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7898,
+        "callIV": 0,
         "putOI": 180,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 234
       },
       {
         "strike": 17800,
@@ -12381,10 +14101,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7798,
+        "callIV": 0,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 231
       },
       {
         "strike": 17900,
@@ -12392,10 +14114,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7698,
+        "callIV": 0,
         "putOI": 126,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 228
       },
       {
         "strike": 18000,
@@ -12403,10 +14127,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7598,
+        "callIV": 0,
         "putOI": 881,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 225
       },
       {
         "strike": 18100,
@@ -12414,10 +14140,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7498,
+        "callIV": 0,
         "putOI": 313,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 221
       },
       {
         "strike": 18200,
@@ -12425,10 +14153,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7398,
+        "callIV": 0,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 218
       },
       {
         "strike": 18300,
@@ -12436,10 +14166,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7298,
+        "callIV": 0,
         "putOI": 113,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 215
       },
       {
         "strike": 18400,
@@ -12447,10 +14179,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7198,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 211
       },
       {
         "strike": 18500,
@@ -12458,10 +14192,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 7098,
+        "callIV": 0,
         "putOI": 124,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 208
       },
       {
         "strike": 18600,
@@ -12469,10 +14205,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6998,
+        "callIV": 0,
         "putOI": 70,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 205
       },
       {
         "strike": 18700,
@@ -12480,10 +14218,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6898,
+        "callIV": 0,
         "putOI": 90,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 202
       },
       {
         "strike": 18800,
@@ -12491,10 +14231,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6798,
+        "callIV": 0,
         "putOI": 105,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 199
       },
       {
         "strike": 18900,
@@ -12502,10 +14244,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6698,
+        "callIV": 0,
         "putOI": 120,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 195
       },
       {
         "strike": 19000,
@@ -12513,10 +14257,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6598,
+        "callIV": 0,
         "putOI": 398,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 192
       },
       {
         "strike": 19100,
@@ -12524,10 +14270,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6498,
+        "callIV": 0,
         "putOI": 200,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 189
       },
       {
         "strike": 19200,
@@ -12535,10 +14283,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6398,
+        "callIV": 0,
         "putOI": 156,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 186
       },
       {
         "strike": 19300,
@@ -12546,10 +14296,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6298,
+        "callIV": 0,
         "putOI": 173,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 183
       },
       {
         "strike": 19400,
@@ -12557,10 +14309,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6198,
+        "callIV": 0,
         "putOI": 283,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 180
       },
       {
         "strike": 19500,
@@ -12568,10 +14322,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 6098,
+        "callIV": 0,
         "putOI": 468,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 177
       },
       {
         "strike": 19600,
@@ -12579,10 +14335,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5998,
+        "callIV": 0,
         "putOI": 334,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 174
       },
       {
         "strike": 19700,
@@ -12590,10 +14348,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5898,
+        "callIV": 0,
         "putOI": 299,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 171
       },
       {
         "strike": 19800,
@@ -12601,10 +14361,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5798,
+        "callIV": 0,
         "putOI": 492,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 168
       },
       {
         "strike": 19900,
@@ -12612,10 +14374,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5698,
+        "callIV": 0,
         "putOI": 404,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 164
       },
       {
         "strike": 20000,
@@ -12623,10 +14387,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5598,
+        "callIV": 0,
         "putOI": 499,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 161
       },
       {
         "strike": 20200,
@@ -12634,10 +14400,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5398,
+        "callIV": 0,
         "putOI": 254,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 155
       },
       {
         "strike": 20400,
@@ -12645,10 +14413,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 5198,
+        "callIV": 0,
         "putOI": 341,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 149
       },
       {
         "strike": 20600,
@@ -12656,10 +14426,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4998,
+        "callIV": 0,
         "putOI": 946,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 144
       },
       {
         "strike": 20800,
@@ -12667,10 +14439,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4798,
+        "callIV": 0,
         "putOI": 718,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 138
       },
       {
         "strike": 21000,
@@ -12678,10 +14452,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4598,
+        "callIV": 0,
         "putOI": 873,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 132
       },
       {
         "strike": 21200,
@@ -12689,10 +14465,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4398,
+        "callIV": 0,
         "putOI": 351,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 126
       },
       {
         "strike": 21400,
@@ -12700,10 +14478,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 4198,
+        "callIV": 0,
         "putOI": 555,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 120
       },
       {
         "strike": 21600,
@@ -12711,10 +14491,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3998,
+        "callIV": 0,
         "putOI": 411,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 114
       },
       {
         "strike": 21800,
@@ -12722,10 +14504,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3798,
+        "callIV": 0,
         "putOI": 300,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 109
       },
       {
         "strike": 22000,
@@ -12733,10 +14517,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3598,
+        "callIV": 0,
         "putOI": 898,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 103
       },
       {
         "strike": 22200,
@@ -12744,10 +14530,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3398,
+        "callIV": 0,
         "putOI": 430,
         "putChange": -1,
         "putVol": 6,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 97
       },
       {
         "strike": 22400,
@@ -12755,10 +14543,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 3198,
+        "callIV": 0,
         "putOI": 434,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 92
       },
       {
         "strike": 22600,
@@ -12766,10 +14556,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2998,
+        "callIV": 0,
         "putOI": 813,
         "putChange": 0,
         "putVol": 3,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 86
       },
       {
         "strike": 22800,
@@ -12777,10 +14569,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2798,
+        "callIV": 0,
         "putOI": 572,
         "putChange": 0,
         "putVol": 15,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 81
       },
       {
         "strike": 23000,
@@ -12788,10 +14582,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2598,
+        "callIV": 0,
         "putOI": 967,
         "putChange": 1,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 75
       },
       {
         "strike": 23200,
@@ -12799,10 +14595,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 2398,
+        "callIV": 0,
         "putOI": 495,
         "putChange": 0,
         "putVol": 1,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 70
       },
       {
         "strike": 23400,
@@ -12810,10 +14608,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 8,
         "callSettle": 2198,
+        "callIV": 0,
         "putOI": 2598,
         "putChange": 2,
         "putVol": 19,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 64
       },
       {
         "strike": 23600,
@@ -12821,10 +14621,12 @@ window.HSI_REPORTS = {
         "callChange": 5,
         "callVol": 9,
         "callSettle": 1998,
+        "callIV": 0,
         "putOI": 1128,
         "putChange": -4,
         "putVol": 44,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 58
       },
       {
         "strike": 23800,
@@ -12832,10 +14634,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 2,
         "callSettle": 1798,
+        "callIV": 0,
         "putOI": 895,
         "putChange": 33,
         "putVol": 60,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 53
       },
       {
         "strike": 24000,
@@ -12843,10 +14647,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 0,
         "callSettle": 1598,
+        "callIV": 0,
         "putOI": 920,
         "putChange": 2,
         "putVol": 36,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 47
       },
       {
         "strike": 24200,
@@ -12854,10 +14660,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 1,
         "callSettle": 1398,
+        "callIV": 0,
         "putOI": 898,
         "putChange": 2,
         "putVol": 20,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 42
       },
       {
         "strike": 24400,
@@ -12865,10 +14673,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 2,
         "callSettle": 1198,
+        "callIV": 0,
         "putOI": 750,
         "putChange": 70,
         "putVol": 119,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 36
       },
       {
         "strike": 24600,
@@ -12876,10 +14686,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 998,
+        "callIV": 0,
         "putOI": 2248,
         "putChange": 827,
         "putVol": 1064,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 31
       },
       {
         "strike": 24800,
@@ -12887,10 +14699,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 5,
         "callSettle": 799,
+        "callIV": 25,
         "putOI": 939,
         "putChange": -19,
         "putVol": 242,
-        "putSettle": 1
+        "putSettle": 1,
+        "putIV": 25
       },
       {
         "strike": 25000,
@@ -12898,10 +14712,12 @@ window.HSI_REPORTS = {
         "callChange": 4,
         "callVol": 10,
         "callSettle": 599,
+        "callIV": 19,
         "putOI": 952,
         "putChange": -61,
         "putVol": 413,
-        "putSettle": 3
+        "putSettle": 3,
+        "putIV": 23
       },
       {
         "strike": 25200,
@@ -12909,10 +14725,12 @@ window.HSI_REPORTS = {
         "callChange": -2,
         "callVol": 12,
         "callSettle": 406,
+        "callIV": 20,
         "putOI": 1604,
         "putChange": -54,
         "putVol": 655,
-        "putSettle": 9
+        "putSettle": 9,
+        "putIV": 20
       },
       {
         "strike": 25400,
@@ -12920,10 +14738,12 @@ window.HSI_REPORTS = {
         "callChange": 15,
         "callVol": 215,
         "callSettle": 219,
+        "callIV": 16,
         "putOI": 1481,
         "putChange": 60,
         "putVol": 1359,
-        "putSettle": 28
+        "putSettle": 28,
+        "putIV": 18
       },
       {
         "strike": 25600,
@@ -12931,10 +14751,12 @@ window.HSI_REPORTS = {
         "callChange": 160,
         "callVol": 1695,
         "callSettle": 81,
+        "callIV": 15,
         "putOI": 624,
         "putChange": 32,
         "putVol": 1268,
-        "putSettle": 88
+        "putSettle": 88,
+        "putIV": 16
       },
       {
         "strike": 25800,
@@ -12942,10 +14764,12 @@ window.HSI_REPORTS = {
         "callChange": 532,
         "callVol": 2419,
         "callSettle": 19,
+        "callIV": 15,
         "putOI": 745,
         "putChange": 30,
         "putVol": 150,
-        "putSettle": 229
+        "putSettle": 229,
+        "putIV": 17
       },
       {
         "strike": 26000,
@@ -12953,10 +14777,12 @@ window.HSI_REPORTS = {
         "callChange": 27,
         "callVol": 869,
         "callSettle": 2,
+        "callIV": 15,
         "putOI": 289,
         "putChange": -6,
         "putVol": 61,
-        "putSettle": 409
+        "putSettle": 409,
+        "putIV": 19
       },
       {
         "strike": 26200,
@@ -12964,10 +14790,12 @@ window.HSI_REPORTS = {
         "callChange": -122,
         "callVol": 883,
         "callSettle": 1,
+        "callIV": 19,
         "putOI": 197,
         "putChange": -4,
         "putVol": 9,
-        "putSettle": 615
+        "putSettle": 615,
+        "putIV": 30
       },
       {
         "strike": 26400,
@@ -12975,10 +14803,12 @@ window.HSI_REPORTS = {
         "callChange": 901,
         "callVol": 1095,
         "callSettle": 1,
+        "callIV": 24,
         "putOI": 92,
         "putChange": 0,
         "putVol": 4,
-        "putSettle": 822
+        "putSettle": 822,
+        "putIV": 41
       },
       {
         "strike": 26600,
@@ -12986,10 +14816,12 @@ window.HSI_REPORTS = {
         "callChange": -1,
         "callVol": 14,
         "callSettle": 1,
+        "callIV": 30,
         "putOI": 20,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1013
+        "putSettle": 1013,
+        "putIV": 43
       },
       {
         "strike": 26800,
@@ -12997,10 +14829,12 @@ window.HSI_REPORTS = {
         "callChange": -17,
         "callVol": 23,
         "callSettle": 1,
+        "callIV": 35,
         "putOI": 18,
         "putChange": 0,
         "putVol": 2,
-        "putSettle": 1214
+        "putSettle": 1214,
+        "putIV": 50
       },
       {
         "strike": 27000,
@@ -13008,10 +14842,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 14,
         "callSettle": 1,
+        "callIV": 40,
         "putOI": 25,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1411
+        "putSettle": 1411,
+        "putIV": 54
       },
       {
         "strike": 27200,
@@ -13019,10 +14855,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 2,
         "callSettle": 1,
+        "callIV": 45,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1611
+        "putSettle": 1611,
+        "putIV": 60
       },
       {
         "strike": 27400,
@@ -13030,10 +14868,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 5,
         "callSettle": 1,
+        "callIV": 49,
         "putOI": 8,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 1810
+        "putSettle": 1810,
+        "putIV": 65
       },
       {
         "strike": 27600,
@@ -13041,10 +14881,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 3,
         "callSettle": 1,
+        "callIV": 54,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2016
+        "putSettle": 2016,
+        "putIV": 78
       },
       {
         "strike": 27800,
@@ -13052,10 +14894,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 59,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2212
+        "putSettle": 2212,
+        "putIV": 79
       },
       {
         "strike": 28000,
@@ -13063,10 +14907,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 63,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2411
+        "putSettle": 2411,
+        "putIV": 84
       },
       {
         "strike": 28200,
@@ -13074,10 +14920,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 68,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2602
+        "putSettle": 2602,
+        "putIV": 0
       },
       {
         "strike": 28400,
@@ -13085,10 +14933,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 72,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 2802
+        "putSettle": 2802,
+        "putIV": 0
       },
       {
         "strike": 28600,
@@ -13096,10 +14946,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 77,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3002
+        "putSettle": 3002,
+        "putIV": 0
       },
       {
         "strike": 28800,
@@ -13107,10 +14959,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 81,
         "putOI": 2,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3202
+        "putSettle": 3202,
+        "putIV": 0
       },
       {
         "strike": 29000,
@@ -13118,10 +14972,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 85,
         "putOI": 1,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3402
+        "putSettle": 3402,
+        "putIV": 0
       },
       {
         "strike": 29200,
@@ -13129,10 +14985,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 90,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3602
+        "putSettle": 3602,
+        "putIV": 0
       },
       {
         "strike": 29400,
@@ -13140,10 +14998,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 94,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 3802
+        "putSettle": 3802,
+        "putIV": 0
       },
       {
         "strike": 29600,
@@ -13151,10 +15011,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 98,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4002
+        "putSettle": 4002,
+        "putIV": 0
       },
       {
         "strike": 29800,
@@ -13162,10 +15024,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 102,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4202
+        "putSettle": 4202,
+        "putIV": 0
       },
       {
         "strike": 30000,
@@ -13173,10 +15037,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 106,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4402
+        "putSettle": 4402,
+        "putIV": 0
       },
       {
         "strike": 30200,
@@ -13184,10 +15050,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 110,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4602
+        "putSettle": 4602,
+        "putIV": 0
       },
       {
         "strike": 30400,
@@ -13195,10 +15063,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 114,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 4802
+        "putSettle": 4802,
+        "putIV": 0
       },
       {
         "strike": 30600,
@@ -13206,10 +15076,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 118,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5002
+        "putSettle": 5002,
+        "putIV": 0
       },
       {
         "strike": 30800,
@@ -13217,10 +15089,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 122,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5202
+        "putSettle": 5202,
+        "putIV": 0
       },
       {
         "strike": 31000,
@@ -13228,10 +15102,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 126,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5402
+        "putSettle": 5402,
+        "putIV": 0
       },
       {
         "strike": 31200,
@@ -13239,10 +15115,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 129,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5602
+        "putSettle": 5602,
+        "putIV": 0
       },
       {
         "strike": 31400,
@@ -13250,10 +15128,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 133,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 5802
+        "putSettle": 5802,
+        "putIV": 0
       },
       {
         "strike": 31600,
@@ -13261,10 +15141,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 137,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6002
+        "putSettle": 6002,
+        "putIV": 0
       },
       {
         "strike": 31800,
@@ -13272,10 +15154,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 141,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6202
+        "putSettle": 6202,
+        "putIV": 0
       },
       {
         "strike": 32000,
@@ -13283,10 +15167,12 @@ window.HSI_REPORTS = {
         "callChange": 0,
         "callVol": 0,
         "callSettle": 1,
+        "callIV": 144,
         "putOI": 0,
         "putChange": 0,
         "putVol": 0,
-        "putSettle": 6402
+        "putSettle": 6402,
+        "putIV": 0
       }
     ],
     "topVolume": [
