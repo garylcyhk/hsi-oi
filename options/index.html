@@ -1471,10 +1471,11 @@ function switchTab(name) {
               ${calls.length ? calls.map((z) => {
                 const s = smap[z.strike] || {};
                 const px = s.callSettle ? ` · 價 ${fmt(s.callSettle)}` : "";
+                const ivs = s.callIV ? ` · IV ${s.callIV}%` : "";
                 const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
                 return `<div class="lvl-row">
                   <span class="lvl-strike em">${z.strike}</span>
-                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${ivs}${d}</span>
                 </div>`;
               }).join("") : '<div class="lvl-meta">無資料</div>'}
             </div>
@@ -1483,10 +1484,11 @@ function switchTab(name) {
               ${puts.length ? puts.map((z) => {
                 const s = smap[z.strike] || {};
                 const px = s.putSettle ? ` · 價 ${fmt(s.putSettle)}` : "";
+                const ivs = s.putIV ? ` · IV ${s.putIV}%` : "";
                 const d = settle != null ? ` · ${z.strike >= settle ? "+" : ""}${Math.round(z.strike - settle)}` : "";
                 return `<div class="lvl-row">
                   <span class="lvl-strike ro">${z.strike}</span>
-                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${d}</span>
+                  <span class="lvl-meta">OI ${fmt(z.oi)} <span class="${chgClass(z.oiChange)}">${fmtChg(z.oiChange)}</span>${px}${ivs}${d}</span>
                 </div>`;
               }).join("") : '<div class="lvl-meta">無資料</div>'}
             </div>
@@ -1785,6 +1787,8 @@ function switchTab(name) {
 
       document.getElementById("status").textContent =
         `顯示 ${r.date} · 共 ${availableDates.length} 個交易日 · 即月行使價 ${(r.strikes||[]).length} 個`;
+      const ivn = (r.strikes||[]).filter(s => (s.callIV||0) || (s.putIV||0)).length;
+      if (ivn) document.getElementById("status").textContent += ` · IV ${ivn} 檔`;
       const ph = document.getElementById("printHeader");
       if (ph) {
         ph.textContent = `恒指期權未平倉 · ${r.date} · 即月 ${r.summary.frontMonth} · Call OI ${fmt(r.summary.callOI)} / Put OI ${fmt(r.summary.putOI)} · 街貨 ${r.summary.callPct}% / ${r.summary.putPct}%`;
