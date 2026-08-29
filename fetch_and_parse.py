@@ -201,9 +201,12 @@ def parse_month(text: str, month_n: int = 1) -> dict:
             chg = int(nums[-1])
             # Day session section (middle): open, high, low, settle, settle_chg, iv, volume
             settle = 0
+            iv = 0
             mid = re.findall(r"[+\-]?\d+", parts[1]) if len(parts) >= 2 else []
             if len(mid) >= 4:
                 settle = int(mid[3])
+            if len(mid) >= 6:
+                iv = int(mid[5])  # implied vol in percent (e.g. 15 = 15%)
             if oi == 0 and chg == 0 and vol == 0 and settle == 0:
                 continue
             rows.append({
@@ -212,6 +215,7 @@ def parse_month(text: str, month_n: int = 1) -> dict:
                 "oi": oi,
                 "oiChange": chg,
                 "settle": settle,
+                "iv": iv,
             })
         return rows
 
@@ -230,17 +234,19 @@ def parse_month(text: str, month_n: int = 1) -> dict:
     # Build strike map
     strike_map = {}
     for c in calls:
-        strike_map.setdefault(c["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "callSettle": 0, "putOI": 0, "putChange": 0, "putVol": 0, "putSettle": 0})
+        strike_map.setdefault(c["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "callSettle": 0, "callIV": 0, "putOI": 0, "putChange": 0, "putVol": 0, "putSettle": 0, "putIV": 0})
         strike_map[c["strike"]]["callOI"] = c["oi"]
         strike_map[c["strike"]]["callChange"] = c["oiChange"]
         strike_map[c["strike"]]["callVol"] = c["volume"]
         strike_map[c["strike"]]["callSettle"] = c.get("settle", 0)
+        strike_map[c["strike"]]["callIV"] = c.get("iv", 0)
     for p in puts:
-        strike_map.setdefault(p["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "callSettle": 0, "putOI": 0, "putChange": 0, "putVol": 0, "putSettle": 0})
+        strike_map.setdefault(p["strike"], {"callOI": 0, "callChange": 0, "callVol": 0, "callSettle": 0, "callIV": 0, "putOI": 0, "putChange": 0, "putVol": 0, "putSettle": 0, "putIV": 0})
         strike_map[p["strike"]]["putOI"] = p["oi"]
         strike_map[p["strike"]]["putChange"] = p["oiChange"]
         strike_map[p["strike"]]["putVol"] = p["volume"]
         strike_map[p["strike"]]["putSettle"] = p.get("settle", 0)
+        strike_map[p["strike"]]["putIV"] = p.get("iv", 0)
 
     strikes = [
         {"strike": k, **v}

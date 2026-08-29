@@ -722,9 +722,13 @@ footer p:first-child{font-size:.8rem}
       <div class="modal-row"><label>Call 成交量</label><input type="checkbox" id="setColCallVol" /></div>
       <div class="modal-row"><label>Call OI</label><input type="checkbox" id="setColCallOI" /></div>
       <div class="modal-row"><label>Call 結算價</label><input type="checkbox" id="setColCallSettle" /></div>
-      <div class="modal-row"><label>Call Δ</label><input type="checkbox" id="setColCallChg" /></div>
-      <div class="modal-row"><label>Put Δ</label><input type="checkbox" id="setColPutChg" /></div>
+      <div class="modal-row"><label>Call IV</label><input type="checkbox" id="setColCallIV" /></div>
+      <div class="modal-row"><label>Call Delta</label><input type="checkbox" id="setColCallDelta" /></div>
+      <div class="modal-row"><label>Call ΔOI</label><input type="checkbox" id="setColCallChg" /></div>
+      <div class="modal-row"><label>Put ΔOI</label><input type="checkbox" id="setColPutChg" /></div>
       <div class="modal-row"><label>Put 結算價</label><input type="checkbox" id="setColPutSettle" /></div>
+      <div class="modal-row"><label>Put IV</label><input type="checkbox" id="setColPutIV" /></div>
+      <div class="modal-row"><label>Put Delta</label><input type="checkbox" id="setColPutDelta" /></div>
       <div class="modal-row"><label>Put OI</label><input type="checkbox" id="setColPutOI" /></div>
       <div class="modal-row"><label>Put 成交量</label><input type="checkbox" id="setColPutVol" /></div>
       <div class="modal-actions">
@@ -874,9 +878,13 @@ footer p:first-child{font-size:.8rem}
       colCallVol: true,
       colCallOI: true,
       colCallSettle: true,
+      colCallIV: true,
+      colCallDelta: true,
       colCallChg: true,
       colPutChg: true,
       colPutSettle: true,
+      colPutIV: true,
+      colPutDelta: true,
       colPutOI: true,
       colPutVol: true,
     };
@@ -906,9 +914,13 @@ footer p:first-child{font-size:.8rem}
     let colCallVol = settings.colCallVol !== false;
     let colCallOI = settings.colCallOI !== false;
     let colCallSettle = settings.colCallSettle !== false;
+    let colCallIV = settings.colCallIV !== false;
+    let colCallDelta = settings.colCallDelta !== false;
     let colCallChg = settings.colCallChg !== false;
     let colPutChg = settings.colPutChg !== false;
     let colPutSettle = settings.colPutSettle !== false;
+    let colPutIV = settings.colPutIV !== false;
+    let colPutDelta = settings.colPutDelta !== false;
     let colPutOI = settings.colPutOI !== false;
     let colPutVol = settings.colPutVol !== false;
     // Section sort state
@@ -1150,9 +1162,13 @@ function switchTab(name) {
       document.getElementById("setColCallVol").checked = colCallVol;
       document.getElementById("setColCallOI").checked = colCallOI;
       document.getElementById("setColCallSettle").checked = colCallSettle;
+      document.getElementById("setColCallIV").checked = colCallIV;
+      document.getElementById("setColCallDelta").checked = colCallDelta;
       document.getElementById("setColCallChg").checked = colCallChg;
       document.getElementById("setColPutChg").checked = colPutChg;
       document.getElementById("setColPutSettle").checked = colPutSettle;
+      document.getElementById("setColPutIV").checked = colPutIV;
+      document.getElementById("setColPutDelta").checked = colPutDelta;
       document.getElementById("setColPutOI").checked = colPutOI;
       document.getElementById("setColPutVol").checked = colPutVol;
       document.getElementById("settingsModal").classList.add("open");
@@ -1179,16 +1195,20 @@ function switchTab(name) {
       colCallVol = document.getElementById("setColCallVol").checked;
       colCallOI = document.getElementById("setColCallOI").checked;
       colCallSettle = document.getElementById("setColCallSettle").checked;
+      colCallIV = document.getElementById("setColCallIV").checked;
+      colCallDelta = document.getElementById("setColCallDelta").checked;
       colCallChg = document.getElementById("setColCallChg").checked;
       colPutChg = document.getElementById("setColPutChg").checked;
       colPutSettle = document.getElementById("setColPutSettle").checked;
+      colPutIV = document.getElementById("setColPutIV").checked;
+      colPutDelta = document.getElementById("setColPutDelta").checked;
       colPutOI = document.getElementById("setColPutOI").checked;
       colPutVol = document.getElementById("setColPutVol").checked;
 
       settings = {
         sortKey, sortDir, minOI, minVol, onlyActive, atmEnabled, atmRange, fontScale, topN, hlOI, hlVol, hlChg,
-        colCallVol, colCallOI, colCallSettle, colCallChg,
-        colPutChg, colPutSettle, colPutOI, colPutVol
+        colCallVol, colCallOI, colCallSettle, colCallIV, colCallDelta, colCallChg,
+        colPutChg, colPutSettle, colPutIV, colPutDelta, colPutOI, colPutVol
       };
       localStorage.setItem("hsi_oi_settings", JSON.stringify(settings));
       closeSettings();
@@ -1540,6 +1560,56 @@ function switchTab(name) {
       renderStrikeTable();
     }
 
+    
+    function erfApprox(x){
+      const s = x < 0 ? -1 : 1;
+      x = Math.abs(x);
+      const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+      const t = 1/(1+p*x);
+      const y = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+      return s*y;
+    }
+    function nCdf(x){ return 0.5 * (1 + erfApprox(x / Math.SQRT2)); }
+    function yearFracFromMonth(monthLabel){
+      // monthLabel "2026-08" or "2026-09"
+      if(!monthLabel || !currentReport) return 7/365;
+      const parts = String(monthLabel).split("-");
+      if(parts.length < 2) return 7/365;
+      const y = parseInt(parts[0],10), m = parseInt(parts[1],10);
+      // last weekday of month as rough expiry proxy
+      const end = new Date(y, m, 0); // last day of month
+      while(end.getDay()===0 || end.getDay()===6) end.setDate(end.getDate()-1);
+      end.setDate(end.getDate()-1); // HSI options typically last trading day before last business day
+      const d0 = currentReport.date ? new Date(currentReport.date+"T00:00:00") : new Date();
+      const days = Math.max(1, Math.round((end - d0)/86400000));
+      return days / 365;
+    }
+    function black76Delta(F, K, T, ivPct, isCall){
+      const sig = Number(ivPct)/100;
+      if(!(F>0) || !(K>0) || !(T>0) || !(sig>0)) return null;
+      const d1 = (Math.log(F/K) + 0.5*sig*sig*T) / (sig*Math.sqrt(T));
+      const n = nCdf(d1);
+      return isCall ? n : n-1;
+    }
+    function fmtIV(v){
+      if(v==null || v==="" || Number(v)===0) return "—";
+      return Number(v).toFixed(0) + "%";
+    }
+    function fmtDelta(v){
+      if(v==null || isNaN(v)) return "—";
+      const n = Number(v);
+      return (n>=0?"+":"") + n.toFixed(2);
+    }
+    function attachGreeks(rows, center, monthLabel){
+      const T = yearFracFromMonth(monthLabel);
+      const F = center;
+      rows.forEach(s => {
+        s._cD = black76Delta(F, s.strike, T, s.callIV, true);
+        s._pD = black76Delta(F, s.strike, T, s.putIV, false);
+      });
+    }
+
+
     function renderStrikeTable() {
       if (!currentReport) return;
       const r = currentReport;
@@ -1551,6 +1621,8 @@ function switchTab(name) {
         (fut.mhif && fut.mhif.front && fut.mhif.front.settle) ||
         (fut.hsif && fut.hsif.front && fut.hsif.front.settle) ||
         null;
+
+      attachGreeks(rows, center, r.monthLabel || r.month || (r.front && r.front.month));
 
       // Filter
       rows = rows.filter(s => {
@@ -1575,6 +1647,10 @@ function switchTab(name) {
           case "putVol": va = a.putVol||0; vb = b.putVol||0; break;
           case "callSettle": va = a.callSettle||0; vb = b.callSettle||0; break;
           case "putSettle": va = a.putSettle||0; vb = b.putSettle||0; break;
+          case "callIV": va = a.callIV||0; vb = b.callIV||0; break;
+          case "putIV": va = a.putIV||0; vb = b.putIV||0; break;
+          case "callDelta": va = (a._cD!=null?a._cD:0); vb = (b._cD!=null?b._cD:0); break;
+          case "putDelta": va = (a._pD!=null?a._pD:0); vb = (b._pD!=null?b._pD:0); break;
           case "callChg": va = a.callChange||0; vb = b.callChange||0; break;
           case "putChg": va = a.putChange||0; vb = b.putChange||0; break;
           case "totalOI":va = (a.callOI||0)+(a.putOI||0); vb = (b.callOI||0)+(b.putOI||0); break;
@@ -1614,10 +1690,14 @@ function switchTab(name) {
                   ${colCallVol ? `<th class="tr sortable ${sortKey==="callVol"?"active":""}" onclick="setStrikeSort('callVol')">Call成交 ${arrow(sortKey,"callVol",sortDir)}</th>` : ''}
                   ${colCallOI ? `<th class="tr sortable ${sortKey==="callOI"?"active":""}" onclick="setStrikeSort('callOI')">Call OI ${arrow(sortKey,"callOI",sortDir)}</th>` : ''}
                   ${colCallSettle ? `<th class="tr sortable ${sortKey==="callSettle"?"active":""}" onclick="setStrikeSort('callSettle')">Call結算價 ${arrow(sortKey,"callSettle",sortDir)}</th>` : ''}
-                  ${colCallChg ? `<th class="tr sortable ${sortKey==="callChg"?"active":""}" onclick="setStrikeSort('callChg')">CallΔ ${arrow(sortKey,"callChg",sortDir)}</th>` : ''}
+                  ${colCallIV ? `<th class="tr sortable ${sortKey==="callIV"?"active":""}" onclick="setStrikeSort('callIV')">Call IV ${arrow(sortKey,"callIV",sortDir)}</th>` : ''}
+                  ${colCallDelta ? `<th class="tr sortable ${sortKey==="callDelta"?"active":""}" onclick="setStrikeSort('callDelta')">Call Δlt ${arrow(sortKey,"callDelta",sortDir)}</th>` : ''}
+                  ${colCallChg ? `<th class="tr sortable ${sortKey==="callChg"?"active":""}" onclick="setStrikeSort('callChg')">Call ΔOI ${arrow(sortKey,"callChg",sortDir)}</th>` : ''}
                   <th class="tc sortable ${sortKey==="strike"?"active":""}" onclick="setStrikeSort('strike')">行使價 ${arrow(sortKey,"strike",sortDir)}</th>
-                  ${colPutChg ? `<th class="tl sortable ${sortKey==="putChg"?"active":""}" onclick="setStrikeSort('putChg')">PutΔ ${arrow(sortKey,"putChg",sortDir)}</th>` : ''}
+                  ${colPutChg ? `<th class="tl sortable ${sortKey==="putChg"?"active":""}" onclick="setStrikeSort('putChg')">Put ΔOI ${arrow(sortKey,"putChg",sortDir)}</th>` : ''}
                   ${colPutSettle ? `<th class="tl sortable ${sortKey==="putSettle"?"active":""}" onclick="setStrikeSort('putSettle')">Put結算價 ${arrow(sortKey,"putSettle",sortDir)}</th>` : ''}
+                  ${colPutIV ? `<th class="tl sortable ${sortKey==="putIV"?"active":""}" onclick="setStrikeSort('putIV')">Put IV ${arrow(sortKey,"putIV",sortDir)}</th>` : ''}
+                  ${colPutDelta ? `<th class="tl sortable ${sortKey==="putDelta"?"active":""}" onclick="setStrikeSort('putDelta')">Put Δlt ${arrow(sortKey,"putDelta",sortDir)}</th>` : ''}
                   ${colPutOI ? `<th class="tl sortable ${sortKey==="putOI"?"active":""}" onclick="setStrikeSort('putOI')">Put OI ${arrow(sortKey,"putOI",sortDir)}</th>` : ''}
                   ${colPutVol ? `<th class="tl sortable ${sortKey==="putVol"?"active":""}" onclick="setStrikeSort('putVol')">Put成交 ${arrow(sortKey,"putVol",sortDir)}</th>` : ''}
                 </tr>
@@ -1641,10 +1721,14 @@ function switchTab(name) {
                     ${colCallVol ? `<td class="tr mono mu" style="font-size:0.75rem">${fmt(row.callVol||0)}</td>` : ''}
                     ${colCallOI ? `<td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(row.callOI||0)}</span></td>` : ''}
                     ${colCallSettle ? `<td class="tr mono mu" style="font-size:0.75rem">${row.callSettle ? fmt(row.callSettle) : "—"}</td>` : ''}
+                    ${colCallIV ? `<td class="tr mono mu" style="font-size:0.75rem">${fmtIV(row.callIV)}</td>` : ''}
+                    ${colCallDelta ? `<td class="tr mono mu" style="font-size:0.75rem">${fmtDelta(row._cD)}</td>` : ''}
                     ${colCallChg ? `<td class="tr mono ${chgClass(row.callChange)}" style="font-size:0.75rem">${fmtChg(row.callChange)}</td>` : ''}
                     <td class="tc mono" style="font-weight:500">${row.strike}</td>
                     ${colPutChg ? `<td class="tl mono ${chgClass(row.putChange)}" style="font-size:0.75rem">${fmtChg(row.putChange)}</td>` : ''}
                     ${colPutSettle ? `<td class="tl mono mu" style="font-size:0.75rem">${row.putSettle ? fmt(row.putSettle) : "—"}</td>` : ''}
+                    ${colPutIV ? `<td class="tl mono mu" style="font-size:0.75rem">${fmtIV(row.putIV)}</td>` : ''}
+                    ${colPutDelta ? `<td class="tl mono mu" style="font-size:0.75rem">${fmtDelta(row._pD)}</td>` : ''}
                     ${colPutOI ? `<td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(row.putOI||0)}</span></td>` : ''}
                     ${colPutVol ? `<td class="tl mono mu" style="font-size:0.75rem">${fmt(row.putVol||0)}</td>` : ''}
                   </tr>`;
