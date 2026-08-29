@@ -25,60 +25,52 @@ h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
 .menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
 .menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
 .menu-divider{height:1px;background:#27272a;margin:6px 4px}
-.container{width:100%;max-width:1100px;margin:0 auto;padding:16px}
+.container{width:100%;max-width:980px;margin:0 auto;padding:16px}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .toolbar .note{color:var(--muted);font-size:.78rem;flex:1}
 .btn{border-radius:8px;padding:7px 12px;font-size:.8rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
 .btn.primary{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.35);color:#34d399}
-.btn.ghost{background:transparent}
 .btn.danger{color:#fb7185;border-color:rgba(251,113,133,.3)}
-.secs{display:flex;flex-direction:column;gap:12px}
-.sec{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
-.sec.dragging{opacity:.45}
-.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.sec-head .grip,.item .grip{cursor:grab;color:#52525b;padding:2px 4px;user-select:none;font-size:.9rem}
-.sec-head input.title{flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);font-weight:600;font-size:.85rem;padding:4px 6px;border-radius:6px}
-.sec-head input.title:focus,.item input.txt:focus{border-color:#3f3f46;outline:none;background:#0f0f12}
-.item{display:flex;align-items:flex-start;gap:6px;padding:4px 0}
-.item.done input.txt{color:var(--muted);text-decoration:line-through}
-.item input[type=checkbox]{margin-top:5px;accent-color:#34d399}
-.item input.txt{flex:1;background:transparent;border:1px dashed transparent;color:var(--text);font-size:.82rem;padding:4px 6px;border-radius:6px}
-.item button.x,.sec-head button.x{border:none;background:transparent;color:#52525b;cursor:pointer;font-size:.9rem;padding:2px 6px}
-.item button.x:hover,.sec-head button.x:hover{color:#fb7185}
-.note-box{margin-top:14px;background:#121214;border:1px solid var(--border);border-radius:12px;padding:14px}
-.note-box h3{margin:0 0 10px;font-size:.8rem;color:var(--amber)}
-.note-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 12px}
-.note-grid label{display:block;font-size:.68rem;color:var(--muted);margin-bottom:3px}
-.note-grid input,.note-grid select{width:100%;background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
-.rule{margin-top:12px;padding:10px 12px;border-radius:8px;border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.06);font-size:.8rem;line-height:1.5}
-footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
-.edit-on .sec-head input.title,.edit-on .item input.txt{border-color:#27272a}
-.hint{font-size:.72rem;color:#71717a;margin-top:6px}
-@media print{
-  header,.toolbar,.item .grip,.sec-head .grip,.item .x,.sec-head .x,.btn{display:none!important}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 0 12px}
+.box h2{margin:0 0 6px;font-size:.9rem}
+.box .lead{color:var(--muted);font-size:.75rem;margin:0 0 10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 12px}
+label.field{display:block;font-size:.68rem;color:var(--muted);margin-bottom:4px}
+input[type=text],input[type=date],select,textarea{
+  width:100%;background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:7px 8px
 }
-
-.tab-dragging{ opacity:.45; }
-.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
-
-#clFontScale{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:4px 8px;font-size:.78rem}
-
+textarea{min-height:64px;resize:vertical}
+.check{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:.82rem}
+.check input{margin-top:3px;accent-color:#34d399}
+.check.done{color:var(--muted)}
+.status{margin-top:10px;padding:8px 10px;border-radius:8px;font-weight:700;letter-spacing:.04em;text-align:center}
+.status.go{background:rgba(52,211,153,.14);color:#34d399;border:1px solid rgba(52,211,153,.35)}
+.status.stop{background:rgba(251,113,133,.08);color:#fb7185;border:1px solid rgba(251,113,133,.28)}
+.rule{margin-top:4px;padding:10px 12px;border-radius:8px;border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.08);font-size:.8rem;line-height:1.5}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.tiny{font-size:.72rem;color:#71717a;margin-top:8px}
+footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
-.modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:360px}
 .modal h3{margin:0 0 14px;font-size:1rem}
 .modal-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:.85rem}
 .modal-row label{color:var(--muted)}
 .modal-row select{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-
+@media print{
+  header,.toolbar,.row-btns,.tiny,.modal-overlay,footer{display:none!important}
+  body{background:#fff;color:#111}
+  .box,.rule{background:#fff;border-color:#ccc;break-inside:avoid}
+  input,select,textarea{border-color:#999;color:#111}
+}
 </style>
 </head>
 <body>
 <header>
   <div class="brand-lockup">
     <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus"></a>
-    <h1>開市清單 <span>Checklist v5.1</span></h1>
+    <h1>開市清單 <span>Gary MHI Daily Checklist v5.1</span></h1>
   </div>
   <div class="header-menu" id="headerMenu">
     <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" aria-label="選單">☰</button>
@@ -91,7 +83,7 @@ footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
       <a href="../analysis/">交易表現 Analysis</a>
       <a href="./" class="menu-active">開市清單 Checklist</a>
       <div class="menu-divider"></div>
-      <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
+      <button type="button" onclick="closeHeaderMenu();printDaily()">列印 Print</button>
       <button type="button" onclick="closeHeaderMenu();openSettings()">設定 Settings</button>
     </div>
   </div>
@@ -118,311 +110,150 @@ footer{margin:28px 16px;text-align:center;color:#52525b;font-size:.75rem}
   </div>
 </div>
 
-
-<div class="container">
-  <div class="toolbar">
-    <span class="note" id="status">今日清單可勾選、改寫、拖曳排序 · 自動儲存在瀏覽器</span>
-    <label class="note" style="display:flex;align-items:center;gap:6px;white-space:nowrap">字體
-      <select id="clFontScale" onchange="setClFont(this.value)">
-        <option value="85">小 85%</option>
-        <option value="100" selected>標準 100%</option>
-        <option value="115">中 115%</option>
-        <option value="130">大 130%</option>
-        <option value="150">更大 150%</option>
-      </select>
-    </label>
-    <button class="btn" id="editBtn" onclick="toggleEdit()">編輯 Edit</button>
-    <button class="btn" onclick="addSection()">＋ 新區塊</button>
-    <button class="btn primary" onclick="saveAll()">儲存 Save</button>
-    <button class="btn" onclick="resetToday()">清除今日勾選</button>
-    <button class="btn danger" onclick="resetTemplate()">還原預設模板</button>
+<div class="container" id="dailyPanel">
+  <div class="toolbar no-print">
+    <span class="note" id="status">Print / fill this every trading day. Fill before entry. Review after close.</span>
   </div>
-  <div class="secs" id="secs"></div>
-  <div class="note-box">
-    <h3>One-Line Daily Note</h3>
-    <div class="note-grid">
-      <div><label>Date</label><input id="nDate"></div>
-      <div><label>Profile Shape</label><select id="nProfile"><option value="">—</option><option>P</option><option>b</option><option>D</option></select></div>
-      <div><label>OI PCR</label><input id="nPcr"></div>
-      <div><label>Call Wall</label><input id="nCall"></div>
-      <div><label>Put Wall</label><input id="nPut"></div>
-      <div><label>Money Flow</label><select id="nMF"><option value="">—</option><option>Bullish</option><option>Defensive</option><option>Mixed</option></select></div>
-      <div><label>Bias</label><select id="nBias"><option value="">—</option><option>More selective</option><option>Normal</option></select></div>
-      <div><label>High Impact News</label><select id="nNews"><option value="">—</option><option>No</option><option>Yes</option></select></div>
+
+  <div class="box">
+    <h2>Gary MHI | Daily Checklist</h2>
+    <p class="lead">Print / fill this every trading day. Fill before entry. Review after close.</p>
+    <div class="grid2">
+      <div><label class="field">Date</label><input type="date" data-k="date"></div>
+      <div>
+        <label class="field">Session</label>
+        <select data-k="session">
+          <option value="">—</option>
+          <option>HK morning</option>
+          <option>HK afternoon</option>
+        </select>
+      </div>
+      <div>
+        <label class="field">RelVol</label>
+        <select data-k="relvol">
+          <option value="">—</option>
+          <option>LOW</option>
+          <option>NORMAL</option>
+          <option>HIGH</option>
+        </select>
+      </div>
+      <div>
+        <label class="field">Bias 5m</label>
+        <select data-k="bias">
+          <option value="">—</option>
+          <option>LONG</option>
+          <option>NO TRADE</option>
+        </select>
+      </div>
     </div>
   </div>
-  <div class="rule"><strong>Final Rule</strong> — Shape and options only adjust selectivity. <strong>Absorption + checklist decides the trade.</strong></div>
-  <div class="hint">拖曳 ☰ 可重排區塊與項目 · 編輯模式下可改文字、加項、刪項 · 資料只存在本機瀏覽器（localStorage）</div>
+
+  <div class="box">
+    <h2>1. Pre-market (before 09:15)</h2>
+    <label class="check"><input type="checkbox" data-k="pm1"> 1. Mark PDH / PDL, session H/L, major swing, FRVP Swing Low to Swing High (POC / HVN / VAL).</label>
+    <label class="check"><input type="checkbox" data-k="pm2"> 2. Check 5m structure. If chop / D-shape / no clear bias = NO TRADE day.</label>
+    <label class="check"><input type="checkbox" data-k="pm3"> 3. Read yesterday close + overnight. Note one sentence: what the market is trying to do.</label>
+    <label class="check"><input type="checkbox" data-k="pm4"> 4. Daily budget written: max 1 trade default. Stop after 2 losers or -1.5%.</label>
+    <label class="check"><input type="checkbox" data-k="pm5"> 5. Mood check: if I want to "make it back" or "just try", I do not trade today.</label>
+  </div>
+
+  <div class="box">
+    <h2>2. A+ entry (all boxes YES or skip)</h2>
+    <label class="check"><input type="checkbox" data-k="ap1"> 1. 5m BIAS agrees. I am not fading a clean trend.</label>
+    <label class="check"><input type="checkbox" data-k="ap2"> 2. LOCATION: sweep/spring, HVN/POC, PDH-PDL, or Fib 0.5 / 0.618.</label>
+    <label class="check"><input type="checkbox" data-k="ap3"> 3. SELLER EXHAUSTION first. I am not buying the first drop.</label>
+    <label class="check"><input type="checkbox" data-k="ap4"> 4. STRONG ABSORPTION: Footprint Bid:Ask &gt;= 2.2x at the low / POI.</label>
+    <label class="check"><input type="checkbox" data-k="ap5"> 5. PULLBACK ENTRY. Not the breakout candle.</label>
+    <label class="check"><input type="checkbox" data-k="ap6"> 6. CVD / DELTA turning up, or bullish divergence.</label>
+    <label class="check"><input type="checkbox" data-k="ap7"> 7. RELVOL not dead. Extra plus if price is sitting on FRVP POC / HVN.</label>
+    <label class="check"><input type="checkbox" data-k="ap8"> 8. RISK written: 0.5%. Stop and invalidation on paper before click.</label>
+    <div class="status stop" id="apStatus">NO TRADE</div>
+  </div>
+
+  <div class="box">
+    <h2>3. Write-in before click</h2>
+    <div class="grid2">
+      <div><label class="field">Direction</label><input type="text" data-k="dir" value="LONG"></div>
+      <div><label class="field">Entry</label><input type="text" data-k="entry"></div>
+      <div><label class="field">SL</label><input type="text" data-k="sl"></div>
+      <div><label class="field">TP1</label><input type="text" data-k="tp1"></div>
+      <div><label class="field">Risk $</label><input type="text" data-k="risk"></div>
+      <div><label class="field">R:R</label><input type="text" data-k="rr"></div>
+      <div><label class="field">Contracts</label><input type="text" data-k="qty"></div>
+      <div><label class="field">Invalidation</label><input type="text" data-k="inv"></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>4. After close (10 minutes)</h2>
+    <div class="grid2">
+      <div>
+        <label class="field">Trades today</label>
+        <select data-k="trades"><option>0</option><option>1</option><option>2</option></select>
+      </div>
+      <div>
+        <label class="field">A+ ?</label>
+        <select data-k="apyn"><option value="">—</option><option>Y</option><option>N</option></select>
+      </div>
+      <div>
+        <label class="field">Result</label>
+        <select data-k="result"><option value="">—</option><option>+R</option><option>-R</option><option>0</option><option>skip</option></select>
+      </div>
+      <div>
+        <label class="field">Error</label>
+        <select data-k="error">
+          <option value="">—</option>
+          <option>none</option>
+          <option>early</option>
+          <option>chase breakout</option>
+          <option>FOMO</option>
+          <option>extra trade</option>
+          <option>moved stop</option>
+        </select>
+      </div>
+      <div style="grid-column:1/-1"><label class="field">What I saw (1 sentence)</label><textarea data-k="saw"></textarea></div>
+      <div style="grid-column:1/-1"><label class="field">One fix tomorrow</label><textarea data-k="fix"></textarea></div>
+      <div>
+        <label class="field">Daily budget protected?</label>
+        <select data-k="budget"><option value="">—</option><option>YES</option><option>NO</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule">
+    Hard veto: FOMO / revenge / no absorption / buying breakout = no trade.<br>
+    No write-in = no trade. Process over P&amp;L. Best Loser Wins.
+  </div>
+
+  <div class="row-btns">
+    <button type="button" class="btn primary" onclick="saveToday()">Save today</button>
+    <button type="button" class="btn" onclick="resetToday()">Reset today</button>
+    <button type="button" class="btn" onclick="printDaily()">Print this page</button>
+  </div>
+  <p class="tiny" id="saveNote">資料只存在本機瀏覽器 · 換日自動清空答案</p>
 </div>
 <footer>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</footer>
 
 <script>
-const TPL_KEY = "exodus_cl_template_v2";
-const DAY_KEY = "exodus_cl_day_v2_";
-function today(){
-  const d=new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-const DEFAULT_SECS = [
-  { id:"s1", title:"1. Higher Timeframe Context (2 min)", items:[
-    "Daily trend direction (up / down / range)",
-    "Weekly trend direction",
-    "Recent Daily Volume Profile shape: P / b / D",
-    "Special note: Any clear bP sequence?"
-  ]},
-  { id:"s2", title:"2. Key Levels to Mark", items:[
-    "Previous Day High / Low (PDH / PDL)",
-    "Session High / Low",
-    "Daily POC + VAH / VAL",
-    "Nearest strong HVN and LVN",
-    "Call Wall & Put Wall (from options OI)",
-    "Major swing highs / lows not yet swept"
-  ]},
-  { id:"s3", title:"3. Options & Money Flow Bias (2 min)", items:[
-    "Volume Put/Call Ratio",
-    "OI Put/Call Ratio",
-    "Call Wall / Put Wall levels noted",
-    "HSI Money Flow (DBS / Citics): Bullish / Defensive / Mixed",
-    "Bias note: More selective / Normal"
-  ]},
-  { id:"s4", title:"4. News Filter", items:[
-    "Check Investing.com Economic Calendar",
-    "Any High Impact news today?",
-    "If Yes → reduce size or stay flat during the event"
-  ]},
-  { id:"s5", title:"5. Session Bias & Timing", items:[
-    "Overnight / Asia session behaviour",
-    "Expected killzone focus (London / NY if relevant)",
-    "Preferred side: Long / Selective / No trade"
-  ]},
-  { id:"s6", title:"6. Risk & Mindset Check", items:[
-    "Max risk per trade = 0.5%",
-    "Max trades today = 1–2 only (prefer 1 A+)",
-    "Daily loss limit set",
-    "Mood check: Calm and ready?",
-    "Cash is a position. No setup = No trade.",
-    "If the entry still feels early → wait."
-  ]},
-  { id:"s7", title:"7. A+ Entry Logic (Must Have All)", items:[
-    "Liquidity Sweep / Spring",
-    "Strong Absorption (Footprint)",
-    "Pullback to 0.5 or 0.618",
-    "CVD confirmation",
-    "Location at POI / HVN / key level",
-    "Seller Exhaustion should appear first"
-  ]}
-];
-
-let secs = [];
-let checks = {};
-let editMode = false;
-let dragSec = null, dragItem = null;
-
-function loadTemplate(){
-  try {
-    const raw = localStorage.getItem(TPL_KEY);
-    if(raw){ secs = JSON.parse(raw); return; }
-  } catch(e){}
-  secs = JSON.parse(JSON.stringify(DEFAULT_SECS));
-}
-function loadDay(){
-  checks = {};
-  try {
-    const raw = localStorage.getItem(DAY_KEY + today());
-    if(raw){
-      const o = JSON.parse(raw);
-      checks = o.checks || {};
-      const f = o.fields || {};
-      ["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el && f[id]!=null) el.value = f[id];
-      });
-    }
-  } catch(e){}
-  const nd = document.getElementById("nDate");
-  if(nd && !nd.value) nd.value = today();
-}
-function saveAll(){
-  try { localStorage.setItem(TPL_KEY, JSON.stringify(secs)); } catch(e){}
-  const fields = {};
-  ["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) fields[id] = el.value;
-  });
-  try { localStorage.setItem(DAY_KEY + today(), JSON.stringify({ checks, fields })); } catch(e){}
-  const st = document.getElementById("status");
-  if(st){ st.textContent = "已儲存 · Saved " + new Date().toLocaleTimeString(); }
-}
-
-function uid(){ return "i"+Math.random().toString(36).slice(2,9); }
-
-function render(){
-  const box = document.getElementById("secs");
-  box.innerHTML = "";
-  document.body.classList.toggle("edit-on", editMode);
-  secs.forEach((sec, si) => {
-    const el = document.createElement("div");
-    el.className = "sec";
-    el.draggable = editMode;
-    el.dataset.si = si;
-    el.addEventListener("dragstart", onSecDragStart);
-    el.addEventListener("dragover", onSecDragOver);
-    el.addEventListener("drop", onSecDrop);
-    const head = document.createElement("div");
-    head.className = "sec-head";
-    head.innerHTML = `<span class="grip" title="拖曳排序">☰</span>`;
-    const title = document.createElement("input");
-    title.className = "title";
-    title.value = sec.title;
-    title.readOnly = !editMode;
-    title.addEventListener("input", () => { sec.title = title.value; });
-    head.appendChild(title);
-    if(editMode){
-      const add = document.createElement("button");
-      add.className = "btn ghost"; add.textContent = "＋項";
-      add.onclick = () => { sec.items.push("New item"); render(); saveAll(); };
-      const del = document.createElement("button");
-      del.className = "x"; del.textContent = "✕";
-      del.onclick = () => { if(confirm("刪除此區塊？")){ secs.splice(si,1); render(); saveAll(); } };
-      head.appendChild(add); head.appendChild(del);
-    }
-    el.appendChild(head);
-    (sec.items||[]).forEach((txt, ii) => {
-      const row = document.createElement("div");
-      row.className = "item";
-      row.draggable = editMode;
-      row.dataset.si = si; row.dataset.ii = ii;
-      row.addEventListener("dragstart", onItemDragStart);
-      row.addEventListener("dragover", onItemDragOver);
-      row.addEventListener("drop", onItemDrop);
-      const key = sec.id + ":" + ii;
-      const cb = document.createElement("input");
-      cb.type = "checkbox"; cb.checked = !!checks[key];
-      if(cb.checked) row.classList.add("done");
-      cb.onchange = () => { checks[key] = cb.checked; row.classList.toggle("done", cb.checked); saveAll(); };
-      const grip = document.createElement("span"); grip.className = "grip"; grip.textContent = "⋮⋮";
-      const inp = document.createElement("input");
-      inp.className = "txt"; inp.value = txt; inp.readOnly = !editMode;
-      inp.addEventListener("input", () => { sec.items[ii] = inp.value; });
-      inp.addEventListener("change", saveAll);
-      row.appendChild(grip); row.appendChild(cb); row.appendChild(inp);
-      if(editMode){
-        const x = document.createElement("button");
-        x.className = "x"; x.textContent = "✕";
-        x.onclick = () => { sec.items.splice(ii,1); render(); saveAll(); };
-        row.appendChild(x);
-      }
-      el.appendChild(row);
-    });
-    box.appendChild(el);
-  });
-}
-
-function onSecDragStart(e){
-  if(!editMode) return;
-  dragSec = +e.currentTarget.dataset.si;
-  e.dataTransfer.effectAllowed = "move";
-}
-function onSecDragOver(e){ if(editMode){ e.preventDefault(); } }
-function onSecDrop(e){
-  e.preventDefault();
-  if(!editMode || dragSec==null) return;
-  const to = +e.currentTarget.dataset.si;
-  if(isNaN(to) || to===dragSec) return;
-  const [m] = secs.splice(dragSec,1);
-  secs.splice(to,0,m);
-  dragSec = null;
-  render(); saveAll();
-}
-function onItemDragStart(e){
-  if(!editMode) return;
-  e.stopPropagation();
-  dragItem = { si:+e.currentTarget.dataset.si, ii:+e.currentTarget.dataset.ii };
-  e.dataTransfer.effectAllowed = "move";
-}
-function onItemDragOver(e){ if(editMode){ e.preventDefault(); e.stopPropagation(); } }
-function onItemDrop(e){
-  e.preventDefault(); e.stopPropagation();
-  if(!editMode || !dragItem) return;
-  const tsi = +e.currentTarget.dataset.si, tii = +e.currentTarget.dataset.ii;
-  const from = secs[dragItem.si].items;
-  const [m] = from.splice(dragItem.ii,1);
-  secs[tsi].items.splice(tii,0,m);
-  dragItem = null;
-  render(); saveAll();
-}
-
-function toggleEdit(){
-  editMode = !editMode;
-  document.getElementById("editBtn").textContent = editMode ? "完成 Done" : "編輯 Edit";
-  render();
-}
-function addSection(){
-  secs.push({ id: uid(), title: "New section", items: ["New item"] });
-  editMode = true;
-  document.getElementById("editBtn").textContent = "完成 Done";
-  render(); saveAll();
-}
-function resetToday(){
-  if(!confirm("清除今日勾選與筆記？模板文字會保留。")) return;
-  checks = {};
-  try { localStorage.removeItem(DAY_KEY + today()); } catch(e){}
-  ["nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value="";
-  });
-  document.getElementById("nDate").value = today();
-  render();
-}
-function resetTemplate(){
-  if(!confirm("還原預設 v5.1 模板？自訂文字會消失。")) return;
-  secs = JSON.parse(JSON.stringify(DEFAULT_SECS));
-  try { localStorage.removeItem(TPL_KEY); } catch(e){}
-  render(); saveAll();
-}
-
-function toggleHeaderMenu(e){
-  if(e) e.stopPropagation();
-  document.getElementById("headerMenu").classList.toggle("open");
-}
-document.addEventListener("click", function(e){
-  const m = document.getElementById("headerMenu");
-  if(m && !m.contains(e.target)) m.classList.remove("open");
-});
-["nDate","nProfile","nPcr","nCall","nPut","nMF","nBias","nNews"].forEach(id=>{
-  document.getElementById(id).addEventListener("change", saveAll);
-});
-
-
-const FONT_KEY = "exodus_cl_font_v1";
-function setClFont(v){
-  const n = parseInt(v,10) || 100;
-  document.documentElement.style.fontSize = (n/100*14) + "px";
-  try { localStorage.setItem(FONT_KEY, String(n)); } catch(e){}
-  const sel = document.getElementById("clFontScale");
-  if(sel) sel.value = String(n);
-}
-(function initClFont(){
-  let n = 100;
-  try { n = parseInt(localStorage.getItem(FONT_KEY)||"100",10)||100; } catch(e){}
-  setClFont(n);
-})();
-
-
+const LS_DAY = "gary_mhi_daily_checklist";
 const CL_SET = "exodus_checklist_settings_v1";
 let clSet = { fontScale: 100 };
 try { Object.assign(clSet, JSON.parse(localStorage.getItem(CL_SET)||"{}")); } catch(e){}
+
+function todayISO(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
 function applyFont(){
   document.documentElement.style.fontSize = ((clSet.fontScale||100)/100*14) + "px";
 }
 function openSettings(){
   const m = document.getElementById("settingsModal");
-  if(!m) return;
   document.getElementById("setFontScale").value = String(clSet.fontScale||100);
   m.classList.add("open");
 }
 function closeSettings(){
-  const m = document.getElementById("settingsModal");
-  if(m) m.classList.remove("open");
+  document.getElementById("settingsModal").classList.remove("open");
 }
 function saveSettings(){
   clSet.fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
@@ -430,15 +261,89 @@ function saveSettings(){
   applyFont();
   closeSettings();
 }
-function closeHeaderMenu(){
-  const m = document.getElementById("headerMenu");
-  if(m) m.classList.remove("open");
+function toggleHeaderMenu(e){
+  if(e) e.stopPropagation();
+  document.getElementById("headerMenu").classList.toggle("open");
 }
-applyFont();
+function closeHeaderMenu(){
+  document.getElementById("headerMenu").classList.remove("open");
+}
+document.addEventListener("click", function(e){
+  const m = document.getElementById("headerMenu");
+  if(m && !m.contains(e.target)) m.classList.remove("open");
+});
 
-loadTemplate();
+function fields(){ return [...document.querySelectorAll("#dailyPanel [data-k]")]; }
+function collect(){
+  const o = { savedDate: document.querySelector('[data-k="date"]').value || todayISO() };
+  fields().forEach(el => { o[el.getAttribute("data-k")] = el.type==="checkbox" ? !!el.checked : el.value; });
+  return o;
+}
+function apply(o){
+  fields().forEach(el => {
+    const k = el.getAttribute("data-k");
+    if(el.type==="checkbox") el.checked = !!o[k];
+    else if(o[k]!=null) el.value = o[k];
+  });
+  paintChecks();
+  updateStatus();
+}
+function saveToday(){
+  try { localStorage.setItem(LS_DAY, JSON.stringify(collect())); } catch(e){}
+  const n = document.getElementById("saveNote");
+  if(n) n.textContent = "Saved " + new Date().toLocaleTimeString() + " · 只存在本機瀏覽器";
+}
+function resetToday(){
+  if(!confirm("Clear today's answers? Template stays.")) return;
+  try { localStorage.removeItem(LS_DAY); } catch(e){}
+  fields().forEach(el => {
+    if(el.type==="checkbox") el.checked = false;
+    else if(el.tagName==="TEXTAREA" || el.type==="text" || el.type==="date") el.value = "";
+    else el.selectedIndex = 0;
+  });
+  const dir = document.querySelector('[data-k="dir"]');
+  if(dir) dir.value = "LONG";
+  const dt = document.querySelector('[data-k="date"]');
+  if(dt) dt.value = todayISO();
+  paintChecks();
+  updateStatus();
+  saveToday();
+}
+function loadDay(){
+  let o = {};
+  try { o = JSON.parse(localStorage.getItem(LS_DAY)||"{}") || {}; } catch(e){}
+  if(!o.savedDate || o.savedDate !== todayISO()){
+    apply({ date: todayISO(), dir:"LONG" });
+    saveToday();
+    return;
+  }
+  apply(o);
+  const dt = document.querySelector('[data-k="date"]');
+  if(dt && !dt.value) dt.value = todayISO();
+}
+function paintChecks(){
+  document.querySelectorAll("#dailyPanel .check").forEach(lab => {
+    const cb = lab.querySelector('input[type="checkbox"]');
+    lab.classList.toggle("done", !!(cb && cb.checked));
+  });
+}
+function updateStatus(){
+  const keys = ["ap1","ap2","ap3","ap4","ap5","ap6","ap7","ap8"];
+  const all = keys.every(k => document.querySelector('[data-k="'+k+'"]')?.checked);
+  const bias = document.querySelector('[data-k="bias"]')?.value;
+  const ready = all && bias === "LONG";
+  const box = document.getElementById("apStatus");
+  box.textContent = ready ? "A+ READY" : "NO TRADE";
+  box.className = "status " + (ready ? "go" : "stop");
+}
+function printDaily(){ window.print(); }
+
+document.getElementById("dailyPanel").addEventListener("change", () => { paintChecks(); updateStatus(); saveToday(); });
+document.getElementById("dailyPanel").addEventListener("input", () => saveToday());
+
+applyFont();
 loadDay();
-render();
+updateStatus();
 </script>
 <script src="../tab-order.js"></script>
 </body>
