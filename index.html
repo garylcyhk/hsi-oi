@@ -24,28 +24,27 @@ h1{margin:0;font-size:1.05rem}h1 span{color:var(--muted);font-weight:400;font-si
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit;display:block}
 .card h2{margin:0 0 8px;font-size:.8rem;color:var(--muted);display:flex;justify-content:space-between}
 .card h2 .go{color:var(--emerald);font-size:.72rem}.bias{font-size:1.15rem;font-weight:600;margin-bottom:6px}.bias.res{color:var(--rose)}.bias.sup{color:var(--emerald)}.bias.mid{color:var(--amber)}.bias.far,.bias.na{color:var(--muted)}
-.meta{font-size:.78rem;color:var(--muted);font-family:ui-monospace,monospace}.row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:.8rem}.row .k{color:var(--muted)}
-.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;background:rgba(161,161,170,.12);color:var(--muted)}.tag.res{background:rgba(244,63,94,.15);color:var(--rose)}.tag.sup{background:rgba(52,211,153,.15);color:var(--emerald)}.tag.mid{background:rgba(251,191,36,.12);color:var(--amber)}
-.pos{color:var(--emerald)}.neg{color:var(--rose)}.top3{margin-top:8px;padding-top:8px;border-top:1px solid #1f1f23}.top3 .lbl{font-size:.68rem;color:var(--muted);margin:6px 0 2px}.top3 .ln{font-size:.75rem;font-family:ui-monospace,monospace;padding:1px 0;display:flex;justify-content:space-between}
-.kpi{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px}.kpi .item{font-size:.75rem}.kpi .v{font-family:ui-monospace,monospace;font-weight:600}.kpi .l{color:var(--muted);font-size:.68rem}
+.meta{font-size:.78rem;color:var(--muted);font-family:ui-monospace,monospace}.row{display:flex;justify-content:space-between;padding:3px 0;font-size:.8rem}.row .k{color:var(--muted)}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;background:rgba(161,161,170,.12);color:var(--muted)}.tag.res{color:var(--rose)}.tag.sup{color:var(--emerald)}.tag.mid{color:var(--amber)}
+.pos{color:var(--emerald)}.neg{color:var(--rose)}.kpi{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px}.kpi .v{font-family:ui-monospace,monospace;font-weight:600}.kpi .l{color:var(--muted);font-size:.68rem}
 .stocks table{width:100%;border-collapse:collapse;font-size:.78rem}.stocks th{text-align:left;color:var(--muted);padding:4px 6px;font-size:.68rem}.stocks td{padding:5px 6px;border-top:1px solid #1f1f23;font-family:ui-monospace,monospace}.stocks .tr{text-align:right}
 footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.75rem}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}.modal-overlay.open{display:flex}
 .modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:380px}
-.modal h3{margin:0 0 14px}.modal-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:.85rem}.modal-row label{color:var(--muted)}.modal-row select,.modal-row input{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}.modal-actions button{border-radius:8px;padding:7px 14px;border:1px solid #27272a;background:#27272a;color:var(--text);cursor:pointer}.modal-actions button.primary{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.35);color:#34d399}
-#consLine{grid-column:1/-1}.cons-banner{grid-column:1/-1;border-radius:8px;padding:10px 14px;font-size:.85rem;border:1px solid #27272a;background:#121214;font-family:ui-monospace,monospace}.cons-banner.agree{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#34d399}.cons-banner.diverge{border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08);color:#fbbf24}
+.modal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.85rem}.modal-row label{color:var(--muted)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}.modal-actions button{border-radius:8px;padding:7px 14px;border:1px solid #27272a;background:#27272a;color:var(--text);cursor:pointer}.modal-actions button.primary{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.35);color:#34d399}
+#consLine{grid-column:1/-1}.cons-banner{border-radius:8px;padding:10px 14px;font-size:.85rem;border:1px solid #27272a;background:#121214;font-family:ui-monospace,monospace}.cons-banner.agree{color:#34d399}.cons-banner.diverge{color:#fbbf24}
 .todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
 .todo-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}.todo-head h2{margin:0;font-size:.95rem;flex:1}.todo-head .ver{color:var(--muted);font-size:.72rem;font-weight:400;margin-left:8px}
 .todo-btns{display:flex;flex-wrap:wrap;gap:6px}.todo-btns button,.todo-sec-head button{border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
 .todo-btns button.primary{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:#34d399}.todo-btns button.danger{color:#fb7185}
 .todo-sec{background:#121214;border:1px solid #1f1f23;border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.todo-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}.todo-sec-head .grip,.todo-item .grip{cursor:grab;color:#52525b;padding:2px 4px}
-.todo-sec-head input.title{flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);font-weight:600;font-size:.82rem;padding:4px 6px;border-radius:6px}
+.todo-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}.grip{cursor:grab;color:#52525b;padding:2px 4px}
+.todo-sec-head input.title{flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);font-weight:600;font-size:.82rem;padding:4px 6px}
 .todo-item{display:flex;align-items:flex-start;gap:6px;padding:4px 0}.todo-item.done input.txt{color:var(--muted);text-decoration:line-through}
-.todo-item input[type=checkbox]{margin-top:5px;accent-color:#34d399}.todo-item input.txt{flex:1;background:transparent;border:1px dashed transparent;color:var(--text);font-size:.82rem;padding:4px 6px;border-radius:6px}
+.todo-item input.txt{flex:1;background:transparent;border:1px dashed transparent;color:var(--text);font-size:.82rem;padding:4px 6px}
 body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{border-color:#27272a}
-.todo-item button.x,.todo-sec-head button.x{border:none;background:transparent;color:#52525b;cursor:pointer}.todo-hint{font-size:.72rem;color:#71717a;margin-top:4px}.todo-msg{font-size:.72rem;color:#34d399}
+.todo-item button.x,.todo-sec-head button.x{border:none;background:transparent;color:#52525b;cursor:pointer}.todo-hint{font-size:.72rem;color:#71717a}.todo-msg{font-size:.72rem;color:#34d399}
 </style>
 </head>
 <body>
@@ -73,14 +72,8 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
 </header>
 <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
   <div class="modal">
-    <h3>總覽設定 · Home Settings</h3>
-    <div class="modal-row"><label>字體 Font</label><select id="setFontScale"><option value="85">85%</option><option value="100">100%</option><option value="115">115%</option><option value="130">130%</option><option value="150">150%</option></select></div>
-    <div class="modal-row"><label>Compact</label><input type="checkbox" id="setCompact" /></div>
-    <div class="modal-row"><label>HSI 卡</label><input type="checkbox" id="setShowHsi" checked /></div>
-    <div class="modal-row"><label>Mini 卡</label><input type="checkbox" id="setShowMini" checked /></div>
-    <div class="modal-row"><label>股票卡</label><input type="checkbox" id="setShowStock" checked /></div>
-    <div class="modal-row"><label>期貨卡</label><input type="checkbox" id="setShowFut" checked /></div>
-    <div class="modal-row"><label>一致/分歧</label><input type="checkbox" id="setShowCons" checked /></div>
+    <h3>總覽設定</h3>
+    <div class="modal-row"><label>Font</label><select id="setFontScale"><option value="85">85%</option><option value="100">100%</option><option value="115">115%</option><option value="130">130%</option><option value="150">150%</option></select></div>
     <div class="modal-row"><label>待辦 To-do</label><input type="checkbox" id="setShowTodo" checked /></div>
     <div class="modal-actions"><button type="button" onclick="closeSettings()">取消</button><button type="button" class="primary" onclick="saveSettings()">儲存</button></div>
   </div>
@@ -89,7 +82,7 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
 <div class="container" id="todoBlock" style="padding-top:0">
   <div class="todo-wrap">
     <div class="todo-head">
-      <h2>待辦 To-do <span class="ver">可加、改、拖曳 · 本機儲存</span></h2>
+      <h2>待辦 To-do <span class="ver">可加、改、拖曳</span></h2>
       <div class="todo-btns">
         <button type="button" id="todoEditBtn" onclick="todoToggleEdit()">編輯 Edit</button>
         <button type="button" onclick="todoAddSection()">＋ 新區塊</button>
@@ -104,10 +97,26 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
   </div>
 </div>
 <footer><p>Exodus Trading Group · 數據僅供參考</p></footer>
+<script>
+function toggleHeaderMenu(e){ if(e) e.stopPropagation(); document.getElementById("headerMenu").classList.toggle("open"); }
+function closeHeaderMenu(){ var m=document.getElementById("headerMenu"); if(m) m.classList.remove("open"); }
+document.addEventListener("click", function(e){ var m=document.getElementById("headerMenu"); if(m && !m.contains(e.target)) m.classList.remove("open"); });
+function openSettings(){ var m=document.getElementById("settingsModal"); if(m) m.classList.add("open"); }
+function closeSettings(){ var m=document.getElementById("settingsModal"); if(m) m.classList.remove("open"); }
+function saveSettings(){
+  var show = document.getElementById("setShowTodo").checked;
+  var td = document.getElementById("todoBlock");
+  if(td) td.style.display = show ? "" : "none";
+  var fs = document.getElementById("setFontScale").value;
+  document.documentElement.style.fontSize = (parseInt(fs,10)/100*14) + "px";
+  closeSettings();
+}
+</script>
 <script src="data.js"></script>
 <script src="data-mini.js"></script>
 <script src="stock-oi/data.js"></script>
-<script src="home-app.js"></script>
+<script src="home-dash.js"></script>
+<script src="home-todo.js"></script>
 <script src="tab-order.js"></script>
 </body>
 </html>
