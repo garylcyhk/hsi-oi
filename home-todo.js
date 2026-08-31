@@ -1,3 +1,13 @@
+(function(){
+  if(!document.getElementById("homeTodoCss")){
+    const l = document.createElement("link");
+    l.id = "homeTodoCss";
+    l.rel = "stylesheet";
+    l.href = "home-todo.css";
+    document.head.appendChild(l);
+  }
+})();
+
 const TODO_TPL = "exodus_home_todo_tpl_v1";
 const TODO_DAY = "exodus_home_todo_day_v1_";
 const TODO_DEFAULT = [
