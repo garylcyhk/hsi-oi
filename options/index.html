@@ -19,28 +19,20 @@ h1{font-size:1.15rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;
 .atm-header .gf-item{display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}
 .atm-header select{background:#1c1c1f;color:var(--text);border:1px solid #333;border-radius:5px;padding:3px 6px;font-size:.72rem}
 .atm-header input[type=checkbox]{accent-color:#34d399;width:14px;height:14px}
-.atm-header .tag,.tag{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.tag{font-size:.7rem;color:var(--muted);white-space:nowrap}
 .date-picker{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .date-picker label{font-size:.75rem;color:var(--muted)}
 .date-picker select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.8rem;font-family:ui-monospace,monospace}
 .grid-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:16px 0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;max-width:100%}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
 .card .label{font-size:.7rem;color:var(--muted);margin-bottom:4px}.card .value{font-size:1.15rem;font-weight:600}.card .subv{font-size:.75rem;margin-top:2px}
-.section{background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.section{background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:auto;max-width:100%}
 .section-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .section-header h2{font-size:.9rem;font-weight:500}.zones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 @media(max-width:800px){.zones,.futures-bar,.cmp-grid{grid-template-columns:1fr!important}}
-@media(min-width:1200px){.zones{grid-template-columns:1fr 1fr 1fr 1fr!important}}
-table{width:100%;border-collapse:collapse;font-size:.85rem;max-width:100%}
-th{text-align:left;padding:8px 12px;font-size:.7rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0}
-td{padding:6px 12px;border-bottom:1px solid rgba(39,39,42,.55)}tr:hover td{background:rgba(39,39,42,.35)}
-tr.row-selected td{background:rgba(16,185,129,.28)!important;box-shadow:inset 3px 0 0 #34d399}
-tbody tr{cursor:pointer}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}.em{color:var(--emerald)}.ro{color:var(--rose)}.pos{color:var(--emerald)}.neg{color:var(--rose)}.mu{color:var(--muted)}
-.bar-cell{position:relative}.bar{position:absolute;top:3px;bottom:3px;border-radius:3px;opacity:.22}.bar-c{right:0;background:var(--emerald)}.bar-p{left:0;background:var(--rose)}.bar-cell span{position:relative;z-index:1}
-.table-wrap{overflow:visible;max-height:none}.table-wrap table{min-width:480px;width:100%}
-footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}footer a{color:var(--muted)}
-.note{font-size:.75rem;color:var(--muted);margin:8px 0 16px}
+@media(min-width:1200px){.zones{grid-template-columns:1fr 1fr!important}}
+table{width:100%;border-collapse:collapse;font-size:.85rem}th{text-align:left;padding:8px 12px;font-size:.7rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);background:var(--card)}td{padding:6px 12px;border-bottom:1px solid rgba(39,39,42,.55)}tr:hover td{background:rgba(39,39,42,.35)}tr.row-selected td{background:rgba(16,185,129,.28)!important;box-shadow:inset 3px 0 0 #34d399}tbody tr{cursor:pointer}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}.em{color:var(--emerald)}.ro{color:var(--rose)}.pos{color:var(--emerald)}.neg{color:var(--rose)}.mu{color:var(--muted)}
+footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}footer a{color:var(--muted)}.note{font-size:.75rem;color:var(--muted);margin:8px 0 16px}
 .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);background:#111113;font-size:.78rem}
 .controls label{color:var(--muted);margin-right:4px}.controls select,.controls input{background:#1c1c1f;color:var(--text);border:1px solid #333;border-radius:5px;padding:5px 8px;font-size:.78rem}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;align-items:center;justify-content:center}.modal-overlay.open{display:flex}
@@ -50,18 +42,17 @@ footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}foote
 .modal-actions{margin-top:18px;display:flex;gap:8px;justify-content:flex-end}.btn-primary{background:#059669;color:#fff;border:none;border-radius:6px;padding:7px 14px;cursor:pointer}.btn-secondary{background:#27272a;color:var(--muted);border:none;border-radius:6px;padding:7px 14px;cursor:pointer}
 .levels-card{display:grid;grid-template-columns:1fr;margin-bottom:16px}.lvl-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:.85rem;font-family:ui-monospace,monospace}.lvl-strike{font-weight:600}.lvl-meta{font-size:.75rem;color:var(--muted)}
 .day-change{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:.82rem}.dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}.dc-item{padding:3px 0;font-family:ui-monospace,monospace;font-size:.8rem}.dc-up{color:var(--emerald)}.dc-down{color:var(--rose)}.dc-new{color:#fbbf24}.dc-label{color:var(--muted);font-size:.72rem;margin-bottom:2px}
-.print-only{display:none}.tab-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 16px 0;width:100%;margin:0 auto;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 16px 0;width:100%;margin:0 auto;border-bottom:1px solid var(--border);overflow-x:auto}
 .tab-btn{background:transparent;border:none;color:var(--muted);padding:10px 14px;font-size:.82rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}.tab-btn.active{color:var(--emerald);border-bottom-color:var(--emerald);font-weight:500}
 .tab-panels{width:100%;max-width:100%;margin:0 auto;padding:12px 16px 24px;min-height:calc(100vh - 140px);box-sizing:border-box}.tab-panel{display:none}.tab-panel.active{display:block}
 .futures-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 4px}.fut-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}.fut-card h3{font-size:.8rem;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between}
 .fut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}.fut-item .fl{font-size:.68rem;color:var(--muted)}.fut-item .fv{font-size:.95rem;font-weight:600;font-family:ui-monospace,monospace}.fut-item .fs{font-size:.72rem}
-.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}.cmp-card h3{font-size:.85rem;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between}.cmp-row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #1f1f23;font-size:.8rem}.cmp-label{color:var(--muted);font-size:.72rem;margin-bottom:4px}.cmp-metric{font-family:ui-monospace,monospace;font-weight:600}.cmp-full{grid-column:1/-1}.cmp-table{width:100%;border-collapse:collapse;font-size:.8rem}.cmp-table th,.cmp-table td{padding:6px 8px}.cmp-table .tr{text-align:right}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px}.cmp-card h3{font-size:.85rem;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between}.cmp-row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #1f1f23;font-size:.8rem}.cmp-label{color:var(--muted);font-size:.72rem;margin-bottom:4px}.cmp-metric{font-family:ui-monospace,monospace;font-weight:600}
 .brand-lockup{display:flex;align-items:center;gap:12px}.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block}
 .header-menu{position:relative;display:inline-flex}.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}.menu-toggle svg{width:18px;height:18px}.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:168px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:50}.header-menu.open .menu-dropdown{display:block}
 .menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left;box-sizing:border-box}.menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}.menu-dropdown a.menu-active,.menu-dropdown button.menu-active{color:#34d399;background:rgba(52,211,153,.1)}
-.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}.menu-divider{height:1px;background:#27272a;margin:6px 4px}.site-nav,.product-toggle{display:none!important}
-@media(max-width:768px){header .inner{flex-direction:column;align-items:flex-start;gap:10px;padding:0 10px}h1{font-size:1rem}.grid-summary{grid-template-columns:1fr 1fr}.brand-logo-link img{height:32px}table{font-size:.75rem}select,input[type=number]{font-size:16px!important}.dc-grid{grid-template-columns:1fr}}
-@media(max-width:480px){.grid-summary{grid-template-columns:1fr}}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+@media(max-width:768px){header .inner{flex-direction:column;align-items:flex-start;gap:10px;padding:0 10px}h1{font-size:1rem}.grid-summary{grid-template-columns:1fr 1fr}.brand-logo-link img{height:32px}table{font-size:.75rem}.dc-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -108,35 +99,18 @@ footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}foote
     <h3>設定 Settings</h3>
     <div class="modal-row"><label>預設最低 OI</label><input type="number" id="setMinOI" min="0" step="50" /></div>
     <div class="modal-row"><label>預設最低成交量</label><input type="number" id="setMinVol" min="0" step="10" /></div>
-    <div class="modal-row"><label>預設排序</label><select id="setSortKey"><option value="strike">行使價</option><option value="totalOI">總 OI</option><option value="callOI">Call OI</option><option value="putOI">Put OI</option><option value="callVol">Call Vol</option><option value="putVol">Put Vol</option><option value="chg">最大變化</option></select></div>
+    <div class="modal-row"><label>預設排序</label><select id="setSortKey"><option value="strike">行使價</option><option value="totalOI">總 OI</option><option value="callOI">Call OI</option><option value="putOI">Put OI</option></select></div>
     <div class="modal-row"><label>排序方向</label><select id="setSortDir"><option value="desc">高 → 低</option><option value="asc">低 → 高</option></select></div>
     <div class="modal-row"><label>隱藏空白行使價</label><input type="checkbox" id="setOnlyActive" /></div>
-    <div class="modal-row"><label>字體大小</label><select id="setFontScale"><option value="85">小 (85%)</option><option value="100">標準 (100%)</option><option value="115">中 (115%)</option><option value="130">大 (130%)</option><option value="150">更大 (150%)</option></select></div>
+    <div class="modal-row"><label>字體大小</label><select id="setFontScale"><option value="85">小 (85%)</option><option value="100">標準 (100%)</option><option value="115">中 (115%)</option><option value="130">大 (130%)</option></select></div>
     <div class="modal-row"><label>只看近價</label><input type="checkbox" id="setAtmEnabled" /></div>
     <div class="modal-row"><label>近價範圍 ± 點數</label><input type="number" id="setAtmRange" min="200" max="3000" step="100" /></div>
     <div class="modal-row"><label>高亮 Top N</label><input type="number" id="setTopN" min="1" max="20" step="1" /></div>
-    <div class="modal-row"><label>高亮高 OI</label><input type="checkbox" id="setHlOI" /></div>
-    <div class="modal-row"><label>高亮高成交量</label><input type="checkbox" id="setHlVol" /></div>
-    <div class="modal-row"><label>高亮大變化</label><input type="checkbox" id="setHlChg" /></div>
-    <div class="modal-row" style="border-bottom:none;padding-top:14px;"><label style="color:var(--text);font-weight:500;">顯示欄位</label><span></span></div>
-    <div class="modal-row"><label>Call 成交量</label><input type="checkbox" id="setColCallVol" /></div>
-    <div class="modal-row"><label>Call OI</label><input type="checkbox" id="setColCallOI" /></div>
-    <div class="modal-row"><label>Call 結算價</label><input type="checkbox" id="setColCallSettle" /></div>
-    <div class="modal-row"><label>Call IV</label><input type="checkbox" id="setColCallIV" /></div>
-    <div class="modal-row"><label>Call Delta</label><input type="checkbox" id="setColCallDelta" /></div>
-    <div class="modal-row"><label>Call ΔOI</label><input type="checkbox" id="setColCallChg" /></div>
-    <div class="modal-row"><label>Put ΔOI</label><input type="checkbox" id="setColPutChg" /></div>
-    <div class="modal-row"><label>Put 結算價</label><input type="checkbox" id="setColPutSettle" /></div>
-    <div class="modal-row"><label>Put IV</label><input type="checkbox" id="setColPutIV" /></div>
-    <div class="modal-row"><label>Put Delta</label><input type="checkbox" id="setColPutDelta" /></div>
-    <div class="modal-row"><label>Put OI</label><input type="checkbox" id="setColPutOI" /></div>
-    <div class="modal-row"><label>Put 成交量</label><input type="checkbox" id="setColPutVol" /></div>
     <div class="modal-actions"><button class="btn-secondary" onclick="resetSettings()">重設</button><button class="btn-secondary" onclick="closeSettings()">取消</button><button class="btn-primary" onclick="saveSettings()">儲存</button></div>
   </div>
 </div>
 <div class="container">
   <div class="note" id="status" style="width:100%;margin:8px auto 0;padding:0 16px;">載入中…</div>
-  <div class="print-only" id="printHeader"></div>
   <div class="tab-bar" id="tabBar">
     <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">總覽</button>
     <button class="tab-btn" data-tab="walls" onclick="switchTab('walls')">重貨區</button>
@@ -150,13 +124,9 @@ footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}foote
     <div class="tab-panel" id="tab-strikes"><div id="strikes"></div></div>
     <div class="tab-panel" id="tab-topvol"><div id="topVolume"></div></div>
     <div class="tab-panel" id="tab-compare">
-      <div class="filters" id="compareFilters" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem;">
-        <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">最低 OI <input type="number" id="cmpMinOI" value="100" min="0" step="50" style="width:90px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" /></label>
-        <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">Top N <select id="cmpTopN" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option><option value="10">10</option><option value="15">15</option></select></label>
-        <label style="color:var(--muted);display:flex;align-items:center;gap:6px;"><input type="checkbox" id="cmpNearOnly" onchange="renderCompare(currentDate)" style="accent-color:#34d399;" /> 只看近價 (±) <input type="number" id="cmpNearPts" value="800" min="100" step="100" style="width:80px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" /> pts</label>
-        <label style="color:var(--muted);display:flex;align-items:center;gap:6px;"><input type="checkbox" id="cmpHideEmpty" checked onchange="renderCompare(currentDate)" style="accent-color:#34d399;" /> 隱藏一邊為空</label>
-        <label style="color:var(--muted);display:flex;align-items:center;gap:6px;">對齊方式 <select id="cmpAlign" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;"><option value="union" selected>聯集</option><option value="hsi">只 HSI</option><option value="mini">只 Mini</option><option value="both">兩邊都有</option></select></label>
-        <span class="tag" id="cmpFilterHint"></span>
+      <div class="filters" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;font-size:.78rem;">
+        <label style="color:var(--muted);">最低 OI <input type="number" id="cmpMinOI" value="100" min="0" step="50" style="width:90px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;" oninput="renderCompare(currentDate)" /></label>
+        <label style="color:var(--muted);">Top N <select id="cmpTopN" onchange="renderCompare(currentDate)" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 8px;"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option><option value="10">10</option></select></label>
       </div>
       <div id="compareBox"></div>
     </div>
@@ -169,10 +139,7 @@ footer{text-align:center;padding:24px 0 16px;font-size:.7rem;color:#52525b}foote
 </div>
 <script src="../data.js"></script>
 <script src="../data-mini.js"></script>
-<script src="app-1.js"></script>
-<script src="app-2.js"></script>
-<script src="app-3.js"></script>
-<script src="app-4.js"></script>
+<script src="app.js"></script>
 <script src="../tab-order.js"></script>
 </body>
 </html>
