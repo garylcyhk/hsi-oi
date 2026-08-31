@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>經濟日曆 · Exodus Trading Group</title>
+<style>
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block}
+h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left}
+.menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.wrap{padding:16px;max-width:980px;margin:0 auto}
+.note{color:var(--muted);font-size:.78rem;margin-bottom:12px;line-height:1.55}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:.88rem;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:left;font-size:.68rem;color:var(--muted);font-weight:500;padding:6px;border-bottom:1px solid var(--border)}
+td{padding:6px;border-bottom:1px solid #1f1f23;vertical-align:top}
+.mono{font-family:ui-monospace,monospace}.tr{text-align:right}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.dot.high{background:var(--rose)}.dot.med{background:var(--amber)}.dot.low{background:#71717a}
+.ccy{font-size:.68rem;padding:1px 6px;border-radius:999px;background:#27272a;color:var(--muted)}
+.inline{color:var(--muted)}.links a{color:#6ee7b7;font-size:.8rem;margin-right:12px}
+footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
+@media print{body{background:#fff;color:#111}header,.header-menu{display:none}.card{border:1px solid #ccc;background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a>
+    <h1>經濟日曆 <span>Economic Calendar</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="document.getElementById('headerMenu').classList.toggle('open')" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="../cbbc/">牛熊街貨 CBBC</a>
+      <a href="./" class="menu-active">經濟日曆 Calendar</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="../checklist/">開市清單 Checklist</a>
+      <a href="../daily/">每日清單 Daily</a>
+      <div class="menu-divider"></div>
+      <button type="button" onclick="window.print()">列印 / PDF</button>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="note" id="status">載入中…</div>
+  <div class="card" id="upcoming"></div>
+  <div class="card" id="review"></div>
+  <div class="card">
+    <h2>來源</h2>
+    <p class="note" style="margin:0 0 8px">數據係精選快照，唔係 Forex Factory 即時 feed。官方日曆會改，以 FF 為準。</p>
+    <div class="links" id="links"></div>
+  </div>
+</div>
+<footer>Exodus Trading Group · 數據僅供參考</footer>
+<script src="data.js"></script>
+<script>
+document.addEventListener("click", function(e){
+  var m=document.getElementById("headerMenu");
+  if(m && !m.contains(e.target)) m.classList.remove("open");
+});
+var D=window.FF_CAL||{};
+function rows(list){
+  return (list||[]).map(function(e){
+    return "<tr><td class='mono'>"+e.date.slice(5)+"<br><span class='inline'>"+e.time+"</span></td>"+
+      "<td><span class='ccy'>"+e.ccy+"</span></td>"+
+      "<td><span class='dot "+e.impact+"'></span>"+e.name+"</td>"+
+      "<td class='tr mono'>"+(e.actual||"\u2014")+"</td>"+
+      "<td class='tr mono inline'>"+(e.forecast||"\u2014")+"</td>"+
+      "<td class='tr mono inline'>"+(e.previous||"\u2014")+"</td></tr>";
+  }).join("");
+}
+function table(title, list){
+  return "<h2>"+title+"</h2><table><thead><tr><th>日期 / 時間</th><th>貨幣</th><th>事件</th><th class='tr'>公布</th><th class='tr'>預測</th><th class='tr'>前值</th></tr></thead><tbody>"+
+    (rows(list)||"<tr><td colspan='6' class='inline'>無</td></tr>")+"</tbody></table>";
+}
+document.getElementById("status").textContent = (D.rangeLabel||"")+" \u00b7 時區 "+(D.tz||"HKT")+" \u00b7 更新 "+(D.asOf||"\u2014");
+document.getElementById("upcoming").innerHTML = table("本週前瞻", D.thisWeek);
+document.getElementById("review").innerHTML = table("上週回顧 8/26\u20138/31", D.lastWeek);
+document.getElementById("links").innerHTML =
+  '<a href="'+(D.sourceRange||D.source)+'" target="_blank" rel="noopener">Forex Factory 8/26\u20138/31</a>'+
+  '<a href="'+(D.source||"#")+'" target="_blank" rel="noopener">Forex Factory 今日</a>';
+</script>
+</body>
+</html>
