@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>恒指牛熊街貨 · Exodus Trading Group</title>
+<style>
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24}
+*{box-sizing:border-box}html{font-size:14px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text)}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block}
+h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left}
+.menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.wrap{padding:16px;max-width:1100px;margin:0 auto}
+.note{color:var(--muted);font-size:.78rem;margin-bottom:12px;line-height:1.55}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.kpi .l{font-size:.68rem;color:var(--muted);margin-bottom:4px}
+.kpi .v{font-size:1.15rem;font-weight:600;font-family:ui-monospace,monospace}
+.kpi .s{font-size:.72rem;margin-top:3px;color:var(--muted)}
+.ratio{height:10px;border-radius:999px;overflow:hidden;display:flex;background:#1f1f23;margin-top:8px}
+.ratio .b{background:var(--emerald)}.ratio .r{background:var(--rose)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:.88rem;font-weight:600}
+.study p,.card p{font-size:.8rem;color:var(--muted);line-height:1.6;margin:0 0 8px}
+.study ul{margin:0;padding-left:18px;color:var(--muted);font-size:.8rem;line-height:1.65}
+.links a{color:#6ee7b7;font-size:.8rem;margin-right:12px}
+.tab-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tab-btn{background:transparent;border:none;color:var(--muted);padding:8px 12px;font-size:.82rem;cursor:pointer;border-bottom:2px solid transparent}
+.tab-btn.active{color:var(--emerald);border-bottom-color:var(--emerald)}
+.sg-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.sg-table th{text-align:center;font-size:.68rem;color:var(--muted);font-weight:500;padding:6px;border-bottom:1px solid var(--border)}
+.sg-table td{padding:5px 6px;border-bottom:1px solid #1f1f23}
+.sg-table tr.spot td{background:rgba(251,191,36,.1);color:var(--amber);font-weight:600}
+.sg-table tr.called td{opacity:.55}
+.bar-wrap{height:16px}.bar{height:16px;border-radius:3px}
+.bar.bull{background:linear-gradient(90deg,transparent,rgba(52,211,153,.85));margin-left:auto}
+.bar.bear{background:linear-gradient(90deg,rgba(251,113,133,.85),transparent)}
+.mono{font-family:ui-monospace,monospace}.tr{text-align:right}.tc{text-align:center}
+.pos{color:var(--emerald)}.neg{color:var(--rose)}.mu{color:var(--muted)}
+.badge{display:inline-block;font-size:.62rem;padding:1px 6px;border-radius:999px;margin-left:4px}
+.badge.hz{background:rgba(52,211,153,.15);color:var(--emerald)}
+.badge.add{background:rgba(251,191,36,.15);color:var(--amber)}
+.badge.ko{background:rgba(251,113,133,.15);color:var(--rose)}
+.hist{display:flex;gap:2px;align-items:flex-end;height:22px;justify-content:flex-end}
+.hist i{display:block;width:6px;background:#3f3f46;border-radius:1px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;font-size:.78rem;color:var(--muted)}
+.filters input,.filters select{background:#111113;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 8px}
+footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a>
+    <h1>恒指牛熊街貨 <span>HSI CBBC Outstanding</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="toggleHeaderMenu(event)" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="./" class="menu-active">牛熊街貨 CBBC</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="../checklist/">開市清單 Checklist</a>
+      <a href="../daily/">每日清單 Daily</a>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="note" id="status">載入中…</div>
+  <div class="kpis" id="kpis"></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="dist" onclick="switchTab('dist')">街貨分佈</button>
+    <button class="tab-btn" data-tab="study" onclick="switchTab('study')">點樣讀</button>
+    <button class="tab-btn" data-tab="flow" onclick="switchTab('flow')">資金流</button>
+  </div>
+  <div id="tab-dist">
+    <div class="filters">
+      <label>最低期指張數 <input type="number" id="minFut" value="50" min="0" step="10" oninput="renderDist()" style="width:80px" /></label>
+      <label>範圍 <select id="rangeSel" onchange="renderDist()">
+        <option value="800">現價 ±800</option>
+        <option value="1200" selected>現價 ±1200</option>
+        <option value="1600">現價 ±1600</option>
+        <option value="0">全部列出</option>
+      </select></label>
+      <span class="mu" id="filterHint"></span>
+    </div>
+    <div class="card" style="overflow:auto"><h2>收回價分佈 · 相對期指張數</h2><div id="dist"></div></div>
+  </div>
+  <div id="tab-study" style="display:none">
+    <div class="card study">
+      <h2>牛熊證街貨係咩</h2>
+      <p>街貨 = 發行商已沽出、市場仍持有、未被收回的牛／熊證數量。唔係期權 OI。</p>
+      <ul>
+        <li><b>牛證</b>：看好。收回價低過現價。跌穿就收回。</li>
+        <li><b>熊證</b>：看淡。收回價高過現價。升穿就收回。</li>
+        <li>街貨升 → 發行商對冲（牛證約買期指；熊證約賣期指）。</li>
+      </ul>
+    </div>
+    <div class="card study">
+      <h2>為何用「相對期指張數」</h2>
+      <p class="mono" style="color:var(--text)">期指張數 ≈ 街貨份數 ÷ 換股比率 ÷ 50</p>
+      <p>50 = HSI 期貨乘數。同一區間可以有多個比率，所以用約當張數。</p>
+    </div>
+    <div class="card study">
+      <h2>點樣用分佈圖</h2>
+      <ul>
+        <li>現價線之上 = 熊證收回價；之下 = 牛證收回價。</li>
+        <li>近價重貨區：價到就容易有收回潮 + 對冲平倉。</li>
+        <li>近收回 ±1,000 點牛熊比比全日總比更敏感。</li>
+        <li>期權頁仍係 HKEX options OI；本頁係 CBBC 街貨，數字唔可對調。</li>
+      </ul>
+      <div class="links" id="srcLinks"></div>
+    </div>
+  </div>
+  <div id="tab-flow" style="display:none"><div class="card" id="flowBox"></div></div>
+</div>
+<footer><p>Exodus Trading Group · 數據僅供參考 · 街貨來源：發行商公開分佈圖</p></footer>
+<script src="data.js"></script>
+<script>
+function toggleHeaderMenu(e){if(e)e.stopPropagation();document.getElementById("headerMenu").classList.toggle("open");}
+function closeHeaderMenu(){var m=document.getElementById("headerMenu");if(m)m.classList.remove("open");}
+document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
+function switchTab(name){
+  document.getElementById("tab-dist").style.display=name==="dist"?"":"none";
+  document.getElementById("tab-study").style.display=name==="study"?"":"none";
+  document.getElementById("tab-flow").style.display=name==="flow"?"":"none";
+  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.toggle("active",b.getAttribute("data-tab")===name);});
+}
+var D=window.CBBC_HSI||{};
+var fmt=function(n){return(n==null||isNaN(n))?"\u2014":Number(n).toLocaleString("en-US");};
+var fmtC=function(n){if(n==null||isNaN(n))return"\u2014";var s=Number(n).toLocaleString("en-US");return n>0?"+"+s:s;};
+var fmtM=function(n){if(n==null||isNaN(n))return"\u2014";return(n>0?"+":n<0?"-":"")+Math.abs(n).toFixed(2)+"M";};
+function renderKpis(){
+  var tot=(D.bullFut||0)+(D.bearFut||0),bp=tot?D.bullFut/tot*100:0,rp=tot?D.bearFut/tot*100:0;
+  var nkB=D.nearKoBull,nkR=D.nearKoBear,nkT=(nkB||0)+(nkR||0);
+  document.getElementById("status").textContent="街貨日期 "+(D.asOf||"\u2014")+" \u00b7 圖表更新 "+(D.published||"\u2014")+" \u00b7 現價 "+fmt(D.spot);
+  document.getElementById("kpis").innerHTML='<div class="kpi"><div class="l">牛證街貨</div><div class="v pos">'+fmt(D.bullFut)+' 張</div><div class="s">'+(D.bullPct||bp).toFixed(1)+'%</div><div class="ratio"><div class="b" style="width:'+bp+'%"></div><div class="r" style="width:'+rp+'%"></div></div></div><div class="kpi"><div class="l">熊證街貨</div><div class="v neg">'+fmt(D.bearFut)+' 張</div><div class="s">'+(D.bearPct||rp).toFixed(1)+'%</div></div><div class="kpi"><div class="l">牛 / 熊</div><div class="v">'+(D.bullFut&&D.bearFut?(D.bullFut/D.bearFut).toFixed(2)+" : 1":"\u2014")+'</div></div><div class="kpi"><div class="l">近收回 ±'+(D.nearKoPts||1000)+'</div><div class="v">'+(nkT?fmt(nkT):"\u2014")+'</div><div class="s">牛 '+fmt(nkB)+' \u00b7 熊 '+fmt(nkR)+'</div></div><div class="kpi"><div class="l">1 日資金流</div><div class="v"><span class="pos">'+fmtM(D.flow1d&&D.flow1d.bullM)+'</span> / <span class="neg">'+fmtM(D.flow1d&&D.flow1d.bearM)+'</span></div></div>';
+}
+function spark(hist,maxV){
+  var m=maxV||1;
+  return '<div class="hist">'+(hist||[]).slice().reverse().map(function(v){var h=Math.max(2,Math.round((v||0)/m*22));return '<i style="height:'+h+'px"></i>';}).join("")+'</div>';
+}
+function renderDist(){
+  var bins=(D.bins||[]).slice(),spot=D.spot||0;
+  var minFut=parseInt(document.getElementById("minFut").value,10)||0;
+  var range=parseInt(document.getElementById("rangeSel").value,10)||0;
+  var listed=bins.filter(function(b){return b.fut>=minFut&&(!range||Math.abs(((b.lo+b.hi)/2)-spot)<=range);});
+  var maxFut=Math.max.apply(null,listed.map(function(b){return b.fut;}).concat([1]));
+  var maxHist=Math.max.apply(null,bins.flatMap(function(b){return b.hist||[0];}).concat([1]));
+  var heavyBull=bins.filter(function(b){return b.side==="bull";}).sort(function(a,b){return b.fut-a.fut;})[0];
+  var heavyBear=bins.filter(function(b){return b.side==="bear";}).sort(function(a,b){return b.fut-a.fut;})[0];
+  var addBull=bins.filter(function(b){return b.side==="bull";}).sort(function(a,b){return b.chg-a.chg;})[0];
+  var addBear=bins.filter(function(b){return b.side==="bear";}).sort(function(a,b){return b.chg-a.chg;})[0];
+  var totListed=listed.reduce(function(s,b){return s+(b.fut||0);},0);
+  function row(b){
+    var w=Math.max(4,Math.round(b.fut/maxFut*100)),badges="";
+    if(heavyBull===b||heavyBear===b)badges+='<span class="badge hz">重貨區</span>';
+    if((addBull===b||addBear===b)&&b.chg>0)badges+='<span class="badge add">最多新增</span>';
+    if(b.called)badges+='<span class="badge ko">已收回</span>';
+    var bar=b.side==="bear"?'<div class="bar-wrap"><div class="bar bear" style="width:'+w+'%"></div></div>':'<div class="bar-wrap"><div class="bar bull" style="width:'+w+'%"></div></div>';
+    return '<tr class="'+(b.called?"called":"")+'"><td class="mono">'+fmt(b.lo)+'\u2013'+fmt(b.hi)+badges+'</td><td class="tc mu">'+(b.side==="bear"?"熊 Bear":"牛 Bull")+'</td><td style="width:28%">'+bar+'</td><td class="tr mono">'+fmt(b.fut)+'</td><td class="tr mono '+(b.chg>0?"pos":b.chg<0?"neg":"mu")+'">'+fmtC(b.chg)+'</td><td class="tr mono mu">'+(totListed?((b.fut/totListed)*100).toFixed(1)+"%":"\u2014")+'</td><td>'+spark(b.hist,maxHist)+'</td><td class="mono mu">'+(b.pick||"\u2014")+'</td></tr>';
+  }
+  document.getElementById("filterHint").textContent="顯示 "+listed.length+" / "+bins.length+" 個區間";
+  document.getElementById("dist").innerHTML='<table class="sg-table"><thead><tr><th>收回價區間</th><th>方向</th><th>街貨</th><th class="tr">期指張數</th><th class="tr">1日Δ</th><th class="tr">佔比*</th><th class="tr">5日</th><th>精選</th></tr></thead><tbody>'+listed.filter(function(b){return b.side==="bear";}).sort(function(a,b){return b.lo-a.lo;}).map(row).join("")+'<tr class="spot"><td colspan="8" class="tc">現價 '+fmt(Math.round(spot))+'</td></tr>'+listed.filter(function(b){return b.side==="bull";}).sort(function(a,b){return b.lo-a.lo;}).map(row).join("")+'</tbody></table><p class="mu" style="font-size:.72rem">佔比* 以本表區間為分母。'+(D.calledNote||"")+'</p>';
+}
+function renderFlow(){
+  var s=D.flow5dSeries||{dates:[],bull:[],bear:[]};
+  document.getElementById("flowBox").innerHTML='<h2>近 5 日資金流</h2><table class="sg-table"><thead><tr><th></th>'+s.dates.map(function(d){return '<th>'+d+'</th>';}).join('')+'<th>5日</th></tr></thead><tbody><tr><td>牛證</td>'+s.bull.map(function(v){return '<td class="tr mono '+(v>=0?"pos":"neg")+'">'+fmtM(v)+'</td>';}).join('')+'<td class="tr mono">'+fmtM(D.flow5d&&D.flow5d.bullM)+'</td></tr><tr><td>熊證</td>'+s.bear.map(function(v){return '<td class="tr mono '+(v>=0?"pos":"neg")+'">'+fmtM(v)+'</td>';}).join('')+'<td class="tr mono">'+fmtM(D.flow5d&&D.flow5d.bearM)+'</td></tr></tbody></table>';
+}
+function renderLinks(){
+  var box=document.getElementById("srcLinks");
+  if(!box)return;
+  box.innerHTML=(D.sourcePages||[]).map(function(p){return '<a href="'+p.url+'" target="_blank" rel="noopener">'+p.name+'</a>';}).join("");
+}
+renderKpis();renderDist();renderFlow();renderLinks();
+</script>
+<script src="../tab-order.js"></script>
+</body></html>
