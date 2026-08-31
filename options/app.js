@@ -173,6 +173,39 @@ function setStrikeSort(key){ if(sortKey===key) sortDir = sortDir==="desc"?"asc":
 function setWallSort(key){ if(wallSortKey===key) wallSortDir = wallSortDir==="desc"?"asc":"desc"; else { wallSortKey=key; wallSortDir="desc"; } renderWalls(); }
 function setVolSort(key){ setWallSort(key==="volume"?"oi":key); }
 function setTopSort(key){ setStrikeSort(key); }
+function arrow(activeKey, key, dir){
+  if (activeKey !== key) return '<span class="arrow">↕</span>';
+  return dir === "desc" ? '<span class="arrow">↓</span>' : '<span class="arrow">↑</span>';
+}
+function fmtIV(v){ if(v==null || v==="" || Number(v)===0) return "—"; return Number(v).toFixed(0)+"%"; }
+function fmtDelta(v){ if(v==null || isNaN(v)) return "—"; const n=Number(v); return (n>=0?"+":"")+n.toFixed(2); }
+function erfApprox(x){
+  const s = x<0?-1:1; x=Math.abs(x);
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  const t=1/(1+p*x); return s*(1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x));
+}
+function black76Delta(F,K,T,ivPct,isCall){
+  const sig=Number(ivPct)/100;
+  if(!(F>0)||!(K>0)||!(T>0)||!(sig>0)) return null;
+  const d1=(Math.log(F/K)+0.5*sig*sig*T)/(sig*Math.sqrt(T));
+  const n=0.5*(1+erfApprox(d1/Math.SQRT2));
+  return isCall ? n : n-1;
+}
+function attachGreeks(rows, center, monthLabel){
+  let T=30/365;
+  const parts=String(monthLabel||"").split("-");
+  if(parts.length>=2 && currentReport && currentReport.date){
+    const y=parseInt(parts[0],10), m=parseInt(parts[1],10);
+    const end=new Date(y,m,0);
+    while(end.getDay()===0||end.getDay()===6) end.setDate(end.getDate()-1);
+    const d0=new Date(currentReport.date+"T00:00:00");
+    T=Math.max(1, Math.round((end-d0)/86400000))/365;
+  }
+  rows.forEach(s=>{
+    s._cD=black76Delta(center,s.strike,T,s.callIV,true);
+    s._pD=black76Delta(center,s.strike,T,s.putIV,false);
+  });
+}
 function renderFutures(r){
   const box=document.getElementById("futuresBar"); if(!box) return;
   const hf=r.futures?.hsif?.front||{}, mf=r.futures?.mhif?.front||{};
@@ -272,7 +305,9 @@ function renderWalls(){
 function renderStrikeTable(){
   const box=document.getElementById("strikes"); if(!box||!currentReport) return;
   const r=currentReport, pack=activeMonth(r), center=settleOf(r);
-  let rows=[...(pack.strikes||[])].filter(s=>{
+  let rows=[...(pack.strikes||[])];
+  attachGreeks(rows, center, pack.label);
+  rows=rows.filter(s=>{
     const oi=(s.callOI||0)+(s.putOI||0), vol=(s.callVol||0)+(s.putVol||0);
     if(onlyActive && oi===0 && vol===0) return false;
     if(oi<minOI) return false;
@@ -280,13 +315,19 @@ function renderStrikeTable(){
     if(atmEnabled && center && Math.abs(s.strike-center)>atmRange) return false;
     return true;
   });
-  rows.sort((a,b)=>{
-    const pick=k=>({callOI:a.callOI||0,putOI:a.putOI||0,callVol:a.callVol||0,putVol:a.putVol||0,totalOI:(a.callOI||0)+(a.putOI||0),chg:Math.max(Math.abs(a.callChange||0),Math.abs(a.putChange||0)),strike:a.strike}[k]||0);
-    const pickb=k=>({callOI:b.callOI||0,putOI:b.putOI||0,callVol:b.callVol||0,putVol:b.putVol||0,totalOI:(b.callOI||0)+(b.putOI||0),chg:Math.max(Math.abs(b.callChange||0),Math.abs(b.putChange||0)),strike:b.strike}[k]||0);
-    const va=pick(sortKey), vb=pickb(sortKey);
-    return sortDir==="desc"? vb-va : va-vb;
-  });
-  box.innerHTML = `<div class="section"><div class="section-header"><h2>${pack.useNext?"下月":"即月"}行使價分佈 · ${pack.label}</h2><span class="tag">顯示 ${rows.length} / ${(pack.strikes||[]).length}</span></div>
+  const getter={
+    callOI:s=>s.callOI||0, putOI:s=>s.putOI||0, callVol:s=>s.callVol||0, putVol:s=>s.putVol||0,
+    callSettle:s=>s.callSettle||0, putSettle:s=>s.putSettle||0, callIV:s=>s.callIV||0, putIV:s=>s.putIV||0,
+    callDelta:s=>s._cD||0, putDelta:s=>s._pD||0, callChg:s=>s.callChange||0, putChg:s=>s.putChange||0,
+    totalOI:s=>(s.callOI||0)+(s.putOI||0),
+    chg:s=>Math.max(Math.abs(s.callChange||0),Math.abs(s.putChange||0)),
+    strike:s=>s.strike
+  };
+  const g=getter[sortKey]||getter.strike;
+  rows.sort((a,b)=> sortDir==="desc" ? g(b)-g(a) : g(a)-g(b));
+  const maxOI=Math.max(1, ...rows.map(x=>Math.max(x.callOI||0,x.putOI||0)));
+  const th=(key,label,align)=>`<th class="${align} sortable ${sortKey===key?"active":""}" onclick="setStrikeSort('${key}')">${label} ${arrow(sortKey,key,sortDir)}</th>`;
+  box.innerHTML = `<div class="section"><div class="section-header"><h2>${pack.useNext?"下月":"即月"}行使價分佈 · ${pack.label}</h2><span class="tag">顯示 ${rows.length} / ${(pack.strikes||[]).length} strikes</span></div>
     <div class="controls"><div><label>月份</label><select id="monthSelect" onchange="monthMode=this.value;render(currentDate);">
       <option value="auto" ${monthMode==="auto"?"selected":""}>自動（到期用下月）</option>
       <option value="front" ${monthMode==="front"?"selected":""}>即月 ${r.summary?.frontMonth||""}</option>
@@ -295,15 +336,30 @@ function renderStrikeTable(){
     <div><label>最低 OI</label><input type="number" id="minOI" value="${minOI}" min="0" step="50" onchange="onFilterChange()" /></div>
     <div><label>最低成交量</label><input type="number" id="minVol" value="${minVol}" min="0" step="10" onchange="onFilterChange()" /></div></div>
     <div class="table-wrap"><table><thead><tr>
-      <th class="tr" onclick="setStrikeSort('callOI')">Call OI</th><th class="tr" onclick="setStrikeSort('callVol')">Call成交</th>
-      <th class="tc" onclick="setStrikeSort('strike')">行使價</th>
-      <th class="tl" onclick="setStrikeSort('putOI')">Put OI</th><th class="tl" onclick="setStrikeSort('putVol')">Put成交</th>
+      ${th("callVol","Call成交","tr")}${th("callOI","Call OI","tr")}${th("callSettle","Call結算價","tr")}${th("callIV","Call IV","tr")}${th("callDelta","Call Δ","tr")}${th("callChg","Call ΔOI","tr")}
+      ${th("strike","行使價","tc")}
+      ${th("putChg","Put ΔOI","tl")}${th("putSettle","Put結算價","tl")}${th("putIV","Put IV","tl")}${th("putDelta","Put Δ","tl")}${th("putOI","Put OI","tl")}${th("putVol","Put成交","tl")}
     </tr></thead><tbody>
-      ${rows.length?rows.map(s=>`<tr onclick="onRowClick(this,event)">
-        <td class="tr mono">${fmt(s.callOI||0)}</td><td class="tr mono mu">${fmt(s.callVol||0)}</td>
-        <td class="tc mono" style="font-weight:500">${s.strike}</td>
-        <td class="tl mono">${fmt(s.putOI||0)}</td><td class="tl mono mu">${fmt(s.putVol||0)}</td>
-      </tr>`).join(""):'<tr><td colspan="5" class="mu" style="text-align:center;padding:20px;">沒有符合條件的行使價</td></tr>'}
+      ${rows.length?rows.map(s=>{
+        const cw=Math.round(((s.callOI||0)/maxOI)*88);
+        const pw=Math.round(((s.putOI||0)/maxOI)*88);
+        const near = center && Math.abs(s.strike-center)<=200;
+        return `<tr class="${near?"row-atm":""}" onclick="onRowClick(this,event)">
+          <td class="tr mono mu">${fmt(s.callVol||0)}</td>
+          <td class="tr mono bar-cell"><div class="bar bar-c" style="width:${cw}%"></div><span>${fmt(s.callOI||0)}</span></td>
+          <td class="tr mono mu">${s.callSettle?fmt(s.callSettle):"—"}</td>
+          <td class="tr mono mu">${fmtIV(s.callIV)}</td>
+          <td class="tr mono mu">${fmtDelta(s._cD)}</td>
+          <td class="tr mono ${chgClass(s.callChange)}">${fmtChg(s.callChange)}</td>
+          <td class="tc mono" style="font-weight:600">${s.strike}</td>
+          <td class="tl mono ${chgClass(s.putChange)}">${fmtChg(s.putChange)}</td>
+          <td class="tl mono mu">${s.putSettle?fmt(s.putSettle):"—"}</td>
+          <td class="tl mono mu">${fmtIV(s.putIV)}</td>
+          <td class="tl mono mu">${fmtDelta(s._pD)}</td>
+          <td class="tl mono bar-cell"><div class="bar bar-p" style="width:${pw}%"></div><span>${fmt(s.putOI||0)}</span></td>
+          <td class="tl mono mu">${fmt(s.putVol||0)}</td>
+        </tr>`;
+      }).join(""):'<tr><td colspan="13" class="mu" style="text-align:center;padding:20px;">沒有符合條件的行使價（試試降低最低 OI 或關閉近價）</td></tr>'}
     </tbody></table></div></div>`;
 }
 function renderTopVolume(){
