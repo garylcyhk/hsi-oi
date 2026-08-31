@@ -8,7 +8,8 @@
 <title>經濟日曆 · Exodus Trading Group</title>
 <style>
 :root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+*{box-sizing:border-box}html{font-size:14px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text)}
 header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
 .brand-lockup{display:flex;align-items:center;gap:12px}
 .brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block}
@@ -22,6 +23,9 @@ h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-we
 .menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
 .menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
 .menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-font{padding:6px 12px 10px}
+.menu-font label{display:block;font-size:.68rem;color:#71717a;margin-bottom:6px}
+.menu-font select{width:100%;background:#111113;border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 8px;font-size:.82rem}
 .wrap{padding:16px;max-width:980px;margin:0 auto}
 .note{color:var(--muted);font-size:.78rem;margin-bottom:12px;line-height:1.55}
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
@@ -60,6 +64,19 @@ footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
       <a href="../checklist/">開市清單 Checklist</a>
       <a href="../daily/">每日清單 Daily</a>
       <div class="menu-divider"></div>
+      <div class="menu-section">顯示</div>
+      <div class="menu-font" onclick="event.stopPropagation()">
+        <label for="calFontScale">字體大小 Font</label>
+        <select id="calFontScale" onchange="setCalFont(this.value)">
+          <option value="85">小 85%</option>
+          <option value="100">標準 100%</option>
+          <option value="115">中 115%</option>
+          <option value="130">大 130%</option>
+          <option value="150">更大 150%</option>
+          <option value="170">最大 170%</option>
+        </select>
+      </div>
+      <div class="menu-divider"></div>
       <button type="button" onclick="window.print()">列印 / PDF</button>
     </div>
   </div>
@@ -81,6 +98,27 @@ document.addEventListener("click", function(e){
   var m=document.getElementById("headerMenu");
   if(m && !m.contains(e.target)) m.classList.remove("open");
 });
+var CAL_FONT_LS="exodus_cal_font_v1";
+function applyCalFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
+  document.documentElement.style.fontSize=(n/100*14)+"px";
+  var sel=document.getElementById("calFontScale");
+  if(sel) sel.value=String(n);
+}
+function setCalFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
+  try{localStorage.setItem(CAL_FONT_LS,String(n));}catch(e){}
+  applyCalFont(n);
+}
+(function(){
+  var n=100;
+  try{n=parseInt(localStorage.getItem(CAL_FONT_LS)||"100",10)||100;}catch(e){}
+  applyCalFont(n);
+})();
 var D=window.FF_CAL||{};
 function rows(list){
   return (list||[]).map(function(e){
@@ -98,9 +136,9 @@ function table(title, list){
 }
 document.getElementById("status").textContent = (D.rangeLabel||"")+" \u00b7 時區 "+(D.tz||"HKT")+" \u00b7 更新 "+(D.asOf||"\u2014");
 document.getElementById("upcoming").innerHTML = table("本週前瞻", D.thisWeek);
-document.getElementById("review").innerHTML = table("上週回顧 8/26\u20138/31", D.lastWeek);
+document.getElementById("review").innerHTML = table("上週回顧", D.lastWeek);
 document.getElementById("links").innerHTML =
-  '<a href="'+(D.sourceRange||D.source)+'" target="_blank" rel="noopener">Forex Factory 8/26\u20138/31</a>'+
+  '<a href="'+(D.sourceRange||D.source)+'" target="_blank" rel="noopener">Forex Factory</a>'+
   '<a href="'+(D.source||"#")+'" target="_blank" rel="noopener">Forex Factory 今日</a>';
 </script>
 </body>
