@@ -209,6 +209,72 @@ function futuresRegime(stockBag){
   };
 }
 
+function binLabel(b){
+  if(!b) return "—";
+  return fmt(b.lo) + "–" + fmt(b.hi);
+}
+function nearHeavyLines(list, color){
+  return (list||[]).slice(0,2).map(b =>
+    `<div class="ln"><span style="color:${color}">${binLabel(b)}</span>`+
+    `<span>${fmt(b.fut)} 張 <span class="${clsN(b.chg)}">${fmtC(b.chg)}</span></span></div>`
+  ).join("") || `<div class="ln"><span>—</span></div>`;
+}
+function cbbcCard(){
+  const d = window.CBBC_HSI;
+  if(!d){
+    return `<a class="card" href="./cbbc/"><h2><span>恒指牛熊街貨</span><span class="go">詳情 →</span></h2>
+      <div class="bias na">無資料</div></a>`;
+  }
+  const tot = (d.bullFut||0)+(d.bearFut||0);
+  const bp = tot ? d.bullFut/tot : 0;
+  const ratio = d.bearFut ? (d.bullFut/d.bearFut) : null;
+  const spot = d.spot;
+  const nearPts = d.nearKoPts || 1000;
+  const bins = d.bins || [];
+  const nearBear = bins
+    .filter(b => b.side==="bear" && spot!=null && b.lo>=spot && b.lo<=spot+nearPts)
+    .sort((a,c)=>c.fut-a.fut);
+  const nearBull = bins
+    .filter(b => b.side==="bull" && spot!=null && b.hi<=spot && b.hi>=spot-nearPts)
+    .sort((a,c)=>c.fut-a.fut);
+  const nkBull = d.nearKoBull!=null ? d.nearKoBull : nearBull.reduce((a,b)=>a+(b.fut||0),0);
+  const nkBear = d.nearKoBear!=null ? d.nearKoBear : nearBear.reduce((a,b)=>a+(b.fut||0),0);
+  const nk = nkBull+nkBear;
+  const nkRatio = nkBear ? (nkBull/nkBear) : null;
+  const nkBp = nk ? nkBull/nk : 0;
+  let label="牛熊接近", cls="mid";
+  if(bp>=0.58){ label="牛證佔優"; cls="sup"; }
+  else if(bp<=0.42){ label="熊證佔優"; cls="res"; }
+  let nearNote = "近價牛熊接近";
+  if(nk>=1){
+    if(nkBp>=0.55) nearNote = "近收回偏牛";
+    else if(nkBp<=0.45) nearNote = "近收回偏熊";
+  }
+  const bullW = Math.max(2, Math.round(bp*100));
+  const bearW = Math.max(2, 100-bullW);
+  return `<a class="card" href="./cbbc/">
+    <h2><span>恒指牛熊街貨</span><span class="go">詳情 →</span></h2>
+    <div class="bias ${cls}">${label}</div>
+    <div class="meta">全市場 ${fmt(d.bullFut)} 牛 / ${fmt(d.bearFut)} 熊 · ${(d.bullPct!=null?d.bullPct:bp*100).toFixed(1)}% / ${(d.bearPct!=null?d.bearPct:(1-bp)*100).toFixed(1)}%</div>
+    <div class="cbbc-ratio" aria-hidden="true"><i class="b" style="width:${bullW}%"></i><i class="r" style="width:${bearW}%"></i></div>
+    <div class="kpi">
+      <div class="item"><div class="l">現價</div><div class="v">${spot!=null?fmt(Math.round(spot)):"—"}</div></div>
+      <div class="item"><div class="l">牛／熊比</div><div class="v">${ratio!=null?ratio.toFixed(2)+"x":"—"}</div></div>
+      <div class="item"><div class="l">近收回 ±${fmt(nearPts)}</div><div class="v">${nearNote}</div></div>
+      <div class="item"><div class="l">近價牛／熊</div><div class="v">${nkRatio!=null?nkRatio.toFixed(2)+"x":"—"}</div></div>
+      <div class="item"><div class="l">近收回牛</div><div class="v">${fmt(nkBull)}</div></div>
+      <div class="item"><div class="l">近收回熊</div><div class="v">${fmt(nkBear)}</div></div>
+    </div>
+    <div class="top3">
+      <div class="lbl">近價重貨區 · 熊證（現價之上）</div>
+      ${nearHeavyLines(nearBear, "#fb7185")}
+      <div class="lbl">近價重貨區 · 牛證（現價之下）</div>
+      ${nearHeavyLines(nearBull, "#34d399")}
+    </div>
+    <div class="row" style="margin-top:8px"><span class="k">街貨日期</span><span>${d.asOf||"—"} · 圖表 ${d.published||""}</span></div>
+  </a>`;
+}
+
 function render(){
   const hsiBag = window.HSI_REPORTS || {};
   const miniBag = window.MINI_HSI_REPORTS || {};
@@ -304,6 +370,7 @@ function render(){
       </div>
       <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
     </a></div>
+    <div id="cardCbbc">${cbbcCard()}</div>
   `;
   applyHomeSettings();
 }
@@ -316,6 +383,7 @@ let homeSettings = {
   showMini: true,
   showStock: true,
   showFut: true,
+  showCbbc: true,
   showCons: true,
   showTodo: true
 };
@@ -332,6 +400,7 @@ function applyHomeSettings(){
     cardMini: homeSettings.showMini,
     cardStock: homeSettings.showStock,
     cardFut: homeSettings.showFut,
+    cardCbbc: homeSettings.showCbbc,
     consLine: homeSettings.showCons
   };
   Object.keys(map).forEach(id => {
@@ -351,6 +420,8 @@ function openSettings(){
   document.getElementById("setShowMini").checked = homeSettings.showMini !== false;
   document.getElementById("setShowStock").checked = homeSettings.showStock !== false;
   document.getElementById("setShowFut").checked = homeSettings.showFut !== false;
+  const scb = document.getElementById("setShowCbbc");
+  if(scb) scb.checked = homeSettings.showCbbc !== false;
   document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
   const sc = document.getElementById("setShowTodo");
   if(sc) sc.checked = homeSettings.showTodo !== false;
@@ -367,6 +438,8 @@ function saveSettings(){
   homeSettings.showMini = document.getElementById("setShowMini").checked;
   homeSettings.showStock = document.getElementById("setShowStock").checked;
   homeSettings.showFut = document.getElementById("setShowFut").checked;
+  const scb2 = document.getElementById("setShowCbbc");
+  if(scb2) homeSettings.showCbbc = scb2.checked;
   homeSettings.showCons = document.getElementById("setShowCons").checked;
   const sc2 = document.getElementById("setShowTodo");
   if(sc2) homeSettings.showTodo = sc2.checked;
