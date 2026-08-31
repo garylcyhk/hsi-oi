@@ -151,3 +151,233 @@ function optionsCard(title, href, r, date, extraNote){
     <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${date||"—"}</span></div>
   </a>`;
 }
+
+function futuresRegime(stockBag){
+  const bag = stockBag || {};
+  const allKeys = Object.keys(bag).sort();
+  const keysDesc = allKeys.slice().reverse().slice(0, 20);
+  if(allKeys.length < 2) return { label:"—", cls:"na", note:"數據不足", streakText:"—", detail:{} };
+
+  let up=0, down=0;
+  const regimes = { "新多":0, "新空":0, "回補":0, "平多":0, "其他":0 };
+  for(let i=0;i<keysDesc.length-1;i++){
+    const a = bag[keysDesc[i]]?.futures?.hsif?.front;
+    const b = bag[keysDesc[i+1]]?.futures?.hsif?.front;
+    if(!a||!b||a.settle==null||b.settle==null) continue;
+    const dp = a.settle - b.settle;
+    const doi = (a.oi||0) - (b.oi||0);
+    if(dp>0) up++; else if(dp<0) down++;
+    if(dp>0 && doi>0) regimes["新多"]++;
+    else if(dp<0 && doi>0) regimes["新空"]++;
+    else if(dp>0 && doi<0) regimes["回補"]++;
+    else if(dp<0 && doi<0) regimes["平多"]++;
+    else regimes["其他"]++;
+  }
+
+  let streak = 0;
+  let streakDir = 0;
+  for(let i=allKeys.length-1; i>=1; i--){
+    const a = bag[allKeys[i]]?.futures?.hsif?.front;
+    const b = bag[allKeys[i-1]]?.futures?.hsif?.front;
+    if(!a||!b||a.settle==null||b.settle==null) break;
+    const dp = a.settle - b.settle;
+    if(dp===0) break;
+    const dir = dp>0 ? 1 : -1;
+    if(streak===0){ streakDir = dir; streak = 1; }
+    else if(dir===streakDir) streak++;
+    else break;
+  }
+  let streakText = "—";
+  let streakCls = "far";
+  if(streak>0 && streakDir>0){ streakText = `連升 ${streak} 日`; streakCls = "sup"; }
+  else if(streak>0 && streakDir<0){ streakText = `連跌 ${streak} 日`; streakCls = "res"; }
+
+  const front = bag[allKeys[allKeys.length-1]]?.futures?.hsif?.front || {};
+  const mhi = bag[allKeys[allKeys.length-1]]?.futures?.mhif?.front || {};
+  const topReg = Object.entries(regimes).filter(x=>x[0]!=="其他").sort((a,b)=>b[1]-a[1])[0] || ["—",0];
+  let cls = "far";
+  if(topReg[0]==="新多"||topReg[0]==="回補") cls="sup";
+  if(topReg[0]==="新空"||topReg[0]==="平多") cls="res";
+  return {
+    label: topReg[0],
+    cls,
+    up, down, days: keysDesc.length,
+    front, mhi,
+    regimes,
+    streak, streakDir, streakText, streakCls,
+    note: `近${keysDesc.length}日 漲${up} 跌${down}`
+  };
+}
+
+function render(){
+  const hsiBag = window.HSI_REPORTS || {};
+  const miniBag = window.MINI_HSI_REPORTS || {};
+  const stockBag = window.STOCK_OI || {};
+  const dH = latestKey(hsiBag);
+  const dM = latestKey(miniBag);
+  const dS = latestKey(stockBag);
+  const rH = dH ? hsiBag[dH] : null;
+  const rM = dM ? miniBag[dM] : null;
+  const rS = dS ? stockBag[dS] : null;
+
+  document.getElementById("status").textContent =
+    `最新數據 · HSI ${dH||"—"} · Mini ${dM||"—"} · Stocks/Futures ${dS||"—"} · 點卡片進入詳情`;
+
+  const bH = hsiBias(rH);
+  const bM = hsiBias(rM);
+  let consText = "資料不足，無法比較 HSI / Mini 牆位";
+  let consCls = "na";
+  if(bH.label!=="—" && bM.label!=="—" && bH.label!=="無資料" && bM.label!=="無資料"){
+    if(bH.cls===bM.cls || bH.label===bM.label){
+      consText = "HSI ↔ Mini 牆位判斷一致 · " + bH.label;
+      consCls = "agree";
+    } else {
+      consText = "HSI ↔ Mini 牆位判斷分歧 · HSI「"+bH.label+"」vs Mini「"+bM.label+"」";
+      consCls = "diverge";
+    }
+  }
+
+  let stockRows = "";
+  let nRes=0, nSup=0, nMid=0, nFar=0;
+  if(rS && rS.underlyings){
+    stockRows = STOCK_ORDER.map(h=>{
+      const u = rS.underlyings[h];
+      if(!u) return "";
+      const b = stockBias(u);
+      if(b.cls==="res") nRes++; else if(b.cls==="sup") nSup++; else if(b.cls==="mid") nMid++; else nFar++;
+      const code = String(u.code||"").replace(/^0+/,"")||u.code;
+      const pc = u.callOI ? (u.putOI/u.callOI) : null;
+      const callW = (u.callWalls||[])[0];
+      const putW = (u.putWalls||[])[0];
+      return `<tr>
+        <td><strong>${code}</strong></td>
+        <td class="tr">${u.close!=null?u.close.toFixed(2):"—"}</td>
+        <td class="tr">${callW?callW.strike:"—"}</td>
+        <td class="tr">${putW?putW.strike:"—"}</td>
+        <td class="tr">${pc!=null?pc.toFixed(2):"—"}</td>
+        <td><span class="tag ${b.cls}">${b.label}</span></td>
+      </tr>`;
+    }).join("");
+  }
+
+  const fr = futuresRegime(stockBag);
+  const f = fr.front || {};
+  const m = fr.mhi || {};
+
+  const regLine = fr.regimes
+    ? Object.entries(fr.regimes).filter(([k,v])=>k!=="其他"&&v>0).map(([k,v])=>`${k} ${v}`).join(" · ")
+    : "";
+
+  document.getElementById("grid").innerHTML = `
+    <div id="cardHsi">${optionsCard("恒指期權 HSI", "./options/#hsi", rH, dH, "")}</div>
+    <div id="cardMini">${optionsCard("小型恒指 Mini-HSI", "./options/#mini", rM, dM, "")}</div>
+    <div id="consLine" class="cons-banner ${consCls}"><span class="cons-title">一致 / 分歧</span>${consText}</div>
+    <div id="cardStock"><a class="card" href="./stock-oi/">
+      <h2><span>股票期權籃子</span><span class="go">詳情 →</span></h2>
+      <div class="meta" style="margin-bottom:6px">
+        阻力 ${nRes} · 支持 ${nSup} · 夾中 ${nMid} · 牆遠 ${nFar}
+      </div>
+      <div class="stocks">
+        <table>
+          <thead><tr>
+            <th>股票</th><th class="tr">收市</th>
+            <th class="tr">Call牆</th><th class="tr">Put牆</th>
+            <th class="tr">P/C</th><th>偏向</th>
+          </tr></thead>
+          <tbody>${stockRows||'<tr><td colspan="6">無資料</td></tr>'}</tbody>
+        </table>
+      </div>
+      <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
+    </a></div>
+    <div id="cardFut"><a class="card" href="./futures/">
+      <h2><span>期貨 HSI / MHI</span><span class="go">詳情 →</span></h2>
+      <div class="bias ${fr.cls}">${fr.label}</div>
+      <div class="bias ${fr.streakCls||"far"}" style="font-size:1rem;margin-top:2px">${fr.streakText||"—"}</div>
+      <div class="meta">${fr.note||""}${regLine?" · "+regLine:""}</div>
+      <div class="kpi">
+        <div class="item"><div class="l">HSI Settle</div><div class="v">${f.settle!=null?fmt(f.settle):"—"} <span class="${clsN(f.settleChange)}">${fmtC(f.settleChange)}</span></div></div>
+        <div class="item"><div class="l">HSI OI</div><div class="v">${fmt(f.oi)} <span class="${clsN(f.oiChange)}">${fmtC(f.oiChange)}</span></div></div>
+        <div class="item"><div class="l">HSI 成交</div><div class="v">${fmt(f.volume)}</div></div>
+        <div class="item"><div class="l">月份</div><div class="v">${f.month||"—"}</div></div>
+        <div class="item"><div class="l">MHI Settle</div><div class="v">${m.settle!=null?fmt(m.settle):"—"} <span class="${clsN(m.settleChange)}">${fmtC(m.settleChange)}</span></div></div>
+        <div class="item"><div class="l">MHI OI</div><div class="v">${fmt(m.oi)} <span class="${clsN(m.oiChange)}">${fmtC(m.oiChange)}</span></div></div>
+      </div>
+      <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
+    </a></div>
+  `;
+  applyHomeSettings();
+}
+
+const HOME_LS = "exodus_home_settings_v1";
+let homeSettings = {
+  fontScale: 100,
+  compact: false,
+  showHsi: true,
+  showMini: true,
+  showStock: true,
+  showFut: true,
+  showCons: true,
+  showTodo: true
+};
+try {
+  const s = JSON.parse(localStorage.getItem(HOME_LS)||"null");
+  if(s) homeSettings = Object.assign(homeSettings, s);
+} catch(e){}
+
+function applyHomeSettings(){
+  document.documentElement.style.fontSize = (homeSettings.fontScale/100*14) + "px";
+  document.body.classList.toggle("compact", !!homeSettings.compact);
+  const map = {
+    cardHsi: homeSettings.showHsi,
+    cardMini: homeSettings.showMini,
+    cardStock: homeSettings.showStock,
+    cardFut: homeSettings.showFut,
+    consLine: homeSettings.showCons
+  };
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = map[id] ? "" : "none";
+  });
+  const td = document.getElementById("todoBlock");
+  if(td) td.style.display = homeSettings.showTodo === false ? "none" : "";
+}
+
+function openSettings(){
+  const m = document.getElementById("settingsModal");
+  if(!m) return;
+  document.getElementById("setFontScale").value = String(homeSettings.fontScale||100);
+  document.getElementById("setCompact").checked = !!homeSettings.compact;
+  document.getElementById("setShowHsi").checked = homeSettings.showHsi !== false;
+  document.getElementById("setShowMini").checked = homeSettings.showMini !== false;
+  document.getElementById("setShowStock").checked = homeSettings.showStock !== false;
+  document.getElementById("setShowFut").checked = homeSettings.showFut !== false;
+  document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
+  const sc = document.getElementById("setShowTodo");
+  if(sc) sc.checked = homeSettings.showTodo !== false;
+  m.classList.add("open");
+}
+function closeSettings(){
+  const m = document.getElementById("settingsModal");
+  if(m) m.classList.remove("open");
+}
+function saveSettings(){
+  homeSettings.fontScale = parseInt(document.getElementById("setFontScale").value,10)||100;
+  homeSettings.compact = document.getElementById("setCompact").checked;
+  homeSettings.showHsi = document.getElementById("setShowHsi").checked;
+  homeSettings.showMini = document.getElementById("setShowMini").checked;
+  homeSettings.showStock = document.getElementById("setShowStock").checked;
+  homeSettings.showFut = document.getElementById("setShowFut").checked;
+  homeSettings.showCons = document.getElementById("setShowCons").checked;
+  const sc2 = document.getElementById("setShowTodo");
+  if(sc2) homeSettings.showTodo = sc2.checked;
+  try { localStorage.setItem(HOME_LS, JSON.stringify(homeSettings)); } catch(e){}
+  applyHomeSettings();
+  closeSettings();
+}
+function closeHeaderMenu(){
+  const m = document.getElementById("headerMenu");
+  if(m) m.classList.remove("open");
+}
+
+render();
+applyHomeSettings();
