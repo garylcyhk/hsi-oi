@@ -20,22 +20,16 @@ h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-we
 .menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:50}
 .header-menu.open .menu-dropdown{display:block}
 .menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left;box-sizing:border-box}
-.menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}
-.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
-.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
-.menu-divider{height:1px;background:#27272a;margin:6px 4px}
 .container{width:100%;max-width:100%;padding:16px}
 .note{color:var(--muted);font-size:.78rem;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;text-decoration:none;color:inherit;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;align-items:stretch}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;text-decoration:none;color:inherit;display:block;min-width:0}
 .card h2{margin:0 0 8px;font-size:.8rem;font-weight:500;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
 .card h2 .go{color:var(--emerald);font-size:.72rem}
 .bias{font-size:1.15rem;font-weight:600;margin-bottom:6px}
 .bias.res{color:var(--rose)}.bias.sup{color:var(--emerald)}.bias.mid{color:var(--amber)}.bias.far,.bias.na{color:var(--muted)}
 .meta{font-size:.78rem;color:var(--muted);line-height:1.5;font-family:ui-monospace,monospace}
 .row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:.8rem}.row .k{color:var(--muted)}
-.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;background:rgba(161,161,170,.12);color:var(--muted)}
-.pos{color:var(--emerald)}.neg{color:var(--rose)}
 .top3{margin-top:8px;padding-top:8px;border-top:1px solid #1f1f23}
 .top3 .lbl{font-size:.68rem;color:var(--muted);margin:6px 0 2px}
 .top3 .ln{font-size:.75rem;font-family:ui-monospace,monospace;padding:1px 0;display:flex;justify-content:space-between;gap:8px}
@@ -43,25 +37,14 @@ h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-we
 .cbbc-ratio{height:8px;border-radius:999px;overflow:hidden;display:flex;background:#1f1f23;margin:8px 0 2px}
 .cbbc-ratio .b{background:var(--emerald);display:block;height:100%}.cbbc-ratio .r{background:var(--rose);display:block;height:100%}
 .stocks table{width:100%;border-collapse:collapse;font-size:.78rem}
-.stocks th{text-align:left;color:var(--muted);font-weight:500;padding:4px 6px;font-size:.68rem}
-.stocks td{padding:5px 6px;border-top:1px solid #1f1f23;font-family:ui-monospace,monospace}.stocks .tr{text-align:right}
-footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.75rem}
+#consLine,.cons-banner{grid-column:1/-1}
+#grid{display:contents}
+#homeGrid>.card{min-width:0}
+.todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
 .modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:380px}
-.modal h3{margin:0 0 14px;font-size:1rem}
 .modal-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:.85rem}
-.modal-row label{color:var(--muted)}
-.modal-row select,.modal-row input[type=checkbox]{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-.modal-actions button{border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
-.modal-actions button.primary{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.35);color:#34d399}
-#consLine{grid-column:1/-1}
-.cons-banner{grid-column:1/-1;border-radius:8px;padding:10px 14px;font-size:.85rem;border:1px solid #27272a;background:#121214;font-family:ui-monospace,monospace}
-.todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
-.todo-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
-.todo-btns button{border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
-#cardCalFixed{margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -113,23 +96,25 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
 </div>
 <div class="container">
   <div class="note" id="status">載入中…</div>
-  <a class="card" id="cardCalFixed" href="./calendar/">
-    <h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2>
-    <div class="bias mid" id="calHead">本週重點</div>
-    <div class="meta" id="calMeta">9/1 ISM · 9/4 非農 55K / 失業率 4.1%</div>
-    <div class="top3" id="calList">
-      <div class="lbl">今日 / 本週</div>
-      <div class="ln"><span>09-01 22:00 USD ISM Manufacturing PMI</span><span>預測 55.2</span></div>
-      <div class="ln"><span>09-04 20:30 USD Non-Farm Employment Change</span><span>預測 55K</span></div>
-      <div class="ln"><span>09-04 20:30 USD Unemployment Rate</span><span>預測 4.1%</span></div>
-    </div>
-  </a>
-  <div class="grid" id="grid"></div>
+  <div class="grid" id="homeGrid">
+    <a class="card" id="cardCalFixed" href="./calendar/">
+      <h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2>
+      <div class="bias mid">本週重點</div>
+      <div class="meta">9/1 ISM · 9/4 非農 55K / 失業率 4.1%</div>
+      <div class="top3">
+        <div class="lbl">今日 / 本週</div>
+        <div class="ln"><span>09-01 22:00 USD ISM Manufacturing PMI</span><span>預測 55.2</span></div>
+        <div class="ln"><span>09-04 20:30 USD Non-Farm Employment Change</span><span>預測 55K</span></div>
+        <div class="ln"><span>09-04 20:30 USD Unemployment Rate</span><span>預測 4.1%</span></div>
+      </div>
+    </a>
+    <div id="grid"></div>
+  </div>
 </div>
 <div class="container" id="todoBlock" style="padding-top:0">
   <div class="todo-wrap" id="todoWrap">
     <div class="todo-head">
-      <h2>待辦 To-do <span class="ver">可加、改、拖曳 · 本機儲存</span></h2>
+      <h2>待辦 To-do</h2>
       <div class="todo-btns">
         <button type="button" id="todoEditBtn" onclick="todoToggleEdit()">編輯 Edit</button>
         <button type="button" onclick="todoAddSection()">＋ 新區塊</button>
@@ -139,14 +124,9 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
       </div>
     </div>
     <div id="todoSecs"></div>
-    <div class="todo-hint">編輯模式下可改文字、加項、刪項、拖曳排序。開市清單仍在 ☰ → Checklist。</div>
-    <div class="todo-msg" id="todoMsg"></div>
   </div>
 </div>
-<footer>
-  <p>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</p>
-  <p style="margin-top:6px">Source: HKEX Daily Market Report</p>
-</footer>
+<footer><p>Exodus Trading Group · 數據僅供參考</p></footer>
 <script src="data.js"></script>
 <script src="data-mini.js"></script>
 <script src="stock-oi/data.js"></script>
