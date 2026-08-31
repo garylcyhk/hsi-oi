@@ -2,7 +2,6 @@
 <html lang="zh-HK">
 <head>
 <script src="auth.js"></script>
-
 <link rel="icon" type="image/png" href="favicon.png" />
 <link rel="apple-touch-icon" href="favicon.png" />
 <meta charset="UTF-8" />
@@ -71,9 +70,7 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
   display: flex; justify-content: space-between; align-items: center;
 }
 .card h2 .go { color: var(--emerald); font-size: .72rem; }
-.bias {
-  font-size: 1.15rem; font-weight: 600; margin-bottom: 6px;
-}
+.bias { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
 .bias.res { color: var(--rose); }
 .bias.sup { color: var(--emerald); }
 .bias.mid { color: var(--amber); }
@@ -97,136 +94,60 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
 .kpi .item { font-size: .75rem; }
 .kpi .item .v { font-family: ui-monospace, monospace; font-weight: 600; }
 .kpi .item .l { color: var(--muted); font-size: .68rem; }
-.card h2 { margin-bottom: 8px; }
-
 .stocks { margin-top: 8px; }
 .stocks table { width: 100%; border-collapse: collapse; font-size: .78rem; }
 .stocks th { text-align: left; color: var(--muted); font-weight: 500; padding: 4px 6px; font-size: .68rem; }
 .stocks td { padding: 5px 6px; border-top: 1px solid #1f1f23; font-family: ui-monospace, monospace; }
 .stocks .tr { text-align: right; }
-footer {
-  margin-top: 28px; padding: 16px; text-align: center; color: #52525b; font-size: .75rem;
-}
+footer { margin-top: 28px; padding: 16px; text-align: center; color: #52525b; font-size: .75rem; }
 footer a { color: var(--muted); }
-@media (max-width: 768px) {
-  .brand-logo-link img { height: 32px; }
-  h1 { font-size: .95rem; }
-}
-
-.modal-overlay{
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,.55);
-  z-index:100; align-items:center; justify-content:center; padding:16px;
-}
-.modal-overlay.open{ display:flex; }
-.modal{
-  background:#18181b; border:1px solid #27272a; border-radius:12px;
-  padding:18px 20px; width:100%; max-width:380px;
-  box-shadow:0 20px 50px rgba(0,0,0,.5);
-}
-.modal h3{ margin:0 0 14px; font-size:1rem; font-weight:600; }
-.modal-row{
-  display:flex; justify-content:space-between; align-items:center;
-  gap:12px; margin-bottom:12px; font-size:.85rem;
-}
-.modal-row label{ color:var(--muted); flex-shrink:0; }
-.modal-row select, .modal-row input[type="checkbox"]{
-  background:#0f0f12; border:1px solid #27272a; color:var(--text);
-  border-radius:6px; padding:6px 8px; font-size:.82rem;
-}
-.modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
-.modal-actions button{
-  border-radius:8px; padding:7px 14px; font-size:.82rem; cursor:pointer;
-  border:1px solid #27272a; background:#27272a; color:var(--text);
-}
-.modal-actions button.primary{
-  background:rgba(52,211,153,.15); border-color:rgba(52,211,153,.35); color:#34d399;
-}
-body.compact .card{ padding:10px 12px; }
-body.compact .grid{ gap:10px; }
-body.compact .item .v{ font-size:.95rem; }
-
-#grid > #cardHsi, #grid > #cardMini, #grid > #cardStock, #grid > #cardFut {
-  display: flex; flex-direction: column; min-width: 0;
-}
-#grid > #cardHsi > .card, #grid > #cardMini > .card,
-#grid > #cardStock > .card, #grid > #cardFut > .card,
-#grid > #cardHsi > a.card, #grid > #cardMini > a.card,
-#grid > #cardStock > a.card, #grid > #cardFut > a.card {
-  flex: 1; height: 100%;
-}
+@media (max-width: 768px) { .brand-logo-link img { height: 32px; } h1 { font-size: .95rem; } }
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:380px;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.modal h3{margin:0 0 14px;font-size:1rem;font-weight:600;}
+.modal-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:.85rem;}
+.modal-row label{color:var(--muted);flex-shrink:0;}
+.modal-row select, .modal-row input[type="checkbox"]{background:#0f0f12;border:1px solid #27272a;color:var(--text);border-radius:6px;padding:6px 8px;font-size:.82rem;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+.modal-actions button{border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text);}
+.modal-actions button.primary{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.35);color:#34d399;}
+body.compact .card{padding:10px 12px;}body.compact .grid{gap:10px;}
+#grid > #cardHsi, #grid > #cardMini, #grid > #cardStock, #grid > #cardFut {display:flex;flex-direction:column;min-width:0;}
+#grid > #cardHsi > .card, #grid > #cardMini > .card, #grid > #cardStock > .card, #grid > #cardFut > .card,
+#grid > #cardHsi > a.card, #grid > #cardMini > a.card, #grid > #cardStock > a.card, #grid > #cardFut > a.card {flex:1;height:100%;}
 #consLine { grid-column: 1 / -1; }
-
-.cons-banner{
-  grid-column:1/-1;
-  border-radius:8px;
-  padding:10px 14px;
-  font-size:.85rem;
-  border:1px solid #27272a;
-  background:#121214;
-  font-family:ui-monospace,monospace;
-}
-.cons-banner.agree{
-  border-color:rgba(52,211,153,.35);
-  background:rgba(52,211,153,.08);
-  color:#34d399;
-}
-.cons-banner.diverge{
-  border-color:rgba(251,191,36,.35);
-  background:rgba(251,191,36,.08);
-  color:#fbbf24;
-}
-.cons-banner.na{ color:#a1a1aa; }
-.cons-banner .cons-title{ font-weight:600; margin-right:8px; }
-
-.todo-wrap{
-  margin:16px 0 0; background:var(--card); border:1px solid var(--border);
-  border-radius:12px; padding:14px 16px;
-}
+.cons-banner{grid-column:1/-1;border-radius:8px;padding:10px 14px;font-size:.85rem;border:1px solid #27272a;background:#121214;font-family:ui-monospace,monospace;}
+.cons-banner.agree{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#34d399;}
+.cons-banner.diverge{border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08);color:#fbbf24;}
+.cons-banner.na{color:#a1a1aa;}
+.cons-banner .cons-title{font-weight:600;margin-right:8px;}
+.todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
 .todo-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
 .todo-head h2{margin:0;font-size:.95rem;font-weight:600;flex:1}
 .todo-head .ver{color:var(--muted);font-size:.72rem;font-weight:400;margin-left:8px}
 .todo-btns{display:flex;flex-wrap:wrap;gap:6px}
-.todo-btns button,.todo-sec-head button{
-  border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;
-  border:1px solid #27272a;background:#27272a;color:var(--text)
-}
-.todo-btns button.primary{
-  background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:#34d399
-}
+.todo-btns button,.todo-sec-head button{border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
+.todo-btns button.primary{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:#34d399}
 .todo-btns button.danger{color:#fb7185;border-color:rgba(251,113,133,.3)}
 .todo-sec{background:#121214;border:1px solid #1f1f23;border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.todo-sec.dragging{opacity:.45}
 .todo-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.todo-sec-head .grip,.todo-item .grip{cursor:grab;color:#52525b;padding:2px 4px;user-select:none}
-.todo-sec-head input.title{
-  flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);
-  font-weight:600;font-size:.82rem;padding:4px 6px;border-radius:6px
-}
+.todo-sec-head input.title{flex:1;background:transparent;border:1px dashed transparent;color:var(--emerald);font-weight:600;font-size:.82rem;padding:4px 6px;border-radius:6px}
 .todo-item{display:flex;align-items:flex-start;gap:6px;padding:4px 0}
 .todo-item.done input.txt{color:var(--muted);text-decoration:line-through}
 .todo-item input[type=checkbox]{margin-top:5px;accent-color:#34d399}
-.todo-item input.txt{
-  flex:1;background:transparent;border:1px dashed transparent;color:var(--text);
-  font-size:.82rem;padding:4px 6px;border-radius:6px
-}
+.todo-item input.txt{flex:1;background:transparent;border:1px dashed transparent;color:var(--text);font-size:.82rem;padding:4px 6px;border-radius:6px}
 body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{border-color:#27272a}
-.todo-item button.x,.todo-sec-head button.x{
-  border:none;background:transparent;color:#52525b;cursor:pointer;font-size:.9rem;padding:2px 6px
-}
-.todo-item button.x:hover,.todo-sec-head button.x:hover{color:#fb7185}
+.todo-item button.x,.todo-sec-head button.x{border:none;background:transparent;color:#52525b;cursor:pointer;font-size:.9rem;padding:2px 6px}
 .todo-hint{font-size:.72rem;color:#71717a;margin-top:4px}
 .todo-msg{font-size:.72rem;color:#34d399;min-height:1em}
-
-.tab-dragging{ opacity:.45; }
-.tab-bar button, .csv-subtabs button, .stock-tabs button, .fut-tabs button { cursor:grab; }
+.tab-dragging{opacity:.45;}
 </style>
 </head>
 <body>
 <header>
   <div class="brand-lockup">
-    <a href="./" class="brand-logo-link" title="總覽">
-      <img src="exodus-logo.jpg" alt="Exodus Trading Group" />
-    </a>
+    <a href="./" class="brand-logo-link" title="總覽"><img src="exodus-logo.jpg" alt="Exodus Trading Group" /></a>
     <h1>總覽 <span>Exodus Trading Group</span></h1>
   </div>
   <div class="header-menu" id="headerMenu">
@@ -239,6 +160,7 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
       <div class="menu-section">頁面</div>
       <a href="./" class="menu-active">總覽 Home</a>
       <a href="./options/">恒指期權 HSI OI</a>
+      <a href="./cbbc/">牛熊街貨 CBBC</a>
       <a href="./stock-oi/">股票期權 Stocks</a>
       <a href="./futures/">期貨 Futures</a>
       <a href="./analysis/">交易表現 Analysis</a>
@@ -250,60 +172,28 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
     </div>
   </div>
 </header>
-
 <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
   <div class="modal">
     <h3>總覽設定 · Home Settings</h3>
-    <div class="modal-row">
-      <label>字體大小 Font</label>
-      <select id="setFontScale">
-        <option value="85">小 85%</option>
-        <option value="100">標準 100%</option>
-        <option value="115">中 115%</option>
-        <option value="130">大 130%</option>
-        <option value="150">更大 150%</option>
-      </select>
-    </div>
-    <div class="modal-row">
-      <label>緊湊模式 Compact</label>
-      <input type="checkbox" id="setCompact" />
-    </div>
-    <div class="modal-row">
-      <label>顯示 HSI 期權卡</label>
-      <input type="checkbox" id="setShowHsi" checked />
-    </div>
-    <div class="modal-row">
-      <label>顯示 Mini-HSI 卡</label>
-      <input type="checkbox" id="setShowMini" checked />
-    </div>
-    <div class="modal-row">
-      <label>顯示股票期權卡</label>
-      <input type="checkbox" id="setShowStock" checked />
-    </div>
-    <div class="modal-row">
-      <label>顯示期貨卡</label>
-      <input type="checkbox" id="setShowFut" checked />
-    </div>
-    <div class="modal-row">
-      <label>顯示一致/分歧 · HSI↔Mini</label>
-      <input type="checkbox" id="setShowCons" checked />
-    </div>
-    <div class="modal-row">
-      <label>顯示待辦 To-do</label>
-      <input type="checkbox" id="setShowTodo" checked />
-    </div>
+    <div class="modal-row"><label>字體大小 Font</label>
+      <select id="setFontScale"><option value="85">小 85%</option><option value="100">標準 100%</option><option value="115">中 115%</option><option value="130">大 130%</option><option value="150">更大 150%</option></select></div>
+    <div class="modal-row"><label>緊凑模式 Compact</label><input type="checkbox" id="setCompact" /></div>
+    <div class="modal-row"><label>顯示 HSI 期權卡</label><input type="checkbox" id="setShowHsi" checked /></div>
+    <div class="modal-row"><label>顯示 Mini-HSI 卡</label><input type="checkbox" id="setShowMini" checked /></div>
+    <div class="modal-row"><label>顯示股票期權卡</label><input type="checkbox" id="setShowStock" checked /></div>
+    <div class="modal-row"><label>顯示期貨卡</label><input type="checkbox" id="setShowFut" checked /></div>
+    <div class="modal-row"><label>顯示一致/分歧 · HSI↔Mini</label><input type="checkbox" id="setShowCons" checked /></div>
+    <div class="modal-row"><label>顯示待辦 To-do</label><input type="checkbox" id="setShowTodo" checked /></div>
     <div class="modal-actions">
       <button type="button" onclick="closeSettings()">取消</button>
       <button type="button" class="primary" onclick="saveSettings()">儲存</button>
     </div>
   </div>
 </div>
-
 <div class="container">
   <div class="note" id="status">載入中…</div>
   <div class="grid" id="grid"></div>
 </div>
-
 <div class="container" id="todoBlock" style="padding-top:0">
   <div class="todo-wrap" id="todoWrap">
     <div class="todo-head">
@@ -321,15 +211,14 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
     <div class="todo-msg" id="todoMsg"></div>
   </div>
 </div>
-
 <footer>
   <p>Exodus Trading Group · 數據僅供參考 · 不構成投資建議</p>
   <p style="margin-top:6px">Source: HKEX Daily Market Report</p>
 </footer>
-
 <script src="data.js"></script>
 <script src="data-mini.js"></script>
 <script src="stock-oi/data.js"></script>
+<script src="cbbc/data.js"></script>
 <script src="home-dash.js"></script>
 <script src="home-todo.js"></script>
 <script src="tab-order.js"></script>
