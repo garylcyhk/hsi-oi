@@ -94,6 +94,7 @@ footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
           <option value="115">中 115%</option>
           <option value="130">大 130%</option>
           <option value="150">更大 150%</option>
+          <option value="170">最大 170%</option>
         </select>
       </div>
       <div class="menu-divider"></div>
@@ -159,12 +160,16 @@ document.addEventListener("click",function(e){var m=document.getElementById("hea
 var CBBC_FONT_LS="exodus_cbbc_font_v1";
 function applyCbbcFont(scale){
   var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
   document.documentElement.style.fontSize=(n/100*14)+"px";
   var sel=document.getElementById("cbbcFontScale");
   if(sel) sel.value=String(n);
 }
 function setCbbcFont(scale){
   var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
   try{localStorage.setItem(CBBC_FONT_LS,String(n));}catch(e){}
   applyCbbcFont(n);
 }
