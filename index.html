@@ -71,9 +71,7 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
   display: flex; justify-content: space-between; align-items: center;
 }
 .card h2 .go { color: var(--emerald); font-size: .72rem; }
-.bias {
-  font-size: 1.15rem; font-weight: 600; margin-bottom: 6px;
-}
+.bias { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
 .bias.res { color: var(--rose); }
 .bias.sup { color: var(--emerald); }
 .bias.mid { color: var(--amber); }
@@ -81,10 +79,7 @@ h1 span { color: var(--muted); font-weight: 400; font-size: .85rem; }
 .meta { font-size: .78rem; color: var(--muted); line-height: 1.5; font-family: ui-monospace, monospace; }
 .row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; font-size: .8rem; }
 .row .k { color: var(--muted); }
-.tag {
-  display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem;
-  background: rgba(161,161,170,.12); color: var(--muted);
-}
+.tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; background: rgba(161,161,170,.12); color: var(--muted); }
 .tag.res { background: rgba(244,63,94,.15); color: var(--rose); }
 .tag.sup { background: rgba(52,211,153,.15); color: var(--emerald); }
 .tag.mid { background: rgba(251,191,36,.12); color: var(--amber); }
@@ -174,7 +169,7 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
       <a href="./checklist/">開市清單 Checklist</a>
       <a href="./daily/">每日清單 Daily</a>
       <div class="menu-divider"></div>
-      <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
+      <button type="button" onclick="closeHeaderMenu();printHome()">列印 / 儲存 PDF</button>
       <button type="button" onclick="closeHeaderMenu();openSettings()">設定 Settings</button>
     </div>
   </div>
@@ -230,6 +225,7 @@ body.todo-edit .todo-sec-head input.title,body.todo-edit .todo-item input.txt{bo
 <script src="home-dash.js"></script>
 <script src="home-pcr.js"></script>
 <script src="home-todo.js"></script>
+<script src="home-print.js"></script>
 <script src="tab-order.js"></script>
 </body>
 </html>
