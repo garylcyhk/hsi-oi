@@ -16,13 +16,16 @@ header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);posit
 h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.85rem}
 .header-menu{position:relative;display:inline-flex}
 .menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
-.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
 .header-menu.open .menu-dropdown{display:block}
 .menu-dropdown a,.menu-dropdown button{display:flex;width:100%;padding:9px 12px;border:none;border-radius:7px;background:transparent;color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;text-align:left}
 .menu-dropdown a:hover,.menu-dropdown button:hover{background:#27272a}
 .menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
 .menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
 .menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-font{padding:6px 12px 10px}
+.menu-font label{display:block;font-size:.68rem;color:#71717a;margin-bottom:6px}
+.menu-font select{width:100%;background:#111113;border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 8px;font-size:.82rem}
 .wrap{padding:16px;max-width:1100px;margin:0 auto}
 .note{color:var(--muted);font-size:.78rem;margin-bottom:12px;line-height:1.55}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
@@ -81,6 +84,20 @@ footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
       <a href="../analysis/">交易表現 Analysis</a>
       <a href="../checklist/">開市清單 Checklist</a>
       <a href="../daily/">每日清單 Daily</a>
+      <div class="menu-divider"></div>
+      <div class="menu-section">顯示</div>
+      <div class="menu-font" onclick="event.stopPropagation()">
+        <label for="cbbcFontScale">字體大小 Font</label>
+        <select id="cbbcFontScale" onchange="setCbbcFont(this.value)">
+          <option value="85">小 85%</option>
+          <option value="100">標準 100%</option>
+          <option value="115">中 115%</option>
+          <option value="130">大 130%</option>
+          <option value="150">更大 150%</option>
+        </select>
+      </div>
+      <div class="menu-divider"></div>
+      <button type="button" onclick="closeHeaderMenu();window.print()">列印 Print</button>
     </div>
   </div>
 </header>
@@ -108,7 +125,7 @@ footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
   <div id="tab-study" style="display:none">
     <div class="card study">
       <h2>牛熊證街貨係咩</h2>
-      <p>街貨 = 發行商已沽出、市場仍持有、未被收回的牛／熊證數量。唔係期權 OI。</p>
+      <p>街貨 = 發行商已況出、市場仍持有、未被收回的牛／熊證數量。唔係期權 OI。</p>
       <ul>
         <li><b>牛證</b>：看好。收回價低過現價。跌穿就收回。</li>
         <li><b>熊證</b>：看淡。收回價高過現價。升穿就收回。</li>
@@ -139,6 +156,23 @@ footer{text-align:center;padding:20px 16px;font-size:.72rem;color:#52525b}
 function toggleHeaderMenu(e){if(e)e.stopPropagation();document.getElementById("headerMenu").classList.toggle("open");}
 function closeHeaderMenu(){var m=document.getElementById("headerMenu");if(m)m.classList.remove("open");}
 document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
+var CBBC_FONT_LS="exodus_cbbc_font_v1";
+function applyCbbcFont(scale){
+  var n=parseInt(scale,10)||100;
+  document.documentElement.style.fontSize=(n/100*14)+"px";
+  var sel=document.getElementById("cbbcFontScale");
+  if(sel) sel.value=String(n);
+}
+function setCbbcFont(scale){
+  var n=parseInt(scale,10)||100;
+  try{localStorage.setItem(CBBC_FONT_LS,String(n));}catch(e){}
+  applyCbbcFont(n);
+}
+(function(){
+  var n=100;
+  try{n=parseInt(localStorage.getItem(CBBC_FONT_LS)||"100",10)||100;}catch(e){}
+  applyCbbcFont(n);
+})();
 function switchTab(name){
   document.getElementById("tab-dist").style.display=name==="dist"?"":"none";
   document.getElementById("tab-study").style.display=name==="study"?"":"none";
