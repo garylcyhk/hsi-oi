@@ -4,6 +4,16 @@
   a.onload=function(){
     const b=document.createElement("script");
     b.src="strike-dist.js?v=20260831";
+    b.onload=function(){
+      const c=document.createElement("script");
+      c.src="pcr.js?v=20260831";
+      document.body.appendChild(c);
+    };
+    b.onerror=function(){
+      const c=document.createElement("script");
+      c.src="pcr.js?v=20260831";
+      document.body.appendChild(c);
+    };
     document.body.appendChild(b);
   };
   a.onerror=function(){
