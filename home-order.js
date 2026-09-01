@@ -18,6 +18,7 @@
     const map = {};
     kids(g).forEach(el => { map[el.id] = el; });
     order.forEach(id => { if(map[id]) g.appendChild(map[id]); });
+    kids(g).forEach(el => { if(!order.includes(el.id)) g.appendChild(el); });
   }
 
   function bind(el){
@@ -89,6 +90,7 @@
     document.head.appendChild(s);
   }
 
+  window.applyHomeCardOrder = apply;
   window.resetHomeCardOrder = function(){
     try { localStorage.removeItem(LS); } catch(e){}
     if(typeof render==="function") render();

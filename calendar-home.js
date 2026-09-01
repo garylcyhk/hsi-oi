@@ -1,4 +1,4 @@
-/* Calendar card — first tile on homepage grid. */
+/* Calendar card on homepage grid — same drag-reorder as other tiles. */
 (function(){
   if(typeof homeSettings==="object" && homeSettings.showCal==null) homeSettings.showCal = true;
 
@@ -35,19 +35,21 @@
   }
 
   function place(){
+    const pinned = document.getElementById("cardCalFixed");
     const g = document.getElementById("grid");
     if(!g) return;
     let box = document.getElementById("cardCal");
-    const created = !box;
     if(!box){
       box = document.createElement("div");
       box.id = "cardCal";
+      g.appendChild(box);
+    } else if(box.parentNode !== g){
+      g.appendChild(box);
     }
     box.innerHTML = calCard();
     box.style.display = (typeof homeSettings==="object" && homeSettings.showCal===false) ? "none" : "";
-    if(created || box.parentNode!==g){
-      g.insertBefore(box, g.firstChild);
-    }
+    if(pinned && pinned !== box) pinned.remove();
+    if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
   }
 
   const prev = window.render;
