@@ -1,4 +1,4 @@
-/* Calendar card lives inside #grid so home-order can drag it. */
+/* Calendar card: parked outside #grid so render() cannot delete it, then moved in for layout + drag. */
 (function(){
   if(typeof homeSettings==="object" && homeSettings.showCal==null) homeSettings.showCal = true;
 
@@ -9,7 +9,7 @@
     const right = e.actual || (e.forecast && e.forecast!=="\u2014" ? ("預測 "+e.forecast) : (e.time||""));
     return '<div class="ln"><span>'+e.date.slice(5)+' '+e.time+' '+e.ccy+' '+e.name+'</span><span>'+right+'</span></div>';
   }
-  function calCard(){
+  function html(){
     const d = window.FF_CAL;
     if(!d){
       return '<a class="card" href="./calendar/" draggable="false"><h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2><div class="bias na">無資料</div></a>';
@@ -34,19 +34,24 @@
     </a>';
   }
 
+  function box(){
+    let el = document.getElementById("cardCal");
+    if(el) return el;
+    el = document.createElement("div");
+    el.id = "cardCal";
+    const park = document.getElementById("calPark") || document.querySelector(".container") || document.body;
+    park.appendChild(el);
+    return el;
+  }
+
   function place(){
     const g = document.getElementById("grid");
-    if(!g) return;
-    const leftover = document.getElementById("cardCalFixed");
-    if(leftover) leftover.remove();
-    let box = document.getElementById("cardCal");
-    if(!box){
-      box = document.createElement("div");
-      box.id = "cardCal";
-      g.appendChild(box);
-    }
-    box.innerHTML = calCard();
-    box.style.display = (typeof homeSettings==="object" && homeSettings.showCal===false) ? "none" : "";
+    const el = box();
+    el.innerHTML = html();
+    el.querySelectorAll("a").forEach(function(a){ a.draggable = false; });
+    const hide = (typeof homeSettings==="object" && homeSettings.showCal===false);
+    el.style.display = hide ? "none" : "";
+    if(g && el.parentNode !== g) g.appendChild(el);
     if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
   }
 
@@ -65,17 +70,27 @@
     };
     window.applyHomeSettings._cal = true;
   }
+  if(typeof window.openSettings==="function" && !window.openSettings._cal){
+    const prevO = window.openSettings;
+    window.openSettings = function(){
+      prevO();
+      const cb = document.getElementById("setShowCal");
+      if(cb) cb.checked = !(homeSettings && homeSettings.showCal===false);
+    };
+    window.openSettings._cal = true;
+  }
   if(typeof window.saveSettings==="function" && !window.saveSettings._cal){
     const prevS = window.saveSettings;
     window.saveSettings = function(){
-      const box = document.getElementById("setShowCal");
-      if(box && typeof homeSettings==="object") homeSettings.showCal = box.checked;
+      const cb = document.getElementById("setShowCal");
+      if(cb && typeof homeSettings==="object") homeSettings.showCal = cb.checked;
       prevS();
     };
     window.saveSettings._cal = true;
   }
 
   place();
-  setTimeout(place, 50);
-  setTimeout(place, 400);
+  setTimeout(place, 0);
+  setTimeout(place, 200);
+  setTimeout(place, 800);
 })();
