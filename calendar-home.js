@@ -1,4 +1,4 @@
-/* Calendar card: parked outside #grid so render() cannot delete it, then moved in for layout + drag. */
+/* Homepage calendar tile — same grid cell as other cards, rich week detail. */
 (function(){
   if(typeof homeSettings==="object" && homeSettings.showCal==null) homeSettings.showCal = true;
 
@@ -6,13 +6,15 @@
     const s = document.createElement("style");
     s.id = "calCardCss";
     s.textContent =
-      "#cardCal .cal-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}"+
+      "#calPark{display:none!important}"+
+      "#cardCal{min-width:0}"+
+      "#cardCal .cal-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;flex:none}"+
       "#cardCal .cal-dot.high{background:#fb7185}#cardCal .cal-dot.med{background:#fbbf24}#cardCal .cal-dot.low{background:#71717a}"+
       "#cardCal .cal-name{flex:1;min-width:0}"+
       "#cardCal .cal-nums{white-space:nowrap;color:#a1a1aa;font-size:.7rem}"+
       "#cardCal .cal-nums .act{color:#e4e4e7;font-weight:600}"+
       "#cardCal .cal-nums .beat{color:#34d399}#cardCal .cal-nums .miss{color:#fb7185}"+
-      "#cardCal .top3 .ln{align-items:flex-start}";
+      "#cardCal .top3 .ln{align-items:flex-start;gap:8px}";
     document.head.appendChild(s);
   }
 
@@ -38,16 +40,13 @@
   }
   function nm(e){ return ZH[e.name] || e.name; }
   function beatCls(e){
-    if(!e.actual || !e.forecast || e.actual==="\u2014" || e.forecast==="\u2014") return "";
+    if(!e.actual || !e.forecast) return "";
     const a = parseFloat(String(e.actual).replace(/,/g,""));
     const f = parseFloat(String(e.forecast).replace(/,/g,""));
-    if(isNaN(a) || isNaN(f)) return "";
-    if(a===f) return "";
-    const goodHigh = /pmi|gdp|employment change|jolts|durable|hourly|pce/i.test(e.name);
-    const goodLow = /unemployment|claims/i.test(e.name);
+    if(isNaN(a) || isNaN(f) || a===f) return "";
+    const goodLow = /失業|unemployment|claims/i.test(e.name);
     if(goodLow) return a<f ? "beat" : "miss";
-    if(goodHigh) return a>f ? "beat" : "miss";
-    return "";
+    return a>f ? "beat" : "miss";
   }
   function nums(e){
     if(e.actual){
@@ -62,10 +61,9 @@
     return bits.length ? '<span class="cal-nums">'+bits.join(' · ')+'</span>' : '';
   }
   function line(e){
-    return '<div class="ln">'+'
-      '<span class="cal-name"><i class="cal-dot '+(e.impact||"med")+'"></i>'+
-      e.date.slice(5)+' '+e.time+' '+e.ccy+' '+nm(e)+'</span>'+nums(e)+'
-    </div>';
+    const d = (e.date||"").slice(5);
+    return '<div class="ln"><span class="cal-name"><i class="cal-dot '+(e.impact||"med")+'"></i>'+
+      d+' '+(e.time||"")+' '+(e.ccy||"")+' '+nm(e)+'</span>'+nums(e)+'</div>';
   }
 
   function html(){
@@ -75,46 +73,42 @@
     }
     const tday = todayHKT();
     const week = d.thisWeek || [];
-    const last = d.lastWeek || [];
+    const last = (d.lastWeek || []).filter(e => e.actual).slice(0,4);
     const today = week.filter(e => e.date===tday);
     const later = week.filter(e => e.date>tday);
     const highs = week.filter(e => e.impact==="high");
     const nxt = week.find(e => (e.date||"")>=tday && !e.actual) || week.find(e => (e.date||"")>=tday) || week[0];
     const head = nxt ? (nxt.date.slice(5)+' '+nxt.time+' '+nxt.ccy+' '+nm(nxt)) : (d.rangeLabel||"本週");
-    const lastHits = last.filter(e => e.actual).slice(0,4);
-    return '<a class="card" href="./calendar/" draggable="false">'+'
-      <h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2>'+'
-      <div class="bias mid">下一項 · '+head+'</div>'+'
-      <div class="meta">'+(d.rangeLabel||"")+' · '+(d.tz||"HKT")+' · 高影響 '+highs.length+' 項</div>'+'
-      <div class="top3">'+'
-        <div class="lbl">'+(today.length?("今日 "+tday.slice(5)+" · "+today.length+" 項"):"本週重點")+'</div>'+'
-        '+(today.length?today.map(line).join(""):(highs.slice(0,4).map(line).join("")||'<div class="ln"><span>—</span></div>'))+'
-        '+(later.length?('<div class="lbl">其後 '+later.length+' 項</div>'+later.map(line).join("")):"")+'
-        '+(lastHits.length?('<div class="lbl">上週已公布</div>'+lastHits.map(line).join("")):"")+'
-      </div>'+'
-      <div class="row" style="margin-top:8px"><span class="k">更新</span><span>'+(d.asOf||"—")+'</span></div>'+'
-    </a>';
-  }
-
-  function box(){
-    let el = document.getElementById("cardCal");
-    if(el) return el;
-    el = document.createElement("div");
-    el.id = "cardCal";
-    const park = document.getElementById("calPark") || document.querySelector(".container") || document.body;
-    park.appendChild(el);
-    return el;
+    return '<a class="card" href="./calendar/" draggable="false">'+
+      '<h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2>'+
+      '<div class="bias mid">下一項 · '+head+'</div>'+
+      '<div class="meta">'+(d.rangeLabel||"")+' · '+(d.tz||"HKT")+' · 高影響 '+highs.length+' 項</div>'+
+      '<div class="top3">'+
+        '<div class="lbl">'+(today.length?("今日 "+tday.slice(5)+" · "+today.length+" 項"):"本週重點")+'</div>'+
+        (today.length?today.map(line).join(""):highs.slice(0,5).map(line).join(""))+
+        (later.length?('<div class="lbl">其後</div>'+later.map(line).join("")):"")+
+        (last.length?('<div class="lbl">上週已公布</div>'+last.map(line).join("")):"")+
+      '</div>'+
+      '<div class="row" style="margin-top:8px"><span class="k">更新</span><span>'+(d.asOf||"—")+'</span></div>'+
+    '</a>';
   }
 
   function place(){
-    const g = document.getElementById("grid");
-    const el = box();
-    el.innerHTML = html();
-    el.querySelectorAll("a").forEach(function(a){ a.draggable = false; });
-    const hide = (typeof homeSettings==="object" && homeSettings.showCal===false);
-    el.style.display = hide ? "none" : "";
-    if(g && el.parentNode !== g) g.appendChild(el);
-    if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
+    try {
+      const g = document.getElementById("grid");
+      let el = document.getElementById("cardCal");
+      if(!el){
+        el = document.createElement("div");
+        el.id = "cardCal";
+      }
+      el.innerHTML = html();
+      el.querySelectorAll("a").forEach(function(a){ a.draggable = false; });
+      el.style.display = (homeSettings && homeSettings.showCal===false) ? "none" : "";
+      if(g && el.parentNode !== g) g.appendChild(el);
+      if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
+    } catch(err){
+      try { console.error("calendar-home", err); } catch(e){}
+    }
   }
 
   const prev = window.render;
@@ -123,36 +117,8 @@
     place();
   };
 
-  if(typeof window.applyHomeSettings==="function" && !window.applyHomeSettings._cal){
-    const prevA = window.applyHomeSettings;
-    window.applyHomeSettings = function(){
-      prevA();
-      const el = document.getElementById("cardCal");
-      if(el) el.style.display = (homeSettings && homeSettings.showCal===false) ? "none" : "";
-    };
-    window.applyHomeSettings._cal = true;
-  }
-  if(typeof window.openSettings==="function" && !window.openSettings._cal){
-    const prevO = window.openSettings;
-    window.openSettings = function(){
-      prevO();
-      const cb = document.getElementById("setShowCal");
-      if(cb) cb.checked = !(homeSettings && homeSettings.showCal===false);
-    };
-    window.openSettings._cal = true;
-  }
-  if(typeof window.saveSettings==="function" && !window.saveSettings._cal){
-    const prevS = window.saveSettings;
-    window.saveSettings = function(){
-      const cb = document.getElementById("setShowCal");
-      if(cb && typeof homeSettings==="object") homeSettings.showCal = cb.checked;
-      prevS();
-    };
-    window.saveSettings._cal = true;
-  }
-
   place();
   setTimeout(place, 0);
-  setTimeout(place, 200);
-  setTimeout(place, 800);
+  setTimeout(place, 250);
+  setTimeout(place, 1000);
 })();
