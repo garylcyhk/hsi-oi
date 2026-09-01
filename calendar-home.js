@@ -1,4 +1,4 @@
-/* Calendar card on homepage grid — same drag-reorder as other tiles. */
+/* Calendar card lives inside #grid so home-order can drag it. */
 (function(){
   if(typeof homeSettings==="object" && homeSettings.showCal==null) homeSettings.showCal = true;
 
@@ -12,7 +12,7 @@
   function calCard(){
     const d = window.FF_CAL;
     if(!d){
-      return '<a class="card" href="./calendar/"><h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2><div class="bias na">無資料</div></a>';
+      return '<a class="card" href="./calendar/" draggable="false"><h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2><div class="bias na">無資料</div></a>';
     }
     const tday = todayHKT();
     const week = d.thisWeek || [];
@@ -21,7 +21,7 @@
     const show = today.length ? today : week.filter(e => e.impact==="high").slice(0,5);
     const nxt = week.find(e => (e.date||"")>=tday) || week[0];
     const head = nxt ? (nxt.date.slice(5)+' '+nxt.time+' '+nxt.ccy+' '+nxt.name) : (d.rangeLabel||"本週");
-    return '<a class="card" href="./calendar/">'+'
+    return '<a class="card" href="./calendar/" draggable="false">'+'
       <h2><span>日曆 Calendar</span><span class="go">詳情 →</span></h2>'+'
       <div class="bias mid">'+head+'</div>'+'
       <div class="meta">'+(d.rangeLabel||"")+' · '+(d.tz||"HKT")+'</div>'+'
@@ -35,20 +35,18 @@
   }
 
   function place(){
-    const pinned = document.getElementById("cardCalFixed");
     const g = document.getElementById("grid");
     if(!g) return;
+    const leftover = document.getElementById("cardCalFixed");
+    if(leftover) leftover.remove();
     let box = document.getElementById("cardCal");
     if(!box){
       box = document.createElement("div");
       box.id = "cardCal";
       g.appendChild(box);
-    } else if(box.parentNode !== g){
-      g.appendChild(box);
     }
     box.innerHTML = calCard();
     box.style.display = (typeof homeSettings==="object" && homeSettings.showCal===false) ? "none" : "";
-    if(pinned && pinned !== box) pinned.remove();
     if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
   }
 
@@ -58,7 +56,26 @@
     place();
   };
 
+  if(typeof window.applyHomeSettings==="function" && !window.applyHomeSettings._cal){
+    const prevA = window.applyHomeSettings;
+    window.applyHomeSettings = function(){
+      prevA();
+      const el = document.getElementById("cardCal");
+      if(el) el.style.display = (homeSettings && homeSettings.showCal===false) ? "none" : "";
+    };
+    window.applyHomeSettings._cal = true;
+  }
+  if(typeof window.saveSettings==="function" && !window.saveSettings._cal){
+    const prevS = window.saveSettings;
+    window.saveSettings = function(){
+      const box = document.getElementById("setShowCal");
+      if(box && typeof homeSettings==="object") homeSettings.showCal = box.checked;
+      prevS();
+    };
+    window.saveSettings._cal = true;
+  }
+
   place();
-  setTimeout(place, 0);
-  setTimeout(place, 300);
+  setTimeout(place, 50);
+  setTimeout(place, 400);
 })();
