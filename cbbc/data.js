@@ -1,61 +1,56 @@
 /* HSI CBBC outstanding by call-level bin.
-   Snapshot compiled from issuer market-wide 街貨分佈 (GS/UBS/BNP/SG republish HKEX issuer reports).
-   Units: futures-equivalent contracts (相對期指張數).
-   Outstanding updates after close (~16:00 report; issuer charts ~08:05 next morning).
-   Far OTM bins not listed on issuer charts are omitted; bullFut/bearFut are market totals.
+   Auto-updated from Goldman Sachs HSI CBBC outstanding distribution.
+   Units: futures-equivalent contracts.
 */
 window.CBBC_HSI = {
-  asOf: "2026-09-01",
-  published: "2026-09-01 08:05",
-  spot: 25566.99,
-  prevClose: 25584.79,
-  source: "Issuer CBBC outstanding distribution (market-wide, HKEX-reported street qty)",
-  sourcePages: [
-    { name: "SG 法興 街貨分佈", url: "https://hk.warrants.com/tc/cbbc/outstanding-distribution" },
-    { name: "GS HSI CBBC OS", url: "https://www.gswarrants.com.hk/en/market/hsi-cbbc-outstanding-distribution" },
-    { name: "UBS Index CBBC OS", url: "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding" },
-    { name: "BNP Outstanding Dist", url: "https://bnppwarrant.com/en/cbbc/outstanding-distribution" }
+  "asOf": "2026-09-01",
+  "published": "2026-09-02 07:04",
+  "spot": 25330,
+  "prevClose": 25567,
+  "source": "Issuer CBBC outstanding distribution (GS market-wide, HKEX-reported street qty)",
+  "sourcePages": [
+    {"name": "GS HSI CBBC OS", "url": "https://www.gswarrants.com.hk/en/market/hsi-cbbc-outstanding-distribution"},
+    {"name": "SG 法興 街貨分佈", "url": "https://hk.warrants.com/tc/cbbc/outstanding-distribution"},
+    {"name": "UBS Index CBBC OS", "url": "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding"}
   ],
-  bullFut: 8729,
-  bearFut: 7584,
-  bullPct: 53.5,
-  bearPct: 46.5,
-  nearKoPts: 1000,
-  nearKoBull: 3563,
-  nearKoBear: 3832,
-  flow1d: { bullM: null, bearM: null, bullFut: 198, bearFut: 130 },
-  flow5d: { bullM: null, bearM: null },
-  flow5dSeries: {
-    dates: ["09-01", "08-31", "08-28", "08-27", "08-26"]
-  },
-  calledNote: "對齊法興圖表 2026-09-01 08:05。區間來自市場性發行商 200 點 KO bin。未列出的遠價區已省略。",
-  bins: [
-    { lo: 28000, hi: 28199, side: "bear", fut: 362, chg: -3, hist: [362,365,364,365,363], call: 28000, koPct: 9.5 },
-    { lo: 27800, hi: 27999, side: "bear", fut: 160, chg: -2, hist: [160,162,167,161,166], call: 27800, koPct: 8.7 },
-    { lo: 27600, hi: 27799, side: "bear", fut: 49, chg: -8, hist: [49,57,55,55,53], call: 27600, koPct: 8.0 },
-    { lo: 27400, hi: 27599, side: "bear", fut: 344, chg: -7, hist: [344,351,350,355,359], call: 27400, koPct: 7.2 },
-    { lo: 27200, hi: 27399, side: "bear", fut: 292, chg: -2, hist: [292,294,283,301,296], call: 27200, koPct: 6.4 },
-    { lo: 27000, hi: 27199, side: "bear", fut: 681, chg: 8, hist: [681,673,651,668,634], call: 27000, koPct: 5.6 },
-    { lo: 26800, hi: 26999, side: "bear", fut: 513, chg: -18, hist: [513,531,535,519,472], call: 26800, koPct: 4.8 },
-    { lo: 26600, hi: 26799, side: "bear", fut: 379, chg: -34, hist: [379,413,398,467,395], call: 26600, koPct: 4.0 },
-    { lo: 26400, hi: 26599, side: "bear", fut: 965, chg: -61, hist: [965,1026,965,1009,970], call: 26400, koPct: 3.3 },
-    { lo: 26200, hi: 26399, side: "bear", fut: 1061, chg: -79, hist: [1061,1140,1104,1179,1122], call: 26200, koPct: 2.5 },
-    { lo: 26000, hi: 26199, side: "bear", fut: 753, chg: -138, hist: [753,891,980,1007,931], call: 26000, koPct: 1.7 },
-    { lo: 25800, hi: 25999, side: "bear", fut: 757, chg: -53, hist: [757,810,729,525,632], call: 25800, koPct: 0.9 },
-    { lo: 25600, hi: 25799, side: "bear", fut: 320, chg: 272, hist: [320,48,0,0,120], call: 25600, koPct: 0.1 },
-    { lo: 25100, hi: 25299, side: "bull", fut: 1093, chg: 39, hist: [1093,1054,875,729,816], call: 25100, koPct: 1.8 },
-    { lo: 24900, hi: 25099, side: "bull", fut: 1466, chg: 279, hist: [1466,1188,1336,1009,1369], call: 24900, koPct: 2.6 },
-    { lo: 24700, hi: 24899, side: "bull", fut: 734, chg: 118, hist: [734,616,670,616,710], call: 24700, koPct: 3.4 },
-    { lo: 24500, hi: 24699, side: "bull", fut: 740, chg: 112, hist: [740,628,720,684,742], call: 24500, koPct: 4.2 },
-    { lo: 24300, hi: 24499, side: "bull", fut: 207, chg: 38, hist: [207,169,181,157,189], call: 24300, koPct: 4.9 },
-    { lo: 24100, hi: 24299, side: "bull", fut: 390, chg: -3, hist: [390,393,398,385,394], call: 24100, koPct: 5.7 },
-    { lo: 23900, hi: 24099, side: "bull", fut: 249, chg: 23, hist: [249,226,236,222,245], call: 23900, koPct: 6.5 },
-    { lo: 23700, hi: 23899, side: "bull", fut: 117, chg: -1, hist: [117,117,125,129,135], call: 23700, koPct: 7.3 },
-    { lo: 23500, hi: 23699, side: "bull", fut: 520, chg: 15, hist: [520,505,509,503,513], call: 23500, koPct: 8.1 },
-    { lo: 23300, hi: 23499, side: "bull", fut: 277, chg: -4, hist: [277,282,287,366,373], call: 23300, koPct: 8.9 },
-    { lo: 23100, hi: 23299, side: "bull", fut: 206, chg: -6, hist: [206,212,216,216,216], call: 23100, koPct: 9.6 },
-    { lo: 22900, hi: 23099, side: "bull", fut: 242, chg: -4, hist: [242,245,259,269,269], call: 22900, koPct: 10.4 },
-    { lo: 22700, hi: 22899, side: "bull", fut: 81, chg: 0, hist: [81,81,81,81,81], call: 22700, koPct: 11.2 }
+  "bullFut": 9442,
+  "bearFut": 7230,
+  "bullPct": 56.6,
+  "bearPct": 43.4,
+  "nearKoPts": 1000,
+  "nearKoBull": 4760,
+  "nearKoBear": 2650,
+  "flow1d": {"bullM": null, "bearM": null, "bullFut": 713, "bearFut": -355},
+  "flow5d": {"bullM": null, "bearM": null},
+  "flow5dSeries": {"dates": ["09-01", "08-31", "08-28", "08-27", "08-26"]},
+  "calledNote": "自動更新自高盛 · 圖表 2026-09-02 07:04 · 街貨欄 09-01",
+  "bins": [
+    {"lo": 27900, "hi": 28099, "side": "bear", "fut": 195, "chg": -5, "hist": [195, 200, 203, 203, 201], "call": 27900, "koPct": 10.5},
+    {"lo": 27700, "hi": 27899, "side": "bear", "fut": 36, "chg": -1, "hist": [36, 37, 42, 45, 41], "call": 27700, "koPct": 9.7},
+    {"lo": 27500, "hi": 27699, "side": "bear", "fut": 123, "chg": -5, "hist": [123, 128, 138, 136, 134], "call": 27500, "koPct": 9.0},
+    {"lo": 27300, "hi": 27499, "side": "bear", "fut": 430, "chg": -7, "hist": [430, 437, 438, 439, 454], "call": 27300, "koPct": 8.2},
+    {"lo": 27100, "hi": 27299, "side": "bear", "fut": 314, "chg": -16, "hist": [314, 330, 323, 306, 332], "call": 27100, "koPct": 7.4},
+    {"lo": 26900, "hi": 27099, "side": "bear", "fut": 620, "chg": -50, "hist": [620, 670, 680, 670, 675], "call": 26900, "koPct": 6.6},
+    {"lo": 26700, "hi": 26899, "side": "bear", "fut": 434, "chg": -49, "hist": [434, 483, 508, 510, 481], "call": 26700, "koPct": 5.8},
+    {"lo": 26500, "hi": 26699, "side": "bear", "fut": 614, "chg": -118, "hist": [614, 732, 787, 727, 863], "call": 26500, "koPct": 5.0},
+    {"lo": 26300, "hi": 26499, "side": "bear", "fut": 840, "chg": -118, "hist": [840, 958, 997, 932, 968], "call": 26300, "koPct": 4.2},
+    {"lo": 26100, "hi": 26299, "side": "bear", "fut": 689, "chg": -137, "hist": [689, 826, 975, 1068, 1118], "call": 26100, "koPct": 3.4},
+    {"lo": 25900, "hi": 26099, "side": "bear", "fut": 547, "chg": -142, "hist": [547, 689, 740, 802, 735], "call": 25900, "koPct": 2.6},
+    {"lo": 25700, "hi": 25899, "side": "bear", "fut": 967, "chg": 151, "hist": [967, 816, 612, 427, 291], "call": 25700, "koPct": 1.9},
+    {"lo": 25500, "hi": 25699, "side": "bear", "fut": 166, "chg": 153, "hist": [166, 12, 0, 0, 0], "call": 25500, "koPct": 1.1},
+    {"lo": 25100, "hi": 25299, "side": "bull", "fut": 871, "chg": -222, "hist": [871, 1093, 1054, 875, 729], "call": 25100, "koPct": 0.5},
+    {"lo": 24900, "hi": 25099, "side": "bull", "fut": 1784, "chg": 318, "hist": [1784, 1466, 1188, 1336, 1009], "call": 24900, "koPct": 1.3},
+    {"lo": 24700, "hi": 24899, "side": "bull", "fut": 1073, "chg": 339, "hist": [1073, 734, 616, 670, 616], "call": 24700, "koPct": 2.1},
+    {"lo": 24500, "hi": 24699, "side": "bull", "fut": 880, "chg": 139, "hist": [880, 740, 628, 720, 684], "call": 24500, "koPct": 2.9},
+    {"lo": 24300, "hi": 24499, "side": "bull", "fut": 296, "chg": 89, "hist": [296, 207, 169, 181, 157], "call": 24300, "koPct": 3.7},
+    {"lo": 24100, "hi": 24299, "side": "bull", "fut": 419, "chg": 29, "hist": [419, 390, 393, 398, 385], "call": 24100, "koPct": 4.5},
+    {"lo": 23900, "hi": 24099, "side": "bull", "fut": 264, "chg": 15, "hist": [264, 249, 226, 236, 222], "call": 23900, "koPct": 5.3},
+    {"lo": 23700, "hi": 23899, "side": "bull", "fut": 120, "chg": 3, "hist": [120, 117, 117, 125, 129], "call": 23700, "koPct": 6.0},
+    {"lo": 23500, "hi": 23699, "side": "bull", "fut": 517, "chg": -3, "hist": [517, 520, 505, 509, 503], "call": 23500, "koPct": 6.8},
+    {"lo": 23300, "hi": 23499, "side": "bull", "fut": 281, "chg": 4, "hist": [281, 277, 282, 287, 366], "call": 23300, "koPct": 7.6},
+    {"lo": 23100, "hi": 23299, "side": "bull", "fut": 207, "chg": 1, "hist": [207, 206, 212, 216, 216], "call": 23100, "koPct": 8.4},
+    {"lo": 22900, "hi": 23099, "side": "bull", "fut": 234, "chg": -7, "hist": [234, 242, 245, 259, 269], "call": 22900, "koPct": 9.2},
+    {"lo": 22700, "hi": 22899, "side": "bull", "fut": 81, "chg": 0, "hist": [81, 81, 81, 81, 81], "call": 22700, "koPct": 10.0}
   ]
 };
 setTimeout(function(){
