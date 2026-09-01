@@ -5,14 +5,14 @@
    Far OTM bins not listed on issuer charts are omitted; bullFut/bearFut are market totals.
 */
 window.CBBC_HSI = {
-  asOf: "2026-08-31",
+  asOf: "2026-09-01",
   published: "2026-09-01 08:05",
-  spot: 25567,
-  prevClose: 25585,
+  spot: 25566.99,
+  prevClose: 25584.79,
   source: "Issuer CBBC outstanding distribution (market-wide, HKEX-reported street qty)",
   sourcePages: [
-    { name: "GS HSI CBBC OS", url: "https://www.gswarrants.com.hk/en/market/hsi-cbbc-outstanding-distribution" },
     { name: "SG 法興 街貨分佈", url: "https://hk.warrants.com/tc/cbbc/outstanding-distribution" },
+    { name: "GS HSI CBBC OS", url: "https://www.gswarrants.com.hk/en/market/hsi-cbbc-outstanding-distribution" },
     { name: "UBS Index CBBC OS", url: "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding" },
     { name: "BNP Outstanding Dist", url: "https://bnppwarrant.com/en/cbbc/outstanding-distribution" }
   ],
@@ -26,9 +26,9 @@ window.CBBC_HSI = {
   flow1d: { bullM: null, bearM: null, bullFut: 198, bearFut: 130 },
   flow5d: { bullM: null, bearM: null },
   flow5dSeries: {
-    dates: ["08-31", "08-28", "08-27", "08-26", "08-25"]
+    dates: ["09-01", "08-31", "08-28", "08-27", "08-26"]
   },
-  calledNote: "圖表 2026-09-01 08:05 · 街貨日 2026-08-31。區間來自高盛 200 點 KO bin。未列出的遠價區已省略。",
+  calledNote: "對齊法興圖表 2026-09-01 08:05。區間來自市場性發行商 200 點 KO bin。未列出的遠價區已省略。",
   bins: [
     { lo: 28000, hi: 28199, side: "bear", fut: 362, chg: -3, hist: [362,365,364,365,363], call: 28000, koPct: 9.5 },
     { lo: 27800, hi: 27999, side: "bear", fut: 160, chg: -2, hist: [160,162,167,161,166], call: 27800, koPct: 8.7 },
