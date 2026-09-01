@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-01 00:08",
+  "asOf": "2026-09-01 09:48",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -75,7 +75,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ISM Manufacturing Prices",
       "actual": "",
-      "forecast": "71.2",
+      "forecast": "70.5",
       "previous": "71.1"
     },
     {
@@ -105,7 +105,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ADP Non-Farm Employment Change",
       "actual": "",
-      "forecast": "47K",
+      "forecast": "48K",
       "previous": "44K"
     },
     {
@@ -125,7 +125,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ISM Services PMI",
       "actual": "",
-      "forecast": "54.1",
+      "forecast": "54.2",
       "previous": "54.1"
     },
     {
