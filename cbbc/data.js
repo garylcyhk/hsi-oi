@@ -63,3 +63,10 @@ window.CBBC_HSI = {
     { lo: 24000, hi: 24099, side: "bull", fut: 43, chg: -9, hist: [43, 51, 39, 53, 51], pick: "60338", call: 24000, koPct: 6.2 }
   ]
 };
+setTimeout(function(){
+  if(document.getElementById("cbbcCallCol")) return;
+  var s=document.createElement("script");
+  s.id="cbbcCallCol";
+  s.src="call-col.js";
+  document.body.appendChild(s);
+},0);
