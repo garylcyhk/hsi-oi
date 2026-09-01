@@ -10,8 +10,7 @@
 <style>
 :root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--amber:#fbbf24}
 *{box-sizing:border-box}
-html{font-size:14px}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
 .brand-lockup{display:flex;align-items:center;gap:12px}
 .brand-logo-link img{height:40px;width:auto;border-radius:6px;object-fit:cover;display:block}
@@ -42,17 +41,10 @@ h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-we
 .cbbc-ratio{height:8px;border-radius:999px;overflow:hidden;display:flex;background:#1f1f23;margin:8px 0 2px}
 .cbbc-ratio .b{background:var(--emerald);display:block;height:100%}.cbbc-ratio .r{background:var(--rose);display:block;height:100%}
 .stocks table{width:100%;border-collapse:collapse;font-size:.78rem}
-.stocks th{text-align:left;color:var(--muted);font-weight:500;padding:4px 6px;font-size:.68rem}
-.stocks td{padding:5px 6px;border-top:1px solid #1f1f23;font-family:ui-monospace,monospace}.stocks .tr{text-align:right}
 #consLine,.cons-banner{grid-column:1/-1}
-.cons-banner{border-radius:8px;padding:10px 14px;font-size:.85rem;border:1px solid #27272a;background:#121214;font-family:ui-monospace,monospace}
 .todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
 .todo-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
-.todo-head h2{margin:0;font-size:.8rem;font-weight:500;color:var(--muted);flex:1}
-.todo-btns{display:flex;flex-wrap:wrap;gap:6px}
 .todo-btns button{border-radius:8px;padding:6px 10px;font-size:.75rem;cursor:pointer;border:1px solid #27272a;background:#27272a;color:var(--text)}
-.todo-btns button.primary{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.3);color:#34d399}
-.todo-btns button.danger{color:#fb7185}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
 .modal{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:18px 20px;width:100%;max-width:380px}
@@ -97,7 +89,7 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
   <div class="modal">
     <h3>總覽設定 · Home Settings</h3>
     <div class="modal-row"><label>字體大小 Font</label>
-      <select id="setFontScale"><option value="85">小 85%</option><option value="100">標準 100%</option><option value="115">中 115%</option><option value="130">大 130%</option><option value="150">更大 150%</option><option value="170">最大 170%</option></select></div>
+      <select id="setFontScale"><option value="85">小 85%</option><option value="100">標準 100%</option><option value="115">中 115%</option><option value="130">大 130%</option><option value="150">更大 150%</option></select></div>
     <div class="modal-row"><label>緊湊模式 Compact</label><input type="checkbox" id="setCompact" /></div>
     <div class="modal-row"><label>顯示 HSI 期權卡</label><input type="checkbox" id="setShowHsi" checked /></div>
     <div class="modal-row"><label>顯示 Mini-HSI 卡</label><input type="checkbox" id="setShowMini" checked /></div>

@@ -18,7 +18,7 @@
     const map = {};
     kids(g).forEach(el => { map[el.id] = el; });
     order.forEach(id => { if(map[id]) g.appendChild(map[id]); });
-    kids(g).forEach(el => { if(!order.includes(el.id)) g.appendChild(el); });
+    kids(g).forEach(el => { if(order.indexOf(el.id)===-1) g.appendChild(el); });
   }
 
   function bind(el){
@@ -26,6 +26,7 @@
     el._homeOrd = true;
     el.draggable = true;
     el.style.cursor = "grab";
+    el.querySelectorAll("a").forEach(function(a){ a.draggable = false; });
     el.addEventListener("dragstart", function(e){
       dragging = el;
       moved = false;
@@ -82,11 +83,7 @@
   if(!document.getElementById("homeOrderCss")){
     const s = document.createElement("style");
     s.id = "homeOrderCss";
-    s.textContent = "#grid > [id]{cursor:grab}#grid > .card-dragging{opacity:.45}#grid > [id]:active{cursor:grabbing}"+
-      ".tag.res{background:rgba(244,63,94,.15);color:#fb7185}.tag.sup{background:rgba(52,211,153,.15);color:#34d399}.tag.mid{background:rgba(251,191,36,.12);color:#fbbf24}"+
-      ".cons-banner.agree{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#34d399}"+
-      ".cons-banner.diverge{border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08);color:#fbbf24}"+
-      ".kpi .item{font-size:.75rem}.kpi .item .v{font-family:ui-monospace,monospace;font-weight:600}.kpi .item .l{color:#a1a1aa;font-size:.68rem}";
+    s.textContent = "#grid > [id]{cursor:grab}#grid > .card-dragging{opacity:.45}#grid > [id]:active{cursor:grabbing}";
     document.head.appendChild(s);
   }
 
@@ -118,9 +115,4 @@
   hook();
   apply();
   setTimeout(function(){ hook(); apply(); }, 80);
-
-  const st = document.getElementById("status");
-  if(st && st.textContent && st.textContent.indexOf("拖")===-1){
-    st.textContent += " · 可拖卡片排序";
-  }
 })();
