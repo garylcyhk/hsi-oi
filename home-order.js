@@ -6,6 +6,9 @@
 
   function grid(){ return document.getElementById("grid"); }
   function kids(g){ return [...(g||[]).children].filter(el => el.id); }
+  function fromControl(t){
+    return !!(t && t.closest && t.closest("input,button,textarea,select,a,.todo-item,.todo-sec,.todo-btns,.todo-head,.cal-wbtns"));
+  }
 
   function save(g){
     try { localStorage.setItem(LS, JSON.stringify(kids(g).map(el => el.id))); } catch(e){}
@@ -28,6 +31,10 @@
     el.style.cursor = "grab";
     el.querySelectorAll("a").forEach(function(a){ a.draggable = false; });
     el.addEventListener("dragstart", function(e){
+      if(fromControl(e.target)){
+        e.preventDefault();
+        return;
+      }
       dragging = el;
       moved = false;
       el.classList.add("card-dragging");

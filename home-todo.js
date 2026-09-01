@@ -6,6 +6,12 @@
     l.href = "home-todo.css";
     document.head.appendChild(l);
   }
+  if(!document.getElementById("todoSlotCss")){
+    const s = document.createElement("style");
+    s.id = "todoSlotCss";
+    s.textContent = "#cardTodo{grid-column:1/-1;min-width:0}#cardTodo .todo-wrap{margin:0;cursor:default}#todoBlock:empty{display:none}";
+    document.head.appendChild(s);
+  }
 })();
 
 const TODO_TPL = "exodus_home_todo_tpl_v1";
@@ -162,5 +168,54 @@ function todoResetTpl(){
   todoSave(); todoRender();
 }
 
+function todoPlace(){
+  const g = document.getElementById("grid");
+  const wrap = document.getElementById("todoWrap");
+  if(!g || !wrap) return;
+  let card = document.getElementById("cardTodo");
+  if(!card){
+    card = document.createElement("div");
+    card.id = "cardTodo";
+  }
+  if(wrap.parentNode !== card) card.appendChild(wrap);
+  const hide = (typeof homeSettings==="object" && homeSettings.showTodo===false);
+  card.style.display = hide ? "none" : "";
+  const park = document.getElementById("todoBlock");
+  if(park && !park.children.length) park.style.display = "none";
+  if(card.parentNode !== g){
+    let order = null;
+    try { order = JSON.parse(localStorage.getItem("exodus_home_card_order_v1") || "null"); } catch(e){}
+    if(Array.isArray(order) && order.indexOf("cardTodo")!==-1){
+      g.appendChild(card);
+    } else {
+      g.insertBefore(card, g.firstChild);
+    }
+  }
+  if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
+}
+
+if(typeof window.render==="function" && !window.render._todoSlot){
+  const prev = window.render;
+  window.render = function(){
+    prev();
+    todoPlace();
+  };
+  window.render._todoSlot = true;
+}
+if(typeof window.applyHomeSettings==="function" && !window.applyHomeSettings._todoSlot){
+  const prevA = window.applyHomeSettings;
+  window.applyHomeSettings = function(){
+    prevA();
+    const el = document.getElementById("cardTodo");
+    if(el) el.style.display = (homeSettings && homeSettings.showTodo===false) ? "none" : "";
+    const park = document.getElementById("todoBlock");
+    if(park) park.style.display = "none";
+  };
+  window.applyHomeSettings._todoSlot = true;
+}
+
 todoLoad();
 todoRender();
+todoPlace();
+setTimeout(todoPlace, 0);
+setTimeout(todoPlace, 300);
