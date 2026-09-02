@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>圖表 TradingView · Exodus Trading Group</title>
+<style>
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link img{height:36px;width:auto;border-radius:6px;object-fit:cover;display:block}
+h1{margin:0;font-size:1rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.8rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a{display:flex;width:100%;padding:9px 12px;border-radius:7px;color:var(--text);font-size:.82rem;text-decoration:none}
+.menu-dropdown a:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--border);background:#0f0f12}
+.tools button,.tools select{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:7px;padding:6px 10px;font-size:.78rem;cursor:pointer}
+.tools button.on{color:var(--emerald);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
+#tvWrap{flex:1;min-height:0;background:#000}
+#tvFrame{width:100%;height:100%;border:0;display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a>
+    <h1>圖表 <span>TradingView</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="document.getElementById('headerMenu').classList.toggle('open')" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="./" class="menu-active">圖表 TradingView</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="../cbbc/">牛熊街貨 CBBC</a>
+      <a href="../calendar/">經濟日曆 Calendar</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="../checklist/">開市清單 Checklist</a>
+      <a href="../daily/">每日清單 Daily</a>
+    </div>
+  </div>
+</header>
+<div class="tools" id="tools"></div>
+<div id="tvWrap"><iframe id="tvFrame" title="TradingView" allowfullscreen></iframe></div>
+<script>
+document.addEventListener("click", function(e){
+  var m=document.getElementById("headerMenu");
+  if(m && !m.contains(e.target)) m.classList.remove("open");
+});
+var LS="exodus_tv_v1";
+var SYMS=[
+  {id:"HSI", label:"恒指 HSI"},
+  {id:"HKEX:HSI1!", label:"恒指期 HSI1!"},
+  {id:"HKEX:MHI1!", label:"Mini MHI"},
+  {id:"HKEX:HSCE", label:"國指 HSCEI"},
+  {id:"HKEX:0700", label:"騰訊 0700"},
+  {id:"HKEX:9988", label:"阿里 9988"},
+  {id:"HKEX:3690", label:"美團 3690"},
+  {id:"HKEX:1810", label:"小米 1810"}
+];
+var INTS=[
+  {id:"5", label:"5分"},
+  {id:"15", label:"15分"},
+  {id:"60", label:"1小時"},
+  {id:"D", label:"日線"},
+  {id:"W", label:"週線"}
+];
+function load(){
+  try { return JSON.parse(localStorage.getItem(LS)||"{}"); } catch(e){ return {}; }
+}
+function save(o){
+  try { localStorage.setItem(LS, JSON.stringify(o)); } catch(e){}
+}
+function state(){
+  var s=load();
+  return { symbol:s.symbol||"HSI", interval:s.interval||"15" };
+}
+function src(symbol, interval){
+  var q=new URLSearchParams({
+    symbol:symbol,
+    interval:interval,
+    theme:"dark",
+    style:"1",
+    timezone:"Asia/Hong_Kong",
+    locale:"zh_TW",
+    toolbarbg:"18181b",
+    hideideas:"1",
+    withdateranges:"1",
+    hidesidetoolbar:"0",
+    symboledit:"1",
+    saveimage:"1",
+    hidevolume:"0"
+  });
+  return "https://www.tradingview.com/widgetembed/?"+q.toString();
+}
+function renderTools(){
+  var st=state();
+  var html="";
+  SYMS.forEach(function(s){
+    html+='<button type="button" class="'+(st.symbol===s.id?"on":"")+'" data-sym="'+s.id+'">'+s.label+'</button>';
+  });
+  html+='<select id="tvInt">';
+  INTS.forEach(function(i){
+    html+='<option value="'+i.id+'" '+(st.interval===i.id?"selected":"")+'>'+i.label+'</option>';
+  });
+  html+='</select>';
+  document.getElementById("tools").innerHTML=html;
+  document.querySelectorAll("#tools button[data-sym]").forEach(function(b){
+    b.onclick=function(){
+      var s=state(); s.symbol=b.getAttribute("data-sym"); save(s); mount();
+    };
+  });
+  document.getElementById("tvInt").onchange=function(){
+    var s=state(); s.interval=this.value; save(s); mount();
+  };
+}
+function mount(){
+  renderTools();
+  var st=state();
+  document.getElementById("tvFrame").src=src(st.symbol, st.interval);
+}
+mount();
+</script>
+</body>
+</html>
