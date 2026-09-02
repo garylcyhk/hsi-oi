@@ -8,24 +8,30 @@
     s.textContent=
       "#cardTv{grid-column:1/-1;min-width:0}"+
       "#cardTv .tv-card{cursor:default;padding:12px 14px}"+
-      "#cardTv .tv-tools{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}"+
+      "#cardTv .tv-tools{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px;align-items:center}"+
       "#cardTv .tv-tools button,#cardTv .tv-tools select{border:1px solid #27272a;background:#111113;color:#e4e4e7;border-radius:6px;padding:3px 8px;font-size:.72rem;cursor:pointer}"+
       "#cardTv .tv-tools button.on{color:#34d399;border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}"+
+      "#cardTv .tv-note{font-size:.68rem;color:#71717a;margin:0 0 6px}"+
       "#cardTv iframe{width:100%;height:420px;border:0;border-radius:8px;background:#000;display:block}";
     document.head.appendChild(s);
   }
 
   const LS="exodus_tv_v1";
   const SYMS=[
-    {id:"HSI",label:"HSI"},
-    {id:"HKEX:HSI1!",label:"期 HSI"},
-    {id:"HKEX:MHI1!",label:"Mini"},
+    {id:"INDEX:HSI",label:"HSI"},
+    {id:"INDEX:HSI",label:"Mini", alias:"mini"},
     {id:"HKEX:0700",label:"0700"},
-    {id:"HKEX:9988",label:"9988"}
+    {id:"HKEX:9988",label:"9988"},
+    {id:"HKEX:3690",label:"3690"},
+    {id:"HKEX:1810",label:"1810"}
   ];
   function load(){ try{return JSON.parse(localStorage.getItem(LS)||"{}");}catch(e){return{};} }
   function save(o){ try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){} }
-  function st(){ const s=load(); return {symbol:s.symbol||"HSI", interval:s.interval||"15"}; }
+  function migrate(s){
+    if(s.symbol==="HKEX:MHI1!" || s.symbol==="HKEX:HSI1!" || s.symbol==="HSI") s.symbol="INDEX:HSI";
+    return s;
+  }
+  function st(){ const s=migrate(load()); return {symbol:s.symbol||"INDEX:HSI", interval:s.interval||"15", pick:s.pick||"HSI"}; }
   function src(symbol,interval){
     const q=new URLSearchParams({
       symbol:symbol, interval:interval, theme:"dark", style:"1",
@@ -38,9 +44,13 @@
 
   function html(){
     const cur=st();
-    const btns=SYMS.map(s=>'<button type="button" class="'+(cur.symbol===s.id?"on":"")+'" data-sym="'+s.id+'">'+s.label+'</button>').join("");
+    const btns=SYMS.map(s=>{
+      const on = (s.alias||s.label)===cur.pick || (!cur.pick && s.id===cur.symbol && !s.alias);
+      return '<button type="button" class="'+(on?"on":"")+'" data-sym="'+s.id+'" data-pick="'+(s.alias||s.label)+'">'+s.label+'</button>';
+    }).join("");
     return '<div class="card tv-card">'+
       '<h2><span>圖表 TradingView</span><a class="go" href="./chart/">全螢幕 →</a></h2>'+
+      '<p class="tv-note">Mini 跟恒指現貨走勢相同；HKEX 期貨連續合約在 embed 被鎖，要期貨請用全螢幕頁打開 TradingView。</p>'+
       '<div class="tv-tools" onclick="event.preventDefault();event.stopPropagation()">'+btns+
       '<select id="tvHomeInt">'+
         '<option value="5"'+(cur.interval==="5"?" selected":"")+'>·5</option>'+
@@ -56,7 +66,7 @@
     el.querySelectorAll("[data-sym]").forEach(function(b){
       b.onclick=function(e){
         e.preventDefault(); e.stopPropagation();
-        const s=st(); s.symbol=b.getAttribute("data-sym"); save(s); place(true);
+        const s=st(); s.symbol=b.getAttribute("data-sym"); s.pick=b.getAttribute("data-pick"); save(s); place(true);
       };
     });
     const sel=el.querySelector("#tvHomeInt");
@@ -79,12 +89,7 @@
         bind(el);
       }
       el.style.display=(homeSettings && homeSettings.showTv===false)?"none":"";
-      if(el.parentNode!==g){
-        let order=null;
-        try{ order=JSON.parse(localStorage.getItem("exodus_home_card_order_v1")||"null"); }catch(e){}
-        if(Array.isArray(order) && order.indexOf("cardTv")!==-1) g.appendChild(el);
-        else g.appendChild(el);
-      }
+      if(el.parentNode!==g) g.appendChild(el);
       if(typeof window.applyHomeCardOrder==="function") window.applyHomeCardOrder();
     }catch(err){}
   }
