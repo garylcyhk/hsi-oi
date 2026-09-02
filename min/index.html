@@ -78,6 +78,13 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
       <label class="f">開收方向
         <select id="dir"><option value="all">全部</option><option value="up">上升日</option><option value="down">下跌日</option></select>
       </label>
+      <label class="f">09:30 之後
+        <select id="t930">
+          <option value="all">全部</option>
+          <option value="cont">跟開市（延續）</option>
+          <option value="rev">反轉</option>
+        </select>
+      </label>
     </div>
     <div class="row" style="margin-top:10px" id="dows"></div>
     <div class="row" style="margin-top:10px">
@@ -87,6 +94,7 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
     </div>
   </div>
   <div class="kpis" id="kpis"></div>
+  <div class="card" id="r930" style="margin-bottom:10px"></div>
   <div class="grid2">
     <div class="card" id="sess"></div>
     <div class="card" id="week"></div>
@@ -97,7 +105,7 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
       <input type="search" id="q" placeholder="搜尋 2026-06">
     </div>
     <div style="overflow:auto"><table><thead>
-      <tr><th>日期</th><th>波幅</th><th>開收</th><th>開市15</th><th>上午</th><th>下午</th><th>跳空</th></tr>
+      <tr><th>日期</th><th>波幅</th><th>開收</th><th>開市15</th><th>9:30後</th><th>上午</th><th>下午</th></tr>
     </thead><tbody id="tbody"></tbody></table></div>
     <p id="more" style="color:var(--faint);font-size:.72rem;margin:8px 0 0"></p>
   </div>
@@ -107,11 +115,18 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
 document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
 var DOW=["一","二","三","四","五"];
 var pack=window.MIN_DAYS;
-var F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false};
+var F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",t930:"all",minRange:0,openFollow:false,amGtPm:false};
 function sign(n){return !n?0:(n>0?1:-1);}
 function mean(xs){return xs.length?xs.reduce(function(a,b){return a+b;},0)/xs.length:0;}
 function fmt(n,d){if(n==null||isNaN(n))return "—";return Number(n).toLocaleString("en-US",{maximumFractionDigits:d||0,minimumFractionDigits:d||0});}
 function cls(n){return n>0?"up":(n<0?"dn":"");}
+function postTag(d){
+  var a=sign(d.o15c), b=sign(d.postAm);
+  if(!a||d.postAm==null) return "";
+  if(b===a) return "cont";
+  if(b===-a) return "rev";
+  return "flat";
+}
 function filtered(){
   return pack.days.filter(function(d){
     if(d.date<F.from||d.date>F.to) return false;
@@ -121,6 +136,7 @@ function filtered(){
     if(d.range<F.minRange) return false;
     if(F.openFollow&&!(d.o15c&&sign(d.o15c)===sign(d.chg))) return false;
     if(F.amGtPm&&!(d.amr!=null&&d.pmr!=null&&d.amr>d.pmr)) return false;
+    if(F.t930!=="all"&&postTag(d)!==F.t930) return false;
     return true;
   });
 }
@@ -152,6 +168,23 @@ function draw(){
     kpi("平均波幅",fmt(s.avgR),"開市15分 "+fmt(s.o15))+
     kpi("開市跟全日",fmt(s.follow)+"%","首30分 "+fmt(s.f30))+
     kpi("上午 / 下午",fmt(s.am)+" / "+fmt(s.pm),"上午較大 "+fmt(s.amGt)+"%");
+  var usable=rows.filter(function(d){return sign(d.o15c)&&d.postAm!=null;});
+  var cont=usable.filter(function(d){return postTag(d)==="cont";}).length;
+  var rev=usable.filter(function(d){return postTag(d)==="rev";}).length;
+  var upOpen=usable.filter(function(d){return sign(d.o15c)>0;});
+  var dnOpen=usable.filter(function(d){return sign(d.o15c)<0;});
+  function ratio(sub){
+    var c=sub.filter(function(d){return postTag(d)==="cont";}).length;
+    return sub.length? (c/sub.length*100) : 0;
+  }
+  document.getElementById("r930").innerHTML=
+    "<div style='font-size:.82rem;color:var(--muted);margin-bottom:8px'>09:30–12:00 相對開市15分</div>"+
+    "<div class='kpis' style='margin:0'>"+
+    kpi("跟走", usable.length?fmt(cont/usable.length*100)+"%":"—", cont+" / "+usable.length+" 日")+
+    kpi("反轉", usable.length?fmt(rev/usable.length*100)+"%":"—", rev+" / "+usable.length+" 日")+
+    kpi("開市向上之後跟升", fmt(ratio(upOpen))+"%", upOpen.length+" 日")+
+    kpi("開市向下之後跟跌", fmt(ratio(dnOpen))+"%", dnOpen.length+" 日")+
+    "</div>";
   var bars=[["開市15",s.o15],["首30",s.f30],["上午",s.am],["下午",s.pm],["收市45",s.close]];
   var max=Math.max.apply(null,bars.map(function(b){return b[1];}))||1;
   document.getElementById("sess").innerHTML="<div style='font-size:.82rem;color:var(--muted);margin-bottom:8px'>篩選後平均波幅</div>"+
@@ -169,18 +202,19 @@ function draw(){
   var q=(document.getElementById("q").value||"").trim();
   var show=rows.filter(function(d){return !q||d.date.indexOf(q)>=0;}).slice().reverse();
   document.getElementById("tbody").innerHTML=show.slice(0,80).map(function(d){
-    return "<tr><td>"+d.date.slice(5)+" "+DOW[d.dow]+"</td><td>"+fmt(d.range)+"</td><td class='"+cls(d.chg)+"'>"+fmt(d.chg)+"</td><td class='"+cls(d.o15c)+"'>"+fmt(d.o15c)+"</td><td>"+fmt(d.amr)+"</td><td>"+fmt(d.pmr)+"</td><td class='"+cls(d.gap)+"'>"+fmt(d.gap)+"</td></tr>";
+    return "<tr><td>"+d.date.slice(5)+" "+DOW[d.dow]+"</td><td>"+fmt(d.range)+"</td><td class='"+cls(d.chg)+"'>"+fmt(d.chg)+"</td><td class='"+cls(d.o15c)+"'>"+fmt(d.o15c)+"</td><td class='"+cls(d.postAm)+"'>"+fmt(d.postAm)+(postTag(d)==="cont"?" 跟":(postTag(d)==="rev"?" 反":""))+"</td><td>"+fmt(d.amr)+"</td><td>"+fmt(d.pmr)+"</td></tr>";
   }).join("");
   document.getElementById("more").textContent=show.length>80?("顯示前 80 列 · 共 "+show.length+" 日"):(show.length+" 日");
 }
 function kpi(l,v,s){return '<div class="card kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';}
-var presets=[["全部",{}],["周二＋周四",{dows:[1,3]}],["波幅≥450",{minRange:450}],["開市跟全日",{openFollow:true}],["上午大於下午",{amGtPm:true}],["上升日",{dir:"up"}],["下跌日",{dir:"down"}]];
+var presets=[["全部",{}],["周二＋周四",{dows:[1,3]}],["波幅≥450",{minRange:450}],["9:30跟走",{t930:"cont"}],["9:30反轉",{t930:"rev"}],["上升日",{dir:"up"}],["下跌日",{dir:"down"}]];
 document.getElementById("presets").innerHTML=presets.map(function(p,i){return '<button type="button" class="chip" data-p="'+i+'">'+p[0]+'</button>';}).join("");
 document.getElementById("dows").innerHTML="<span style='font-size:.72rem;color:var(--muted)'>星期</span>"+[0,1,2,3,4].map(function(d){return '<button type="button" class="chip on" data-d="'+d+'">'+DOW[d]+'</button>';}).join("");
 function sync(){
   document.getElementById("from").value=F.from;
   document.getElementById("to").value=F.to;
   document.getElementById("dir").value=F.dir;
+  document.getElementById("t930").value=F.t930||"all";
   document.getElementById("minRange").value=F.minRange;
   document.getElementById("minLab").textContent=F.minRange;
   document.getElementById("openFollow").checked=F.openFollow;
@@ -192,7 +226,7 @@ function sync(){
 }
 document.getElementById("presets").onclick=function(e){
   var b=e.target.closest("[data-p]"); if(!b) return;
-  var base={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false};
+  var base={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",t930:"all",minRange:0,openFollow:false,amGtPm:false};
   var extra=presets[+b.getAttribute("data-p")][1];
   F=Object.assign(base,extra); sync();
 };
@@ -203,7 +237,7 @@ document.getElementById("dows").onclick=function(e){
   else F.dows.push(d);
   sync();
 };
-["from","to","dir"].forEach(function(id){
+["from","to","dir","t930"].forEach(function(id){
   document.getElementById(id).onchange=function(){ F[id]=this.value; draw(); };
 });
 document.getElementById("minRange").oninput=function(){ F.minRange=+this.value; document.getElementById("minLab").textContent=F.minRange; draw(); };
@@ -211,7 +245,7 @@ document.getElementById("openFollow").onchange=function(){ F.openFollow=this.che
 document.getElementById("amGtPm").onchange=function(){ F.amGtPm=this.checked; draw(); };
 document.getElementById("q").oninput=draw;
 document.getElementById("reset").onclick=function(){
-  F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false}; sync();
+  F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",t930:"all",minRange:0,openFollow:false,amGtPm:false}; sync();
 };
 sync();
 </script>
