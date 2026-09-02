@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-01 09:48",
+  "asOf": "2026-09-02 09:01",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -105,7 +105,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ADP Non-Farm Employment Change",
       "actual": "",
-      "forecast": "48K",
+      "forecast": "47K",
       "previous": "44K"
     },
     {
