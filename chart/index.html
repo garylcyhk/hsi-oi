@@ -26,7 +26,6 @@ h1{margin:0;font-size:1rem;font-weight:600}h1 span{color:var(--muted);font-weigh
 .tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--border);background:#0f0f12}
 .tools button,.tools select,.tools a.ext{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:7px;padding:6px 10px;font-size:.78rem;cursor:pointer;text-decoration:none}
 .tools button.on{color:var(--emerald);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
-.tools .hint{color:#71717a;font-size:.72rem;margin-left:4px}
 #tvWrap{flex:1;min-height:0;background:#000}
 #tvFrame{width:100%;height:100%;border:0;display:block}
 </style>
@@ -64,14 +63,16 @@ document.addEventListener("click", function(e){
   if(m && !m.contains(e.target)) m.classList.remove("open");
 });
 var LS="exodus_tv_v1";
+var HSI_INTRA="FOREXCOM:HK50";
+var HSI_DAILY="INDEX:HSI";
 var SYMS=[
-  {id:"INDEX:HSI", label:"恒指 HSI"},
-  {id:"INDEX:HSI", label:"Mini", pick:"mini"},
-  {id:"INDEX:HSCE", label:"國指 HSCEI"},
-  {id:"HKEX:0700", label:"騰訊 0700"},
-  {id:"HKEX:9988", label:"阿里 9988"},
-  {id:"HKEX:3690", label:"美團 3690"},
-  {id:"HKEX:1810", label:"小米 1810"}
+  {id:"HSI", label:"恒指 HSI", kind:"hsi"},
+  {id:"Mini", label:"Mini", kind:"hsi"},
+  {id:"INDEX:HSCE", label:"國指 HSCEI", kind:"eq"},
+  {id:"HKEX:0700", label:"騰訊 0700", kind:"eq"},
+  {id:"HKEX:9988", label:"阿里 9988", kind:"eq"},
+  {id:"HKEX:3690", label:"美團 3690", kind:"eq"},
+  {id:"HKEX:1810", label:"小米 1810", kind:"eq"}
 ];
 var INTS=[
   {id:"5", label:"5分"},
@@ -80,32 +81,26 @@ var INTS=[
   {id:"D", label:"日線"},
   {id:"W", label:"週線"}
 ];
-function load(){
-  try { return JSON.parse(localStorage.getItem(LS)||"{}"); } catch(e){ return {}; }
-}
-function save(o){
-  try { localStorage.setItem(LS, JSON.stringify(o)); } catch(e){}
+function load(){ try { return JSON.parse(localStorage.getItem(LS)||"{}"); } catch(e){ return {}; } }
+function save(o){ try { localStorage.setItem(LS, JSON.stringify(o)); } catch(e){} }
+function intra(iv){ return iv!=="D" && iv!=="W" && iv!=="M"; }
+function resolve(pick, interval){
+  var row=SYMS.find(function(s){ return s.id===pick || s.label===pick; });
+  if(row && row.kind==="eq") return row.id;
+  return intra(interval) ? HSI_INTRA : HSI_DAILY;
 }
 function state(){
-  var s = load();
-  if(s.symbol==="HKEX:MHI1!" || s.symbol==="HKEX:HSI1!" || s.symbol==="HSI") s.symbol="INDEX:HSI";
-  return { symbol:s.symbol||"INDEX:HSI", interval:s.interval||"15", pick:s.pick||"HSI" };
+  var s=load();
+  var pick=s.pick||"HSI";
+  var interval=s.interval||"15";
+  return { pick:pick, interval:interval, symbol:resolve(pick, interval) };
 }
 function src(symbol, interval){
   var q=new URLSearchParams({
-    symbol:symbol,
-    interval:interval,
-    theme:"dark",
-    style:"1",
-    timezone:"Asia/Hong_Kong",
-    locale:"zh_TW",
-    toolbarbg:"18181b",
-    hideideas:"1",
-    withdateranges:"1",
-    hidesidetoolbar:"0",
-    symboledit:"1",
-    saveimage:"1",
-    hidevolume:"0"
+    symbol:symbol, interval:interval, theme:"dark", style:"1",
+    timezone:"Asia/Hong_Kong", locale:"zh_TW", toolbarbg:"18181b",
+    hideideas:"1", withdateranges:"1", hidesidetoolbar:"0",
+    symboledit:"1", saveimage:"1", hidevolume:"0"
   });
   return "https://www.tradingview.com/widgetembed/?"+q.toString();
 }
@@ -113,8 +108,7 @@ function renderTools(){
   var st=state();
   var html="";
   SYMS.forEach(function(s){
-    var key=s.pick||s.label;
-    html+='<button type="button" class="'+((st.pick===key || st.pick===s.label)?"on":"")+'" data-sym="'+s.id+'" data-pick="'+key+'">'+s.label+'</button>';
+    html+='<button type="button" class="'+(st.pick===s.id||st.pick===s.label?"on":"")+'" data-pick="'+s.id+'">'+s.label+'</button>';
   });
   html+='<select id="tvInt">';
   INTS.forEach(function(i){
@@ -123,15 +117,14 @@ function renderTools(){
   html+='</select>';
   html+='<a class="ext" href="https://www.tradingview.com/chart/?symbol=HKEX:MHI1!" target="_blank" rel="noopener">Mini 期貨 TV ↗</a>';
   html+='<a class="ext" href="https://www.tradingview.com/chart/?symbol=HKEX:HSI1!" target="_blank" rel="noopener">HSI 期貨 TV ↗</a>';
-  html+='<span class="hint">embed 用現貨；連續期貨要登入 TradingView</span>';
   document.getElementById("tools").innerHTML=html;
-  document.querySelectorAll("#tools button[data-sym]").forEach(function(b){
+  document.querySelectorAll("#tools button[data-pick]").forEach(function(b){
     b.onclick=function(){
-      var s=state(); s.symbol=b.getAttribute("data-sym"); s.pick=b.getAttribute("data-pick"); save(s); mount();
+      var s=state(); s.pick=b.getAttribute("data-pick"); s.symbol=resolve(s.pick,s.interval); save(s); mount();
     };
   });
   document.getElementById("tvInt").onchange=function(){
-    var s=state(); s.interval=this.value; save(s); mount();
+    var s=state(); s.interval=this.value; s.symbol=resolve(s.pick,s.interval); save(s); mount();
   };
 }
 function mount(){
