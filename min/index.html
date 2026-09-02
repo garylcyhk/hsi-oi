@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>分鐘時段分析 · Exodus Trading Group</title>
+<style>
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--faint:#71717a}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link img{height:36px;width:auto;border-radius:6px;object-fit:cover;display:block}
+h1{margin:0;font-size:1rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.8rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a{display:flex;width:100%;padding:9px 12px;border-radius:7px;color:var(--text);font-size:.82rem;text-decoration:none}
+.menu-dropdown a:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn,.chip,select,input[type=date],input[type=search]{border:1px solid var(--border);background:#111113;color:var(--text);border-radius:8px;padding:8px 10px;font-size:.82rem;cursor:pointer}
+.chip.on{color:var(--emerald);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
+label.f{font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;min-width:140px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0}
+.kpi .l{font-size:.72rem;color:var(--muted)}.kpi .v{font-size:1.2rem;font-weight:600;margin-top:4px}.kpi .s{font-size:.72rem;color:var(--faint);margin-top:2px}
+.grid2{display:grid;gap:10px;grid-template-columns:1fr} @media(min-width:860px){.grid2{grid-template-columns:1fr 1fr}}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:right;color:var(--faint);font-weight:500;padding:6px 4px;font-size:.72rem}
+th:first-child,td:first-child{text-align:left}
+td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,monospace}
+.up{color:var(--emerald)}.dn{color:var(--rose)}
+.bar{height:8px;background:#111113;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--emerald);border-radius:99px}
+.check{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a>
+    <h1>分鐘時段 <span>Session Lab</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="document.getElementById('headerMenu').classList.toggle('open')" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="./" class="menu-active">分鐘時段 Session</a>
+      <a href="../chart/">圖表 TradingView</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="../cbbc/">牛熊街貨 CBBC</a>
+      <a href="../calendar/">經濟日曆 Calendar</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="../checklist/">開市清單 Checklist</a>
+      <a href="../daily/">每日清單 Daily</a>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <p id="meta" style="color:var(--muted);font-size:.78rem;margin:0 0 12px"></p>
+  <div class="card">
+    <div class="row" id="presets"></div>
+    <div class="row" style="margin-top:10px">
+      <label class="f">由<input type="date" id="from"></label>
+      <label class="f">至<input type="date" id="to"></label>
+      <label class="f">最小波幅 <span id="minLab">0</span><input type="range" id="minRange" min="0" max="800" step="25" value="0"></label>
+      <label class="f">開收方向
+        <select id="dir"><option value="all">全部</option><option value="up">上升日</option><option value="down">下跌日</option></select>
+      </label>
+    </div>
+    <div class="row" style="margin-top:10px" id="dows"></div>
+    <div class="row" style="margin-top:10px">
+      <label class="check"><input type="checkbox" id="openFollow"> 開市15分跟全日</label>
+      <label class="check"><input type="checkbox" id="amGtPm"> 上午波幅大於下午</label>
+      <button type="button" class="btn" id="reset">重設</button>
+    </div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid2">
+    <div class="card" id="sess"></div>
+    <div class="card" id="week"></div>
+  </div>
+  <div class="card" style="margin-top:10px">
+    <div class="row" style="justify-content:space-between;margin-bottom:8px">
+      <strong style="font-size:.82rem;color:var(--muted)">每日明細</strong>
+      <input type="search" id="q" placeholder="搜尋 2026-06">
+    </div>
+    <div style="overflow:auto"><table><thead>
+      <tr><th>日期</th><th>波幅</th><th>開收</th><th>開市15</th><th>上午</th><th>下午</th><th>跳空</th></tr>
+    </thead><tbody id="tbody"></tbody></table></div>
+    <p id="more" style="color:var(--faint);font-size:.72rem;margin:8px 0 0"></p>
+  </div>
+</div>
+<script src="days.js"></script>
+<script>
+document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
+var DOW=["一","二","三","四","五"];
+var pack=window.MIN_DAYS;
+var F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false};
+function sign(n){return !n?0:(n>0?1:-1);}
+function mean(xs){return xs.length?xs.reduce(function(a,b){return a+b;},0)/xs.length:0;}
+function fmt(n,d){if(n==null||isNaN(n))return "—";return Number(n).toLocaleString("en-US",{maximumFractionDigits:d||0,minimumFractionDigits:d||0});}
+function cls(n){return n>0?"up":(n<0?"dn":"");}
+function filtered(){
+  return pack.days.filter(function(d){
+    if(d.date<F.from||d.date>F.to) return false;
+    if(F.dows.indexOf(d.dow)<0) return false;
+    if(F.dir==="up"&&d.chg<=0) return false;
+    if(F.dir==="down"&&d.chg>=0) return false;
+    if(d.range<F.minRange) return false;
+    if(F.openFollow&&!(d.o15c&&sign(d.o15c)===sign(d.chg))) return false;
+    if(F.amGtPm&&!(d.amr!=null&&d.pmr!=null&&d.amr>d.pmr)) return false;
+    return true;
+  });
+}
+function stats(rows){
+  var n=rows.length, up=rows.filter(function(d){return d.chg>0;}).length;
+  var follow=rows.filter(function(d){return d.o15c&&sign(d.o15c)===sign(d.chg);}).length;
+  var both=rows.filter(function(d){return d.amr!=null&&d.pmr!=null;});
+  var amB=both.filter(function(d){return d.amr>d.pmr;}).length;
+  return {
+    n:n, up:up, upPct:n?up/n*100:0,
+    avgR:mean(rows.map(function(d){return d.range;})),
+    o15:mean(rows.map(function(d){return d.o15r||0;})),
+    f30:mean(rows.map(function(d){return d.f30r||0;})),
+    am:mean(rows.map(function(d){return d.amr||0;})),
+    pm:mean(rows.map(function(d){return d.pmr||0;})),
+    close:mean(rows.map(function(d){return d.c45r||0;})),
+    follow:n?follow/n*100:0,
+    amGt:both.length?amB/both.length*100:0,
+    lunch:mean(rows.map(function(d){return Math.abs(d.lunch||0);})),
+    gap:mean(rows.map(function(d){return Math.abs(d.gap||0);}))
+  };
+}
+function draw(){
+  var rows=filtered();
+  var s=stats(rows);
+  document.getElementById("meta").textContent="1分鐘日盤 "+pack.span[0]+" → "+pack.span[1]+" · 篩選 "+s.n+" / "+pack.days.length+" 日";
+  document.getElementById("kpis").innerHTML=
+    kpi("交易日",s.n,fmt(s.upPct)+"% 上升")+
+    kpi("平均波幅",fmt(s.avgR),"開市15分 "+fmt(s.o15))+
+    kpi("開市跟全日",fmt(s.follow)+"%","首30分 "+fmt(s.f30))+
+    kpi("上午 / 下午",fmt(s.am)+" / "+fmt(s.pm),"上午較大 "+fmt(s.amGt)+"%");
+  var bars=[["開市15",s.o15],["首30",s.f30],["上午",s.am],["下午",s.pm],["收市45",s.close]];
+  var max=Math.max.apply(null,bars.map(function(b){return b[1];}))||1;
+  document.getElementById("sess").innerHTML="<div style='font-size:.82rem;color:var(--muted);margin-bottom:8px'>篩選後平均波幅</div>"+
+    bars.map(function(b){return "<div style='margin:8px 0;font-size:.8rem'><div style='display:flex;justify-content:space-between'><span>"+b[0]+"</span><span>"+fmt(b[1])+"</span></div><div class='bar'><i style='width:"+(b[1]/max*100)+"%'></i></div></div>";}).join("");
+  var whtml="<div style='font-size:.82rem;color:var(--muted);margin-bottom:8px'>星期</div><table><thead><tr><th>星期</th><th>日數</th><th>波幅</th><th>開收</th><th>升%</th></tr></thead><tbody>";
+  [0,1,2,3,4].forEach(function(dow){
+    var sub=rows.filter(function(d){return d.dow===dow;});
+    var avg=mean(sub.map(function(d){return d.range;}));
+    var chg=mean(sub.map(function(d){return d.chg;}));
+    var up=sub.length?sub.filter(function(d){return d.chg>0;}).length/sub.length*100:0;
+    whtml+="<tr><td>"+DOW[dow]+"</td><td>"+sub.length+"</td><td>"+fmt(avg)+"</td><td class='"+cls(chg)+"'>"+fmt(chg)+"</td><td>"+fmt(up)+"</td></tr>";
+  });
+  whtml+="</tbody></table><p style='color:var(--muted);font-size:.72rem;margin:10px 0 0'>午休跳空約 "+fmt(s.lunch)+" 點 · 隔夜跳空約 "+fmt(s.gap)+" 點</p>";
+  document.getElementById("week").innerHTML=whtml;
+  var q=(document.getElementById("q").value||"").trim();
+  var show=rows.filter(function(d){return !q||d.date.indexOf(q)>=0;}).slice().reverse();
+  document.getElementById("tbody").innerHTML=show.slice(0,80).map(function(d){
+    return "<tr><td>"+d.date.slice(5)+" "+DOW[d.dow]+"</td><td>"+fmt(d.range)+"</td><td class='"+cls(d.chg)+"'>"+fmt(d.chg)+"</td><td class='"+cls(d.o15c)+"'>"+fmt(d.o15c)+"</td><td>"+fmt(d.amr)+"</td><td>"+fmt(d.pmr)+"</td><td class='"+cls(d.gap)+"'>"+fmt(d.gap)+"</td></tr>";
+  }).join("");
+  document.getElementById("more").textContent=show.length>80?("顯示前 80 列 · 共 "+show.length+" 日"):(show.length+" 日");
+}
+function kpi(l,v,s){return '<div class="card kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';}
+var presets=[["全部",{}],["周二＋周四",{dows:[1,3]}],["波幅≥450",{minRange:450}],["開市跟全日",{openFollow:true}],["上午大於下午",{amGtPm:true}],["上升日",{dir:"up"}],["下跌日",{dir:"down"}]];
+document.getElementById("presets").innerHTML=presets.map(function(p,i){return '<button type="button" class="chip" data-p="'+i+'">'+p[0]+'</button>';}).join("");
+document.getElementById("dows").innerHTML="<span style='font-size:.72rem;color:var(--muted)'>星期</span>"+[0,1,2,3,4].map(function(d){return '<button type="button" class="chip on" data-d="'+d+'">'+DOW[d]+'</button>';}).join("");
+function sync(){
+  document.getElementById("from").value=F.from;
+  document.getElementById("to").value=F.to;
+  document.getElementById("dir").value=F.dir;
+  document.getElementById("minRange").value=F.minRange;
+  document.getElementById("minLab").textContent=F.minRange;
+  document.getElementById("openFollow").checked=F.openFollow;
+  document.getElementById("amGtPm").checked=F.amGtPm;
+  document.querySelectorAll("#dows .chip").forEach(function(b){
+    b.classList.toggle("on", F.dows.indexOf(+b.getAttribute("data-d"))>=0);
+  });
+  draw();
+}
+document.getElementById("presets").onclick=function(e){
+  var b=e.target.closest("[data-p]"); if(!b) return;
+  var base={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false};
+  var extra=presets[+b.getAttribute("data-p")][1];
+  F=Object.assign(base,extra); sync();
+};
+document.getElementById("dows").onclick=function(e){
+  var b=e.target.closest("[data-d]"); if(!b) return;
+  var d=+b.getAttribute("data-d");
+  if(F.dows.indexOf(d)>=0){ if(F.dows.length>1) F.dows=F.dows.filter(function(x){return x!==d;}); }
+  else F.dows.push(d);
+  sync();
+};
+["from","to","dir"].forEach(function(id){
+  document.getElementById(id).onchange=function(){ F[id]=this.value; draw(); };
+});
+document.getElementById("minRange").oninput=function(){ F.minRange=+this.value; document.getElementById("minLab").textContent=F.minRange; draw(); };
+document.getElementById("openFollow").onchange=function(){ F.openFollow=this.checked; draw(); };
+document.getElementById("amGtPm").onchange=function(){ F.amGtPm=this.checked; draw(); };
+document.getElementById("q").oninput=draw;
+document.getElementById("reset").onclick=function(){
+  F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",minRange:0,openFollow:false,amGtPm:false}; sync();
+};
+sync();
+</script>
+</body>
+</html>
