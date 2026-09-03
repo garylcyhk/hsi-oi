@@ -9,19 +9,24 @@
 <style>
 :root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--rose:#fb7185;--faint:#71717a}
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+html{font-size:14px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text)}
 header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
 .brand-lockup{display:flex;align-items:center;gap:12px}
 .brand-logo-link img{height:36px;width:auto;border-radius:6px;object-fit:cover;display:block}
 h1{margin:0;font-size:1rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.8rem}
 .header-menu{position:relative;display:inline-flex}
 .menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
-.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
 .header-menu.open .menu-dropdown{display:block}
 .menu-dropdown a{display:flex;width:100%;padding:9px 12px;border-radius:7px;color:var(--text);font-size:.82rem;text-decoration:none}
 .menu-dropdown a:hover{background:#27272a}
 .menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
 .menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-font{padding:6px 12px 10px}
+.menu-font label{display:block;font-size:.68rem;color:#71717a;margin-bottom:6px}
+.menu-font select{width:100%;background:#111113;border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 8px;font-size:.82rem}
 .wrap{max-width:1100px;margin:0 auto;padding:16px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -64,6 +69,19 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
       <a href="../analysis/">交易表現 Analysis</a>
       <a href="../checklist/">開市清單 Checklist</a>
       <a href="../daily/">每日清單 Daily</a>
+      <div class="menu-divider"></div>
+      <div class="menu-section">顯示</div>
+      <div class="menu-font" onclick="event.stopPropagation()">
+        <label for="minFontScale">字體大小 Font</label>
+        <select id="minFontScale" onchange="setMinFont(this.value)">
+          <option value="85">小 85%</option>
+          <option value="100">標準 100%</option>
+          <option value="115">中 115%</option>
+          <option value="130">大 130%</option>
+          <option value="150">更大 150%</option>
+          <option value="170">最大 170%</option>
+        </select>
+      </div>
     </div>
   </div>
 </header>
@@ -113,6 +131,27 @@ td{padding:7px 4px;border-top:1px solid var(--border);font-family:ui-monospace,m
 <script src="days.js"></script>
 <script>
 document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
+var MIN_FONT_LS="exodus_min_font_v1";
+function applyMinFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
+  document.documentElement.style.fontSize=(n/100*14)+"px";
+  var sel=document.getElementById("minFontScale");
+  if(sel) sel.value=String(n);
+}
+function setMinFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170;
+  if(n<85) n=85;
+  try{localStorage.setItem(MIN_FONT_LS,String(n));}catch(e){}
+  applyMinFont(n);
+}
+(function(){
+  var n=100;
+  try{n=parseInt(localStorage.getItem(MIN_FONT_LS)||"100",10)||100;}catch(e){}
+  applyMinFont(n);
+})();
 var DOW=["一","二","三","四","五"];
 var pack=window.MIN_DAYS;
 var F={from:pack.span[0],to:pack.span[1],dows:[0,1,2,3,4],dir:"all",t930:"all",minRange:0,openFollow:false,amGtPm:false};
