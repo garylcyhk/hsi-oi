@@ -1,9 +1,9 @@
 window.FF_CAL = {
-  "asOf": "2026-09-06 08:55",
+  "asOf": "2026-09-06 23:32",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "09-01–09-04 本週 · 自動更新",
+  "rangeLabel": "09-10–09-11 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
   "lastWeek": [
     {
@@ -59,104 +59,94 @@ window.FF_CAL = {
   ],
   "thisWeek": [
     {
-      "date": "2026-09-01",
-      "time": "22:00",
+      "date": "2026-09-10",
+      "time": "20:30",
       "ccy": "USD",
       "impact": "high",
-      "name": "ISM Manufacturing PMI",
-      "actual": "",
-      "forecast": "55.2",
-      "previous": "55.6"
-    },
-    {
-      "date": "2026-09-01",
-      "time": "22:00",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "ISM Manufacturing Prices",
-      "actual": "",
-      "forecast": "70.5",
-      "previous": "71.1"
-    },
-    {
-      "date": "2026-09-01",
-      "time": "22:00",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "JOLTS Job Openings",
-      "actual": "",
-      "forecast": "7.33M",
-      "previous": "7.36M"
-    },
-    {
-      "date": "2026-09-02",
-      "time": "09:30",
-      "ccy": "AUD",
-      "impact": "high",
-      "name": "GDP q/q",
+      "name": "Core PPI m/m",
       "actual": "",
       "forecast": "0.3%",
-      "previous": "0.3%"
+      "previous": "0.2%"
     },
     {
-      "date": "2026-09-02",
-      "time": "20:15",
+      "date": "2026-09-10",
+      "time": "20:30",
       "ccy": "USD",
-      "impact": "med",
-      "name": "ADP Non-Farm Employment Change",
+      "impact": "high",
+      "name": "PPI m/m",
       "actual": "",
-      "forecast": "47K",
-      "previous": "44K"
+      "forecast": "0.4%",
+      "previous": "0.0%"
     },
     {
-      "date": "2026-09-03",
+      "date": "2026-09-10",
       "time": "20:30",
       "ccy": "USD",
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
       "forecast": "205K",
-      "previous": "203K"
+      "previous": "206K"
     },
     {
-      "date": "2026-09-03",
-      "time": "22:00",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "ISM Services PMI",
-      "actual": "",
-      "forecast": "54.2",
-      "previous": "54.1"
-    },
-    {
-      "date": "2026-09-04",
+      "date": "2026-09-11",
       "time": "20:30",
       "ccy": "USD",
       "impact": "high",
-      "name": "Average Hourly Earnings m/m",
+      "name": "Core CPI m/m",
       "actual": "",
-      "forecast": "0.3%",
+      "forecast": "0.2%",
+      "previous": "0.2%"
+    },
+    {
+      "date": "2026-09-11",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Core CPI y/y",
+      "actual": "",
+      "forecast": "2.4%",
+      "previous": "2.5%"
+    },
+    {
+      "date": "2026-09-11",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "CPI m/m",
+      "actual": "",
+      "forecast": "0.4%",
       "previous": "0.1%"
     },
     {
-      "date": "2026-09-04",
+      "date": "2026-09-11",
       "time": "20:30",
       "ccy": "USD",
       "impact": "high",
-      "name": "Non-Farm Employment Change",
+      "name": "CPI y/y",
       "actual": "",
-      "forecast": "55K",
-      "previous": "-23K"
+      "forecast": "3.4%",
+      "previous": "3.4%"
     },
     {
-      "date": "2026-09-04",
-      "time": "20:30",
+      "date": "2026-09-11",
+      "time": "22:00",
       "ccy": "USD",
-      "impact": "high",
-      "name": "Unemployment Rate",
+      "impact": "med",
+      "name": "Prelim UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "4.1%",
-      "previous": "4.1%"
+      "forecast": "51.0",
+      "previous": "51.0"
+    },
+    {
+      "date": "2026-09-11",
+      "time": "22:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Prelim UoM Inflation Expectations",
+      "actual": "",
+      "forecast": "—",
+      "previous": "4.3%"
     }
   ]
 };
