@@ -219,6 +219,28 @@ function nearHeavyLines(list, color){
     `<span>${fmt(b.fut)} 張 <span class="${clsN(b.chg)}">${fmtC(b.chg)}</span></span></div>`
   ).join("") || `<div class="ln"><span>—</span></div>`;
 }
+function filesCard(){
+  function esc(s){
+    return String(s||"").replace(/[&<>"']/g,function(c){
+      if(c==="&") return "&"+"amp;";
+      if(c==="<") return "&"+"lt;";
+      if(c===">") return "&"+"gt;";
+      if(c==='"') return "&"+"quot;";
+      return "&#39;";
+    });
+  }
+  const pack = window.EXODUS_FILES || {files:[]};
+  const files = pack.files || [];
+  const rows = files.slice(0,5).map(function(f){
+    return '<div class="fh"><span class="n">'+esc(f.title)+'</span><span class="d">'+esc(f.date||"")+'</span></div>';
+  }).join("") || '<div class="meta">未有 PDF</div>';
+  return '<a class="card" href="./files/">'+
+    '<h2><span>檔案 Files</span><span class="go">詳情 →</span></h2>'+
+    '<div class="bias mid">'+(files.length?files.length+" 份 PDF":"暫無檔案")+'</div>'+
+    '<div class="files-home">'+rows+'</div>'+
+    '<div class="row" style="margin-top:8px"><span class="k">更新</span><span>'+esc(pack.asOf||"—")+'</span></div>'+
+  '</a>';
+}
 function cbbcCard(){
   const d = window.CBBC_HSI;
   if(!d){
@@ -371,6 +393,7 @@ function render(){
       <div class="row" style="margin-top:8px"><span class="k">日期</span><span>${dS||"—"}</span></div>
     </a></div>
     <div id="cardCbbc">${cbbcCard()}</div>
+    <div id="cardFiles">${filesCard()}</div>
   `;
   applyHomeSettings();
 }
@@ -384,6 +407,7 @@ let homeSettings = {
   showStock: true,
   showFut: true,
   showCbbc: true,
+  showFiles: true,
   showCons: true,
   showTodo: true
 };
@@ -401,6 +425,7 @@ function applyHomeSettings(){
     cardStock: homeSettings.showStock,
     cardFut: homeSettings.showFut,
     cardCbbc: homeSettings.showCbbc,
+    cardFiles: homeSettings.showFiles !== false,
     consLine: homeSettings.showCons
   };
   Object.keys(map).forEach(id => {
@@ -422,6 +447,8 @@ function openSettings(){
   document.getElementById("setShowFut").checked = homeSettings.showFut !== false;
   const scb = document.getElementById("setShowCbbc");
   if(scb) scb.checked = homeSettings.showCbbc !== false;
+  const sf = document.getElementById("setShowFiles");
+  if(sf) sf.checked = homeSettings.showFiles !== false;
   document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
   const sc = document.getElementById("setShowTodo");
   if(sc) sc.checked = homeSettings.showTodo !== false;
@@ -440,6 +467,8 @@ function saveSettings(){
   homeSettings.showFut = document.getElementById("setShowFut").checked;
   const scb2 = document.getElementById("setShowCbbc");
   if(scb2) homeSettings.showCbbc = scb2.checked;
+  const sf2 = document.getElementById("setShowFiles");
+  if(sf2) homeSettings.showFiles = sf2.checked;
   homeSettings.showCons = document.getElementById("setShowCons").checked;
   const sc2 = document.getElementById("setShowTodo");
   if(sc2) homeSettings.showTodo = sc2.checked;

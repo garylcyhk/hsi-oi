@@ -40,6 +40,10 @@ h1{margin:0;font-size:1.05rem;font-weight:600}h1 span{color:var(--muted);font-we
 .kpi{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px}
 .cbbc-ratio{height:8px;border-radius:999px;overflow:hidden;display:flex;background:#1f1f23;margin:8px 0 2px}
 .cbbc-ratio .b{background:var(--emerald);display:block;height:100%}.cbbc-ratio .r{background:var(--rose);display:block;height:100%}
+.files-home .fh{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #1f1f23;font-size:.78rem}
+.files-home .fh:last-child{border-bottom:none}
+.files-home .n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.files-home .d{color:#71717a;font-family:ui-monospace,monospace;flex:none;font-size:.7rem}
 .stocks table{width:100%;border-collapse:collapse;font-size:.78rem}
 #consLine,.cons-banner{grid-column:1/-1}
 .todo-wrap{margin:16px 0 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
@@ -99,6 +103,7 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
     <div class="modal-row"><label>顯示股票期權卡</label><input type="checkbox" id="setShowStock" checked /></div>
     <div class="modal-row"><label>顯示期貨卡</label><input type="checkbox" id="setShowFut" checked /></div>
     <div class="modal-row"><label>顯示牛熊街貨卡</label><input type="checkbox" id="setShowCbbc" checked /></div>
+    <div class="modal-row"><label>顯示檔案卡</label><input type="checkbox" id="setShowFiles" checked /></div>
     <div class="modal-row"><label>顯示日曆卡</label><input type="checkbox" id="setShowCal" checked /></div>
     <div class="modal-row"><label>顯示 TradingView 圖</label><input type="checkbox" id="setShowTv" checked /></div>
     <div class="modal-row"><label>顯示一致/分歧 · HSI↔Mini</label><input type="checkbox" id="setShowCons" checked /></div>
@@ -143,6 +148,7 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
 <script src="stock-oi/data.js"></script>
 <script src="cbbc/data.js"></script>
 <script src="calendar/data.js"></script>
+<script src="files/data.js"></script>
 <script src="home-dash.js"></script>
 <script src="home-pcr.js"></script>
 <script src="home-todo.js"></script>
