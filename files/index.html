@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script src="../auth.js"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>檔案 Files · Exodus Trading Group</title>
+<style>
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--text:#e4e4e7;--muted:#a1a1aa;--emerald:#34d399;--faint:#71717a}
+*{box-sizing:border-box}
+html{font-size:14px}
+html,body{height:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+header{border-bottom:1px solid var(--border);background:rgba(24,24,27,.92);position:sticky;top:0;z-index:20;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-logo-link img{height:36px;width:auto;border-radius:6px;object-fit:cover;display:block}
+h1{margin:0;font-size:1rem;font-weight:600}h1 span{color:var(--muted);font-weight:400;font-size:.8rem}
+.header-menu{position:relative;display:inline-flex}
+.menu-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.menu-dropdown{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:10px;background:#18181b;border:1px solid #27272a;z-index:50}
+.header-menu.open .menu-dropdown{display:block}
+.menu-dropdown a{display:flex;width:100%;padding:9px 12px;border-radius:7px;color:var(--text);font-size:.82rem;text-decoration:none}
+.menu-dropdown a:hover{background:#27272a}
+.menu-dropdown a.menu-active{color:var(--emerald);background:rgba(52,211,153,.1)}
+.menu-section{font-size:.68rem;color:#71717a;padding:6px 12px 4px}
+.menu-divider{height:1px;background:#27272a;margin:6px 4px}
+.menu-font{padding:6px 12px 10px}
+.menu-font label{display:block;font-size:.68rem;color:#71717a;margin-bottom:6px}
+.menu-font select{width:100%;background:#111113;border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 8px;font-size:.82rem}
+.layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(260px,340px) 1fr}
+@media(max-width:860px){.layout{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+.sidebar{border-right:1px solid var(--border);padding:14px;overflow:auto;background:#0c0c0e}
+.note{color:var(--muted);font-size:.78rem;line-height:1.5;margin:0 0 10px}
+.search{width:100%;background:#111113;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-size:.82rem;margin-bottom:10px}
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--border);background:#111113;color:var(--text);border-radius:999px;padding:5px 10px;font-size:.75rem;cursor:pointer}
+.chip.on{color:var(--emerald);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
+.file{display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--card);color:inherit;border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+.file.on{border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
+.file .t{font-size:.88rem;font-weight:600;margin:0 0 2px}
+.file .e{font-size:.72rem;color:var(--muted)}
+.file .m{font-size:.7rem;color:var(--faint);margin-top:6px;font-family:ui-monospace,monospace}
+.empty{padding:24px 8px;color:var(--muted);font-size:.82rem;line-height:1.6}
+.viewer{min-height:0;display:flex;flex-direction:column;background:#000}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);background:#0f0f12}
+.toolbar .ttl{flex:1;min-width:140px;font-size:.88rem;font-weight:600}
+.toolbar .sub{display:block;font-size:.7rem;color:var(--muted);font-weight:400;margin-top:2px}
+.btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:8px;padding:7px 12px;font-size:.78rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.primary{color:var(--emerald);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
+#frame{flex:1;width:100%;border:0;background:#111;min-height:70vh}
+.placeholder{flex:1;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:.85rem;padding:24px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-lockup">
+    <a href="../" class="brand-logo-link" title="總覽"><img src="../exodus-logo.jpg" alt="Exodus Trading Group" /></a>
+    <h1>檔案 <span>Files</span></h1>
+  </div>
+  <div class="header-menu" id="headerMenu">
+    <button type="button" class="menu-toggle" onclick="document.getElementById('headerMenu').classList.toggle('open')" aria-label="選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div class="menu-dropdown">
+      <div class="menu-section">頁面</div>
+      <a href="../">總覽 Home</a>
+      <a href="./" class="menu-active">檔案 Files</a>
+      <a href="../chart/">圖表 TradingView</a>
+      <a href="../options/">恒指期權 HSI OI</a>
+      <a href="../cbbc/">牛熊街貨 CBBC</a>
+      <a href="../calendar/">經濟日曆 Calendar</a>
+      <a href="../stock-oi/">股票期權 Stocks</a>
+      <a href="../futures/">期貨 Futures</a>
+      <a href="../min/">分鐘時段 Session</a>
+      <a href="../analysis/">交易表現 Analysis</a>
+      <a href="../checklist/">開市清單 Checklist</a>
+      <a href="../daily/">每日清單 Daily</a>
+      <div class="menu-divider"></div>
+      <div class="menu-section">顯示</div>
+      <div class="menu-font" onclick="event.stopPropagation()">
+        <label for="filesFontScale">字體大小 Font</label>
+        <select id="filesFontScale" onchange="setFilesFont(this.value)">
+          <option value="85">小 85%</option>
+          <option value="100">標準 100%</option>
+          <option value="115">中 115%</option>
+          <option value="130">大 130%</option>
+          <option value="150">更大 150%</option>
+          <option value="170">最大 170%</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <p class="note" id="meta">載入中…</p>
+    <input class="search" id="q" type="search" placeholder="搜尋檔名 / 備註" />
+    <div class="cats" id="cats"></div>
+    <div id="list"></div>
+  </aside>
+  <section class="viewer">
+    <div class="toolbar" id="bar" style="display:none">
+      <div>
+        <div class="ttl" id="ttl"></div>
+        <span class="sub" id="sub"></span>
+      </div>
+      <a class="btn" id="openTab" href="#" target="_blank" rel="noopener">新分頁開啟</a>
+      <a class="btn primary" id="dl" href="#" download>下載 PDF</a>
+    </div>
+    <iframe id="frame" title="PDF" style="display:none"></iframe>
+    <div class="placeholder" id="ph">左面揀一份 PDF 預覽。需要就撳下載。</div>
+  </section>
+</div>
+<script src="data.js"></script>
+<script>
+document.addEventListener("click",function(e){var m=document.getElementById("headerMenu");if(m&&!m.contains(e.target))m.classList.remove("open");});
+var FONT_LS="exodus_files_font_v1";
+function applyFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170; if(n<85) n=85;
+  document.documentElement.style.fontSize=(n/100*14)+"px";
+  var sel=document.getElementById("filesFontScale");
+  if(sel) sel.value=String(n);
+}
+function setFilesFont(scale){
+  var n=parseInt(scale,10)||100;
+  if(n>170) n=170; if(n<85) n=85;
+  try{localStorage.setItem(FONT_LS,String(n));}catch(e){}
+  applyFont(n);
+}
+(function(){var n=100; try{n=parseInt(localStorage.getItem(FONT_LS)||"100",10)||100;}catch(e){} applyFont(n);})();
+
+var pack=window.EXODUS_FILES||{files:[]};
+var FILES=pack.files||[];
+var CAT="全部";
+var current=null;
+
+function cats(){
+  var set=["全部"];
+  FILES.forEach(function(f){ if(f.cat && set.indexOf(f.cat)<0) set.push(f.cat); });
+  return set;
+}
+function filtered(){
+  var q=(document.getElementById("q").value||"").trim().toLowerCase();
+  return FILES.filter(function(f){
+    if(CAT!=="全部" && f.cat!==CAT) return false;
+    if(!q) return true;
+    var blob=(f.title+" "+(f.titleEn||"")+" "+(f.note||"")+" "+(f.file||"")).toLowerCase();
+    return blob.indexOf(q)>=0;
+  });
+}
+function renderList(){
+  document.getElementById("meta").textContent=(FILES.length?FILES.length+" 份檔案":"暫未有檔案")+" · 更新 "+(pack.asOf||"—");
+  document.getElementById("cats").innerHTML=cats().map(function(c){
+    return '<button type="button" class="chip'+(c===CAT?" on":"")+'" data-cat="'+c+'">'+c+'</button>';
+  }).join("");
+  var rows=filtered();
+  var box=document.getElementById("list");
+  if(!FILES.length){
+    box.innerHTML='<div class="empty">未有 PDF。<br>喺對話傳檔案俾我（可一次多份），寫低標題／分類，我就加到呢頁，可以瀏覽同下載。</div>';
+    return;
+  }
+  if(!rows.length){
+    box.innerHTML='<div class="empty">冇符合篩選嘅檔案。</div>';
+    return;
+  }
+  box.innerHTML=rows.map(function(f){
+    return '<button type="button" class="file'+(current&&current.id===f.id?" on":"")+'" data-id="'+f.id+'">'+
+      '<div class="t">'+f.title+'</div>'+
+      (f.titleEn?'<div class="e">'+f.titleEn+'</div>':'')+
+      '<div class="m">'+(f.cat||"PDF")+" · "+(f.date||"—")+(f.size?" · "+f.size:"")+'</div></button>';
+  }).join("");
+}
+function openFile(f){
+  current=f;
+  location.hash=f.id;
+  document.getElementById("bar").style.display="flex";
+  document.getElementById("ttl").textContent=f.title;
+  document.getElementById("sub").textContent=(f.note||f.titleEn||"")+(f.date?" · "+f.date:"");
+  var url=f.file;
+  document.getElementById("frame").style.display="block";
+  document.getElementById("frame").src=url;
+  document.getElementById("ph").style.display="none";
+  document.getElementById("openTab").href=url;
+  var dl=document.getElementById("dl");
+  dl.href=url;
+  dl.setAttribute("download", (f.title||"file")+".pdf");
+  renderList();
+}
+function pickFromHash(){
+  var id=(location.hash||"").replace(/^#/,"");
+  var f=FILES.find(function(x){return x.id===id;});
+  if(f) openFile(f);
+}
+document.getElementById("cats").onclick=function(e){
+  var b=e.target.closest("[data-cat]"); if(!b) return;
+  CAT=b.getAttribute("data-cat"); renderList();
+};
+document.getElementById("list").onclick=function(e){
+  var b=e.target.closest("[data-id]"); if(!b) return;
+  var f=FILES.find(function(x){return x.id===b.getAttribute("data-id");});
+  if(f) openFile(f);
+};
+document.getElementById("q").oninput=renderList;
+window.addEventListener("hashchange", pickFromHash);
+renderList();
+pickFromHash();
+</script>
+</body>
+</html>
