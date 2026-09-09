@@ -44,7 +44,7 @@ def parse(html: str) -> dict:
     year = int(published[:4])
     as_of = f"{year}-{dates[0]}" if dates else published[:10]
     flow = re.search(
-        r"Bull\s*:\s*<i class=\"icon-(up|down)[^"]*\"></i>\s*([0-9,]+)\s*Bear\s*:\s*<i class=\"icon-(up|down)[^"]*\"></i>\s*([0-9,]+)",
+        r'Bull\s*:\s*<i class="icon-(up|down)[^"]*"></i>\s*([0-9,]+)\s*Bear\s*:\s*<i class="icon-(up|down)[^"]*"></i>\s*([0-9,]+)',
         html,
     )
     if flow:
@@ -108,6 +108,8 @@ def main():
         html = fetch()
         payload = parse(html)
     except Exception as exc:
+        import traceback
+        traceback.print_exc()
         print("cbbc update failed:", exc)
         return 1
     OUT.parent.mkdir(parents=True, exist_ok=True)
