@@ -19,7 +19,7 @@ const NOTODO_DAY = "exodus_home_notodo_day_v1_";
 const NOTODO_DEFAULT = [
   { id:"n1", title:"今日不做 Not to-do", items:[
     "追開市第一跳／第一根衝動 K",
-    "屠牛／屠熊未完就 fade",
+    "屠牛／屠熊仲進行緊 → 唔好 fade（跟被迫對沖）",
     "把「我怕／我想追」當進場訊號",
     "開市標超過兩道戰場",
     "作廢線外攤平／盤中發明第三套劇本",
@@ -50,6 +50,13 @@ function notodoLoad(){
       notodoChecks = o.checks || {};
     }
   } catch(e){}
+  notodoSecs.forEach(function(sec){
+    (sec.items||[]).forEach(function(txt,i){
+      if(txt==="屠牛／屠熊未完就 fade"){
+        sec.items[i]="屠牛／屠熊仲進行緊 → 唔好 fade（跟被迫對沖）";
+      }
+    });
+  });
 }
 function notodoSave(){
   try { localStorage.setItem(NOTODO_TPL, JSON.stringify(notodoSecs)); } catch(e){}
