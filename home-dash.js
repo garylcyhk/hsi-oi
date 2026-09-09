@@ -409,7 +409,8 @@ let homeSettings = {
   showCbbc: true,
   showFiles: true,
   showCons: true,
-  showTodo: true
+  showTodo: true,
+  showNotodo: true
 };
 try {
   const s = JSON.parse(localStorage.getItem(HOME_LS)||"null");
@@ -452,6 +453,8 @@ function openSettings(){
   document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
   const sc = document.getElementById("setShowTodo");
   if(sc) sc.checked = homeSettings.showTodo !== false;
+  const sn = document.getElementById("setShowNotodo");
+  if(sn) sn.checked = homeSettings.showNotodo !== false;
   m.classList.add("open");
 }
 function closeSettings(){
@@ -472,6 +475,8 @@ function saveSettings(){
   homeSettings.showCons = document.getElementById("setShowCons").checked;
   const sc2 = document.getElementById("setShowTodo");
   if(sc2) homeSettings.showTodo = sc2.checked;
+  const sn2 = document.getElementById("setShowNotodo");
+  if(sn2) homeSettings.showNotodo = sn2.checked;
   try { localStorage.setItem(HOME_LS, JSON.stringify(homeSettings)); } catch(e){}
   applyHomeSettings();
   closeSettings();

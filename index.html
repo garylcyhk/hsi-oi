@@ -108,6 +108,7 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
     <div class="modal-row"><label>顯示 TradingView 圖</label><input type="checkbox" id="setShowTv" checked /></div>
     <div class="modal-row"><label>顯示一致/分歧 · HSI↔Mini</label><input type="checkbox" id="setShowCons" checked /></div>
     <div class="modal-row"><label>顯示待辦 To-do</label><input type="checkbox" id="setShowTodo" checked /></div>
+    <div class="modal-row"><label>顯示不做 Not to-do</label><input type="checkbox" id="setShowNotodo" checked /></div>
     <div class="modal-actions">
       <button type="button" onclick="closeSettings()">取消</button>
       <button type="button" class="primary" onclick="saveSettings()">儲存</button>
@@ -140,6 +141,23 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
       </div>
     </div>
     <div id="todoSecs"></div>
+    <div class="todo-msg" id="todoMsg"></div>
+  </div>
+</div>
+<div class="container" id="notodoBlock" style="padding-top:0">
+  <div class="todo-wrap" id="notodoWrap">
+    <div class="todo-head">
+      <h2>不做 Not to-do</h2>
+      <div class="todo-btns">
+        <button type="button" id="notodoEditBtn" onclick="notodoToggleEdit()">編輯 Edit</button>
+        <button type="button" onclick="notodoAddSection()">＋ 新區塊</button>
+        <button type="button" class="primary" onclick="notodoSave()">儲存 Save</button>
+        <button type="button" onclick="notodoResetToday()">清除今日勾選</button>
+        <button type="button" class="danger" onclick="notodoResetTpl()">還原預設</button>
+      </div>
+    </div>
+    <div id="notodoSecs"></div>
+    <div class="todo-msg" id="notodoMsg"></div>
   </div>
 </div>
 <footer><p>Exodus Trading Group · 數據僅供參考</p></footer>
@@ -152,6 +170,7 @@ footer{margin-top:28px;padding:16px;text-align:center;color:#52525b;font-size:.7
 <script src="home-dash.js"></script>
 <script src="home-pcr.js"></script>
 <script src="home-todo.js"></script>
+<script src="home-notodo.js"></script>
 <script src="home-print.js"></script>
 <script src="home-order.js"></script>
 <script src="calendar-home.js"></script>
