@@ -65,6 +65,8 @@ git push
 ## 之後的使用
 
 - 每天 22:50 HKT 左右會自動更新
+- 平日 **09:00 HKT** 自動組裝 [早晨簡報](https://garylcyhk.github.io/hsi-oi/morning-brief/)（美股隔夜 + 期權牆 + 街貨地圖）
+- 直接打開你的 GitHub Pages 網址即可
 - 直接打開你的 GitHub Pages 網址即可
 - 不需要再手動跑指令
 
@@ -81,5 +83,17 @@ python3 fetch_and_parse.py 2026-08-18
 
 ---
 
-數據來源：港交所每日市場報告  
+數據來源：港交所每日市場報告、高盛／法興街貨圖、Yahoo Finance 美股日線、Forex Factory 日曆  
 僅供個人交易參考，不構成投資建議。
+
+---
+
+## 早晨簡報（09:00 HKT）
+
+- 工作流：`.github/workflows/update-morning-brief.yml`（`cron: 0 1 * * 1-5` = 平日 09:00 香港時間）
+- 組裝腳本：`scripts/update_morning_brief.py`
+- 產出：`morning-brief/data.js`（`window.MORNING_BRIEF`）以及 `morning-brief/history/YYYY-MM-DD.json`
+- 只讀現有 `data.js` / `data-mini.js` / `cbbc/data.js` / `stock-oi/data.js` / `calendar/data.js`，外加 Yahoo 日線。缺檔或不是上一個港股交易日 → 該欄顯示「未能核實／未更新」，**不估算**。
+- 港股假期／週末寫 stub，不編假報告。
+- 手動：Actions → **Update morning brief** → Run workflow
+

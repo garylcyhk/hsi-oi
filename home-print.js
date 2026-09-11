@@ -13,7 +13,7 @@
   .container{padding:0;max-width:none}
   .note{color:#444;margin-bottom:8px}
   .grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px}
-  #consLine,#cardCal.cal-wfull{grid-column:1/-1}
+  #consLine,#cardCal.cal-wfull,#cardBrief{grid-column:1/-1}
   .card,.todo-wrap,.cons-banner,.todo-sec{
     background:#fff!important;color:#111!important;border:1px solid #bbb!important;
     box-shadow:none!important;transform:none!important;break-inside:avoid;page-break-inside:avoid

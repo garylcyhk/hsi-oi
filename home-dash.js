@@ -357,6 +357,7 @@ function render(){
     : "";
 
   document.getElementById("grid").innerHTML = `
+    <div id="cardBrief">${typeof morningBriefHTML==="function"?morningBriefHTML(window.MORNING_BRIEF,"card"):'<a class="card" href="./morning-brief/"><h2><span>早晨簡報</span><span class="go">詳情 →</span></h2><div class="bias na">未能核實／未更新</div></a>'}</div>
     <div id="cardHsi">${optionsCard("恒指期權 HSI", "./options/#hsi", rH, dH, "")}</div>
     <div id="cardMini">${optionsCard("小型恒指 Mini-HSI", "./options/#mini", rM, dM, "")}</div>
     <div id="consLine" class="cons-banner ${consCls}"><span class="cons-title">一致 / 分歧</span>${consText}</div>
@@ -408,6 +409,7 @@ let homeSettings = {
   showFut: true,
   showCbbc: true,
   showFiles: true,
+  showBrief: true,
   showCons: true,
   showTodo: true,
   showNotodo: true
@@ -427,6 +429,7 @@ function applyHomeSettings(){
     cardFut: homeSettings.showFut,
     cardCbbc: homeSettings.showCbbc,
     cardFiles: homeSettings.showFiles !== false,
+    cardBrief: homeSettings.showBrief !== false,
     consLine: homeSettings.showCons
   };
   Object.keys(map).forEach(id => {
@@ -450,6 +453,8 @@ function openSettings(){
   if(scb) scb.checked = homeSettings.showCbbc !== false;
   const sf = document.getElementById("setShowFiles");
   if(sf) sf.checked = homeSettings.showFiles !== false;
+  const sb = document.getElementById("setShowBrief");
+  if(sb) sb.checked = homeSettings.showBrief !== false;
   document.getElementById("setShowCons").checked = homeSettings.showCons !== false;
   const sc = document.getElementById("setShowTodo");
   if(sc) sc.checked = homeSettings.showTodo !== false;
@@ -472,6 +477,8 @@ function saveSettings(){
   if(scb2) homeSettings.showCbbc = scb2.checked;
   const sf2 = document.getElementById("setShowFiles");
   if(sf2) homeSettings.showFiles = sf2.checked;
+  const sb2 = document.getElementById("setShowBrief");
+  if(sb2) homeSettings.showBrief = sb2.checked;
   homeSettings.showCons = document.getElementById("setShowCons").checked;
   const sc2 = document.getElementById("setShowTodo");
   if(sc2) homeSettings.showTodo = sc2.checked;
