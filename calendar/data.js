@@ -1,12 +1,11 @@
 window.FF_CAL = {
-  "asOf": "2026-09-13 08:59",
+  "asOf": "2026-09-14 00:24",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "09-10–09-11 本週 · 自動更新",
+  "rangeLabel": "09-16–09-18 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
-  "lastWeek": [],
-  "thisWeek": [
+  "lastWeek": [
     {
       "date": "2026-09-10",
       "time": "09:15",
@@ -106,6 +105,128 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "—",
       "previous": "4.3%"
+    }
+  ],
+  "thisWeek": [
+    {
+      "date": "2026-09-16",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Core Retail Sales m/m",
+      "actual": "",
+      "forecast": "0.5%",
+      "previous": "-0.3%"
+    },
+    {
+      "date": "2026-09-16",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Retail Sales m/m",
+      "actual": "",
+      "forecast": "0.8%",
+      "previous": "-0.6%"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "02:00",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Federal Funds Rate",
+      "actual": "",
+      "forecast": "—",
+      "previous": "3.75%"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "02:00",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "FOMC Economic Projections",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "02:00",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "FOMC Statement",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "02:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "FOMC Press Conference",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Philly Fed Manufacturing Index",
+      "actual": "",
+      "forecast": "28.9",
+      "previous": "47.4"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "20:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Unemployment Claims",
+      "actual": "",
+      "forecast": "209K",
+      "previous": "206K"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "07:30",
+      "ccy": "AUD",
+      "impact": "med",
+      "name": "RBA Gov Bullock Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "10:30",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "BOJ Policy Rate",
+      "actual": "",
+      "forecast": "<1.25%",
+      "previous": "<1.00%"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "10:30",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "Monetary Policy Statement",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "13:30",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "BOJ Press Conference",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
     }
   ]
 };
