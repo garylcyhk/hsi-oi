@@ -1,9 +1,4 @@
-/* Exodus morning brief — generated, do not edit by hand.
-   Builder: scripts/update_morning_brief.py
-   Schedule: weekday 09:00 Asia/Hong_Kong (cron 0 1 * * 1-5).
-   Missing feeds stay empty with 未能核實／未更新. Never invents walls or prices.
-*/
-window.MORNING_BRIEF = {
+{
   "asOf": "2026-09-14 14:00",
   "sessionDate": "2026-09-14",
   "usSessionDate": "2026-09-11",
@@ -370,4 +365,4 @@ window.MORNING_BRIEF = {
   "missing": [
     "小恒期權：未能核實／未更新（最新檔為 2026-09-09，預期 2026-09-11）"
   ]
-};
+}
