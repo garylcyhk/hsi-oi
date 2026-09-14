@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-14 00:24",
+  "asOf": "2026-09-14 09:02",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -135,7 +135,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Federal Funds Rate",
       "actual": "",
-      "forecast": "—",
+      "forecast": "4.00%",
       "previous": "3.75%"
     },
     {
