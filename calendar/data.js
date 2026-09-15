@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-14 09:02",
+  "asOf": "2026-09-15 09:26",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -175,7 +175,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Philly Fed Manufacturing Index",
       "actual": "",
-      "forecast": "28.9",
+      "forecast": "31.3",
       "previous": "47.4"
     },
     {
@@ -185,7 +185,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "209K",
+      "forecast": "208K",
       "previous": "206K"
     },
     {
