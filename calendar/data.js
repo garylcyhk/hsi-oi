@@ -1,9 +1,9 @@
 window.FF_CAL = {
-  "asOf": "2026-09-15 09:26",
+  "asOf": "2026-09-16 09:23",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "09-16–09-18 本週 · 自動更新",
+  "rangeLabel": "09-15–09-18 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
   "lastWeek": [
     {
@@ -109,13 +109,23 @@ window.FF_CAL = {
   ],
   "thisWeek": [
     {
+      "date": "2026-09-15",
+      "time": "22:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Treasury Sec Bessent Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
       "date": "2026-09-16",
       "time": "20:30",
       "ccy": "USD",
       "impact": "med",
       "name": "Core Retail Sales m/m",
       "actual": "",
-      "forecast": "0.5%",
+      "forecast": "0.6%",
       "previous": "-0.3%"
     },
     {
@@ -185,7 +195,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "208K",
+      "forecast": "207K",
       "previous": "206K"
     },
     {
