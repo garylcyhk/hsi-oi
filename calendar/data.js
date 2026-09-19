@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-18 09:16",
+  "asOf": "2026-09-19 09:09",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -210,7 +210,7 @@ window.FF_CAL = {
     },
     {
       "date": "2026-09-18",
-      "time": "10:30",
+      "time": "10:54",
       "ccy": "JPY",
       "impact": "high",
       "name": "BOJ Policy Rate",
@@ -220,7 +220,7 @@ window.FF_CAL = {
     },
     {
       "date": "2026-09-18",
-      "time": "10:30",
+      "time": "10:54",
       "ccy": "JPY",
       "impact": "high",
       "name": "Monetary Policy Statement",
@@ -230,7 +230,7 @@ window.FF_CAL = {
     },
     {
       "date": "2026-09-18",
-      "time": "13:30",
+      "time": "14:30",
       "ccy": "JPY",
       "impact": "high",
       "name": "BOJ Press Conference",
