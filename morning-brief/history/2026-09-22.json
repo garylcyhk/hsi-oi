@@ -1,9 +1,4 @@
-/* Exodus morning brief — generated, do not edit by hand.
-   Builder: scripts/update_morning_brief.py
-   Schedule: weekday 09:00 Asia/Hong_Kong (cron 0 1 * * 1-5).
-   Missing feeds stay empty with 未能核實／未更新. Never invents walls or prices.
-*/
-window.MORNING_BRIEF = {
+{
   "asOf": "2026-09-22 13:59",
   "sessionDate": "2026-09-22",
   "usSessionDate": "2026-09-21",
@@ -453,4 +448,4 @@ window.MORNING_BRIEF = {
     "現價之上近收回熊證較重，屬對沖流動性地圖；屠熊進行中不要 fade。"
   ],
   "missing": []
-};
+}
