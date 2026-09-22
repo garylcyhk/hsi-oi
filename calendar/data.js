@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-21 09:04",
+  "asOf": "2026-09-22 09:35",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -24,7 +24,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Employment Change",
       "actual": "",
-      "forecast": "20.9K",
+      "forecast": "22.5K",
       "previous": "-15.8K"
     },
     {
@@ -54,7 +54,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Revised UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "47.5",
+      "forecast": "47.4",
       "previous": "47.8"
     },
     {
