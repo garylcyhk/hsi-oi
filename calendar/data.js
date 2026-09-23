@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-22 09:35",
+  "asOf": "2026-09-23 09:29",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -13,6 +13,16 @@ window.FF_CAL = {
       "ccy": "AUD",
       "impact": "high",
       "name": "RBA Gov Bullock Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-22",
+      "time": "21:55",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "President Trump Speaks",
       "actual": "",
       "forecast": "—",
       "previous": "—"
