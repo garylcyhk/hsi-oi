@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-23 09:29",
+  "asOf": "2026-09-24 09:22",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -34,7 +34,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Employment Change",
       "actual": "",
-      "forecast": "22.5K",
+      "forecast": "21.5K",
       "previous": "-15.8K"
     },
     {
