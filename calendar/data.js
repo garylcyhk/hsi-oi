@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-24 09:22",
+  "asOf": "2026-09-25 09:28",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -56,6 +56,26 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "201K",
       "previous": "196K"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "22:15",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "President Trump Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-09-25",
+      "time": "07:55",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "President Trump Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
     },
     {
       "date": "2026-09-25",
