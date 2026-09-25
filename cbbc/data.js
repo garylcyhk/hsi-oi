@@ -4,7 +4,7 @@
 */
 window.CBBC_HSI = {
   "asOf": "2026-09-24",
-  "published": "2026-09-25 07:05",
+  "published": "2026-09-25 08:06",
   "spot": 24761,
   "prevClose": 24834,
   "source": "Issuer CBBC outstanding distribution (GS market-wide, HKEX-reported street qty)",
@@ -48,7 +48,7 @@ window.CBBC_HSI = {
       "09-18"
     ]
   },
-  "calledNote": "自動更新自高盛 · 圖表 2026-09-25 07:05 · 街貨欄 09-24",
+  "calledNote": "自動更新自高盛 · 圖表 2026-09-25 08:06 · 街貨欄 09-24",
   "bins": [
     {
       "lo": 27200,
@@ -257,38 +257,6 @@ window.CBBC_HSI = {
       ],
       "call": 24800,
       "koPct": 0.6
-    },
-    {
-      "lo": 24500,
-      "hi": 24699,
-      "side": "bull",
-      "fut": 1046,
-      "chg": -41,
-      "hist": [
-        1046,
-        1087,
-        944,
-        513,
-        265
-      ],
-      "call": 24500,
-      "koPct": 0.7
-    },
-    {
-      "lo": 24300,
-      "hi": 24499,
-      "side": "bull",
-      "fut": 1576,
-      "chg": 291,
-      "hist": [
-        1576,
-        1284,
-        975,
-        798,
-        956
-      ],
-      "call": 24300,
-      "koPct": 1.5
     },
     {
       "lo": 24100,
