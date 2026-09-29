@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-09-28 09:38",
+  "asOf": "2026-09-29 10:33",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -135,7 +135,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "CB Consumer Confidence",
       "actual": "",
-      "forecast": "90.1",
+      "forecast": "89.2",
       "previous": "89.4"
     },
     {
@@ -185,7 +185,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ADP Non-Farm Employment Change",
       "actual": "",
-      "forecast": "70K",
+      "forecast": "73K",
       "previous": "38K"
     },
     {
@@ -225,7 +225,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "199K",
+      "forecast": "201K",
       "previous": "197K"
     },
     {
@@ -245,7 +245,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ISM Manufacturing PMI",
       "actual": "",
-      "forecast": "55.0",
+      "forecast": "54.8",
       "previous": "54.6"
     },
     {
@@ -275,7 +275,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Non-Farm Employment Change",
       "actual": "",
-      "forecast": "98K",
+      "forecast": "90K",
       "previous": "162K"
     },
     {
