@@ -1,9 +1,4 @@
-/* Exodus morning brief — generated, do not edit by hand.
-   Builder: scripts/update_morning_brief.py
-   Schedule: weekday 09:00 Asia/Hong_Kong (cron 0 1 * * 1-5).
-   Missing feeds stay empty with 未能核實／未更新. Never invents walls or prices.
-*/
-window.MORNING_BRIEF = {
+{
   "asOf": "2026-10-01 15:06",
   "sessionDate": "2026-10-01",
   "usSessionDate": "2026-09-30",
@@ -44,4 +39,4 @@ window.MORNING_BRIEF = {
     "休市日不編製開市濾鏡。"
   ],
   "missing": []
-};
+}
