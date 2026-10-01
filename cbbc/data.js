@@ -22,18 +22,18 @@ window.CBBC_HSI = {
       "url": "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding"
     }
   ],
-  "bullFut": 8692,
-  "bearFut": 7482,
-  "bullPct": 53.7,
-  "bearPct": 46.3,
+  "bullFut": 8734,
+  "bearFut": 8111,
+  "bullPct": 51.8,
+  "bearPct": 48.2,
   "nearKoPts": 1000,
   "nearKoBull": 4952,
   "nearKoBear": 3657,
   "flow1d": {
     "bullM": null,
     "bearM": null,
-    "bullFut": 895,
-    "bearFut": -809
+    "bullFut": 42,
+    "bearFut": 629
   },
   "flow5d": {
     "bullM": null,
