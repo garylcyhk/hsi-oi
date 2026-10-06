@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-05 09:58",
+  "asOf": "2026-10-06 10:57",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -33,6 +33,16 @@ window.FF_CAL = {
       "ccy": "USD",
       "impact": "high",
       "name": "FOMC Meeting Minutes",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "16:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "FOMC Member Waller Speaks",
       "actual": "",
       "forecast": "—",
       "previous": "—"
