@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-06 10:57",
+  "asOf": "2026-10-07 10:21",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -64,7 +64,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Prelim UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "47.6",
+      "forecast": "47.5",
       "previous": "47.8"
     },
     {
