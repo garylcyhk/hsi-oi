@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-07 10:21",
+  "asOf": "2026-10-08 10:41",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -23,6 +23,16 @@ window.FF_CAL = {
       "ccy": "JPY",
       "impact": "high",
       "name": "BOJ Gov Ueda Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "01:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "President Trump Speaks",
       "actual": "",
       "forecast": "—",
       "previous": "—"
