@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-10 10:19",
+  "asOf": "2026-10-11 09:51",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
