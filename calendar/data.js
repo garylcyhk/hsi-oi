@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-12 10:22",
+  "asOf": "2026-10-13 11:32",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -135,7 +135,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Employment Change",
       "actual": "",
-      "forecast": "20.0K",
+      "forecast": "19.6K",
       "previous": "39.5K"
     },
     {
@@ -165,7 +165,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Core Retail Sales m/m",
       "actual": "",
-      "forecast": "0.5%",
+      "forecast": "0.6%",
       "previous": "1.4%"
     },
     {
@@ -175,7 +175,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "PPI m/m",
       "actual": "",
-      "forecast": "0.5%",
+      "forecast": "0.6%",
       "previous": "0.4%"
     },
     {
@@ -195,7 +195,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Philly Fed Manufacturing Index",
       "actual": "",
-      "forecast": "26.5",
+      "forecast": "28.2",
       "previous": "37.8"
     },
     {
@@ -205,7 +205,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "195K",
+      "forecast": "199K",
       "previous": "197K"
     },
     {
