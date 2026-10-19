@@ -1,0 +1,42 @@
+{
+  "asOf": "2026-10-19 13:57",
+  "sessionDate": "2026-10-19",
+  "usSessionDate": "2026-10-16",
+  "expectedOiDate": "2026-10-16",
+  "tz": "HKT",
+  "title": "香港早晨 · 美股收市／小恒早盤",
+  "disclaimer": "研究用，非買賣建議。牆與街貨為對沖地圖，不構成投資建議。",
+  "pipeline": "GitHub Action 平日 09:00 HKT（cron 0 1 * * 1-5）由 scripts/update_morning_brief.py 寫入 morning-brief/data.js。",
+  "closed": true,
+  "closedReason": "香港公眾假期／休市",
+  "oneLiner": "今日香港公眾假期／休市，不下完整早盤簡報。",
+  "us": {
+    "ok": false,
+    "status": "休市不編製"
+  },
+  "hsi": {
+    "ok": false,
+    "status": "休市不編製"
+  },
+  "mini": {
+    "ok": false,
+    "status": "休市不編製"
+  },
+  "cbbc": {
+    "ok": false,
+    "status": "休市不編製"
+  },
+  "stocks": {
+    "ok": false,
+    "status": "休市不編製",
+    "items": []
+  },
+  "calendar": {
+    "ok": false,
+    "items": []
+  },
+  "implications": [
+    "休市日不編製開市濾鏡。"
+  ],
+  "missing": []
+}
