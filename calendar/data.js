@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-21 09:33",
+  "asOf": "2026-10-22 09:29",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -34,7 +34,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Flash Services PMI",
       "actual": "",
-      "forecast": "57.8",
+      "forecast": "57.9",
       "previous": "58.7"
     },
     {
