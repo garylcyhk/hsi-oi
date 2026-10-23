@@ -3,10 +3,10 @@
    Units: futures-equivalent contracts.
 */
 window.CBBC_HSI = {
-  "asOf": "2026-10-21",
-  "published": "2026-10-22 08:06",
-  "spot": 23652,
-  "prevClose": 23868,
+  "asOf": "2026-10-22",
+  "published": "2026-10-23 07:05",
+  "spot": 22935,
+  "prevClose": 23652,
   "source": "Issuer CBBC outstanding distribution (GS market-wide, HKEX-reported street qty)",
   "sourcePages": [
     {
@@ -22,18 +22,18 @@ window.CBBC_HSI = {
       "url": "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding"
     }
   ],
-  "bullFut": 8037,
-  "bearFut": 8771,
-  "bullPct": 47.8,
-  "bearPct": 52.2,
+  "bullFut": 8679,
+  "bearFut": 6188,
+  "bullPct": 58.4,
+  "bearPct": 41.6,
   "nearKoPts": 1000,
-  "nearKoBull": 5255,
-  "nearKoBear": 2516,
+  "nearKoBull": 7175,
+  "nearKoBear": 0,
   "flow1d": {
     "bullM": null,
     "bearM": null,
-    "bullFut": -641,
-    "bearFut": 4
+    "bullFut": 642,
+    "bearFut": -2583
   },
   "flow5d": {
     "bullM": null,
@@ -41,382 +41,430 @@ window.CBBC_HSI = {
   },
   "flow5dSeries": {
     "dates": [
+      "10-22",
       "10-21",
       "10-20",
       "10-16",
-      "10-15",
-      "10-14"
+      "10-15"
     ]
   },
-  "calledNote": "自動更新自高盛 · 圖表 2026-10-22 08:06 · 街貨欄 10-21",
+  "calledNote": "自動更新自高盛 · 圖表 2026-10-23 07:05 · 街貨欄 10-22",
   "bins": [
-    {
-      "lo": 26600,
-      "hi": 26799,
-      "side": "bear",
-      "fut": 202,
-      "chg": -5,
-      "hist": [
-        202,
-        207,
-        211,
-        214,
-        160
-      ],
-      "call": 26600,
-      "koPct": 12.9
-    },
     {
       "lo": 26400,
       "hi": 26599,
       "side": "bear",
-      "fut": 466,
-      "chg": -9,
+      "fut": 439,
+      "chg": -28,
       "hist": [
+        439,
         466,
         475,
         488,
-        486,
-        419
+        486
       ],
       "call": 26400,
-      "koPct": 12.0
+      "koPct": 15.5
     },
     {
       "lo": 26200,
       "hi": 26399,
       "side": "bear",
-      "fut": 303,
-      "chg": -7,
+      "fut": 283,
+      "chg": -19,
       "hist": [
+        283,
         303,
         310,
         323,
-        317,
-        334
+        317
       ],
       "call": 26200,
-      "koPct": 11.2
+      "koPct": 14.7
     },
     {
       "lo": 26000,
       "hi": 26199,
       "side": "bear",
-      "fut": 117,
-      "chg": -14,
+      "fut": 85,
+      "chg": -32,
       "hist": [
+        85,
         117,
         131,
         139,
-        135,
-        95
+        135
       ],
       "call": 26000,
-      "koPct": 10.3
+      "koPct": 13.8
     },
     {
       "lo": 25800,
       "hi": 25999,
       "side": "bear",
-      "fut": 219,
-      "chg": -7,
+      "fut": 170,
+      "chg": -50,
       "hist": [
+        170,
         219,
         226,
         264,
-        248,
-        278
+        248
       ],
       "call": 25800,
-      "koPct": 9.5
+      "koPct": 12.9
     },
     {
       "lo": 25600,
       "hi": 25799,
       "side": "bear",
-      "fut": 127,
-      "chg": -8,
+      "fut": 90,
+      "chg": -37,
       "hist": [
+        90,
         127,
         136,
         148,
-        141,
-        180
+        141
       ],
       "call": 25600,
-      "koPct": 8.7
+      "koPct": 12.1
     },
     {
       "lo": 25400,
       "hi": 25599,
       "side": "bear",
-      "fut": 633,
-      "chg": -23,
+      "fut": 546,
+      "chg": -87,
       "hist": [
+        546,
         633,
         656,
         724,
-        681,
-        814
+        681
       ],
       "call": 25400,
-      "koPct": 7.8
+      "koPct": 11.2
     },
     {
       "lo": 25200,
       "hi": 25399,
       "side": "bear",
-      "fut": 194,
-      "chg": -32,
+      "fut": 137,
+      "chg": -57,
       "hist": [
+        137,
         194,
         226,
         299,
-        270,
-        428
+        270
       ],
       "call": 25200,
-      "koPct": 7.0
+      "koPct": 10.3
     },
     {
       "lo": 25000,
       "hi": 25199,
       "side": "bear",
-      "fut": 320,
-      "chg": -75,
+      "fut": 159,
+      "chg": -161,
       "hist": [
+        159,
         320,
         395,
         592,
-        445,
-        698
+        445
       ],
       "call": 25000,
-      "koPct": 6.1
+      "koPct": 9.4
     },
     {
       "lo": 24800,
       "hi": 24999,
       "side": "bear",
-      "fut": 693,
-      "chg": -141,
+      "fut": 326,
+      "chg": -368,
       "hist": [
+        326,
         693,
         835,
         1097,
-        1010,
-        1669
+        1010
       ],
       "call": 24800,
-      "koPct": 5.3
+      "koPct": 8.6
     },
     {
       "lo": 24600,
       "hi": 24799,
       "side": "bear",
-      "fut": 905,
-      "chg": -194,
+      "fut": 384,
+      "chg": -521,
       "hist": [
+        384,
         905,
         1099,
         1762,
-        1408,
-        1792
+        1408
       ],
       "call": 24600,
-      "koPct": 4.4
+      "koPct": 7.7
     },
     {
       "lo": 24400,
       "hi": 24599,
       "side": "bear",
-      "fut": 798,
-      "chg": 11,
+      "fut": 316,
+      "chg": -482,
       "hist": [
+        316,
         798,
         787,
         764,
-        646,
-        313
+        646
       ],
       "call": 24400,
-      "koPct": 3.6
+      "koPct": 6.8
     },
     {
       "lo": 24200,
       "hi": 24399,
       "side": "bear",
-      "fut": 1136,
-      "chg": 520,
+      "fut": 269,
+      "chg": -867,
       "hist": [
+        269,
         1136,
         616,
         0,
-        292,
-        0
+        292
       ],
       "call": 24200,
-      "koPct": 2.7
+      "koPct": 5.9
     },
     {
-      "lo": 22900,
-      "hi": 23099,
-      "side": "bull",
-      "fut": 748,
-      "chg": 152,
+      "lo": 24000,
+      "hi": 24199,
+      "side": "bear",
+      "fut": 247,
+      "chg": 247,
       "hist": [
-        748,
-        596,
-        506,
-        547,
-        480
+        247,
+        0,
+        0,
+        0,
+        0
       ],
-      "call": 22900,
-      "koPct": 2.8
+      "call": 24000,
+      "koPct": 5.1
     },
     {
       "lo": 22700,
       "hi": 22899,
       "side": "bull",
-      "fut": 237,
-      "chg": 42,
+      "fut": 2413,
+      "chg": 2176,
       "hist": [
+        2413,
         237,
         195,
         158,
-        184,
-        152
+        184
       ],
       "call": 22700,
-      "koPct": 3.6
+      "koPct": 0.6
     },
     {
       "lo": 22500,
       "hi": 22699,
       "side": "bull",
-      "fut": 610,
-      "chg": 79,
+      "fut": 2127,
+      "chg": 1516,
       "hist": [
+        2127,
         610,
         532,
         462,
-        491,
-        456
+        491
       ],
       "call": 22500,
-      "koPct": 4.4
+      "koPct": 1.5
     },
     {
       "lo": 22300,
       "hi": 22499,
       "side": "bull",
-      "fut": 555,
-      "chg": 10,
+      "fut": 1566,
+      "chg": 1011,
       "hist": [
+        1566,
         555,
         545,
         526,
-        538,
-        523
+        538
       ],
       "call": 22300,
-      "koPct": 5.3
+      "koPct": 2.3
     },
     {
       "lo": 22100,
       "hi": 22299,
       "side": "bull",
-      "fut": 214,
-      "chg": 15,
+      "fut": 472,
+      "chg": 258,
       "hist": [
+        472,
         214,
         199,
         192,
-        196,
-        192
+        196
       ],
       "call": 22100,
-      "koPct": 6.1
+      "koPct": 3.2
     },
     {
       "lo": 21900,
       "hi": 22099,
       "side": "bull",
-      "fut": 292,
-      "chg": 25,
+      "fut": 618,
+      "chg": 326,
       "hist": [
+        618,
         292,
         267,
         248,
-        254,
-        244
+        254
       ],
       "call": 21900,
-      "koPct": 7.0
+      "koPct": 4.1
     },
     {
       "lo": 21700,
       "hi": 21899,
       "side": "bull",
-      "fut": 93,
-      "chg": 5,
+      "fut": 197,
+      "chg": 104,
       "hist": [
+        197,
         93,
         88,
         82,
-        83,
-        82
+        83
       ],
       "call": 21700,
-      "koPct": 7.8
+      "koPct": 5.0
     },
     {
       "lo": 21500,
       "hi": 21699,
       "side": "bull",
-      "fut": 69,
-      "chg": 11,
+      "fut": 149,
+      "chg": 80,
       "hist": [
+        149,
         69,
         58,
         54,
-        59,
-        55
+        59
       ],
       "call": 21500,
-      "koPct": 8.7
+      "koPct": 5.8
     },
     {
       "lo": 21300,
       "hi": 21499,
       "side": "bull",
-      "fut": 10,
-      "chg": 1,
+      "fut": 35,
+      "chg": 25,
       "hist": [
+        35,
         10,
         9,
         8,
-        8,
-        7
+        8
       ],
       "call": 21300,
-      "koPct": 9.5
+      "koPct": 6.7
     },
     {
       "lo": 21100,
       "hi": 21299,
       "side": "bull",
-      "fut": 9,
-      "chg": 0,
+      "fut": 21,
+      "chg": 12,
       "hist": [
+        21,
         9,
-        8,
         8,
         8,
         8
       ],
       "call": 21100,
-      "koPct": 10.4
+      "koPct": 7.6
+    },
+    {
+      "lo": 20900,
+      "hi": 21099,
+      "side": "bull",
+      "fut": 82,
+      "chg": 44,
+      "hist": [
+        82,
+        38,
+        33,
+        27,
+        30
+      ],
+      "call": 20900,
+      "koPct": 8.4
+    },
+    {
+      "lo": 20700,
+      "hi": 20899,
+      "side": "bull",
+      "fut": 42,
+      "chg": 5,
+      "hist": [
+        42,
+        37,
+        37,
+        37,
+        37
+      ],
+      "call": 20700,
+      "koPct": 9.3
+    },
+    {
+      "lo": 20500,
+      "hi": 20699,
+      "side": "bull",
+      "fut": 77,
+      "chg": 12,
+      "hist": [
+        77,
+        65,
+        65,
+        64,
+        65
+      ],
+      "call": 20500,
+      "koPct": 10.2
+    },
+    {
+      "lo": 20300,
+      "hi": 20499,
+      "side": "bull",
+      "fut": 133,
+      "chg": 2,
+      "hist": [
+        133,
+        131,
+        131,
+        131,
+        131
+      ],
+      "call": 20300,
+      "koPct": 11.1
     }
   ]
 };
