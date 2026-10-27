@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-26 09:08",
+  "asOf": "2026-10-27 10:03",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -65,7 +65,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "CB Consumer Confidence",
       "actual": "",
-      "forecast": "80.5",
+      "forecast": "81.2",
       "previous": "81.9"
     },
     {
@@ -165,7 +165,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Advance GDP Price Index q/q",
       "actual": "",
-      "forecast": "3.5%",
+      "forecast": "3.3%",
       "previous": "6.2%"
     },
     {
