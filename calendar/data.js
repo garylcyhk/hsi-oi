@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-28 10:13",
+  "asOf": "2026-10-29 10:25",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -165,7 +165,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Advance GDP Price Index q/q",
       "actual": "",
-      "forecast": "3.3%",
+      "forecast": "3.2%",
       "previous": "6.2%"
     },
     {
