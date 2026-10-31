@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-10-30 10:34",
+  "asOf": "2026-10-31 10:20",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -190,27 +190,7 @@ window.FF_CAL = {
     },
     {
       "date": "2026-10-30",
-      "time": "10:30",
-      "ccy": "JPY",
-      "impact": "high",
-      "name": "BOJ Policy Rate",
-      "actual": "",
-      "forecast": "<1.25%",
-      "previous": "<1.25%"
-    },
-    {
-      "date": "2026-10-30",
-      "time": "10:30",
-      "ccy": "JPY",
-      "impact": "high",
-      "name": "Monetary Policy Statement",
-      "actual": "",
-      "forecast": "—",
-      "previous": "—"
-    },
-    {
-      "date": "2026-10-30",
-      "time": "10:31",
+      "time": "11:02",
       "ccy": "JPY",
       "impact": "high",
       "name": "BOJ Outlook Report",
@@ -220,7 +200,27 @@ window.FF_CAL = {
     },
     {
       "date": "2026-10-30",
-      "time": "13:30",
+      "time": "11:02",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "BOJ Policy Rate",
+      "actual": "",
+      "forecast": "<1.25%",
+      "previous": "<1.25%"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "11:02",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "Monetary Policy Statement",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "14:30",
       "ccy": "JPY",
       "impact": "high",
       "name": "BOJ Press Conference",
