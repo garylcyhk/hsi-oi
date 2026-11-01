@@ -1,242 +1,161 @@
 window.FF_CAL = {
-  "asOf": "2026-11-01 10:12",
+  "asOf": "2026-11-02 01:57",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "10-27–10-30 本週 · 自動更新",
+  "rangeLabel": "11-02–11-07 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
-  "lastWeek": [
-    {
-      "date": "2026-10-22",
-      "time": "20:30",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Unemployment Claims",
-      "actual": "",
-      "forecast": "200K",
-      "previous": "199K"
-    },
-    {
-      "date": "2026-10-23",
-      "time": "21:45",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Flash Manufacturing PMI",
-      "actual": "",
-      "forecast": "55.4",
-      "previous": "57.0"
-    },
-    {
-      "date": "2026-10-23",
-      "time": "21:45",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Flash Services PMI",
-      "actual": "",
-      "forecast": "57.9",
-      "previous": "58.7"
-    },
-    {
-      "date": "2026-10-23",
-      "time": "22:00",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Revised UoM Consumer Sentiment",
-      "actual": "",
-      "forecast": "46.3",
-      "previous": "46.3"
-    },
-    {
-      "date": "2026-10-23",
-      "time": "22:00",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Revised UoM Inflation Expectations",
-      "actual": "",
-      "forecast": "—",
-      "previous": "4.7%"
-    }
-  ],
+  "lastWeek": [],
   "thisWeek": [
     {
-      "date": "2026-10-27",
-      "time": "22:00",
+      "date": "2026-11-02",
+      "time": "23:00",
       "ccy": "USD",
       "impact": "med",
-      "name": "CB Consumer Confidence",
+      "name": "ISM Manufacturing PMI",
       "actual": "",
-      "forecast": "81.2",
-      "previous": "81.9"
+      "forecast": "54.7",
+      "previous": "54.5"
     },
     {
-      "date": "2026-10-28",
-      "time": "08:15",
+      "date": "2026-11-03",
+      "time": "11:30",
       "ccy": "AUD",
-      "impact": "med",
-      "name": "RBA Gov Bullock Speaks",
+      "impact": "high",
+      "name": "Cash Rate",
+      "actual": "",
+      "forecast": "4.85%",
+      "previous": "4.60%"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "11:30",
+      "ccy": "AUD",
+      "impact": "high",
+      "name": "RBA Monetary Policy Statement",
       "actual": "",
       "forecast": "—",
       "previous": "—"
     },
     {
-      "date": "2026-10-28",
-      "time": "08:30",
+      "date": "2026-11-03",
+      "time": "11:30",
       "ccy": "AUD",
       "impact": "high",
-      "name": "CPI m/m",
-      "actual": "",
-      "forecast": "0.7%",
-      "previous": "0.4%"
-    },
-    {
-      "date": "2026-10-28",
-      "time": "08:30",
-      "ccy": "AUD",
-      "impact": "high",
-      "name": "CPI y/y",
-      "actual": "",
-      "forecast": "4.2%",
-      "previous": "4.0%"
-    },
-    {
-      "date": "2026-10-28",
-      "time": "08:30",
-      "ccy": "AUD",
-      "impact": "high",
-      "name": "Trimmed Mean CPI m/m",
-      "actual": "",
-      "forecast": "0.3%",
-      "previous": "0.2%"
-    },
-    {
-      "date": "2026-10-29",
-      "time": "02:00",
-      "ccy": "USD",
-      "impact": "high",
-      "name": "Federal Funds Rate",
-      "actual": "",
-      "forecast": "4.00%",
-      "previous": "4.00%"
-    },
-    {
-      "date": "2026-10-29",
-      "time": "02:00",
-      "ccy": "USD",
-      "impact": "high",
-      "name": "FOMC Statement",
+      "name": "RBA Rate Statement",
       "actual": "",
       "forecast": "—",
       "previous": "—"
     },
     {
-      "date": "2026-10-29",
-      "time": "02:30",
-      "ccy": "USD",
+      "date": "2026-11-03",
+      "time": "12:30",
+      "ccy": "AUD",
       "impact": "high",
-      "name": "FOMC Press Conference",
+      "name": "RBA Press Conference",
       "actual": "",
       "forecast": "—",
       "previous": "—"
     },
     {
-      "date": "2026-10-29",
-      "time": "20:30",
-      "ccy": "USD",
-      "impact": "high",
-      "name": "Advance GDP q/q",
-      "actual": "",
-      "forecast": "3.2%",
-      "previous": "1.5%"
-    },
-    {
-      "date": "2026-10-29",
-      "time": "20:30",
-      "ccy": "USD",
-      "impact": "high",
-      "name": "Core PCE Price Index m/m",
-      "actual": "",
-      "forecast": "0.3%",
-      "previous": "0.2%"
-    },
-    {
-      "date": "2026-10-29",
-      "time": "20:30",
+      "date": "2026-11-03",
+      "time": "23:00",
       "ccy": "USD",
       "impact": "med",
-      "name": "Advance GDP Price Index q/q",
+      "name": "JOLTS Job Openings",
       "actual": "",
-      "forecast": "3.2%",
-      "previous": "6.2%"
+      "forecast": "7.11M",
+      "previous": "7.08M"
     },
     {
-      "date": "2026-10-29",
-      "time": "20:30",
+      "date": "2026-11-03",
+      "time": "23:16",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Congressional Elections",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "23:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "ISM Services PMI",
+      "actual": "",
+      "forecast": "54.9",
+      "previous": "54.9"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "21:30",
       "ccy": "USD",
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "198K",
+      "forecast": "197K",
       "previous": "194K"
     },
     {
-      "date": "2026-10-30",
-      "time": "07:30",
-      "ccy": "JPY",
-      "impact": "med",
-      "name": "Tokyo Core CPI y/y",
-      "actual": "",
-      "forecast": "2.6%",
-      "previous": "2.7%"
-    },
-    {
-      "date": "2026-10-30",
-      "time": "11:02",
-      "ccy": "JPY",
+      "date": "2026-11-06",
+      "time": "21:30",
+      "ccy": "USD",
       "impact": "high",
-      "name": "BOJ Outlook Report",
+      "name": "Average Hourly Earnings m/m",
       "actual": "",
-      "forecast": "—",
-      "previous": "—"
+      "forecast": "0.3%",
+      "previous": "0.1%"
     },
     {
-      "date": "2026-10-30",
-      "time": "11:02",
-      "ccy": "JPY",
+      "date": "2026-11-06",
+      "time": "21:30",
+      "ccy": "USD",
       "impact": "high",
-      "name": "BOJ Policy Rate",
+      "name": "Non-Farm Employment Change",
       "actual": "",
-      "forecast": "<1.25%",
-      "previous": "<1.25%"
+      "forecast": "63K",
+      "previous": "29K"
     },
     {
-      "date": "2026-10-30",
-      "time": "11:02",
-      "ccy": "JPY",
+      "date": "2026-11-06",
+      "time": "21:30",
+      "ccy": "USD",
       "impact": "high",
-      "name": "Monetary Policy Statement",
+      "name": "Unemployment Rate",
       "actual": "",
-      "forecast": "—",
-      "previous": "—"
+      "forecast": "4.2%",
+      "previous": "4.2%"
     },
     {
-      "date": "2026-10-30",
-      "time": "14:30",
-      "ccy": "JPY",
-      "impact": "high",
-      "name": "BOJ Press Conference",
-      "actual": "",
-      "forecast": "—",
-      "previous": "—"
-    },
-    {
-      "date": "2026-10-30",
-      "time": "20:30",
+      "date": "2026-11-06",
+      "time": "23:00",
       "ccy": "USD",
       "impact": "med",
-      "name": "Employment Cost Index q/q",
+      "name": "Prelim UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "0.8%",
-      "previous": "0.9%"
+      "forecast": "47.8",
+      "previous": "46.3"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "23:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Prelim UoM Inflation Expectations",
+      "actual": "",
+      "forecast": "—",
+      "previous": "4.7%"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "00:00",
+      "ccy": "JPY",
+      "impact": "high",
+      "name": "BOJ Gov Ueda Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
     }
   ]
 };
