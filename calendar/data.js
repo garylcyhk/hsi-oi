@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-02 01:57",
+  "asOf": "2026-11-02 10:28",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -14,7 +14,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ISM Manufacturing PMI",
       "actual": "",
-      "forecast": "54.7",
+      "forecast": "54.5",
       "previous": "54.5"
     },
     {
