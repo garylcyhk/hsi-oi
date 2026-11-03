@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-02 10:28",
+  "asOf": "2026-11-03 11:55",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -64,7 +64,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "JOLTS Job Openings",
       "actual": "",
-      "forecast": "7.11M",
+      "forecast": "7.15M",
       "previous": "7.08M"
     },
     {
@@ -84,7 +84,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "ISM Services PMI",
       "actual": "",
-      "forecast": "54.9",
+      "forecast": "54.8",
       "previous": "54.9"
     },
     {
@@ -114,7 +114,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Non-Farm Employment Change",
       "actual": "",
-      "forecast": "63K",
+      "forecast": "65K",
       "previous": "29K"
     },
     {
@@ -134,7 +134,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Prelim UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "47.8",
+      "forecast": "48.1",
       "previous": "46.3"
     },
     {
