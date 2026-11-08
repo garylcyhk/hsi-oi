@@ -1,12 +1,11 @@
 window.FF_CAL = {
-  "asOf": "2026-11-08 10:27",
+  "asOf": "2026-11-09 01:57",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "11-02–11-07 本週 · 自動更新",
+  "rangeLabel": "11-10–11-13 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
-  "lastWeek": [],
-  "thisWeek": [
+  "lastWeek": [
     {
       "date": "2026-11-02",
       "time": "23:00",
@@ -156,6 +155,68 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "—",
       "previous": "—"
+    }
+  ],
+  "thisWeek": [
+    {
+      "date": "2026-11-10",
+      "time": "17:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "FOMC Member Waller Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Core CPI m/m",
+      "actual": "",
+      "forecast": "0.2%",
+      "previous": "0.3%"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "CPI m/m",
+      "actual": "",
+      "forecast": "0.3%",
+      "previous": "0.6%"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Unemployment Claims",
+      "actual": "",
+      "forecast": "194K",
+      "previous": "189K"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Core PPI m/m",
+      "actual": "",
+      "forecast": "0.3%",
+      "previous": "0.7%"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "PPI m/m",
+      "actual": "",
+      "forecast": "0.4%",
+      "previous": "1.3%"
     }
   ]
 };
