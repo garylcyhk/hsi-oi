@@ -4,20 +4,20 @@
    Missing feeds stay empty with 未能核實／未更新. Never invents walls or prices.
 */
 window.MORNING_BRIEF = {
-  "asOf": "2026-11-10 16:12",
-  "sessionDate": "2026-11-10",
-  "usSessionDate": "2026-11-09",
-  "expectedOiDate": "2026-11-09",
+  "asOf": "2026-11-11 15:39",
+  "sessionDate": "2026-11-11",
+  "usSessionDate": "2026-11-10",
+  "expectedOiDate": "2026-11-10",
   "tz": "HKT",
   "title": "香港早晨 · 美股收市／小恒早盤",
   "disclaimer": "研究用，非買賣建議。牆與街貨為對沖地圖，不構成投資建議。",
   "pipeline": "GitHub Action 平日 09:00 HKT（cron 0 1 * * 1-5）由 scripts/update_morning_brief.py 寫入 morning-brief/data.js。",
   "closed": false,
-  "oneLiner": "標普 +2.35% · VIX 19.92 · 恒指認購牆 25800 · 認沽牆 23400",
+  "oneLiner": "標普 -0.38% · VIX 19.46 · 恒指認購牆 25800 · 認沽牆 23400 · 小恒認購牆 25000",
   "us": {
     "ok": true,
     "stale": false,
-    "asOf": "2026-11-09",
+    "asOf": "2026-11-10",
     "source": "https://query1.finance.yahoo.com/v8/finance/chart",
     "sourceNote": "Yahoo Finance 日線收市（美東日期）",
     "items": [
@@ -26,11 +26,11 @@ window.MORNING_BRIEF = {
         "name": "標普 S&P 500",
         "ok": true,
         "stale": false,
-        "last": 7549.9399,
-        "prev": 7376.8599,
-        "chg": 173.0801,
-        "pct": 2.35,
-        "date": "2026-11-09",
+        "last": 7520.9302,
+        "prev": 7549.9399,
+        "chg": -29.0098,
+        "pct": -0.38,
+        "date": "2026-11-10",
         "kind": "%"
       },
       {
@@ -38,11 +38,11 @@ window.MORNING_BRIEF = {
         "name": "道指 Dow",
         "ok": true,
         "stale": false,
-        "last": 52389.75,
-        "prev": 51285.7305,
-        "chg": 1104.0195,
-        "pct": 2.15,
-        "date": "2026-11-09",
+        "last": 52231.8906,
+        "prev": 52389.75,
+        "chg": -157.8594,
+        "pct": -0.3,
+        "date": "2026-11-10",
         "kind": "%"
       },
       {
@@ -50,11 +50,11 @@ window.MORNING_BRIEF = {
         "name": "納指 Nasdaq",
         "ok": true,
         "stale": false,
-        "last": 25253.1406,
-        "prev": 24579.4297,
-        "chg": 673.7109,
-        "pct": 2.74,
-        "date": "2026-11-09",
+        "last": 25065.8691,
+        "prev": 25253.1406,
+        "chg": -187.2715,
+        "pct": -0.74,
+        "date": "2026-11-10",
         "kind": "%"
       },
       {
@@ -62,11 +62,11 @@ window.MORNING_BRIEF = {
         "name": "VIX",
         "ok": true,
         "stale": false,
-        "last": 19.92,
-        "prev": 25.64,
-        "chg": -5.72,
-        "pct": -22.31,
-        "date": "2026-11-09",
+        "last": 19.46,
+        "prev": 19.92,
+        "chg": -0.46,
+        "pct": -2.31,
+        "date": "2026-11-10",
         "kind": "pt"
       },
       {
@@ -74,11 +74,11 @@ window.MORNING_BRIEF = {
         "name": "WTI 原油",
         "ok": true,
         "stale": false,
-        "last": 85.32,
-        "prev": 86.85,
-        "chg": -1.53,
-        "pct": -1.76,
-        "date": "2026-11-10",
+        "last": 86.19,
+        "prev": 86.04,
+        "chg": 0.15,
+        "pct": 0.17,
+        "date": "2026-11-11",
         "kind": "%"
       },
       {
@@ -86,11 +86,11 @@ window.MORNING_BRIEF = {
         "name": "美10年期債 Yahoo ^TNX",
         "ok": true,
         "stale": false,
-        "last": 4.864,
-        "prev": 4.859,
-        "chg": 0.005,
-        "pct": 0.1,
-        "date": "2026-11-09",
+        "last": 4.983,
+        "prev": 4.864,
+        "chg": 0.119,
+        "pct": 2.45,
+        "date": "2026-11-10",
         "kind": "raw"
       }
     ],
@@ -101,63 +101,63 @@ window.MORNING_BRIEF = {
     "stale": false,
     "status": null,
     "label": "恒指期權 HSI",
-    "date": "2026-11-09",
-    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc261109.htm",
+    "date": "2026-11-10",
+    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc261110.htm",
     "frontMonth": "2026-11",
     "nextMonth": "2026-12",
-    "callOI": 17130,
-    "putOI": 24533,
-    "callOIChange": 927,
-    "putOIChange": 1671,
-    "callPct": 41.1,
-    "putPct": 58.9,
-    "totalOI": 41663,
-    "totalOIChange": 2598,
-    "pcRatio": 1.43,
-    "settle": 24508,
-    "settleChange": 9,
+    "callOI": 17105,
+    "putOI": 24213,
+    "callOIChange": -25,
+    "putOIChange": -320,
+    "callPct": 41.4,
+    "putPct": 58.6,
+    "totalOI": 41318,
+    "totalOIChange": -345,
+    "pcRatio": 1.42,
+    "settle": 24580,
+    "settleChange": 72,
     "callWalls": [
       {
         "strike": 25800,
-        "oi": 1393,
-        "oiChange": 39
+        "oi": 1347,
+        "oiChange": -46
       },
       {
         "strike": 24000,
-        "oi": 1253,
-        "oiChange": 146
+        "oi": 1251,
+        "oiChange": -2
       },
       {
         "strike": 26000,
-        "oi": 1207,
-        "oiChange": 32
+        "oi": 1155,
+        "oiChange": -52
       },
       {
         "strike": 24400,
-        "oi": 1131,
-        "oiChange": 330
+        "oi": 1116,
+        "oiChange": -15
       },
       {
         "strike": 24800,
-        "oi": 1022,
-        "oiChange": -64
+        "oi": 921,
+        "oiChange": -101
       }
     ],
     "putWalls": [
       {
         "strike": 23400,
-        "oi": 1214,
-        "oiChange": 39
+        "oi": 1126,
+        "oiChange": -88
       },
       {
         "strike": 24000,
-        "oi": 1040,
-        "oiChange": 258
+        "oi": 1087,
+        "oiChange": 47
       },
       {
         "strike": 22000,
-        "oi": 967,
-        "oiChange": 3
+        "oi": 968,
+        "oiChange": 1
       },
       {
         "strike": 17000,
@@ -166,19 +166,85 @@ window.MORNING_BRIEF = {
       },
       {
         "strike": 21600,
-        "oi": 930,
-        "oiChange": 37
+        "oi": 927,
+        "oiChange": -3
       }
     ]
   },
   "mini": {
-    "ok": false,
-    "stale": true,
-    "date": "2026-11-02",
+    "ok": true,
+    "stale": false,
+    "status": null,
     "label": "小型恒指 Mini-HSI",
-    "status": "未能核實／未更新",
-    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/mhioc261102.htm",
-    "note": "最新檔為 2026-11-02，預期 2026-11-09"
+    "date": "2026-11-10",
+    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/mhioc261110.htm",
+    "frontMonth": "2026-11",
+    "nextMonth": "2026-12",
+    "callOI": 11727,
+    "putOI": 11389,
+    "callOIChange": 589,
+    "putOIChange": 132,
+    "callPct": 50.7,
+    "putPct": 49.3,
+    "totalOI": 23116,
+    "totalOIChange": 721,
+    "pcRatio": 0.97,
+    "settle": 24580,
+    "settleChange": 72,
+    "callWalls": [
+      {
+        "strike": 25000,
+        "oi": 1023,
+        "oiChange": 407
+      },
+      {
+        "strike": 25400,
+        "oi": 911,
+        "oiChange": -12
+      },
+      {
+        "strike": 25200,
+        "oi": 858,
+        "oiChange": -23
+      },
+      {
+        "strike": 25600,
+        "oi": 754,
+        "oiChange": 49
+      },
+      {
+        "strike": 24400,
+        "oi": 681,
+        "oiChange": 397
+      }
+    ],
+    "putWalls": [
+      {
+        "strike": 23800,
+        "oi": 963,
+        "oiChange": 247
+      },
+      {
+        "strike": 23400,
+        "oi": 862,
+        "oiChange": -39
+      },
+      {
+        "strike": 23000,
+        "oi": 756,
+        "oiChange": 0
+      },
+      {
+        "strike": 24400,
+        "oi": 739,
+        "oiChange": -1
+      },
+      {
+        "strike": 24000,
+        "oi": 694,
+        "oiChange": 31
+      }
+    ]
   },
   "cbbc": {
     "ok": false,
@@ -201,134 +267,103 @@ window.MORNING_BRIEF = {
         "url": "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding"
       }
     ],
-    "note": "最新街貨欄 2026-10-27，預期 2026-11-09"
+    "note": "最新街貨欄 2026-10-27，預期 2026-11-10"
   },
   "stocks": {
     "ok": true,
     "stale": false,
-    "date": "2026-11-09",
-    "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/dqe261109.htm",
+    "date": "2026-11-10",
+    "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/dqe261110.htm",
     "status": null,
     "items": [
       {
         "hkats": "TCH",
         "code": "00700",
         "name": "騰訊 Tencent",
-        "close": 418.4,
-        "volume": 66330,
-        "callOI": 1175850,
-        "putOI": 947011,
+        "close": 417.8,
+        "volume": 106948,
+        "callOI": 1208421,
+        "putOI": 955073,
         "callWall": 430.0,
         "putWall": 405.0,
-        "reason": "收市 418.4 · 認購牆 430.0 OI 3570 · 距認購牆 11.6 · 認沽牆 405.0 OI 1867 · 距認沽牆 13.4 · 成交 66330"
+        "reason": "收市 417.8 · 認購牆 430.0 OI 2855 · 距認購牆 12.2 · 認沽牆 405.0 OI 1920 · 距認沽牆 12.8 · 成交 106948"
       },
       {
         "hkats": "ALB",
         "code": "09988",
         "name": "阿里巴巴 Alibaba",
-        "close": 104.6,
-        "volume": 33653,
-        "callOI": 880254,
-        "putOI": 1015254,
-        "callWall": 110.0,
-        "putWall": 105.0,
-        "reason": "收市 104.6 · 認購牆 110.0 OI 1497 · 距認購牆 5.4 · 認沽牆 105.0 OI 1382 · 距認沽牆 -0.4 · 成交 33653"
+        "close": 101.6,
+        "volume": 55686,
+        "callOI": 886855,
+        "putOI": 1027407,
+        "callWall": 102.0,
+        "putWall": 95.0,
+        "reason": "收市 101.6 · 認購牆 102.0 OI 1479 · 距認購牆 0.4 · 認沽牆 95.0 OI 3303 · 距認沽牆 6.6 · 成交 55686"
       },
       {
         "hkats": "MIU",
         "code": "01810",
         "name": "小米 Xiaomi",
-        "close": 30.1,
-        "volume": 30914,
-        "callOI": 610866,
-        "putOI": 567151,
-        "callWall": 31.0,
+        "close": 30.6,
+        "volume": 46744,
+        "callOI": 618054,
+        "putOI": 574330,
+        "callWall": 30.0,
         "putWall": 30.0,
-        "reason": "收市 30.1 · 認購牆 31.0 OI 707 · 距認購牆 0.9 · 認沽牆 30.0 OI 1938 · 距認沽牆 0.1 · 成交 30914"
+        "reason": "收市 30.6 · 認購牆 30.0 OI 785 · 距認購牆 -0.6 · 認沽牆 30.0 OI 2110 · 距認沽牆 0.6 · 成交 46744"
       },
       {
         "hkats": "MET",
         "code": "03690",
         "name": "美團 Meituan",
-        "close": 75.15,
-        "volume": 53208,
-        "callOI": 437685,
-        "putOI": 470168,
+        "close": 75.5,
+        "volume": 17776,
+        "callOI": 437739,
+        "putOI": 471897,
         "callWall": 81.0,
         "putWall": 75.0,
-        "reason": "收市 75.15 · 認購牆 81.0 OI 562 · 距認購牆 5.85 · 認沽牆 75.0 OI 500 · 距認沽牆 0.15 · 成交 53208"
+        "reason": "收市 75.5 · 認購牆 81.0 OI 603 · 距認購牆 5.5 · 認沽牆 75.0 OI 530 · 距認沽牆 0.5 · 成交 17776"
       },
       {
         "hkats": "HEX",
         "code": "00388",
         "name": "港交所 HKEX",
-        "close": 384.4,
-        "volume": 13169,
-        "callOI": 190548,
-        "putOI": 160550,
-        "callWall": 400.0,
+        "close": 386.4,
+        "volume": 12370,
+        "callOI": 194240,
+        "putOI": 162124,
+        "callWall": 390.0,
         "putWall": 370.0,
-        "reason": "收市 384.4 · 認購牆 400.0 OI 519 · 距認購牆 15.6 · 認沽牆 370.0 OI 1104 · 距認沽牆 14.4 · 成交 13169"
+        "reason": "收市 386.4 · 認購牆 390.0 OI 547 · 距認購牆 3.6 · 認沽牆 370.0 OI 1104 · 距認沽牆 16.4 · 成交 12370"
       },
       {
         "hkats": "KST",
         "code": "01024",
         "name": "快手 Kuaishou",
-        "close": 28.82,
-        "volume": 13922,
-        "callOI": 262489,
-        "putOI": 222265,
+        "close": 28.98,
+        "volume": 10112,
+        "callOI": 265874,
+        "putOI": 224704,
         "callWall": 29.0,
         "putWall": 28.5,
-        "reason": "收市 28.82 · 認購牆 29.0 OI 1096 · 距認購牆 0.18 · 認沽牆 28.5 OI 692 · 距認沽牆 0.32 · 成交 13922"
+        "reason": "收市 28.98 · 認購牆 29.0 OI 1056 · 距認購牆 0.02 · 認沽牆 28.5 OI 732 · 距認沽牆 0.48 · 成交 10112"
       }
     ]
   },
   "calendar": {
     "ok": true,
-    "asOf": "2026-11-10 12:36",
+    "asOf": "2026-11-11 10:46",
     "source": "https://www.forexfactory.com/calendar",
-    "items": [
-      {
-        "date": "2026-11-10",
-        "time": "17:00",
-        "ccy": "USD",
-        "impact": "med",
-        "name": "FOMC Member Waller Speaks",
-        "actual": "",
-        "forecast": "—",
-        "previous": "—"
-      },
-      {
-        "date": "2026-11-10",
-        "time": "21:30",
-        "ccy": "USD",
-        "impact": "high",
-        "name": "Core CPI m/m",
-        "actual": "",
-        "forecast": "0.2%",
-        "previous": "0.3%"
-      },
-      {
-        "date": "2026-11-10",
-        "time": "21:30",
-        "ccy": "USD",
-        "impact": "high",
-        "name": "CPI m/m",
-        "actual": "",
-        "forecast": "0.3%",
-        "previous": "0.6%"
-      }
-    ],
+    "items": [],
     "status": null
   },
   "implications": [
     "牆、街貨與隔夜僅作地圖與濾鏡，不構成方向或進場訊號。",
-    "隔夜標普上升超過 0.8%，開市或有跳空；先讀牆位，不追第一跳。",
-    "恒指即月認購牆 24800 接近結算 24508，先當阻力地圖。"
+    "隔夜標普波幅不大，不把隔夜當今日方向。",
+    "恒指即月認購牆 24800 接近結算 24580，先當阻力地圖。",
+    "小恒牆位已核實，與恒指一併讀，不因單一牆位預測開市方向。"
   ],
   "missing": [
-    "小恒期權：未能核實／未更新（最新檔為 2026-11-02，預期 2026-11-09）",
-    "牛熊街貨：未能核實／未更新（最新街貨欄 2026-10-27，預期 2026-11-09）"
+    "牛熊街貨：未能核實／未更新（最新街貨欄 2026-10-27，預期 2026-11-10）"
   ]
 };
