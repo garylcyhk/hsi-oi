@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-16 02:56",
+  "asOf": "2026-11-16 10:43",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -106,16 +106,6 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "199K",
       "previous": "200K"
-    },
-    {
-      "date": "2026-11-20",
-      "time": "21:25",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "FOMC Member Waller Speaks",
-      "actual": "",
-      "forecast": "—",
-      "previous": "—"
     },
     {
       "date": "2026-11-20",
