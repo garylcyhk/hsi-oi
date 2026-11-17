@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-16 10:43",
+  "asOf": "2026-11-17 13:03",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -44,7 +44,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Retail Sales m/m",
       "actual": "",
-      "forecast": "0.2%",
+      "forecast": "0.1%",
       "previous": "0.8%"
     },
     {
@@ -54,7 +54,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Wage Price Index q/q",
       "actual": "",
-      "forecast": "0.9%",
+      "forecast": "1.0%",
       "previous": "0.8%"
     },
     {
@@ -74,7 +74,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "Employment Change",
       "actual": "",
-      "forecast": "25.2K",
+      "forecast": "25.5K",
       "previous": "-39.3K"
     },
     {
