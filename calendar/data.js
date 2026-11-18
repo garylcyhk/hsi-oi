@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-17 13:03",
+  "asOf": "2026-11-18 12:16",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -94,7 +94,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Philly Fed Manufacturing Index",
       "actual": "",
-      "forecast": "19.2",
+      "forecast": "20.6",
       "previous": "20.9"
     },
     {
@@ -104,7 +104,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Unemployment Claims",
       "actual": "",
-      "forecast": "199K",
+      "forecast": "198K",
       "previous": "200K"
     },
     {
@@ -114,7 +114,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "Revised UoM Consumer Sentiment",
       "actual": "",
-      "forecast": "52.1",
+      "forecast": "51.7",
       "previous": "51.0"
     },
     {
