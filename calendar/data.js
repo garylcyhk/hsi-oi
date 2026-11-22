@@ -1,9 +1,9 @@
 window.FF_CAL = {
-  "asOf": "2026-11-20 11:57",
+  "asOf": "2026-11-22 11:08",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "11-17–11-20 本週 · 自動更新",
+  "rangeLabel": "11-17–11-21 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
   "lastWeek": [],
   "thisWeek": [
@@ -126,6 +126,16 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "—",
       "previous": "4.3%"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "01:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "President Trump Speaks",
+      "actual": "",
+      "forecast": "—",
+      "previous": "—"
     }
   ]
 };
