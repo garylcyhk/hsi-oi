@@ -1,12 +1,11 @@
 window.FF_CAL = {
-  "asOf": "2026-11-22 11:08",
+  "asOf": "2026-11-23 03:47",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
-  "rangeLabel": "11-17–11-21 本週 · 自動更新",
+  "rangeLabel": "11-23–11-27 本週 · 自動更新",
   "note": "每日自動更新本週（FF this-week JSON）。下週會在週日／一換週後出現。精選 USD/CNY/JPY/HKD/AUD 中高影響。",
-  "lastWeek": [],
-  "thisWeek": [
+  "lastWeek": [
     {
       "date": "2026-11-17",
       "time": "01:00",
@@ -136,6 +135,118 @@ window.FF_CAL = {
       "actual": "",
       "forecast": "—",
       "previous": "—"
+    }
+  ],
+  "thisWeek": [
+    {
+      "date": "2026-11-23",
+      "time": "22:45",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Flash Manufacturing PMI",
+      "actual": "",
+      "forecast": "54.5",
+      "previous": "56.0"
+    },
+    {
+      "date": "2026-11-23",
+      "time": "22:45",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Flash Services PMI",
+      "actual": "",
+      "forecast": "55.6",
+      "previous": "57.9"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "23:00",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "CB Consumer Confidence",
+      "actual": "",
+      "forecast": "92.1",
+      "previous": "91.7"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "08:30",
+      "ccy": "AUD",
+      "impact": "high",
+      "name": "CPI m/m",
+      "actual": "",
+      "forecast": "0.4%",
+      "previous": "0.8%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "08:30",
+      "ccy": "AUD",
+      "impact": "high",
+      "name": "CPI y/y",
+      "actual": "",
+      "forecast": "4.8%",
+      "previous": "4.3%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "08:30",
+      "ccy": "AUD",
+      "impact": "high",
+      "name": "Trimmed Mean CPI m/m",
+      "actual": "",
+      "forecast": "0.3%",
+      "previous": "0.3%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Core PCE Price Index m/m",
+      "actual": "",
+      "forecast": "0.3%",
+      "previous": "0.3%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "high",
+      "name": "Prelim GDP q/q",
+      "actual": "",
+      "forecast": "3.5%",
+      "previous": "3.4%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Prelim GDP Price Index q/q",
+      "actual": "",
+      "forecast": "2.3%",
+      "previous": "2.3%"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "21:30",
+      "ccy": "USD",
+      "impact": "med",
+      "name": "Unemployment Claims",
+      "actual": "",
+      "forecast": "201K",
+      "previous": "203K"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "07:30",
+      "ccy": "JPY",
+      "impact": "med",
+      "name": "Tokyo Core CPI y/y",
+      "actual": "",
+      "forecast": "2.9%",
+      "previous": "2.6%"
     }
   ]
 };
