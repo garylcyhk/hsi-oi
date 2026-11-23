@@ -1,0 +1,320 @@
+{
+  "asOf": "2026-11-23 16:50",
+  "sessionDate": "2026-11-23",
+  "usSessionDate": "2026-11-20",
+  "expectedOiDate": "2026-11-20",
+  "tz": "HKT",
+  "title": "香港早晨 · 美股收市／小恒早盤",
+  "disclaimer": "研究用，非買賣建議。牆與街貨為對沖地圖，不構成投資建議。",
+  "pipeline": "GitHub Action 平日 09:00 HKT（cron 0 1 * * 1-5）由 scripts/update_morning_brief.py 寫入 morning-brief/data.js。",
+  "closed": false,
+  "oneLiner": "標普 -3.7% · VIX 31.30 · 恒指認購牆 22600 · 認沽牆 22000",
+  "us": {
+    "ok": true,
+    "stale": false,
+    "asOf": "2026-11-20",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart",
+    "sourceNote": "Yahoo Finance 日線收市（美東日期）",
+    "items": [
+      {
+        "symbol": "^GSPC",
+        "name": "標普 S&P 500",
+        "ok": true,
+        "stale": false,
+        "last": 6910.3901,
+        "prev": 7175.8301,
+        "chg": -265.4399,
+        "pct": -3.7,
+        "date": "2026-11-20",
+        "kind": "%"
+      },
+      {
+        "symbol": "^DJI",
+        "name": "道指 Dow",
+        "ok": true,
+        "stale": false,
+        "last": 48147.3281,
+        "prev": 49097.0586,
+        "chg": -949.7305,
+        "pct": -1.93,
+        "date": "2026-11-20",
+        "kind": "%"
+      },
+      {
+        "symbol": "^IXIC",
+        "name": "納指 Nasdaq",
+        "ok": true,
+        "stale": false,
+        "last": 22617.7305,
+        "prev": 23879.1992,
+        "chg": -1261.4688,
+        "pct": -5.28,
+        "date": "2026-11-20",
+        "kind": "%"
+      },
+      {
+        "symbol": "^VIX",
+        "name": "VIX",
+        "ok": true,
+        "stale": false,
+        "last": 31.3,
+        "prev": 35.89,
+        "chg": -4.59,
+        "pct": -12.79,
+        "date": "2026-11-23",
+        "kind": "pt"
+      },
+      {
+        "symbol": "CL=F",
+        "name": "WTI 原油",
+        "ok": true,
+        "stale": false,
+        "last": 82.83,
+        "prev": 83.98,
+        "chg": -1.15,
+        "pct": -1.37,
+        "date": "2026-11-23",
+        "kind": "%"
+      },
+      {
+        "symbol": "^TNX",
+        "name": "美10年期債 Yahoo ^TNX",
+        "ok": true,
+        "stale": false,
+        "last": 4.912,
+        "prev": 5.052,
+        "chg": -0.14,
+        "pct": -2.77,
+        "date": "2026-11-20",
+        "kind": "raw"
+      }
+    ],
+    "status": null
+  },
+  "hsi": {
+    "ok": true,
+    "stale": false,
+    "status": null,
+    "label": "恒指期權 HSI",
+    "date": "2026-11-20",
+    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/hsioc261120.htm",
+    "frontMonth": "2026-11",
+    "nextMonth": "2026-12",
+    "callOI": 25943,
+    "putOI": 32382,
+    "callOIChange": 7634,
+    "putOIChange": 5165,
+    "callPct": 44.5,
+    "putPct": 55.5,
+    "totalOI": 58325,
+    "totalOIChange": 12799,
+    "pcRatio": 1.25,
+    "settle": 22430,
+    "settleChange": -378,
+    "callWalls": [
+      {
+        "strike": 22600,
+        "oi": 3268,
+        "oiChange": 2965
+      },
+      {
+        "strike": 23400,
+        "oi": 2181,
+        "oiChange": 1042
+      },
+      {
+        "strike": 23200,
+        "oi": 1681,
+        "oiChange": 855
+      },
+      {
+        "strike": 23600,
+        "oi": 1642,
+        "oiChange": 1193
+      },
+      {
+        "strike": 24000,
+        "oi": 1336,
+        "oiChange": -11
+      }
+    ],
+    "putWalls": [
+      {
+        "strike": 22000,
+        "oi": 2092,
+        "oiChange": 1056
+      },
+      {
+        "strike": 21400,
+        "oi": 1955,
+        "oiChange": 1305
+      },
+      {
+        "strike": 21200,
+        "oi": 1587,
+        "oiChange": 1136
+      },
+      {
+        "strike": 21600,
+        "oi": 1313,
+        "oiChange": 447
+      },
+      {
+        "strike": 22400,
+        "oi": 1293,
+        "oiChange": -101
+      }
+    ]
+  },
+  "mini": {
+    "ok": false,
+    "stale": true,
+    "date": "2026-11-19",
+    "label": "小型恒指 Mini-HSI",
+    "status": "未能核實／未更新",
+    "sourceUrl": "https://www.hkex.com.hk/chi/stat/dmstat/dayrpt/mhioc261119.htm",
+    "note": "最新檔為 2026-11-19，預期 2026-11-20"
+  },
+  "cbbc": {
+    "ok": false,
+    "stale": true,
+    "asOf": "2026-10-27",
+    "published": "2026-10-28 08:05",
+    "status": "未能核實／未更新",
+    "source": "Issuer CBBC outstanding distribution (GS market-wide, HKEX-reported street qty)",
+    "sourcePages": [
+      {
+        "name": "GS HSI CBBC OS",
+        "url": "https://www.gswarrants.com.hk/en/market/hsi-cbbc-outstanding-distribution"
+      },
+      {
+        "name": "SG 法興 街貨分佈",
+        "url": "https://hk.warrants.com/tc/cbbc/outstanding-distribution"
+      },
+      {
+        "name": "UBS Index CBBC OS",
+        "url": "https://warrants.ubs.com/en/cbbc/index-cbbc-outstanding"
+      }
+    ],
+    "note": "最新街貨欄 2026-10-27，預期 2026-11-20"
+  },
+  "stocks": {
+    "ok": true,
+    "stale": false,
+    "date": "2026-11-20",
+    "sourceUrl": "https://www.hkex.com.hk/eng/stat/dmstat/dayrpt/dqe261120.htm",
+    "status": null,
+    "items": [
+      {
+        "hkats": "TCH",
+        "code": "00700",
+        "name": "騰訊 Tencent",
+        "close": 344.0,
+        "volume": 219593,
+        "callOI": 1354476,
+        "putOI": 995103,
+        "callWall": 390.0,
+        "putWall": 340.0,
+        "reason": "收市 344.0 · 認購牆 390.0 OI 2115 · 距認購牆 46.0 · 認沽牆 340.0 OI 2266 · 距認沽牆 4.0 · 成交 219593"
+      },
+      {
+        "hkats": "ALB",
+        "code": "09988",
+        "name": "阿里巴巴 Alibaba",
+        "close": 83.35,
+        "volume": 135540,
+        "callOI": 1065501,
+        "putOI": 1082346,
+        "callWall": 100.0,
+        "putWall": 75.0,
+        "reason": "收市 83.35 · 認購牆 100.0 OI 1292 · 距認購牆 16.65 · 認沽牆 75.0 OI 1013 · 距認沽牆 8.35 · 成交 135540"
+      },
+      {
+        "hkats": "MIU",
+        "code": "01810",
+        "name": "小米 Xiaomi",
+        "close": 27.64,
+        "volume": 56470,
+        "callOI": 644535,
+        "putOI": 582916,
+        "callWall": 30.0,
+        "putWall": 27.5,
+        "reason": "收市 27.64 · 認購牆 30.0 OI 1564 · 距認購牆 2.36 · 認沽牆 27.5 OI 989 · 距認沽牆 0.14 · 成交 56470"
+      },
+      {
+        "hkats": "MET",
+        "code": "03690",
+        "name": "美團 Meituan",
+        "close": 66.5,
+        "volume": 34556,
+        "callOI": 468936,
+        "putOI": 474898,
+        "callWall": 70.0,
+        "putWall": 66.0,
+        "reason": "收市 66.5 · 認購牆 70.0 OI 1654 · 距認購牆 3.5 · 認沽牆 66.0 OI 264 · 距認沽牆 0.5 · 成交 34556"
+      },
+      {
+        "hkats": "HEX",
+        "code": "00388",
+        "name": "港交所 HKEX",
+        "close": 357.0,
+        "volume": 62768,
+        "callOI": 213559,
+        "putOI": 173698,
+        "callWall": 380.0,
+        "putWall": 355.0,
+        "reason": "收市 357.0 · 認購牆 380.0 OI 861 · 距認購牆 23.0 · 認沽牆 355.0 OI 722 · 距認沽牆 2.0 · 成交 62768"
+      },
+      {
+        "hkats": "KST",
+        "code": "01024",
+        "name": "快手 Kuaishou",
+        "close": 20.42,
+        "volume": 71653,
+        "callOI": 310555,
+        "putOI": 229683,
+        "callWall": 30.0,
+        "putWall": 19.25,
+        "reason": "收市 20.42 · 認購牆 30.0 OI 1109 · 距認購牆 9.58 · 認沽牆 19.25 OI 834 · 距認沽牆 1.17 · 成交 71653"
+      }
+    ]
+  },
+  "calendar": {
+    "ok": true,
+    "asOf": "2026-11-23 11:42",
+    "source": "https://www.forexfactory.com/calendar",
+    "items": [
+      {
+        "date": "2026-11-23",
+        "time": "22:45",
+        "ccy": "USD",
+        "impact": "med",
+        "name": "Flash Manufacturing PMI",
+        "actual": "",
+        "forecast": "54.5",
+        "previous": "56.0"
+      },
+      {
+        "date": "2026-11-23",
+        "time": "22:45",
+        "ccy": "USD",
+        "impact": "med",
+        "name": "Flash Services PMI",
+        "actual": "",
+        "forecast": "55.6",
+        "previous": "57.9"
+      }
+    ],
+    "status": null
+  },
+  "implications": [
+    "牆、街貨與隔夜僅作地圖與濾鏡，不構成方向或進場訊號。",
+    "隔夜標普下跌超過 0.8%，開市區間或較闊；無方向優勢。",
+    "恒指即月認購牆 22600 接近結算 22430，先當阻力地圖。",
+    "恒指即月認沽牆 22400 接近結算 22430，先當支持地圖。"
+  ],
+  "missing": [
+    "小恒期權：未能核實／未更新（最新檔為 2026-11-19，預期 2026-11-20）",
+    "牛熊街貨：未能核實／未更新（最新街貨欄 2026-10-27，預期 2026-11-20）"
+  ]
+}
