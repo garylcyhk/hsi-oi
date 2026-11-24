@@ -1,5 +1,5 @@
 window.FF_CAL = {
-  "asOf": "2026-11-23 11:42",
+  "asOf": "2026-11-24 14:56",
   "tz": "HKT",
   "source": "https://www.forexfactory.com/calendar",
   "sourceRange": "https://www.forexfactory.com/calendar?week=this",
@@ -165,7 +165,7 @@ window.FF_CAL = {
       "impact": "med",
       "name": "CB Consumer Confidence",
       "actual": "",
-      "forecast": "92.1",
+      "forecast": "92.4",
       "previous": "91.7"
     },
     {
@@ -185,7 +185,7 @@ window.FF_CAL = {
       "impact": "high",
       "name": "CPI y/y",
       "actual": "",
-      "forecast": "4.8%",
+      "forecast": "4.7%",
       "previous": "4.3%"
     },
     {
@@ -229,23 +229,13 @@ window.FF_CAL = {
       "previous": "2.3%"
     },
     {
-      "date": "2026-11-25",
-      "time": "21:30",
-      "ccy": "USD",
-      "impact": "med",
-      "name": "Unemployment Claims",
-      "actual": "",
-      "forecast": "201K",
-      "previous": "203K"
-    },
-    {
       "date": "2026-11-27",
       "time": "07:30",
       "ccy": "JPY",
       "impact": "med",
       "name": "Tokyo Core CPI y/y",
       "actual": "",
-      "forecast": "2.9%",
+      "forecast": "3.0%",
       "previous": "2.6%"
     }
   ]
